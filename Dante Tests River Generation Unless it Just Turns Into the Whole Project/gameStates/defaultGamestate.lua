@@ -1,7 +1,7 @@
 local generator = {}
 
 local splines = {}
-local splineDist = 10
+local splineDist = 50
 local scrollDist = 0
 local splineSpawner = 0
 
@@ -42,7 +42,10 @@ local function draw()
     love.graphics.translate(love.graphics.getWidth()/2/screenScale, 0)
     if #splines > 0 then
         for i = 1,#splines do
-            love.graphics.circle("fill", splines[i].x, splines[i].y - scrollDist + 1080, 10)
+            for j = 1,#splines[i] do
+                love.graphics.circle("fill", splines[i][j].x, splines[i][j].y - scrollDist + 1080, 10)
+                love.graphics.circle("fill", splines[i][j].x, splines[i][j].y - scrollDist + 1080, 10)
+            end
         end
     end
 end
