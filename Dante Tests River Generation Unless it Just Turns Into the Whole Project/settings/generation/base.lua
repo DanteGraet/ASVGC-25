@@ -5,12 +5,12 @@ local settings = {
     bigNoiseOffset = 0.1,
 
     smallNoiseSize = 200,
-    smallNoiseOffset = 0.2,
+    smallNoiseOffset = 0.5,
     smallNoiseMult = 100,
 
-    widthNoiseMin = 300,
-    widthNoiseMax = 700,
-    widthNoiseSize = 500,
+    widthNoiseMin = 1000,
+    widthNoiseMax = 750,
+    widthNoiseSize = 5000,
 
     maxDist = 1920
 }
