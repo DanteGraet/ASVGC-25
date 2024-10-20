@@ -2,7 +2,7 @@ local generator = {}
 
 local splines = {}
 local autoScroll = true
-local splineDist = 1
+local splineDist = 5
 local scrollDist = 0
 local splineSpawner = 0
 
