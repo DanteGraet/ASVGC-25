@@ -7,4 +7,8 @@ buttons = require("templateLib/buttons")
 
 require("templateLib/audioManager")
 
+
+require("settings.dev")
+
+
 -- Project Spesific things down here, but mostly in their own gamestates.

@@ -36,8 +36,8 @@ function riverGenerator.NextSpline(riverDist, previous) --returns a table with t
         a2 = math.atan2(py2-y2, px2-x2)
 
 
-        local p1 = (a1-(math.pi/2))/(math.pi)
-        local p2 = (a2-(math.pi/2))/(math.pi)
+        local p1 = quindoc.clamp((a1-(math.pi/2))/(math.pi), 0, 1)
+        local p2 = quindoc.clamp((a2-(math.pi/2))/(math.pi), -1, 0)
 
         --print("a1: " .. a1, "a1-pi/2: " .. (a1-math.pi/2), "p1: " .. p1, "dist*p1: " ..(distance)*p1)
 

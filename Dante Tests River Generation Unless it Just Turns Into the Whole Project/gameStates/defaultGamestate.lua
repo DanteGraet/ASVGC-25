@@ -2,7 +2,7 @@ local generator = {}
 
 local splines = {}
 local autoScroll = true
-local splineDist = 5
+local splineDist = 20
 local scrollDist = 0
 local splineSpawner = 0
 
@@ -48,7 +48,8 @@ local function update(dt)
 
         if splineSpawner < -splineDist then
             splineSpawner = -scrollDist%splineDist
-            table.insert(splines, 1, generator.NextSpline(scrollDist, splines[1]))
+            local currentSplines = generator.NextSpline(scrollDist, splines[1])
+            table.insert(splines, 1, currentSplines)
             table.remove(splines, #splines)
         end
     end
@@ -60,20 +61,26 @@ local function draw()
     if #splines > 0 then
         for i = 1,#splines do
             for j = 1,#splines[i] do
-                love.graphics.setColor(1,1,1)
+                
+                if drawRiverSplines then
+                    love.graphics.setColor(1,1,1)
+                    love.graphics.circle("fill", splines[i][j].x, splines[i][j].y - scrollDist, 10)
+                end
 
-                love.graphics.circle("fill", splines[i][j].x, splines[i][j].y - scrollDist, 10)
+                if drawRiverSplineRealY then
+                    love.graphics.setColor(1,0,0, 0.5)
+                    love.graphics.circle("fill", splines[i][j].x, splines[i][j].rel - scrollDist, 10)
+                end
 
-                love.graphics.setColor(1,0,0, 0.5)
-                love.graphics.circle("fill", splines[i][j].x, splines[i][j].rel - scrollDist, 10)
+                if drawRiverSplineRealYLine then
+                    love.graphics.setColor(1,0,0, 0.5)
+                    love.graphics.line(splines[i][j].x, splines[i][j].y- scrollDist, splines[i][j].x, splines[i][j].rel- scrollDist)
+                end
 
-                love.graphics.line(splines[i][j].x, splines[i][j].y- scrollDist, splines[i][j].x, splines[i][j].rel- scrollDist)
-
-
-                love.graphics.setColor(0,1,1)
-
-                love.graphics.line(splines[i][j].x, splines[i][j].y- scrollDist, splines[i][j].x + math.cos(splines[i][j].dir)*100, splines[i][j].y- scrollDist + math.sin(splines[i][j].dir)*100)
-
+                if drawRiverSplineAngle then
+                    love.graphics.setColor(0,1,1)
+                    love.graphics.line(splines[i][j].x, splines[i][j].y- scrollDist, splines[i][j].x + math.cos(splines[i][j].dir)*100, splines[i][j].y- scrollDist + math.sin(splines[i][j].dir)*100)
+                end
             end
         end
     end
