@@ -1,8 +1,10 @@
 local generator = {}
 local river = {}
+local camera = {}
 
 local function load()
     generator = require("code/generation/base")
+    camera = require("code/camera")
     generator.Load()
     river = generator.nextSegment()
 end
@@ -12,11 +14,14 @@ local function keypressed(key)
         if key == "r" then
             river = generator.nextSegment()
         end
+
     end
 end
 
 local function update(dt)
-
+    if cameraUnlocked then
+        camera.update(dt)
+    end
 end
 
 local function drawPoints()
@@ -42,6 +47,7 @@ local function drawPoints()
 end
 
 local function draw()
+    love.graphics.translate(camera.x, camera.y)
     drawPoints()
 end
 
