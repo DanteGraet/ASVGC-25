@@ -1,5 +1,4 @@
 local generator = {}
-
 local river = {}
 
 local function load()
@@ -22,12 +21,14 @@ end
 
 local function drawPoints()
     --loop though each channel
-    for channel = 1,#river do
-        --loop though each side
-        for side = 1,#river[channel] do
-            for i = 1,#river[channel][side] do
-                local point = river[channel][side][i]
-                love.graphics.circle("fill", point.x, point.y, 10)
+    if river and #river > 0 then
+        for channel = 1,#river do
+            --loop though each side
+            for side = 1,#river[channel] do
+                for i = 1,#river[channel][side] do
+                    local point = river[channel][side][i]
+                    love.graphics.circle("fill", point.x, point.y, 10)
+                end
             end
         end
     end
