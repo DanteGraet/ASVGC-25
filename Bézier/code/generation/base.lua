@@ -14,8 +14,8 @@ local function generateRandomPoints()
     local spawnWidth = math.random(genS.minWidth, genS.maxWidth)
     local spawnMid = math.random(0+spawnWidth/2, 1920-spawnWidth/2)
 
-    local pos1 = {x = spawnMid - spawnWidth/2, y = 0}
-    local pos2 = {x = spawnMid + spawnWidth/2, y = 0}
+    local pos1 = {x = spawnMid - spawnWidth/2, y = love.graphics.getHeight()/screenScale}
+    local pos2 = {x = spawnMid + spawnWidth/2, y = love.graphics.getHeight()/screenScale}
 
     table.insert(lastPoints[1], pos1)
     table.insert(lastPoints[1], pos2)
