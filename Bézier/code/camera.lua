@@ -1,8 +1,9 @@
 local speed = 100
 
 local camera = {
-    x = 0,
+    x = 960,
     y = 0,
+    scale = 1,
 }
 
 function camera.update(dt)
@@ -27,6 +28,10 @@ function camera.update(dt)
     if not noAutoScroll then
         camera.y = camera.y + speed * dt
     end
+end
+
+function getCamera()
+    return camera
 end
 
 return camera

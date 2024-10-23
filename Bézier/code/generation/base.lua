@@ -12,7 +12,7 @@ local function generateRandomPoints()
     local lastPoints = {{}}       --a table with 1 empty channel
 
     local spawnWidth = math.random(genS.minWidth, genS.maxWidth)
-    local spawnMid = math.random(0+spawnWidth/2, 1920-spawnWidth/2)
+    local spawnMid = math.random(-spawnWidth/2, spawnWidth/2)
 
     local pos1 = {x = spawnMid - spawnWidth/2, y = love.graphics.getHeight()/screenScale}
     local pos2 = {x = spawnMid + spawnWidth/2, y = love.graphics.getHeight()/screenScale}
@@ -33,8 +33,7 @@ function riverGenerator.nextSegment(lastPoints)       --Previous should be a tab
     local segments = lastPoints
     for i = 1,#segments do
         local spawnWidth = math.random(genS.minWidth, genS.maxWidth)
-        local spawnMid = math.random(0+spawnWidth/2, 1920-spawnWidth/2)
-
+        local spawnMid = math.random(-spawnWidth/2, spawnWidth/2)
 
         local segmentLegnth = -math.random(genS.segLenMin, genS.segLenMax)
         local curvePercentage = math.random(25, 75)/100

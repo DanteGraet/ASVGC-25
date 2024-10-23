@@ -2,6 +2,8 @@ local generator = {}
 local river = {}
 local camera = {}
 
+local devMenu = require("code.builtInBackdoor")
+
 
 local function mergeRiver(new)
     --print(river)
@@ -27,6 +29,9 @@ local function mergeRiver(new)
 end
 
 
+function getRiverData()
+    return river
+end
 
 local function load()
     generator = require("code/generation/base")
@@ -61,9 +66,16 @@ local function keypressed(key)
         if key == "r" then
             generateNextRiver()
         end
+
+        devMenu.keypressed(key)
     end
 end
 
+local function mousepressed(x, y, button)
+    if DEV then
+        devMenu.mousepressd(x, y, button)
+    end
+end
 
 
 local function updateRiver()
@@ -85,7 +97,6 @@ local function updateRiver()
 
         if river[1][1][#river[1][1]].y > -camera.y - 1080 then
             generateNextRiver()
-            print("gottem")
         end
     end
 end
@@ -96,6 +107,10 @@ local function update(dt)
     camera.update(dt)
 
     updateRiver()
+
+    if devMenu then
+        devMenu.update()
+    end
 end
 
 local function drawPoints()
@@ -111,23 +126,24 @@ local function drawPoints()
             end
         end
     end
-
-    if curveLeft then
-        love.graphics.line(curveLeft:render())
-    end
-    if curveRight then
-        love.graphics.line(curveRight:render())
-    end
 end
 
 local function draw()
     love.graphics.translate(camera.x, camera.y)
     drawPoints()
+
+
+    love.graphics.reset()
+
+    if devMenu then
+        devMenu.draw()
+    end
 end
 
 return {
     load = load,
     keypressed = keypressed,
+    mousepressed = mousepressed,
     update = update,
     draw = draw,
 }
