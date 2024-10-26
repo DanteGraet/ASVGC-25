@@ -1,3 +1,3 @@
 
 cameraUnlocked = true
-noAutoScroll = false
+noAutoScroll = true

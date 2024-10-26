@@ -7,8 +7,9 @@ local devMenu = require("code.builtInBackdoor")
 
 
 local function load()
-    camera = require("code/camera")
+    love.math.setRandomSeed(os.time(), love.timer.getTime())
 
+    camera = require("code/camera")
     river.load()
 end
 
@@ -41,6 +42,7 @@ end
 
 
 local function draw()
+    love.graphics.setBackgroundColor(67/255, 78/255, 175/255)
     love.graphics.translate(camera.x, camera.y)
     
     river.draw()
