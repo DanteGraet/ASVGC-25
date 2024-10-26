@@ -1,0 +1,3 @@
+
+cameraUnlocked = true
+noAutoScroll = false
