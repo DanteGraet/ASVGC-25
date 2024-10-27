@@ -11,30 +11,40 @@ local noise2Div = 50
 
 
 function river.insideBounds(x, y)
+    local dist = math.huge
+    local side = false
+
     for channel = 1,#points do
         local side1 = 0
         local side2 = 0
 
-        local lowPoint = nil
-        local hightPoint = nil
+        local lowPoint = points[channel][1][#points[channel][1]]
+        local hightPoint = points[channel][1][1]
+
         for point = 1,#points[channel][1] do
             if points[channel][1][point].y < y then
                 lowPoint = points[channel][1][point]
-                hightPoint = points[channel][1][point-1]
+                if point > 1 then
+                    hightPoint = points[channel][1][point-1]
+                end
                 break
             end
         end
+
         local yPercentage = (y-lowPoint.y)/(hightPoint.y-lowPoint.y)
 
         side1 = lowPoint.x + (hightPoint.x - lowPoint.x)*yPercentage
 
 
-        lowPoint = nil
-        hightPoint = nil
+        lowPoint = points[channel][2][#points[channel][2]]
+        hightPoint = points[channel][2][1]
+
         for point = 1,#points[channel][2] do
             if points[channel][2][point].y < y then
                 lowPoint = points[channel][2][point]
-                hightPoint = points[channel][2][point-1]
+                if point > 1 then
+                    hightPoint = points[channel][2][point-1]
+                end
                 break
             end
         end
@@ -43,53 +53,97 @@ function river.insideBounds(x, y)
         side2 = lowPoint.x + (hightPoint.x - lowPoint.x)*yPercentage
 
         if x > side1 and x < side2 then
-            return true
+            return true, nil
+        else 
+            if x < side1 then
+                if math.abs(side1-x) < dist then
+                    side = true
+                    dist = math.abs(side1-x)
+                end
+            else
+                if math.abs(side2-x) < dist then
+                    side = false
+                    dist = math.abs(side2-x)
+                end
+            end
+
+
         end
     end
 
-    return false
+    return false, side, dist
 end
 
 
 function river.fillCanvasY(canvas, relativeY, y, canvasX)
     love.graphics.setCanvas(canvas)
     for x = 1,canvas:getWidth() do
-        if not river.insideBounds(x*pixlesPerPixle + canvasX, y, canvasX) then
+        local inBounds, side = river.insideBounds(x*pixlesPerPixle + canvasX, y, canvasX)
+
+        if not inBounds then
             --colour
             local noise1 = love.math.noise(x/noise1Div, y/noise1Div/pixlesPerPixle, love.math.getRandomSeed())
             local noise2 = love.math.noise(x/noise2Div, y/noise2Div/pixlesPerPixle, love.math.getRandomSeed() + 10)
 
+            local sand = false
+            if side then
+                local inBounds, side, dist = river.insideBounds(x*pixlesPerPixle + canvasX + 100, y - 100, canvasX)
 
-            --middle range to be ground
-            if noise1 > 0.49 and noise1 < 0.51 then
-                love.graphics.setColor(175/255, 121/255, 67/255, 1)
-            elseif noise1 < 0.5 then
-                --should be  1-10
-                local n = (noise1 - 0.48)*1000
-                --print(n)
-                if math.random(1, 10) < n then
-                    love.graphics.setColor(175/255, 121/255, 67/255, 1)
+                if inBounds then
+                    sand = true
                 else
-                    if noise2*100 > math.random(45, 55) then
-                        love.graphics.setColor(67/255,175/255,67/255,1)
-                    else
-                        love.graphics.setColor(88/255,188/255,88/255,1)
 
+                    if math.random(1, 50) > dist then
+                        sand = true
                     end
                 end
-            elseif noise1 > 0.5 then
-                --should be  1-10
-                local n = (noise1 - 0.51)*1000
-                --print(n)
-                if math.random(1, 10) > n then
+            else
+                local inBounds, side, dist = river.insideBounds(x*pixlesPerPixle + canvasX - 100, y + 100, canvasX)
 
-                    love.graphics.setColor(175/255, 121/255, 67/255, 1)
+                if inBounds then
+                    sand = true
                 else
-                    if noise2*100 > math.random(45, 55) then
-                        love.graphics.setColor(67/255,175/255,67/255,1)
-                    else
-                        love.graphics.setColor(88/255,188/255,88/255,1)
 
+                    if math.random(1, 50) > dist then
+                        sand = true
+                    end
+                end
+            end
+
+            --middle range to be ground
+            if sand then
+                love.graphics.setColor(1,1,0)
+            else
+                if noise1 > 0.49 and noise1 < 0.51 then
+                    love.graphics.setColor(175/255, 121/255, 67/255, 1)
+                elseif noise1 < 0.5 then
+                    --should be  1-10
+                    local n = (noise1 - 0.48)*1000
+                    --print(n)
+                    if math.random(1, 10) < n then
+                        love.graphics.setColor(175/255, 121/255, 67/255, 1)
+                    else
+                        if noise2*100 > math.random(45, 55) then
+                            love.graphics.setColor(67/255,175/255,67/255,1)
+                        else
+                            love.graphics.setColor(88/255,188/255,88/255,1)
+
+                        end
+                    end
+                elseif noise1 > 0.5 then
+                    --should be  1-10
+                    local n = (noise1 - 0.51)*1000
+                    --print(n)
+                    if math.random(1, 10) > n then
+
+                        love.graphics.setColor(175/255, 121/255, 67/255, 1)
+                    else
+                        if noise2*100 > math.random(45, 55) then
+                            love.graphics.setColor(67/255,175/255,67/255,1)
+                        else
+                            love.graphics.setColor(88/255,188/255,88/255,1)
+
+                        end
                     end
                 end
             end
@@ -98,6 +152,7 @@ function river.fillCanvasY(canvas, relativeY, y, canvasX)
             love.graphics.points(x, relativeY)
         else
 
+            --water
             love.graphics.setColor(67/255,78/255,175/255,255,1)
 
             love.graphics.points(x, relativeY)
@@ -116,7 +171,7 @@ function river.addCanvas(y, fill)
     }
     
     local canvas = love.graphics.newCanvas(math.ceil((love.graphics.getWidth()/screenScale)/pixlesPerPixle), math.ceil((love.graphics.getHeight()/screenScale)/pixlesPerPixle))
-
+    canvas:setFilter("nearest", "nearest")
 
     temp.x = -canvas:getWidth()*pixlesPerPixle/2
 
@@ -154,6 +209,7 @@ function river.mergePoints(new)
         end
     end
 end
+
 
 local function generateNextRiver()
     local last = nil
