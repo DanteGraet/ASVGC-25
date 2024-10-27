@@ -112,7 +112,7 @@ function river.fillCanvasY(canvas, relativeY, y, canvasX)
 
             --middle range to be ground
             if sand then
-                love.graphics.setColor(1,1,0)
+                love.graphics.setColor(238/255,218/255,44/255)
             else
                 if noise1 > 0.49 and noise1 < 0.51 then
                     love.graphics.setColor(175/255, 121/255, 67/255, 1)
@@ -294,7 +294,7 @@ function river.draw()
         love.graphics.draw(canvases[i].canvas, canvases[i].x, canvases[i].y, 0, pixlesPerPixle, pixlesPerPixle)
     end
 
-    --river.drawRiverPoints()
+    river.drawRiverPoints()
 end
 
 
