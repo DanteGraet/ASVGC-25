@@ -180,7 +180,7 @@ function river.addCanvas(y, fill)
     table.insert(canvases, temp)
 
     if fill then
-        print("filling")
+        canvasFillY = temp.y
         for i = 1,canvas:getHeight() do
             river.fillCanvasY(canvases[#canvases].canvas, i, canvases[#canvases].y + i*pixlesPerPixle, canvases[#canvases].x)
         end
@@ -266,6 +266,39 @@ function river.update(dt)
         if points[1][1][#points[1][1]].y > -camera.y - 1080 - range then
             generateNextRiver()
         end
+    end
+
+    --Generating new canvasess
+    if camera.y > math.abs(canvases[#canvases].y) then
+        river.addCanvas(canvases[#canvases].y - love.graphics.getHeight(), false)
+        print(canvases[#canvases].y)
+    end
+
+    if camera.y > canvasFillY then
+        local currentCanvasNo = #canvases
+        local cc = canvases[#canvases]
+
+        for i = math.floor(camera.y), math.floor(canvasFillY) , -pixlesPerPixle do
+
+            local relativeY = -(cc.y + i)/pixlesPerPixle
+            river.fillCanvasY(cc.canvas, relativeY, -i, cc.x)
+
+            if relativeY + pixlesPerPixle > cc.canvas:getHeight() then
+                currentCanvasNo = currentCanvasNo - 1
+                cc = canvases[currentCanvasNo]
+                print("canvs swap")
+            end
+        end
+
+        canvasFillY = camera.y
+    end
+
+    for i = 1,#canvases do
+        if math.abs(canvases[1].y) < camera.y - love.graphics.getHeight()/screenScale + 10 then
+            table.remove(canvases, 1)
+        else
+            break        
+        end 
     end
 end
 
