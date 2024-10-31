@@ -4,7 +4,7 @@ local generator = {}
 
 local canvases = {}
 local canvasFillY = -2000
-local pixlesPerPixle = 5
+local pixlesPerPixle = 4
 
 local noise1Div = 100
 local noise2Div = 50
@@ -165,13 +165,18 @@ function river.fillCanvasY(canvas, relativeY, y, canvasX)
 end
 
 function river.addCanvas(y, fill)
+    local add = false
+    if y then add = true end
+
     local temp = {
         y = y or 0,
         x = 0
     }
     
-    local canvas = love.graphics.newCanvas(math.ceil((love.graphics.getWidth()/screenScale)/pixlesPerPixle), math.ceil((love.graphics.getHeight()/screenScale)/pixlesPerPixle))
+    local canvas = love.graphics.newCanvas(math.ceil((love.graphics.getWidth()/screenScale)/pixlesPerPixle) + 2, math.ceil((love.graphics.getHeight()/screenScale/pixlesPerPixle)))
     canvas:setFilter("nearest", "nearest")
+
+    if add then temp.y = temp.y - (canvas:getHeight()-10)*pixlesPerPixle end
 
     temp.x = -canvas:getWidth()*pixlesPerPixle/2
 
@@ -240,7 +245,7 @@ function river.load()
     generator.Load()
     river.mergePoints(generator.nextSegment())
 
-    river.addCanvas(0, true)
+    river.addCanvas(nil, true)
 end
 
 function river.update(dt)
@@ -270,8 +275,7 @@ function river.update(dt)
 
     --Generating new canvasess
     if camera.y > math.abs(canvases[#canvases].y) then
-        river.addCanvas(canvases[#canvases].y - love.graphics.getHeight(), false)
-        print(canvases[#canvases].y)
+        river.addCanvas(canvases[#canvases].y, false)
     end
 
     if camera.y > canvasFillY then
@@ -286,7 +290,6 @@ function river.update(dt)
             if relativeY + pixlesPerPixle > cc.canvas:getHeight() then
                 currentCanvasNo = currentCanvasNo - 1
                 cc = canvases[currentCanvasNo]
-                print("canvs swap")
             end
         end
 
