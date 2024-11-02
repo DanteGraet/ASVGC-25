@@ -89,13 +89,12 @@ function river.fillCanvasY(canvas, relativeY, y, canvasX)
             if side then
                 local inBounds, side, dist = river.insideBounds(x*pixlesPerPixle + canvasX + 100, y - 100, canvasX)
 
-                if inBounds then
-                    sand = true
-                else
-
+                if not inBounds then
                     if math.random(1, 50) > dist then
                         sand = true
                     end
+                else
+                    sand = true
                 end
             else
                 local inBounds, side, dist = river.insideBounds(x*pixlesPerPixle + canvasX - 100, y + 100, canvasX)
@@ -297,7 +296,7 @@ function river.update(dt)
     end
 
     for i = 1,#canvases do
-        if math.abs(canvases[1].y) < camera.y - love.graphics.getHeight()/screenScale + 10 then
+        if math.abs(canvases[1].y) < camera.y - love.graphics.getHeight()/screenScale - 10 then
             table.remove(canvases, 1)
         else
             break        
