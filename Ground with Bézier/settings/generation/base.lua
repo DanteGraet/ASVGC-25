@@ -1,10 +1,10 @@
 --We can reload this file to update all settings later
 local settings = {
-    maxWidth = 1000,
-    minWidth = 750,
+    maxWidth = 600,
+    minWidth = 500,
 
-    segLenMax = 2500,
-    segLenMin = 2000,
+    segLenMax = 1500,
+    segLenMin = 1000,
 }
 
 return settings
