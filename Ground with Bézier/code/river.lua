@@ -4,7 +4,7 @@ local generator = {}
 
 local canvases = {}
 local canvasFillY = -2000
-local pixlesPerPixle = 5
+local pixlesPerPixle = 4
 
 local noise1Div = 100
 local noise2Div = 50
@@ -89,13 +89,12 @@ function river.fillCanvasY(canvas, relativeY, y, canvasX)
             if side then
                 local inBounds, side, dist = river.insideBounds(x*pixlesPerPixle + canvasX + 100, y - 100, canvasX)
 
-                if inBounds then
-                    sand = true
-                else
-
+                if not inBounds then
                     if math.random(1, 50) > dist then
                         sand = true
                     end
+                else
+                    sand = true
                 end
             else
                 local inBounds, side, dist = river.insideBounds(x*pixlesPerPixle + canvasX - 100, y + 100, canvasX)
@@ -165,13 +164,18 @@ function river.fillCanvasY(canvas, relativeY, y, canvasX)
 end
 
 function river.addCanvas(y, fill)
+    local add = false
+    if y then add = true end
+
     local temp = {
         y = y or 0,
         x = 0
     }
     
-    local canvas = love.graphics.newCanvas(math.ceil((love.graphics.getWidth()/screenScale)/pixlesPerPixle), math.ceil((love.graphics.getHeight()/screenScale)/pixlesPerPixle))
+    local canvas = love.graphics.newCanvas(math.ceil((love.graphics.getWidth()/screenScale)/pixlesPerPixle) + 2, math.ceil((love.graphics.getHeight()/screenScale/pixlesPerPixle)))
     canvas:setFilter("nearest", "nearest")
+
+    if add then temp.y = temp.y - (canvas:getHeight()-10)*pixlesPerPixle end
 
     temp.x = -canvas:getWidth()*pixlesPerPixle/2
 
@@ -180,7 +184,7 @@ function river.addCanvas(y, fill)
     table.insert(canvases, temp)
 
     if fill then
-        print("filling")
+        canvasFillY = temp.y
         for i = 1,canvas:getHeight() do
             river.fillCanvasY(canvases[#canvases].canvas, i, canvases[#canvases].y + i*pixlesPerPixle, canvases[#canvases].x)
         end
@@ -240,7 +244,7 @@ function river.load()
     generator.Load()
     river.mergePoints(generator.nextSegment())
 
-    river.addCanvas(0, true)
+    river.addCanvas(nil, true)
 end
 
 function river.update(dt)
@@ -266,6 +270,37 @@ function river.update(dt)
         if points[1][1][#points[1][1]].y > -camera.y - 1080 - range then
             generateNextRiver()
         end
+    end
+
+    --Generating new canvasess
+    if camera.y > math.abs(canvases[#canvases].y) then
+        river.addCanvas(canvases[#canvases].y, false)
+    end
+
+    if camera.y > canvasFillY then
+        local currentCanvasNo = #canvases
+        local cc = canvases[#canvases]
+
+        for i = math.floor(camera.y), math.floor(canvasFillY) , -pixlesPerPixle do
+
+            local relativeY = -(cc.y + i)/pixlesPerPixle
+            river.fillCanvasY(cc.canvas, relativeY, -i, cc.x)
+
+            if relativeY + pixlesPerPixle > cc.canvas:getHeight() then
+                currentCanvasNo = currentCanvasNo - 1
+                cc = canvases[currentCanvasNo]
+            end
+        end
+
+        canvasFillY = camera.y
+    end
+
+    for i = 1,#canvases do
+        if math.abs(canvases[1].y) < camera.y - love.graphics.getHeight()/screenScale - 10 then
+            table.remove(canvases, 1)
+        else
+            break        
+        end 
     end
 end
 

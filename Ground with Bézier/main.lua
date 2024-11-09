@@ -129,9 +129,9 @@ function love.draw()
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
     love.graphics.scale(screenScale)
-    if lockedAspectRatio then
-        love.graphics.translate(sox, soy)
-    end
+
+    love.graphics.translate(sox, 0)
+
 
     if game[gameState] and game[gameState].draw then
         game[gameState].draw()
