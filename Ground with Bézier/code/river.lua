@@ -6,8 +6,8 @@ local canvases = {}
 local canvasFillY = -2000
 local pixlesPerPixle = 3
 
-local noise1Div = 250
-local noise2Div = 50
+local noise1Div = 300
+local noise2Div = 75
 
 
 function river.insideBounds(x, y)
