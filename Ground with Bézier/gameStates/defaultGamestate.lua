@@ -1,12 +1,23 @@
 local camera = {}
 
-local river = require("code.river")
+river = require("code.river")
 local devMenu = require("code.builtInBackdoor")
 
+require("code.obstacle.obstacle")
+require("code.obstacle.spawner")
 
+
+obsticals = {}
 
 
 local function load()
+    love.physics.setMeter(100)
+    world = love.physics.newWorld(0, 0, false)
+
+
+    obstacleSpawner = ObstacleSpawner:New()
+    obstacleSpawner:AddSpawner(Obstacle)
+
     love.math.setRandomSeed(os.time(), love.timer.getTime())
 
     camera = require("code/camera")
@@ -33,6 +44,8 @@ local function update(dt)
 
     camera.update(dt)
 
+    obstacleSpawner:Update(getCamera().y)
+
     river.update(dt)
 
     if devMenu then
@@ -46,6 +59,10 @@ local function draw()
     love.graphics.translate(camera.x, camera.y)
     
     river.draw()
+
+    for i = 1,#obsticals do
+        obsticals[i]:DrawHitbox()
+    end
 
 
     love.graphics.reset()

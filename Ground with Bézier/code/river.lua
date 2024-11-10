@@ -4,9 +4,9 @@ local generator = {}
 
 local canvases = {}
 local canvasFillY = -2000
-local pixlesPerPixle = 4
+local pixlesPerPixle = 3
 
-local noise1Div = 100
+local noise1Div = 250
 local noise2Div = 50
 
 
@@ -97,7 +97,7 @@ function river.fillCanvasY(canvas, relativeY, y, canvasX)
                     sand = true
                 end
             else
-                local inBounds, side, dist = river.insideBounds(x*pixlesPerPixle + canvasX - 100, y + 100, canvasX)
+                local inBounds, side, dist = river.insideBounds(x*pixlesPerPixle + canvasX - 100, y - 100, canvasX)
 
                 if inBounds then
                     sand = true
@@ -266,7 +266,7 @@ function river.update(dt)
             end
         end
 
-        local range = 100
+        local range = 1920
         if points[1][1][#points[1][1]].y > -camera.y - 1080 - range then
             generateNextRiver()
         end
