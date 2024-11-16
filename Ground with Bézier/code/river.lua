@@ -163,6 +163,7 @@ function river.fillCanvasY(canvas, relativeY, y, canvasX)
 
 end
 
+
 function river.addCanvas(y, fill)
     local add = false
     if y then add = true end

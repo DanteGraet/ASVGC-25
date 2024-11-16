@@ -23,6 +23,7 @@ local function generateRandomPoints()
     return lastPoints
 end
 
+
 function riverGenerator.nextSegment(lastPoints)       --Previous should be a table, {channel = {side1[1], side2[1]}}
     local lastPoints = lastPoints
 
@@ -61,8 +62,6 @@ function riverGenerator.nextSegment(lastPoints)       --Previous should be a tab
 
         curve1BendY = curve1BendY + percent*spawnWidth
         curve2BendY = curve2BendY - percent*spawnWidth
-
-
 
         --Generate the actual curves
         local curveLeft = love.math.newBezierCurve(curve1X, curve1Y, curve1X, curve1BendY, curve1BendX, curve1BendY, curve1BendX, curve1Y + segmentLegnth)        

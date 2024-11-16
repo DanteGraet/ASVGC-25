@@ -4,6 +4,7 @@ river = require("code.river")
 local devMenu = require("code.builtInBackdoor")
 
 require("code.obstacle.obstacle")
+require("code.obstacle.rock")
 require("code.obstacle.spawner")
 
 
@@ -16,7 +17,7 @@ local function load()
 
 
     obstacleSpawner = ObstacleSpawner:New()
-    obstacleSpawner:AddSpawner(Obstacle)
+    obstacleSpawner:AddSpawner(rockObstical)
 
     love.math.setRandomSeed(os.time(), love.timer.getTime())
 
@@ -61,6 +62,8 @@ local function draw()
     river.draw()
 
     for i = 1,#obsticals do
+        obsticals[i]:Draw()
+
         obsticals[i]:DrawHitbox()
     end
 

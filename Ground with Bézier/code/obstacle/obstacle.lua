@@ -6,10 +6,10 @@ Obstacle.__index = Obstacle
 function Obstacle:New(x, y, shape)
     local obj = setmetatable({}, Obstacle)
 
-    obj.x = x or 0
-    obj.y = y or 0
+    obj.x = math.floor(x/3)*3 or 0
+    obj.y = math.floor(y/3)*3 or 0
 
-    obj.dir = 0
+    obj.dir = math.rad(math.random(1,4)*90)
 
     obj.shape = shape or love.physics.newCircleShape(50)
     obj.body = love.physics.newBody(world, x, y, "static")
@@ -17,6 +17,13 @@ function Obstacle:New(x, y, shape)
 
 
     return obj
+end
+
+function Obstacle:Draw()
+    if self.image then
+        local img = self.image
+        love.graphics.draw(img, self.x, self.y, self.dir, 3, 3, img:getWidth()/2, img:getHeight()/2)
+    end
 end
 
 function Obstacle:DrawHitbox()
