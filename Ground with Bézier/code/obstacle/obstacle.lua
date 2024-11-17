@@ -12,12 +12,38 @@ function Obstacle:New(x, y, shape)
     obj.dir = math.rad(math.random(1,4)*90)
 
     obj.shape = shape or love.physics.newCircleShape(50)
-    obj.body = love.physics.newBody(world, x, y, "static")
+    obj.body = love.physics.newBody(world, obj.x, obj.y, "dynamic")
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
+    obj.fixture:setUserData({type = "obstical", first = true, remove = false})
+
+
 
 
     return obj
 end
+
+function Obstacle:Update(camY, no)
+    if self.fixture:getUserData().first then
+        local data = self.fixture:getUserData()
+        data.first = false
+
+        self.body:setType("static")
+
+
+        --self.body = love.physics.newBody(world, self.x, self.y, "static")
+
+        self.fixture:setUserData(data)
+    elseif self.fixture:getUserData().remove then
+        self.body:destroy()
+        table.remove(obsticals, no)
+        return
+    elseif self.y > -camY + love.graphics.getHeight()/screenScale + 250 then
+        self.body:destroy()
+        table.remove(obsticals, no)
+        return
+    end
+end
+
 
 function Obstacle:Draw()
     if self.image then
@@ -25,6 +51,7 @@ function Obstacle:Draw()
         love.graphics.draw(img, self.x, self.y, self.dir, 3, 3, img:getWidth()/2, img:getHeight()/2)
     end
 end
+
 
 function Obstacle:DrawHitbox()
     love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())

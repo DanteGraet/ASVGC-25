@@ -1,3 +1,14 @@
+--[[
+
+dP     dP                   oo          dP       dP                   
+88     88                               88       88                   
+88    .8P .d8888b. 88d888b. dP .d8888b. 88d888b. 88 .d8888b. .d8888b. 
+88    d8' 88'  `88 88'  `88 88 88'  `88 88'  `88 88 88ooood8 Y8ooooo. 
+88  .d8P  88.  .88 88       88 88.  .88 88.  .88 88 88.  ...       88 
+888888'   `88888P8 dP       dP `88888P8 88Y8888' dP `88888P' `88888P' 
+                                                                      
+]]
+
 require("requirements")
 
 gameState = ""
@@ -45,25 +56,29 @@ function updateScale()
 end
 
 
-function love.resize(w, h)
-    updateScale()
-end
 
+--[[
 
-function love.load()
-    if game[gameState] and game[gameState].load then
-        game[gameState].load()
+dP                              dP   
+88                              88   
+88 88d888b. 88d888b. dP    dP d8888P 
+88 88'  `88 88'  `88 88    88   88   
+88 88    88 88.  .88 88.  .88   88   
+dP dP    dP 88Y888P' `88888P'   dP   
+            88                       
+            dP                       
+
+]]
+function love.mousepressed(mx, my, button)
+    if game[gameState] and game[gameState].mousepressed then
+        game[gameState].mousepressed(mx, my, button)
     end
 end
-
-
-function love.textinput(key)
-    if game[gameState] and game[gameState].textinput then
-        game[gameState].textinput(key)
+function love.mousereleased(x, y, button)
+    if game[gameState] and game[gameState].mousereleased then
+        game[gameState].mousereleased(x, y, button)
     end
 end
-
-
 
 function love.wheelmoved(x,y)
     if game[gameState] and game[gameState].wheelmoved then
@@ -93,18 +108,29 @@ function love.keyreleased(key)
     end
 end
 
-
-function love.mousepressed(mx, my, button)
-    if game[gameState] and game[gameState].mousepressed then
-        game[gameState].mousepressed(mx, my, button)
-    end
-end
-function love.mousereleased(x, y, button)
-    if game[gameState] and game[gameState].mousereleased then
-        game[gameState].mousereleased(x, y, button)
+function love.textinput(key)
+    if game[gameState] and game[gameState].textinput then
+        game[gameState].textinput(key)
     end
 end
 
+
+
+--[[
+
+8888ba.88ba           oo             d8888b. 
+88  `8b  `8b                             `88 
+88   88   88 .d8888b. dP 88d888b.     aaad8' 
+88   88   88 88'  `88 88 88'  `88        `88 
+88   88   88 88.  .88 88 88    88        .88 
+dP   dP   dP `88888P8 dP dP    dP    d88888P 
+                                                                                 
+]]
+function love.load()
+    if game[gameState] and game[gameState].load then
+        game[gameState].load()
+    end
+end
 
 function love.update(dt)
 
@@ -148,5 +174,62 @@ function love.draw()
         --y bars
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth()/screenScale, -soy)
         love.graphics.rectangle("fill", 0, 1080, love.graphics.getWidth()/screenScale, soy)
+    end
+end
+
+
+
+--[[
+
+ .88888.    dP   dP                         
+d8'   `8b   88   88                         
+88     88 d8888P 88d888b. .d8888b. 88d888b. 
+88     88   88   88'  `88 88ooood8 88'  `88 
+Y8.   .8P   88   88    88 88.  ... 88       
+ `8888P'    dP   dP    dP `88888P' dP       
+                                            
+]]
+
+function love.resize(w, h)
+    updateScale()
+end
+
+
+
+
+--[[
+
+ 888888ba  dP                         oo                       a88888b.          dP dP dP                         dP                
+ 88    `8b 88                                                 d8'   `88          88 88 88                         88                
+a88aaaa8P' 88d888b. dP    dP .d8888b. dP .d8888b. .d8888b.    88        .d8888b. 88 88 88d888b. .d8888b. .d8888b. 88  .dP  .d8888b. 
+ 88        88'  `88 88    88 Y8ooooo. 88 88'  `"" Y8ooooo.    88        88'  `88 88 88 88'  `88 88'  `88 88'  `"" 88888"   Y8ooooo. 
+ 88        88    88 88.  .88       88 88 88.  ...       88    Y8.   .88 88.  .88 88 88 88.  .88 88.  .88 88.  ... 88  `8b.       88 
+ dP        dP    dP `8888P88 `88888P' dP `88888P' `88888P'     Y88888P' `88888P8 dP dP 88Y8888' `88888P8 `88888P' dP   `YP `88888P' 
+                         .88                                                                                                        
+                     d8888P                                                                                                         
+]]
+
+function beginContact(a, b, coll)
+    print("col")
+	--[[if game[gameState] and game[gameState].beginContact then
+        game[gameState].beginContact(a, b, coll)
+    end]]
+end
+
+function endContact(a, b, coll)
+	if game[gameState] and game[gameState].endContact then
+        game[gameState].endContact(a, b, coll)
+    end
+end
+
+function preSolve(a, b, coll)
+	if game[gameState] and game[gameState].preSolve then
+        game[gameState].preSolve(a, b, coll)
+    end
+end
+
+function postSolve(a, b, coll, normalimpulse, tangentimpulse)
+	if game[gameState] and game[gameState].postSolve then
+        game[gameState].postSolve(a, b, coll, normalimpulse, tangentimpulse)
     end
 end

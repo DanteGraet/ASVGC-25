@@ -15,8 +15,6 @@ rockObstical.__index = rockObstical
 
 -- Constructor for SkillTree
 function rockObstical:New(x, y)
-
-
     local obj = Obstacle:New(x, y, rockShape)
 
     obj.image = rockImages[math.random(1, #rockImages)]

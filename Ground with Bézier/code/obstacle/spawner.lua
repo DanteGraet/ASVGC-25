@@ -69,7 +69,6 @@ function ObstacleSpawner:Update(cameraY)
 
                 if river.insideBounds(x, y) then
                     table.insert(obsticals, spawner.obstical:New(x, y))
-                    print("sp")
                 end
 
                 spawner.timer = spawner.timer - requiredTime
