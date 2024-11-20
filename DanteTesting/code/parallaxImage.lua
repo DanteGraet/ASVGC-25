@@ -1,7 +1,6 @@
 ParallaxImage = {}
 ParallaxImage.__index = ParallaxImage
 
-
 function ParallaxImage:New(sx, sy, data) -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, ParallaxImage)
 
@@ -34,11 +33,13 @@ function ParallaxImage:New(sx, sy, data) -- data is a table {{image/path, layer}
     return obj
 end
 
+
 function ParallaxImage:Sort()
     table.sort(self.data, function(a, b)
         return a[2] < b[2]
     end)
 end
+
 
 function ParallaxImage:Update(dt, mx, my)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
@@ -50,7 +51,7 @@ function ParallaxImage:Update(dt, mx, my)
     local mx = mx - self.x - sox
     local my = my - self.y
 
-    if mx > 0 and mx < self.canvas:getWidth() and my > 0 and my < self.canvas:getHeight() then
+    if mx >= 0 and mx <= self.canvas:getWidth() and my >= 0 and my <= self.canvas:getHeight() then
         self.hovering = quindoc.clamp(self.hovering + dt, 0, 1)
     else
         self.hovering = quindoc.clamp(self.hovering - dt, 0, 1)
@@ -59,13 +60,11 @@ end
 
 
 function ParallaxImage:Draw(x, y, mx, my)
-    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
     local cx = self.canvas:getWidth()/2
     local cy = self.canvas:getHeight()/2
 
-    local mx = mx - x - cx - sox
+    local mx = mx - x - cx
     local my = my - y - cy
 
     love.graphics.push()
