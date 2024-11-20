@@ -5,7 +5,7 @@ require("code.parallaxImage")
 DynamicLoading = {}
 DynamicLoading.__index = DynamicLoading
 
-function DynamicLoading:New(toLoad, parallaxImage) -- data is a table {{image/path, layer}}
+function DynamicLoading:New(toLoad, parallaxImage, autoRun) -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, DynamicLoading)
 
     obj.image = ParallaxImage:New(1920, 1080, parallaxImage)
@@ -19,7 +19,13 @@ function DynamicLoading:New(toLoad, parallaxImage) -- data is a table {{image/pa
         end
     end
 
-    return obj
+    if autoRun then
+        if obj:Run() == "QUIT" then
+            love.event.quit()
+        end
+    else
+        return obj
+    end
 end
 
 
@@ -27,7 +33,6 @@ function DynamicLoading:Run()
     local loadedList = {}
 
     for i = 1,#self.loadList do
-
         -- Process events, taken from the wiki
 		if love.event then
 			love.event.pump()
@@ -41,17 +46,12 @@ function DynamicLoading:Run()
 			end
 		end
 
-
-
-
         local path = {}
-
         for match in string.gmatch(self.loadList[i], "[^/]+") do
             table.insert(path, match)
         end
 
         self:AddItem(path, assets, self.loadList[i])
-
 
         self:Draw(i/#self.loadList, self.loadList[i])
     end
@@ -61,7 +61,6 @@ function DynamicLoading:Run()
 end
 
 function DynamicLoading:AddItem(path, current, original)
-
     if #path == 1 then
         local file = path[#path]
         if file:match("%.png$") then
@@ -71,7 +70,6 @@ function DynamicLoading:AddItem(path, current, original)
             current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original)
             print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original .. ")")
         end
-
         
     else
         if not current[path[1]] then
@@ -83,8 +81,6 @@ function DynamicLoading:AddItem(path, current, original)
         self:AddItem(path, nextCurrent, original)
     end
 end
-
-
 
 
 function DynamicLoading:Draw(percentage, current)
