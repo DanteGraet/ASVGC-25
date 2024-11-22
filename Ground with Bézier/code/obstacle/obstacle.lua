@@ -2,7 +2,6 @@ Obstacle = {}
 Obstacle.__index = Obstacle
 
 
--- Constructor for SkillTree
 function Obstacle:New(x, y, shape)
     local obj = setmetatable({}, Obstacle)
 
@@ -16,9 +15,6 @@ function Obstacle:New(x, y, shape)
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
     obj.fixture:setUserData({type = "obstical", first = true, remove = false})
 
-
-
-
     return obj
 end
 
@@ -28,6 +24,8 @@ function Obstacle:Update(camY, no)
         data.first = false
 
         self.body:setType("static")
+
+        self.x, self.y = self.body:getPosition()
 
 
         --self.body = love.physics.newBody(world, self.x, self.y, "static")

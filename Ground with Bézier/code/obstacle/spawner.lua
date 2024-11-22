@@ -2,7 +2,6 @@ ObstacleSpawner = {}
 ObstacleSpawner.__index = ObstacleSpawner
 
 
--- Constructor for SkillTree
 function ObstacleSpawner:New()
     local obj = setmetatable({}, ObstacleSpawner)
 
