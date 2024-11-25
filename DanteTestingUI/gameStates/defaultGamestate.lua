@@ -1,6 +1,8 @@
 require("code.dynamicLoading")
 require("templateLib.graetUi")
 
+local testingFont = love.graphics.newFont(50)
+love.graphics.setFont(testingFont)
 local UI
 
 local function load()
@@ -10,8 +12,10 @@ local function load()
 
     UI = GraetUi:New()
     UI:AddButton("test1", 100, 100, 100, 100)
-    UI:GetButtons()["test1"]:AddText("Test", "left", love.graphics.getFont())
-    UI:GetButtons()["test1"]:SetElementColour(1, {1,0,0}, {0,1,0}, {0,0,1})
+    UI:GetButtons()["test1"]:AddImage(0, 0, assets.images.moaigus)
+    UI:GetButtons()["test1"]:SetElementColour({1,0,0}, {0,0,1}, {0,1,0}, 1)
+
+    UI:AddTextButton("test2", "gottem", "right", testingFont, 960, 100, 960, {{1,1,1}, {1,1,1}, {0,0,0}})
 end
 
 local function update(dt)

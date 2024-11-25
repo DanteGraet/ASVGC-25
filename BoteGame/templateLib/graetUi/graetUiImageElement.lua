@@ -1,22 +1,22 @@
-local GraetUiRect = {}
-GraetUiRect.__index = GraetUiRect
+local GraetUiImage = {}
+GraetUiImage.__index = GraetUiImage
 
-function GraetUiRect:New(x, y, sx, sy, fill, curve) -- data is a table {{image/path, layer}}
-    local obj = setmetatable({}, GraetUiRect)
+function GraetUiImage:New(x, y, image, sx, sy) -- data is a table {{image/path, layer}}
+    local obj = setmetatable({}, GraetUiImage)
 
     obj.x = x or 0
-    obj.y = y or 0 
-    obj.sx = sx or 100
-    obj.sy = sy or 100
+    obj.y = y or 0
 
-    obj.curve = curve or 0
-    obj.fill = fill or "fill"
+    obj.image = image
+
+    obj.sx = sx
+    obj.sy = sy
 
     return obj
 end
 
 
-function GraetUiRect:SetColour(colour1, colour2, colour3, cLerp)
+function GraetUiImage:SetColour(colour1, colour2, colour3, cLerp)
     self.colour1 = colour1
     self.colour2 = colour2 or colour1
     self.colour3 = colour3 or colour2 or colour1
@@ -24,7 +24,7 @@ function GraetUiRect:SetColour(colour1, colour2, colour3, cLerp)
 end
 
 
-function GraetUiRect:Draw(x, y, mouseMode, modeTryangle)
+function GraetUiImage:Draw(x, y, mouseMode, modeTryangle)
     if self.colour1 then
         if modeTryangle then
             local cLerp = self.cLerp or tweens.sineInOut
@@ -49,7 +49,7 @@ function GraetUiRect:Draw(x, y, mouseMode, modeTryangle)
         love.graphics.setColor(1,1,1)
     end
 
-    love.graphics.rectangle(self.fill, x + self.x, y + self.y, self.sx, self.sy, self.curve)
+    love.graphics.draw(self.image, x + self.x, y + self.y, 0, self.sx, self.sy)
 end
 
-return GraetUiRect
+return GraetUiImage
