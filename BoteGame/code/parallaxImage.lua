@@ -76,7 +76,7 @@ function ParallaxImage:Draw(x, y, mx, my)
     for i = 1,#self.data do
         local img = self.data[i][1]
         local layer = self.data[i][2]
-        love.graphics.draw(img, cx + mx*layer*tweens.sineInOut(0, 1, self.hovering), cy + my*layer*tweens.sineInOut(0, 1, self.hovering), 0, 1, 1, img:getWidth()/2, img:getHeight()/2)
+        love.graphics.draw(img, cx + mx*layer*tweens.sineInOut(self.hovering), cy + my*layer*tweens.sineInOut(self.hovering), 0, 1, 1, img:getWidth()/2, img:getHeight()/2)
     end
 
     love.graphics.setCanvas()

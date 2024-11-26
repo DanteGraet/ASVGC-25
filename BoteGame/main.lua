@@ -153,7 +153,7 @@ function love.draw()
 
     if drawDebugRuler then quindoc.drawRuler() end
 
-    if lockedAspectRatio then
+    if lockedAspectRatio and not game[gameState].noTransform == true then
         love.graphics.setColor(screenBarColour)
         --x bars
         love.graphics.rectangle("fill", 0, 0, -sox, love.graphics.getHeight()/screenScale)

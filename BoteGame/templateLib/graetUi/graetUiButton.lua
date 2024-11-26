@@ -35,6 +35,7 @@ function GraetButton:New(x, y, sx, sy) -- data is a table {{image/path, layer}}
 
     return obj
 end
+
 function GraetButton:NewText(text, align, font, x, y, limit, colours, colourLerp)
     local font = font or love.graphics.getFont()
 

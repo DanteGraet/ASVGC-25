@@ -56,15 +56,23 @@ function DynamicLoading:Run()
     dante.printTable(assets)
 end
 
+
 function DynamicLoading:AddItem(path, current, original)
     if #path == 1 then
         local file = path[#path]
+
         if file:match("%.png$") then
             current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original)
             print("Loaded Image " .. string.sub(file, 1, #file-4) .. " (" .. original .. ")")
+
         elseif file:match("%.mp3$") then
             current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original)
             print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original .. ")")
+
+        elseif file:match("%.lua$") then
+            current[string.sub(file, 1, #file-4)] = love.filesystem.load(original)
+            print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original .. ")")
+
         end
         
     else
