@@ -51,7 +51,16 @@ function GraetButton:NewText(text, align, font, x, y, limit, colours, colourLerp
 
     local obj = GraetButton:New(buttonX, y, textSizeX, textSizeY)
 
-    obj:AddText(text, align, font, 0, 0, limit)
+    local textX = 0
+    local textY = 0
+
+    if align == "center" then
+        textX = 0 - limit/2 + font:getWidth(text)/2
+    elseif align == "right" then
+        textX = 0 - limit + font:getWidth(text)
+    end
+
+    obj:AddText(text, align, font, textX, 0, limit)
     if colours then
         obj:SetElementColour(colours[1], colours[2], colours[3], colourLerp)
     end

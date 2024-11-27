@@ -36,6 +36,7 @@ end
 function GraetUi:AddTextButton(name, text, align, font, x, y, limit, colours, layer)
     local layer = self.layers[layer] or self.layers[self.currentLayer]
 
+
     layer[name] = Button:NewText(text, align, font, x, y, limit, colours)
 end
 

@@ -35,6 +35,9 @@ local function load()
     titleScreenUI = GraetUi:New()
     titleScreenButtons = assets.code.titleScreen.titleScreenButtons()
     titleScreenButtons.CreateButtons(titleScreenUI)
+
+    local tempMenu = assets.code.settingsMenu.settingsMenu()
+    settingsMenu = SettingsMenu:New()
 end
 
 
@@ -53,21 +56,44 @@ local function update(dt)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    titleScreenUI:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    if settingsMenu.isOpen == false then
+        titleScreenUI:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    else
+        -- Use math.huge so it will never be hovering over a button right?
+        titleScreenUI:Update(dt, math.huge, math.huge)
+
+        settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+
+    end
 end
 
 local function mousepressed(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    titleScreenUI:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    if settingsMenu.isOpen == false then
+        titleScreenUI:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    else
+        settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    end
 end
 
 local function mousereleased(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    titleScreenUI:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    if settingsMenu.isOpen == false then
+        titleScreenUI:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    else
+        settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)        
+    end
+end
+
+
+local function keyreleased(key)
+    if settingsMenu.isOpen == true then
+        settingsMenu:KeyRelased(key)
+    end
 end
 
 
@@ -82,13 +108,15 @@ local function draw()
     love.graphics.reset()
     love.graphics.scale(screenScale)
 
-
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
     love.graphics.translate(sox, soy)
 
     titleScreenUI:Draw()
 
+    if settingsMenu.isOpen then
+        settingsMenu:Draw()
+    end
 end
 
 
@@ -98,6 +126,7 @@ return {
     mousefocus = mousefocus,
     mousepressed = mousepressed,
     mousereleased = mousereleased,
+    keyreleased = keyreleased,
     update = update,
     draw = draw,
 

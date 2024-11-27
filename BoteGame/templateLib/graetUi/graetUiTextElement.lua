@@ -13,11 +13,11 @@ function GraetUiText:New(text, align, font, x, y, limit) -- data is a table {{im
     obj.y = y or 0 
     obj.limit = limit or math.huge
     
-    if align == "center" then
-        obj.x = x - limit/2 + obj.font:getWidth(text)/2
+    --[[if align == "center" then
+        obj.x = obj.x - limit/2 + obj.font:getWidth(text)/2
     elseif align == "right" then
-        obj.x = x - limit + obj.font:getWidth(text)
-    end
+        obj.x = obj.x - limit + obj.font:getWidth(text)
+    end]]
 
     return obj
 end

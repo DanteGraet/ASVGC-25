@@ -7,7 +7,9 @@ function tsb.CreateButtons(UI)
     UI:AddTextButton("playButton", "Play!!", "center", love.graphics.newFont(64), 175, 300, 960, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
 
     --Temporary fix for adding functions to buttons :D
-    UI:GetButtons()["quitButton"].functions.release = {tsb.quitButtonRelease}
+    UI:GetButtons()["quitButton"].functions.release =       {tsb.quitButtonRelease}
+    UI:GetButtons()["settingsButton"].functions.release =   {tsb.settingsButtonRelease}
+
 
 
     -- these buttons can't be acsessed by normal players.
@@ -22,6 +24,12 @@ function tsb.quitButtonRelease()
     -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
     love.event.quit()
 end
+
+function tsb.settingsButtonRelease()
+    -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
+    settingsMenu.isOpen = true
+end
+
 
 
 
