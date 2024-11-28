@@ -9,8 +9,7 @@ function tsb.CreateButtons(UI)
     --Temporary fix for adding functions to buttons :D
     UI:GetButtons()["quitButton"].functions.release =       {tsb.quitButtonRelease}
     UI:GetButtons()["settingsButton"].functions.release =   {tsb.settingsButtonRelease}
-
-
+    UI:GetButtons()["playButton"].functions.release =       {tsb.playButtonRelease}
 
     -- these buttons can't be acsessed by normal players.
     if DEV then
@@ -29,6 +28,12 @@ function tsb.settingsButtonRelease()
     -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
     settingsMenu.isOpen = true
 end
+
+function tsb.playButtonRelease()
+    -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
+    gameState = "levelSelect"
+end
+
 
 
 

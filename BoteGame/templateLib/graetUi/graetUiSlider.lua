@@ -3,30 +3,35 @@ local Rect = require("templateLib.graetUi.graetUiRectElement")
 local Image = require("templateLib.graetUi.graetUiImageElement")
 
 
-local GraetButton = {}
-GraetButton.__index = GraetButton
+local GraetSlider = {}
+GraetSlider.__index = GraetSlider
 
-local drawHitboxes = false
+local drawHitboxes = true
 
-function GraetButton.toglehitboxes()
+function GraetSlider.toglehitboxes()
     drawHitboxes = not drawHitboxes
 end
 
-function GraetButton:New(x, y, sx, sy) -- data is a table {{image/path, layer}}
-    local obj = setmetatable({}, GraetButton)
+function GraetSlider:New(x, y, bsx, bsy, rsx, rsy, value) -- data is a table {{image/path, layer}}
+    local obj = setmetatable({}, GraetSlider)
 
     obj.x = x
     obj.y = y
-    obj.sx = sx
-    obj.sy = sy
 
+    obj.bsx = bsx
+    obj.bsy = bsy
+
+    obj.mox = 0
+
+    obj.railSize = rsx
+    obj.railHeight = rsy
+
+    obj.railGraphics = {}
     obj.graphics = {}
 
-    obj.functions = {
-        click = {},
-        hover = {},
-        release = {},
-    }
+    obj.value = value
+
+    obj.func = {}
 
     obj.mouseMode = "none"
 
@@ -36,7 +41,7 @@ function GraetButton:New(x, y, sx, sy) -- data is a table {{image/path, layer}}
     return obj
 end
 
-function GraetButton:NewText(text, align, font, x, y, limit, colours, colourLerp)
+function GraetSlider:NewText(text, align, font, x, y, limit, colours, colourLerp)
     local font = font or love.graphics.getFont()
 
     local textSizeX = font:getWidth(text)
@@ -49,7 +54,7 @@ function GraetButton:NewText(text, align, font, x, y, limit, colours, colourLerp
         buttonX = x + limit - textSizeX
     end
 
-    local obj = GraetButton:New(buttonX, y, textSizeX, textSizeY)
+    local obj = GraetSlider:New(buttonX, y, textSizeX, textSizeY)
 
     local textX = 0
     local textY = 0
@@ -69,35 +74,39 @@ function GraetButton:NewText(text, align, font, x, y, limit, colours, colourLerp
 end
 
 
-function GraetButton:AddText(text, align, font, x, y, limit, pos)
+function GraetSlider:AddText(text, align, font, x, y, limit, pos)
     table.insert(self.graphics, pos or #self.graphics+1, Text:New(text, align, font, x, y, limit))
 end
-function GraetButton:AddRect(x, y, sx, sy, fill, curve, pos)
+function GraetSlider:AddRect(x, y, sx, sy, fill, curve, pos)
     table.insert(self.graphics, pos or #self.graphics+1, Rect:New(x, y, sx or self.sx, sy or self.sy, fill or "fill", curve or 0))
 end
-function GraetButton:AddImage(x, y, image, sx, sy, pos)
+function GraetSlider:AddImage(x, y, image, sx, sy, pos)
     table.insert(self.graphics, pos or #self.graphics+1, Image:New(x, y, image, sx, sy))
 end
 
-function GraetButton:SetElementColour(c1, c2, c3, elementNo)
+function GraetSlider:SetElementColour(c1, c2, c3, elementNo)
     self.graphics[elementNo or #self.graphics]:SetColour(c1, c2, c3)
 end
 
 
-function GraetButton:Update(dt, mx, my)
-    if mx > self.x and mx < self.x + self.sx and my > self.y and my < self.y + self.sy then
-        if self.mouseMode == "none" then
-            
-            self.mouseMode = "hover"
-            if #self.functions.hover > 0 then
-                for i = 1,#self.functions.hover do
-                    self.functions.hover[1](self.functions.hover[2])
-                end
-            end
+function GraetSlider:Update(dt, mx, my)
+    local startX = ((self.railSize - self.bsx)*self.value)
 
+    if mx > self.x + startX and mx < self.x + startX + self.bsx and my > self.y - self.bsy/2 and my < self.y + self.bsy/2 then
+        if self.mouseMode == "none" or self.mouseMode == "railHover" then
+            self.mouseMode = "hover"
         end
-    elseif self.mouseMode == "hover" then
+    elseif  mx > self.x and mx < self.x + self.railSize and my > self.y - self.railHeight/2 and my < self.y + self.railHeight/2 then
+        if self.mouseMode == "none" or self.mouseMode == "hover" then
+            self.mouseMode = "railHover"
+        end
+    elseif self.mouseMode == "hover" or self.mouseMode == "railHover" then
         self.mouseMode = "none"
+    end
+
+    if self.mouseMode == "click" then
+        self.value = quindoc.clamp(((mx+self.mox) - self.bsx/2 - self.x) / (self.railSize - self.bsx), 0, 1)
+        print(self.value, mx - self.bsx/2 - self.x)
     end
 
     --colour Lerping :D     Could b a function, 
@@ -150,32 +159,41 @@ function GraetButton:Update(dt, mx, my)
     end
 end
 
-function GraetButton:Click(mx, my)
+function GraetSlider:Click(mx, my)
     --if mx > self.x and mx < self.x + self.sx and my > self.y and my < self.y + self.sy then
     if self.mouseMode == "hover" then  
         self.mouseMode = "click"
-        if #self.functions.click > 0 then
-            self.functions.click[1](self.functions.click[2])
-        end
+
+        local startX = ((self.railSize - self.bsx)*self.value) + self.bsx/2
+
+        self.mox = self.x + startX - mx 
+
+    elseif self.mouseMode == "railHover" then  
+        self.mouseMode = "click"
+
+        self.mox = 0
+        self.value = quindoc.clamp(((mx+self.mox) - self.bsx/2 - self.x) / (self.railSize - self.bsx), 0, 1)
+
     end
 end
 
-function GraetButton:Release(mx, my)
+function GraetSlider:Release(mx, my)
+
+    if self.mouseMode == "click" then  
+
+        if #self.func > 0 then
+            self.func[1](self.value)
+        end
+        
+    end
+
     self.mouseMode = "none"
 
-    if mx > self.x and mx < self.x + self.sx and my > self.y and my < self.y + self.sy then
-        
-        self.mouseMode = "hover"
-        if #self.functions.release > 0 then
-            self.functions.release[1](self.functions.release[2])
-        end
-        
-    end
 end
 
 
 
-function GraetButton:Draw(ox, oy)
+function GraetSlider:Draw(ox, oy)
     for i = 1,#self.graphics do
         self.graphics[i]:Draw(self.x + ox, self.y + oy, self.mouseMode, self.modeTryangle)
     end
@@ -185,15 +203,20 @@ function GraetButton:Draw(ox, oy)
             love.graphics.setColor(0,1,0)
         elseif self.mouseMode == "hover" then
             love.graphics.setColor(0,0,1)
+        elseif self.mouseMode == "railHover" then
+            love.graphics.setColor(1,0,1)
         else 
             love.graphics.setColor(1,0,0)
         end
 
-        love.graphics.rectangle("line", self.x + ox, self.y + oy, self.sx, self.sy)
+        love.graphics.rectangle("line", self.x + ox, self.y - self.railHeight/2 + oy, self.railSize, self.railHeight)
+
+        local startX = ((self.railSize - self.bsx)*self.value)
+        love.graphics.rectangle("line", self.x + startX + ox, self.y - self.bsy/2 + oy, self.bsx, self.bsy)
 
     end
 end
 
 
 
-return GraetButton
+return GraetSlider

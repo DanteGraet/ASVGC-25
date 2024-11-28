@@ -2,6 +2,10 @@ local width = 1000
 local height = 660
 local y = 50
 
+local font1 = love.graphics.newFont(30)
+local font2 = love.graphics.newFont(35)
+
+
 SettingsMenu = {}
 SettingsMenu.__index = SettingsMenu
 
@@ -12,16 +16,28 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
 
     obj.curentCatagroy = 1
     obj.catagories = {
-        {name = "graphics", displayName = "Graphics"},
-        {name = "audio", displayName = "Audio"},
-        {name = "keybinds", displayName = "Keybinds"},
-        {name = "dev", displayName = "Dev"},
+        {name = "graphics", displayName = "Graphics", targetScroll = 0},
+        {name = "audio", displayName = "Audio", targetScroll = 0},
+        {name = "keybinds", displayName = "Keybinds", targetScroll = 0},
+        {name = "dev", displayName = "Dev", targetScroll = 0},
     }
+
     obj.isOpen = false
+    obj.scroll = 0
+
+    settings = love.filesystem.load("code/settingsMenu/defaultSettings.lua")()
+
+    if DEV then
+        print("========= Loaded Default Settings =========")
+        dante.printTable(settings)
+    end
 
     obj.Ui = GraetUi:New()
 
     obj:GenerateButtons()
+
+    SettingsMenu.SetCatagory({obj, 1})
+
 
     return obj
 end
@@ -45,7 +61,34 @@ end
 
 
 function SettingsMenu.SetCatagory(data)
-    data[1].curentCatagroy = data[2]
+    local self = data[1] 
+    self.curentCatagroy = data[2]
+    
+    
+    -- Create the settings buttons here
+    local colours = {
+        {1,1,1},
+        {.8,1,.8},
+        {.8,.8,1},
+    }
+    local currentHeight = -height/2 + y + 55
+    local currentX = -width/2 + 10
+    self.Ui:RemoveAll("settings")
+
+    for i = 1,#settings.order[self.catagories[self.curentCatagroy].name] do
+        local name = settings.order[self.catagories[self.curentCatagroy].name][i]
+        local currentSetting = settings[self.catagories[self.curentCatagroy].name][name]
+        
+        if currentSetting.type == "button" then
+            self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, colours, "settings")
+            self.Ui:GetButtons("settings")[name].functions.release = {currentSetting.func}
+        elseif currentSetting.type == "slider" then
+            self.Ui:AddSlider(name, currentX+font1:getWidth(currentSetting.displayName), currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
+            print("slider")
+        end
+
+        currentHeight = currentHeight + font1:getHeight()
+    end
 end
 function SettingsMenu.Close(self)
     self.isOpen = false 
@@ -61,14 +104,20 @@ end
 
 function SettingsMenu:Click(x, y)
     self.Ui:Click(x - 960, y - 540)
+    self.Ui:Click(x - 960, y - 540, "settings")
+
 end
 
 function SettingsMenu:Release(x, y)
     self.Ui:Release(x - 960, y - 540)
+    self.Ui:Release(x - 960, y - 540, "settings")
+
 end
 
 function SettingsMenu:Update(dt, x, y)
     self.Ui:Update(dt, x - 960, y - 540)
+    self.Ui:Update(dt, x - 960, y - 540, "settings")
+
 end
 
 
@@ -91,9 +140,6 @@ function SettingsMenu:Draw()
     love.graphics.setColor(1,1,1,1)
     love.graphics.setLineWidth(10)
     love.graphics.rectangle("line", -width/2, -height/2 + y, width, height, 25)
-
-
-
 
     local xSize = width - 100
     xSize = xSize/#self.catagories
@@ -131,4 +177,9 @@ function SettingsMenu:Draw()
 
     love.graphics.setLineWidth(1)
     self.Ui:Draw()
+    self.Ui:Draw("settings", 0, self.scroll)
+
+
+
+
 end

@@ -1,4 +1,5 @@
 local Button = require("templateLib.graetUi.graetUiButton")
+local Slider = require("templateLib.graetUi.graetUiSlider")
 
 GraetUi = {}
 GraetUi.__index = GraetUi
@@ -25,19 +26,51 @@ function GraetUi:GetButtons(layer)
     return self.layers[layer] or self.layers[self.currentLayer] 
 end
 
+function GraetUi:RemoveAll(layer)
+    if layer then
+        self.layers[layer] = nil
+    else
+        self.layers[self.currentLayer] = nil
+
+    end
+end
+
+
 
 
 function GraetUi:AddButton(name, x, y, sx, sy, layer)
+    if layer ~= nil then
+        if self.layers[layer] == nil then
+            self.layers[layer] = {}
+        end
+    end
     local layer = self.layers[layer] or self.layers[self.currentLayer]
 
     layer[name] = Button:New(x, y, sx, sy)
 end
 
 function GraetUi:AddTextButton(name, text, align, font, x, y, limit, colours, layer)
+    if layer ~= nil then
+        if self.layers[layer] == nil then
+            self.layers[layer] = {}
+        end
+    end
     local layer = self.layers[layer] or self.layers[self.currentLayer]
 
 
     layer[name] = Button:NewText(text, align, font, x, y, limit, colours)
+end
+
+
+function GraetUi:AddSlider(name, x, y, bsx, bsy, rsx, rsy, value, layer)
+    if layer ~= nil then
+        if self.layers[layer] == nil then
+            self.layers[layer] = {}
+        end
+    end
+    local layer = self.layers[layer] or self.layers[self.currentLayer]
+
+    layer[name] = Slider:New(x, y, bsx, bsy, rsx, rsy, value)
 end
 
 
@@ -67,10 +100,10 @@ function GraetUi:Release(mx, my, layer)
     end
 end
 
-function GraetUi:Draw(layer)
+function GraetUi:Draw(layer, ox, oy)
     local elements = self.layers[layer] or self.layers[self.currentLayer]
 
     for key, value in pairs(elements) do
-        value:Draw()
+        value:Draw(ox or 0, oy or 0)
     end
 end
