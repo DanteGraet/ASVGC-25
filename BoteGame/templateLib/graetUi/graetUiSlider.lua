@@ -77,16 +77,32 @@ end
 function GraetSlider:AddText(text, align, font, x, y, limit, pos)
     table.insert(self.graphics, pos or #self.graphics+1, Text:New(text, align, font, x, y, limit))
 end
+function GraetSlider:AddTextRail(text, align, font, x, y, limit, pos)
+    table.insert(self.railGraphics, pos or #self.railGraphics+1, Text:New(text, align, font, x, y, limit))
+end
+
 function GraetSlider:AddRect(x, y, sx, sy, fill, curve, pos)
     table.insert(self.graphics, pos or #self.graphics+1, Rect:New(x, y, sx or self.sx, sy or self.sy, fill or "fill", curve or 0))
 end
+function GraetSlider:AddRectRail(x, y, sx, sy, fill, curve, pos)
+    table.insert(self.railGraphics, pos or #self.railGraphics+1, Rect:New(x, y, sx or self.sx, sy or self.sy, fill or "fill", curve or 0))
+end
+
 function GraetSlider:AddImage(x, y, image, sx, sy, pos)
     table.insert(self.graphics, pos or #self.graphics+1, Image:New(x, y, image, sx, sy))
 end
+function GraetSlider:AddImageRail(x, y, image, sx, sy, pos)
+    table.insert(self.railGraphics, pos or #self.railGraphics+1, Image:New(x, y, image, sx, sy))
+end
+
 
 function GraetSlider:SetElementColour(c1, c2, c3, elementNo)
     self.graphics[elementNo or #self.graphics]:SetColour(c1, c2, c3)
 end
+function GraetSlider:SetElementColourRail(c1, c2, c3, elementNo)
+    self.railGraphics[elementNo or #self.graphics]:SetColour(c1, c2, c3)
+end
+
 
 
 function GraetSlider:Update(dt, mx, my)
@@ -106,7 +122,6 @@ function GraetSlider:Update(dt, mx, my)
 
     if self.mouseMode == "click" then
         self.value = quindoc.clamp(((mx+self.mox) - self.bsx/2 - self.x) / (self.railSize - self.bsx), 0, 1)
-        print(self.value, mx - self.bsx/2 - self.x)
     end
 
     --colour Lerping :D     Could b a function, 
@@ -194,6 +209,11 @@ end
 
 
 function GraetSlider:Draw(ox, oy)
+    local startX = ((self.railSize - self.bsx)*self.value)
+
+    for i = 1,#self.railGraphics do
+        self.railGraphics[i]:Draw(self.x + startX + ox, self.y + oy, self.mouseMode, self.modeTryangle)
+    end
     for i = 1,#self.graphics do
         self.graphics[i]:Draw(self.x + ox, self.y + oy, self.mouseMode, self.modeTryangle)
     end
@@ -211,7 +231,6 @@ function GraetSlider:Draw(ox, oy)
 
         love.graphics.rectangle("line", self.x + ox, self.y - self.railHeight/2 + oy, self.railSize, self.railHeight)
 
-        local startX = ((self.railSize - self.bsx)*self.value)
         love.graphics.rectangle("line", self.x + startX + ox, self.y - self.bsy/2 + oy, self.bsx, self.bsy)
 
     end

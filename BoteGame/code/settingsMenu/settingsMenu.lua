@@ -82,9 +82,11 @@ function SettingsMenu.SetCatagory(data)
         if currentSetting.type == "button" then
             self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, colours, "settings")
             self.Ui:GetButtons("settings")[name].functions.release = {currentSetting.func}
+
         elseif currentSetting.type == "slider" then
-            self.Ui:AddSlider(name, currentX+font1:getWidth(currentSetting.displayName), currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
-            print("slider")
+            self.Ui:AddSlider(name, currentX+font1:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
+
+            self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -font1:getWidth(currentSetting.displayName) - 10, -20, 1000)
         end
 
         currentHeight = currentHeight + font1:getHeight()

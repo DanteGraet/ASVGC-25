@@ -28,7 +28,11 @@ end
 function DynamicLoading:Run()
     local loadedList = {}
 
-    for i = 1,#self.loadList do
+    local i = 1
+    --for i = 1,#self.loadList do
+
+    -- use a while loop so we can expand the load list while we are loading
+    while i <= #self.loadList do
         -- Process events, taken from the wiki
 		if love.event then
 			love.event.pump()
@@ -43,13 +47,15 @@ function DynamicLoading:Run()
 		end
 
         local path = {}
-        for match in string.gmatch(self.loadList[i], "[^/]+") do
+        for match in string.gmatch(self.loadList[i][1], "[^/]+") do
             table.insert(path, match)
         end
 
         self:AddItem(path, assets, self.loadList[i])
 
-        self:Draw(i/#self.loadList, self.loadList[i])
+        self:Draw(i/#self.loadList, self.loadList[i][1])
+
+        i = i + 1
     end
 
     print("\n============ Loaded Assets ============")
@@ -62,17 +68,23 @@ function DynamicLoading:AddItem(path, current, original)
         local file = path[#path]
 
         if file:match("%.png$") then
-            current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original)
-            print("Loaded Image " .. string.sub(file, 1, #file-4) .. " (" .. original .. ")")
+            current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
+            print("Loaded Image " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
         elseif file:match("%.mp3$") then
-            current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original)
-            print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original .. ")")
+            current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
+            print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
         elseif file:match("%.lua$") then
-            current[string.sub(file, 1, #file-4)] = love.filesystem.load(original)
-            print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original .. ")")
+            current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])
+            print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
+            if original[2] == "addObstacles" then
+                for name, _ in pairs(current[string.sub(file, 1, #file-4)]()) do
+                    print(name)
+                    table.insert(self.loadList, #self.loadList+1, {"obstacle/" .. name .. ".lua"})
+                end
+            end
         end
         
     else
@@ -106,7 +118,6 @@ function DynamicLoading:Draw(percentage, current)
     end
 
     love.graphics.scale(uiScreenScale)
-    
 
     --draw loading bar here
     love.graphics.print(current)

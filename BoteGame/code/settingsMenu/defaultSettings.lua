@@ -6,7 +6,8 @@ end
 return {
     graphics = {
         testing = {type = "button", displayName = "reloadTest"},
-        slider = {type = "slider", displayName = "Slider", value = 0.5}
+        slider = {type = "slider", displayName = "Slider", value = 0.5},
+        slider2 = {type = "slider", displayName = "Slider Again", value = 0.24},
     },
     audio = {
 
@@ -27,6 +28,7 @@ return {
         graphics = {
             "testing",
             "slider",
+            "slider2",
         },
         audio = {
     

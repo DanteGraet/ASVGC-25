@@ -1,3 +1,3 @@
 return {
-    "image/levelSelect/background.png",
+    {"image/levelSelect/background.png"},
 }

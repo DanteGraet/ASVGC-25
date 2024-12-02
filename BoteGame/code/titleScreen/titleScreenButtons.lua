@@ -16,6 +16,8 @@ function tsb.CreateButtons(UI)
         UI:AddTextButton("devDeleteSaveButton", "Lose the game (save file)", "right", love.graphics.newFont(32), 0, 100, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
         UI:AddTextButton("devRiverButton", "Dev River (soon™ * inf)", "right", love.graphics.newFont(32), 0, 200, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
         UI:AddTextButton("devUnlockAllButton", "Unlocak All", "right", love.graphics.newFont(32), 0, 300, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
+        
+        UI:GetButtons()["devRiverButton"].functions.release =       {tsb.devRiverButtonRelease}
     end
 end
 
@@ -32,6 +34,11 @@ end
 function tsb.playButtonRelease()
     -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
     gameState = "levelSelect"
+end
+
+function tsb.devRiverButtonRelease()
+    riverName = "devRiver"
+    gameState = "river"
 end
 
 
