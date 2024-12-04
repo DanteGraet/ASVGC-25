@@ -4,7 +4,7 @@ local function ReloadGameState()
 end
 
 local function PrintAssetTree()
-    print("================= Asset Tree =================")
+    print("\n\n================= Asset Tree =================")
     dante.printTable(assets)
 end
 

@@ -1,7 +1,17 @@
 -- load this locally, to b removed later :D
 local riverZones = love.filesystem.load("code/river/river/" .. riverName .. ".lua")()
 
-local toLoad = {}
+local toLoad = {
+    -- player skins
+    {"image/player/default.png"},
+
+    -- actual player code
+    {"code/player/playerBoat.lua"},
+
+    {"code/camera.lua"},
+    {"code/inputManager.lua"},
+    {"code/settingsMenu/keybinds.lua"},
+}
 
 for i = 1,#riverZones do
     -- add a falg to tell the code to add the obsticals to the loaded list later :/

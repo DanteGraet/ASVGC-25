@@ -38,7 +38,6 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
 
     SettingsMenu.SetCatagory({obj, 1})
 
-
     return obj
 end
 
