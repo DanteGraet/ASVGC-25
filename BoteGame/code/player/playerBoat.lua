@@ -13,26 +13,33 @@ function PlayerBoat:New(skin)
     obj.y = 0
 
     obj.speed = 100
-    obj.turnSpeed = math.pi/3
     obj.acceleration = 10
+    obj.maxSpeed = 150
+    obj.minSpeed = 75
 
+    obj.turnSpeed = math.pi/3
     obj.dir = -math.rad(90)
+    obj.maxAngle = math.rad(120)
+    obj.up = -math.rad(90)
 
     return obj
 end
 
 function PlayerBoat:Update(dt, inputs)
-
     if inputs.left and not inputs.right then
-        self.dir = self.dir - self.turnSpeed*dt
+        self.dir = math.max(self.dir - self.turnSpeed*dt, self.up - self.maxAngle/2)
     end
     if inputs.right and not inputs.left then
-        self.dir = self.dir + self.turnSpeed*dt
+        self.dir = math.min(self.dir + self.turnSpeed*dt, self.up + self.maxAngle/2 )
+    end
+    if inputs.accelerate then
+        self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
+    elseif inputs.decelerate then
+        self.speed = math.min(self.speed - self.acceleration*dt, self.minSpeed)
     end
 
     self.x = self.x + math.cos(self.dir)*self.speed * dt
     self.y = self.y + math.sin(self.dir)*self.speed * dt
-
 end
 
 function PlayerBoat:Draw()
@@ -40,7 +47,7 @@ function PlayerBoat:Draw()
 end
 
 
-function PlayerBoat:getPosition()
+function PlayerBoat:GetPosition()
     return {x = self.x, y = self.y, dir = self.dir}
 end
 

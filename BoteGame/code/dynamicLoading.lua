@@ -76,6 +76,7 @@ function DynamicLoading:AddItem(path, current, original)
             print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
         elseif file:match("%.lua$") then
+            print( "hiahdiahd ".. original[1])
             current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])
             print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 

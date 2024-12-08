@@ -19,9 +19,18 @@ function Camera:New(x, y, ox, oy)
     return obj
 end
 
+function Camera:SetPosition(x, y)
+    self.x = x or self.x
+    self.y = y or self.y
+end
+
 
 function Camera:TranslateCanvas()
-    love.graphics.translate(self.x + self.ox, self.y + self.oy)
+    love.graphics.translate(-self.x + self.ox, -self.y + self.oy)
+end
+
+function Camera:Print()
+    print( "x: " .. self.x .. "\ny: " .. self.y)
 end
 
 return Camera

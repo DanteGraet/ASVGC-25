@@ -1,28 +1,12 @@
-RiverGenerator = {}
-RiverGenerator.__index = RiverGenerator
+-- theread to help prevent performance issues
 
+local love = require("love")
 
-function RiverGenerator:New(riverData)
-    local obj = setmetatable({}, RiverGenerator)
-
-    obj.zones = riverData
-    obj.currentZone = riverData[1].zone
-    obj.distance = 0
-
-    return obj
-end
-
-function RiverGenerator:Update(cameraY)
-
-end
-
-
--- Make a theread later if we run into performance issues
-function RiverGenerator:NextSegment(lastPoints) -- {chanel1, chanel2, chanel3, etc.}
-    local zone = self.zones[self.currentZone]
-
+local function NextSegment(lastPoints, zone) -- {chanel1, chanel2, chanel3, etc.}
+    local zone = zone
     local lastPoints = lastPoints
 
+    -- the points we generate
     local newPoints = {}
 
     --loop throigh each channel
@@ -100,3 +84,11 @@ function RiverGenerator:NextSegment(lastPoints) -- {chanel1, chanel2, chanel3, e
 
     return newPoints
 end
+
+-- Get the infomation we need to run the code
+local lastPoints = love.thread.getChannel("nextSegment_lastPoints"):pop()
+local zone = love.thread.getChannel("nextSegment_zone"):pop()
+
+local segment = NextSegment(lastPoints, zone)
+
+love.thread.getChannel("nextSegment_return"):push(segment) 

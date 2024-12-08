@@ -17,6 +17,7 @@ local function resize()
     --soy = ((love.graphics.getHeight()/scale) - 1080) /2
 end
 
+
 local function load()
     DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
     {
@@ -27,6 +28,9 @@ local function load()
 
     player = assets.code.player.playerBoat():New()
     camera = assets.code.camera():New(0, 0, 960, 900)
+    river = assets.code.river.river():New()
+    riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName]())
+
     if keybindSaveLocation then
         inputManager = assets.code.inputManager():New( keybindSaveLocation )
     else
@@ -38,12 +42,17 @@ local function load()
     resize()
 end
 
+
 local function update(dt)
     local inputs = inputManager:GetInput()
 
     local gs = tweens.sineInOut(gameSpeed)
 
+    -- Update the player first, all other things rely on it basically
     player:Update(dt*gs, inputs)
+    -- update the camera after the player so it doesn't lag behind slightly
+    camera:SetPosition(0, player:GetPosition().y)
+    -- update the river after the camera so we can generate based on the cameras position.
 
     if settingsMenu.isOpen then
         local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
@@ -55,8 +64,8 @@ local function update(dt)
     else
         gameSpeed = math.min(gameSpeed + dt*5, 1)
     end
-    print(gameSpeed)
 end
+
 
 local function mousepressed(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
