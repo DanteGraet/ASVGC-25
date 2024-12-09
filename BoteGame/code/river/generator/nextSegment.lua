@@ -6,6 +6,8 @@ local math = require("math")
 local table = require("table")
 local string = require("string")
 
+math.randomseed(os.time())
+
 
 local function GenerateLastPoints(zone)
     local lastPoints = {}
@@ -51,6 +53,7 @@ local function NextSegment(lastPoints, zone) -- {chanel1, chanel2, chanel3, etc.
         -- the end x of the segment
         -- this is based in 1920x1080 screen size (default that we scale around)
         local endX = math.random( -(1900 - endWidth)/2, (1900 - endWidth)/2 )
+        print("nedx:"  .. endX)
         --where it starts (used for mid thingss um yea)
         local startX = (lastPoints[i][1].x + lastPoints[i][2].x)/2
 
@@ -62,18 +65,18 @@ local function NextSegment(lastPoints, zone) -- {chanel1, chanel2, chanel3, etc.
         local lastRightY = lastPoints[i][2].y
 
         -- generate the end positions for each leftCurve
-        local endLeftX = lastPoints[i][1].x
+        local endLeftX = endX - endWidth/2
         local endLeftY = lastLeftY + segLegnth
 
-        local endRightX = lastPoints[i][2].x
+        local endRightX = endX + endWidth/2
         local endRightY = endLeftY          -- the final y positions are the same so cant' ever get desynced like at all
 
         -- generate the mid points of each curve
-        local midLeftX = (startX - endX - midWidth)/2
-        local midLeftY = lastLeftY + endLeftY*curveMidYPercentage
+        --local midLeftX = (startX - endX - midWidth)/2
+        local midLeftY = lastLeftY + segLegnth*curveMidYPercentage
 
-        local midRightX = (startX - endX + midWidth)/2
-        local midRightY = lastRightY + endRightY*curveMidYPercentage
+        --local midRightX = (startX - endX + midWidth)/2
+        local midRightY = lastRightY + segLegnth*curveMidYPercentage
 
         -- adjust the middle sections to reduce the effects of squihsing
             -- imagine the while river is rotated (traveling right) so we flip the x and y axis in atan2
@@ -82,21 +85,27 @@ local function NextSegment(lastPoints, zone) -- {chanel1, chanel2, chanel3, etc.
         local anglePercentage = angle/(math.pi/2)
             -- finally change the y values
         midLeftY = midLeftY + midWidth*anglePercentage
-        midRightY = midRightY + midWidth*anglePercentage
+        midRightY = midRightY - midWidth*anglePercentage
 
 
         local leftCurve = love.math.newBezierCurve(
             lastLeftX, lastLeftY,
-            lastLeftX, lastLeftY - 0.1, -- make sure it is heading in the right direction
-            midLeftX, midLeftY,
-            endLeftX, endLeftY + 0.1,
+            --lastLeftX, lastLeftY - 0.1, -- make sure it is heading in the right direction
+
+            lastLeftX, midLeftY,
+            endLeftX, midLeftY,
+
+            --endLeftX, endLeftY + 0.1,
             endLeftX, endLeftY
         )
         local rightCurve = love.math.newBezierCurve(
             lastRightX, lastRightY,
-            lastRightX, lastRightY - 0.1, -- make sure it is heading in the right direction
-            midRightX, midRightY,
-            endRightX, endRightY + 0.1,
+            --lastRightX, lastRightY - 0.1, -- make sure it is heading in the right direction
+
+            lastRightX, midRightY,
+            endRightX, midRightY,
+
+            --endRightX, endRightY + 0.1,
             endRightX, endRightY
         )
 

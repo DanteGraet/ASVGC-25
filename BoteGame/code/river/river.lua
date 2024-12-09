@@ -57,7 +57,7 @@ end
 
 function River:Update()
     -- local variable so it runs slightly faster
-    local playerY = player.y
+    local playerY = player.y + 50
 
     if self.points and #self.points > 0 then
 
@@ -94,7 +94,23 @@ function River:IsInBounds(x, y)
     
 end
 
-function River:getCurrent(yPos) -- returns the average direction angle of each path?
+function River:GetCurrent(yPos) -- returns the average direction angle of each path?
+    
+end
+
+function River:DrawPoints()
+    if #self.points > 0 then
+        for channel = 1,#self.points do
+            for side = 1,#self.points[channel] do
+                for point = 1,#self.points[channel][side] do
+                    local obj = self.points[channel][side][point]
+
+                    love.graphics.circle("fill", obj.x, obj.y, 5)
+                end
+            end
+        end
+    end
+
     
 end
 

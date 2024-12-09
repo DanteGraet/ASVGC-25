@@ -107,6 +107,8 @@ local function draw()
 
     player:Draw()
 
+    river:DrawPoints()
+
 
 
     love.graphics.reset()
