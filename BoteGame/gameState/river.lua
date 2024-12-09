@@ -40,6 +40,8 @@ local function load()
     end
 
     resize()
+
+    --riverGenerator:NextSegment()
 end
 
 
@@ -52,7 +54,9 @@ local function update(dt)
     player:Update(dt*gs, inputs)
     -- update the camera after the player so it doesn't lag behind slightly
     camera:SetPosition(0, player:GetPosition().y)
-    -- update the river after the camera so we can generate based on the cameras position.
+    -- update the river after the player so we can generate based on the players position.
+    river:Update()
+    riverGenerator:Update()
 
     if settingsMenu.isOpen then
         local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
@@ -107,6 +111,8 @@ local function draw()
 
     love.graphics.reset()
     love.graphics.scale(screenScale)
+
+    love.graphics.print(player.y)
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2

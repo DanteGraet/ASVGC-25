@@ -6,6 +6,7 @@ function River:New()
     local obj = setmetatable({}, River)
 
     obj.points = {}
+    obj.callNextSegment = true
 
     return obj
 end
@@ -77,8 +78,14 @@ function River:Update()
         end
 
         -- check if we need to generate the next segment
-        if self.points[1][1][#self.points[1][1]].y > playerY then
+        if self.points[1][1][#self.points[1][1]].y > playerY - 1000 then
             --River
+            if self.callNextSegment then
+                riverGenerator:NextSegment()
+                self.callNextSegment = false
+            end
+        else
+            self.callNextSegment = true
         end
     end
 end

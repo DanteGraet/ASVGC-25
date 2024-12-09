@@ -1,11 +1,37 @@
 -- theread to help prevent performance issues
 
 local love = require("love")
+love.math = require("love.math")
+local math = require("math")
+local table = require("table")
+local string = require("string")
+
+
+local function GenerateLastPoints(zone)
+    local lastPoints = {}
+
+    local size = math.random(zone.minWidth, zone.maxWidth)
+
+    table.insert(lastPoints, {})
+
+    table.insert(lastPoints[1], {})
+
+    lastPoints[1][1].x = -size/2
+    lastPoints[1][1].y = 0
+
+    table.insert(lastPoints[1], {})
+
+    lastPoints[1][2].x = size/2
+    lastPoints[1][2].y = 0
+
+    return lastPoints
+end
+
 
 local function NextSegment(lastPoints, zone) -- {chanel1, chanel2, chanel3, etc.}
     local zone = zone
     local lastPoints = lastPoints
-
+    
     -- the points we generate
     local newPoints = {}
 
@@ -33,7 +59,7 @@ local function NextSegment(lastPoints, zone) -- {chanel1, chanel2, chanel3, etc.
         local lastLeftY = lastPoints[i][1].y
 
         local lastRightX = lastPoints[i][2].x
-        local lastRightY = lastPoints[i][3].y
+        local lastRightY = lastPoints[i][2].y
 
         -- generate the end positions for each leftCurve
         local endLeftX = lastPoints[i][1].x
@@ -86,8 +112,14 @@ local function NextSegment(lastPoints, zone) -- {chanel1, chanel2, chanel3, etc.
 end
 
 -- Get the infomation we need to run the code
-local lastPoints = love.thread.getChannel("nextSegment_lastPoints"):pop()
+
 local zone = love.thread.getChannel("nextSegment_zone"):pop()
+
+local lastPoints = love.thread.getChannel("nextSegment_lastPoints"):pop()
+if lastPoints == nil then
+    lastPoints = GenerateLastPoints(zone)
+end
+
 
 local segment = NextSegment(lastPoints, zone)
 
