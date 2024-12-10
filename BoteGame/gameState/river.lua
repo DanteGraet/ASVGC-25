@@ -31,6 +31,7 @@ local function load()
     river = assets.code.river.river():New()
     riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName]())
 
+
     if keybindSaveLocation then
         inputManager = assets.code.inputManager():New( keybindSaveLocation )
     else
@@ -42,6 +43,10 @@ local function load()
     resize()
 
     --riverGenerator:NextSegment()
+end
+
+function GetRiverScale()
+    return {scale, sox}
 end
 
 
@@ -105,6 +110,9 @@ local function draw()
 
     camera:TranslateCanvas()
 
+    river:Draw(scale)
+
+
     player:Draw()
 
     river:DrawPoints()
@@ -123,6 +131,8 @@ local function draw()
     if settingsMenu.isOpen then
         settingsMenu:Draw()
     end
+
+    love.graphics.reset()
 end
 
 

@@ -1,6 +1,7 @@
 local River = {}
 River.__index = River
 
+pixlesPerPixle = 3
 
 function River:New()
     local obj = setmetatable({}, River)
@@ -8,7 +9,22 @@ function River:New()
     obj.points = {}
     obj.callNextSegment = true
 
+    obj.canvasGenerator = assets.code.river.generator.riverCanvas()
+    obj.canvases = {}
+
+
+    --{"code/river/generator/riverCanvas.lua"},
+    --
+
     return obj
+end
+
+function River:AddNextCanvas()
+    if #self.canvases > 0 then
+        
+    else
+        table.insert(self.canvases, self.canvasGenerator:New(camera.oy, true, riverGenerator:GetZone()))
+    end
 end
 
 
@@ -88,6 +104,11 @@ function River:Update()
             self.callNextSegment = true
         end
     end
+
+    --Canvases :D
+    if self.canvases and #self.canvases > 0 and self.canvases[#self.canvases].y <= playerY then
+        
+    end
 end
 
 function River:IsInBounds(x, y)
@@ -96,6 +117,28 @@ end
 
 function River:GetCurrent(yPos) -- returns the average direction angle of each path?
     
+end
+
+function River:Draw(scale)
+    --love.graphics.setCanvas()
+
+    love.graphics.push()
+    --love.graphics.scale(1/scale)
+
+    love.graphics.setColor(1,1,1)
+    for i = 1,#self.canvases do
+        print(self.canvases[i].x, self.canvases[i].y)
+        love.graphics.draw(self.canvases[i].canvas, self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 0, pixlesPerPixle, pixlesPerPixle)
+
+        love.graphics.setLineWidth(5)
+        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 100)
+        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 1000)
+        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 500)
+
+    end
+
+    love.graphics.pop()
+
 end
 
 function River:DrawPoints()
@@ -109,9 +152,7 @@ function River:DrawPoints()
                 end
             end
         end
-    end
-
-    
+    end    
 end
 
 return River

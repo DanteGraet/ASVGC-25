@@ -10,6 +10,8 @@ local toLoad = {
 
     {"code/river/river.lua"},
     {"code/river/generator/riverGenerator.lua"},
+    {"code/river/generator/riverCanvas.lua"},
+
 
     {"code/camera.lua"},
     {"code/inputManager.lua"},
@@ -20,6 +22,8 @@ for i = 1,#riverZones do
     -- add a falg to tell the code to add the obsticals to the loaded list later :/
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/obsticals.lua", "addObstacles"})
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/pathGeneration.lua"})
+    table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/backgroundGeneration.lua", "run", "GetColourAt"})
+
 end
 
 -- load this file in a more permenant position.

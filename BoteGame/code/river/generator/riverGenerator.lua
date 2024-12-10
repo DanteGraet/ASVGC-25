@@ -22,23 +22,28 @@ function RiverGenerator:New(riverData)
 
     -- load these channels
 
-
-
     obj:NextSegment()
 
     return obj
 end
 
-function RiverGenerator:Update(dt)
+function RiverGenerator:GetZone()
+    return self.zones[self.currentZone]
+end
+
+function RiverGenerator:Update()
     if self.generatingSegment == true then
         local result = self:NextSegment()
 
         if result then
             -- add it to the end of the actual river
-            print("WWe got a thing :D")
             river:MergePoints(result)
+            if #river.canvases <= 0 then
+                river:AddNextCanvas()
+            end
         end
     else
+
     end
 end
 
