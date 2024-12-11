@@ -17,8 +17,6 @@ function RiverCanvas:New(y, fill, zone)
     end
 
     obj.x = - obj.canvas:getWidth()/2
-    print("X ----------  " .. obj.x, obj.canvas:getWidth(), GetRiverScale()[1], love.graphics.getWidth(), pixlesPerPixle)
-
 
     if fill then
         love.graphics.reset()

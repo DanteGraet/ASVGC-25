@@ -40,10 +40,25 @@ function PlayerBoat:Update(dt, inputs)
 
     self.x = self.x + math.cos(self.dir)*self.speed * dt
     self.y = self.y + math.sin(self.dir)*self.speed * dt
+
+    -- current
+    local currentAngle, currentSpeed = river:GetCurrent(self.y)
+    if currentAngle then
+        self.x = self.x + math.cos(currentAngle)*currentSpeed * dt
+        self.y = self.y + math.sin(currentAngle)*currentSpeed * dt
+
+        self.current = currentAngle
+    end
 end
 
 function PlayerBoat:Draw()
     love.graphics.draw(self.image, self.x, self.y, self.dir, 1, 1, self.imageOx, self.imageOy)
+
+    if self.current then
+        
+        love.graphics.line(self.x, self.y, self.x+math.cos(self.current)*100, self.y+math.sin(self.current)*100)
+
+    end
 end
 
 

@@ -5,6 +5,9 @@ local scale
 local sox
 local soy = 0
 
+local step = true
+local steping = false
+
 
 local function resize()
     scale = love.graphics.getWidth()/1920
@@ -51,6 +54,11 @@ end
 
 
 local function update(dt)
+    step = true
+    if steping then
+        dt = 1/60
+    end
+
     local inputs = inputManager:GetInput()
 
     local gs = tweens.sineInOut(gameSpeed)
@@ -72,6 +80,23 @@ local function update(dt)
         gameSpeed = math.max(gameSpeed - dt*5, 0)
     else
         gameSpeed = math.min(gameSpeed + dt*5, 1)
+    end
+
+    if steping then
+        local skull = 0
+        while step do
+            if love.event then
+                love.event.pump()
+                for name, a,b,c,d,e,f in love.event.poll() do
+                    if name == "quit" then
+                        if not love.quit or not love.quit() then
+                            return "QUIT"
+                        end
+                    end
+                    love.handlers[name](a,b,c,d,e,f)
+                end
+            end
+        end
     end
 end
 
@@ -101,6 +126,10 @@ local function keyreleased(key)
     if input == "pause" then
         settingsMenu.isOpen = not settingsMenu.isOpen
     end
+
+    if key == "return" and step then
+        step = false
+    end
 end
 
 
@@ -121,8 +150,6 @@ local function draw()
 
     love.graphics.reset()
     love.graphics.scale(screenScale)
-
-    love.graphics.print(player.y)
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
