@@ -18,16 +18,24 @@ local function load()
 
     DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", 
         {
-            {"image/titleScreen/parallax/1.png", 0},
-            {"image/titleScreen/parallax/2.png", .1},
-            {"image/titleScreen/parallax/3.png", .2},
+            {"image/titleScreen/parallax/1.png", .03125},
+            {"image/titleScreen/parallax/2.png", .0625},
+            {"image/titleScreen/parallax/3.png", .09375},
+            {"image/titleScreen/parallax/4.png", .125},
+            {"image/titleScreen/parallax/5.png", .15625},
+            {"image/titleScreen/parallax/6.png", .1875},
+            {"image/titleScreen/parallax/7.png", .21875},
         }, true)
 
     
     background = ParallaxImage:New(1920, 1080, {
-        {assets.image.titleScreen.parallax["1"], 0},
-        {assets.image.titleScreen.parallax["2"], .1},
-        {assets.image.titleScreen.parallax["3"], .2},
+        {assets.image.titleScreen.parallax["1"], .03125},
+        {assets.image.titleScreen.parallax["2"], .0625},
+        {assets.image.titleScreen.parallax["3"], .09375},
+        {assets.image.titleScreen.parallax["4"], .125},
+        {assets.image.titleScreen.parallax["5"], .15625},
+        {assets.image.titleScreen.parallax["6"], .1875},
+        {assets.image.titleScreen.parallax["7"], .21875},
     })
     background.hovering = 1
 
@@ -50,7 +58,7 @@ local function update(dt)
     if not hasMouseFocus then
         background:Update(dt, -math.huge, math.huge)
     else
-        background:Update(dt, love.mouse.getX()/backgroundScale, love.mouse.getY()/backgroundScale)
+        background:Update(dt, love.mouse.getX()/backgroundScale, love.mouse.getY()/backgroundScale, backgroundScale)
     end
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2

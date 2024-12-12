@@ -41,7 +41,8 @@ function ParallaxImage:Sort()
 end
 
 
-function ParallaxImage:Update(dt, mx, my)
+function ParallaxImage:Update(dt, mx, my, scale)
+    local screenScale = scale or screenScale
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 

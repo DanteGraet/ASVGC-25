@@ -224,12 +224,6 @@ function River:Draw(scale)
     love.graphics.setColor(1,1,1)
     for i = 1,#self.canvases do
         love.graphics.draw(self.canvases[i].canvas, self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 0, pixlesPerPixle, pixlesPerPixle)
-
-        love.graphics.setLineWidth(5)
-        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 100)
-        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 1000)
-        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 500)
-
     end
 
     love.graphics.pop()
