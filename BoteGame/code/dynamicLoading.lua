@@ -19,9 +19,10 @@ function DynamicLoading:New(toLoad, parallaxImage, autoRun) -- data is a table {
         if obj:Run() == "QUIT" then
             love.event.quit()
         end
-    else
-        return obj
     end
+
+    return obj
+
 end
 
 
@@ -71,6 +72,10 @@ function DynamicLoading:AddItem(path, current, original)
             current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
             print("Loaded Image " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
+            if original[2] ~= "blur" then
+                current[string.sub(file, 1, #file-4)]:setFilter("nearest", "nearest")
+            end
+
         elseif file:match("%.mp3$") then
             current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
             print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
@@ -93,7 +98,6 @@ function DynamicLoading:AddItem(path, current, original)
             end
 
             print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
-
         end
         
     else

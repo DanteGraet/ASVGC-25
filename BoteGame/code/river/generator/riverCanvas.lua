@@ -11,12 +11,13 @@ function RiverCanvas:New(y, fill, zone)
     obj.canvas:setFilter("nearest", "nearest")
 
     if y then
-        obj.y = y - (obj.canvas:getHeight()-2)*pixlesPerPixle
+        obj.y = y - ((obj.canvas:getHeight()-2)*pixlesPerPixle)
     else
         obj.y = 0
     end
 
     obj.x = - obj.canvas:getWidth()/2
+
 
     if fill then
         love.graphics.reset()
@@ -42,10 +43,10 @@ function RiverCanvas:FillCanvasY(canvasY, globalY, canvasX, zone, zone2, chance)
         local colour
         local num = chance or -1
         if zone2 and math.random(0, 100)/100 >= num then
-            colour = assets.code.river.zone[zone2.zone].GetColourAt(globalY, x + canvasX)
+            colour = assets.code.river.zone[zone2.zone].GetColourAt((x + self.x)*3, globalY)
             print("Death, the destroyer of worlds")
         else
-            colour = assets.code.river.zone[zone.zone].GetColourAt(globalY, x + canvasX)
+            colour = assets.code.river.zone[zone.zone].GetColourAt((x + self.x)*3, globalY)
         end
 
         if love.graphics.getColor() ~= colour then

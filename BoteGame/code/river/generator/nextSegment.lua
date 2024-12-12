@@ -2,6 +2,7 @@
 
 local love = require("love")
 love.math = require("love.math")
+love.graphics = require("love.graphics")
 local math = require("math")
 local table = require("table")
 local string = require("string")
@@ -14,17 +15,23 @@ local function GenerateLastPoints(zone)
 
     local size = math.random(zone.minWidth, zone.maxWidth)
 
+    local scale = love.graphics.getWidth()/1920
+
+    if love.graphics.getHeight()/1080 < scale then
+        scale = love.graphics.getHeight()/1080
+    end
+
     table.insert(lastPoints, {})
 
     table.insert(lastPoints[1], {})
 
     lastPoints[1][1].x = -size/2
-    lastPoints[1][1].y = 0
+    lastPoints[1][1].y = (1080 - love.graphics.getHeight())/scale
 
     table.insert(lastPoints[1], {})
 
     lastPoints[1][2].x = size/2
-    lastPoints[1][2].y = 0
+    lastPoints[1][2].y = (1080 - love.graphics.getHeight())/scale
 
     return lastPoints
 end

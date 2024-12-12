@@ -8,6 +8,11 @@ local soy = 0
 local step = true
 local steping = false
 
+local loading
+
+-- this should solve all our problems ☜(ﾟヮﾟ☜) 👍
+local pain = false
+
 
 local function resize()
     scale = love.graphics.getWidth()/1920
@@ -22,7 +27,7 @@ end
 
 
 local function load()
-    DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
+    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
     {
         {"image/titleScreen/parallax/1.png", 0},
         {"image/titleScreen/parallax/2.png", .1},
@@ -59,27 +64,33 @@ local function update(dt)
         dt = 1/60
     end
 
-    local inputs = inputManager:GetInput()
-
-    local gs = tweens.sineInOut(gameSpeed)
-
-    -- Update the player first, all other things rely on it basically
-    player:Update(dt*gs, inputs)
-    -- update the camera after the player so it doesn't lag behind slightly
-    camera:SetPosition(0, player:GetPosition().y)
-    -- update the river after the player so we can generate based on the players position.
-    river:Update()
     riverGenerator:Update()
 
-    if settingsMenu.isOpen then
-        local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-        local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    
-        settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
 
-        gameSpeed = math.max(gameSpeed - dt*5, 0)
-    else
-        gameSpeed = math.min(gameSpeed + dt*5, 1)
+    if river:HasPoints() then
+        local inputs = inputManager:GetInput()
+
+        local gs = tweens.sineInOut(gameSpeed)
+
+        -- Update the player first, all other things rely on it basically
+        player:Update(dt*gs, inputs)
+        -- update the camera after the player so it doesn't lag behind slightly
+        camera:SetPosition(0, player:GetPosition().y)
+        -- update the river after the player so we can generate based on the players position.
+        river:Update()
+
+        if settingsMenu.isOpen then
+            local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+            local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+        
+            settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+
+            gameSpeed = math.max(gameSpeed - dt*5, 0)
+        else
+            gameSpeed = math.min(gameSpeed + dt*5, 1)
+        end
+    else        
+            river:checkNextSegment()
     end
 
     if steping then
@@ -129,35 +140,52 @@ local function keyreleased(key)
 
     if key == "return" and step then
         step = false
+
+        if love.keyboard.isDown("lctrl") then
+            steping = not steping
+        end
     end
 end
 
 
 local function draw()
-    love.graphics.scale(scale)
-    love.graphics.translate(sox, soy)
-
-    camera:TranslateCanvas()
-
-    river:Draw(scale)
 
 
-    player:Draw()
+    if river:HasPoints() then
+        love.graphics.scale(scale)
+        love.graphics.setColor(1,1,1)
 
-    river:DrawPoints()
+        love.graphics.translate(sox, soy)
 
+        camera:TranslateCanvas()
+        river:Draw(scale)
+        player:Draw()
+        river:DrawPoints()
 
+        love.graphics.reset()
+        love.graphics.scale(screenScale)
+    
+        local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+        local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+        love.graphics.translate(sox, soy)
+    
+        if settingsMenu.isOpen then
+            settingsMenu:Draw()
+        end
+    else
 
-    love.graphics.reset()
-    love.graphics.scale(screenScale)
+        local screenScale = love.graphics.getWidth()/1920
+        if love.graphics.getHeight()/1080 > screenScale then
+            screenScale = love.graphics.getHeight()/1080
+        end
 
-    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    love.graphics.translate(sox, soy)
-
-    if settingsMenu.isOpen then
-        settingsMenu:Draw()
+        love.graphics.scale(screenScale)
+        loading.image:Draw(love.graphics.getWidth()/screenScale/2 - 960, love.graphics.getHeight()/screenScale/2 - 540, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
     end
+
+
+
+
 
     love.graphics.reset()
 end

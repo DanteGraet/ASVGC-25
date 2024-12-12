@@ -38,9 +38,7 @@ function RiverGenerator:Update()
         if result then
             -- add it to the end of the actual river
             river:MergePoints(result)
-            if #river.canvases <= 0 then
-                river:AddNextCanvas()
-            end
+
         end
     else
 

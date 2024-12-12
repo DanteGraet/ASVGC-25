@@ -52,12 +52,16 @@ function PlayerBoat:Update(dt, inputs)
 end
 
 function PlayerBoat:Draw()
-    love.graphics.draw(self.image, self.x, self.y, self.dir, 1, 1, self.imageOx, self.imageOy)
+    if river:IsInBounds(self.x, self.y ) then
+        love.graphics.setColor(1,1,1)
+    else
+        love.graphics.setColor(1,0,0)
+    end
 
-    if self.current then
-        
+    love.graphics.draw(self.image, self.x, self.y, self.dir, 3, 3, self.imageOx, self.imageOy)
+
+    if self.current then   
         love.graphics.line(self.x, self.y, self.x+math.cos(self.current)*100, self.y+math.sin(self.current)*100)
-
     end
 end
 

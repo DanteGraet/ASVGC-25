@@ -11,6 +11,9 @@ function River:New()
 
     obj.canvasGenerator = assets.code.river.generator.riverCanvas()
     obj.canvases = {}
+    obj.canvasFillY = 0
+
+    obj.farAhead = false
 
 
     --{"code/river/generator/riverCanvas.lua"},
@@ -19,12 +22,19 @@ function River:New()
     return obj
 end
 
-function River:AddNextCanvas()
+function River:AddNextCanvas(y)
     if #self.canvases > 0 then
-        
+        table.insert(self.canvases, self.canvasGenerator:New(y, true, riverGenerator:GetZone()))
     else
-        table.insert(self.canvases, self.canvasGenerator:New(camera.oy, true, riverGenerator:GetZone()))
+        table.insert(self.canvases, self.canvasGenerator:New(100, true, riverGenerator:GetZone()))
+        self.canvasFillY = self.canvases[#self.canvases].y
     end
+end
+
+function River:HasPoints()
+
+    return self.farAhead
+
 end
 
 
@@ -48,6 +58,8 @@ function River:MergePoints(newPoints)
             end
         end
     end
+    --self.farAhead = true
+    self.callNextSegment = true
 end
 
 function River:GetLastPoints()
@@ -71,6 +83,26 @@ function River:GetLastPoints()
     return lastPoints
 end
 
+function River:checkNextSegment()
+    -- check if we need to generate the next segment
+    if #self.points > 0 then
+        if self.points[1][1][#self.points[1][1]].y > player.y+50 - 5000 then
+            --River
+            if self.callNextSegment then
+                riverGenerator:NextSegment()
+                self.callNextSegment = false
+            end
+        else
+            if not self.farAhead then
+                river:AddNextCanvas()
+            end
+            self.farAhead = true
+            self.callNextSegment = true
+        end
+    end
+end
+
+
 function River:Update()
     -- local variable so it runs slightly faster
     local playerY = player.y + 50
@@ -93,26 +125,51 @@ function River:Update()
             end
         end
 
-        -- check if we need to generate the next segment
-        if self.points[1][1][#self.points[1][1]].y > playerY - 1000 then
-            --River
-            if self.callNextSegment then
-                riverGenerator:NextSegment()
-                self.callNextSegment = false
-            end
-        else
-            self.callNextSegment = true
-        end
+        self:checkNextSegment()
+
     end
 
     --Canvases :D
-    if self.canvases and #self.canvases > 0 and self.canvases[#self.canvases].y <= playerY then
-        
+    if self.canvases and #self.canvases > 0 and self.canvases[#self.canvases].y >= playerY-camera.oy-50 then
+        self:AddNextCanvas(playerY-camera.oy-50)
+        print("new canvas --------------------------------------")
+    end
+
+    if camera.y < self.canvasFillY then
+
+        local currentCanvasNo = #self.canvases
+        local currentCanvas = self.canvases[currentCanvasNo]
+
+        if currentCanvas then
+            for i = math.floor(camera.y), math.floor(self.canvasFillY), 3 do
+
+                local relativeY = math.floor((currentCanvas.y - i))
+                currentCanvas:FillCanvasY(relativeY, i, nil, riverGenerator:GetZone())
+            end
+        end
+
+        self.canvasFillY = camera.y
     end
 end
 
 function River:IsInBounds(x, y)
-    
+    if self.points and #self.points > 0 then
+        for channel = 1,#self.points do
+            local leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, y)
+            local rightHight, rightLow = self:FindHighAndLowPoints(channel, 2, y)
+
+            local leftPercentage = (y - leftLow.y)/(leftHight.y - leftLow.y)
+            local rightPercentage = (y - rightLow.y)/(rightHight.y - rightLow.y)
+
+            local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+            local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
+            if x > leftX and x < rightX then
+                return true
+            end
+        end
+    end
+
+    return false
 end
 
 function River:GetCurrent(yPos, xPos) -- returns the average direction angle of each path?
@@ -125,11 +182,11 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
             --[[local leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, yPos)
             local rightHight, rightLow = self:FindHighAndLowPoints(channel, 2, yPos)
 
-            local leftPercentage = (leftHight.y - leftLow.y)/(leftLow.y - yPos)
-            local rightPercentage = (rightHight.y - rightLow.y)/(rightLow.y - yPos)
+            local leftPercentage = (leftLow.y - yPos)/(leftHight.y - leftLow.y)
+            local rightPercentage = (rightLow.y - yPos)/(rightHight.y - rightLow.y)
 
-            local leftX = (leftLow.x) + ((leftHight.x-leftLow.x)*leftPercentage)
-            local rightX = (rightLow.x) + ((rightHight.x-rightLow.x)*rightPercentage)
+            local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+            local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
 
             local centerPos = {x = (leftX + rightX)/2, y = yPos}
 
@@ -140,11 +197,12 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
                     leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, yPos - 25)
                     rightHight, rightLow = self:FindHighAndLowPoints(channel, 2, yPos - 25)
         
-                    leftPercentage = (leftHight.y - leftLow.y)/(leftLow.y - yPos)
-                    rightPercentage = (rightHight.y - rightLow.y)/(rightLow.y - yPos)
+                    leftPercentage = (leftLow.y - yPos)/(leftHight.y - leftLow.y)
+                    rightPercentage = (rightLow.y - yPos)/(rightHight.y - rightLow.y)
         
-                    leftX = (leftLow.x) + ((leftHight.x-leftLow.x)*leftPercentage)
-                    rightX = (rightLow.x) + ((rightHight.x-rightLow.x)*rightPercentage)
+        
+                    leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+                    rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
                     
                     -- this one has to be another variable
                     local centerPos2 = {x = (leftX + rightX)/2, y = yPos - 25}
@@ -164,11 +222,11 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
             leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, yPos - 25)
             rightHight, rightLow = self:FindHighAndLowPoints(channel, 2, yPos - 25)
 
-            leftPercentage = (leftHight.y - leftLow.y)/(leftLow.y - yPos)
-            rightPercentage = (rightHight.y - rightLow.y)/(rightLow.y - yPos)
+            leftPercentage = (leftLow.y - yPos)/(leftHight.y - leftLow.y)
+            rightPercentage = (rightLow.y - yPos)/(rightHight.y - rightLow.y)
 
-            leftX = (leftLow.x) + ((leftHight.x-leftLow.x)*leftPercentage)
-            rightX = (rightLow.x) + ((rightHight.x-rightLow.x)*rightPercentage)
+            leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+            rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
             
             -- this one has to be another variable
             local centerPos2 = {x = (leftX + rightX)/2, y = yPos - 25}
@@ -205,8 +263,8 @@ function River:FindHighAndLowPoints(channel, side, yPos)
 
     for point = 1,#self.points[channel][side] do
         if self.points[channel][side][point].y < yPos then
-            low = self.points[channel][1][point]
-            high = self.points[channel][1][point-1] or self.points[channel][1][point]
+            low = self.points[channel][side][point]
+            high = self.points[channel][side][point-1] or self.points[channel][side][point]
             return high, low
         end
     end
@@ -223,7 +281,13 @@ function River:Draw(scale)
 
     love.graphics.setColor(1,1,1)
     for i = 1,#self.canvases do
-        love.graphics.draw(self.canvases[i].canvas, self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 0, pixlesPerPixle, pixlesPerPixle)
+        love.graphics.draw(self.canvases[i].canvas, self.canvases[i].x*pixlesPerPixle, self.canvases[i].y, 0, pixlesPerPixle, pixlesPerPixle)
+
+        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 100)
+        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 500)
+        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 1000)
+
+
     end
 
     love.graphics.pop()
