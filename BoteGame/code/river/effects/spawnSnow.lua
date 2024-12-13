@@ -1,8 +1,11 @@
+windSpeed = 500
+snowAmount = 100
+
+
 function spawnSnow(dt)
 
-    if not snowTime then snowTime = 0.01 end
+    snowTime = 1/snowAmount
     if not snowCounter then snowCounter = 0 end
-    if not windSpeed then windSpeed = 500 end
 
     if snowCounter < snowTime then
         snowCounter = snowCounter + dt
