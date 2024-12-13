@@ -7,7 +7,26 @@ end
 return {
     {
         zone = "devZone",
-        distance = 100,
-        difficultyFunction = devZoneDifficulty
+        distance = 1000,
+        difficultyFunction = devZoneDifficulty,
+        transition = 100,
+    },
+    {
+        zone = "devZone2",
+        distance = 1000,
+        difficultyFunction = devZoneDifficulty,
+        transition = 100,
+    },
+    {
+        zone = "devZone",
+        distance = 10000,
+        difficultyFunction = devZoneDifficulty,
+        transition = 100,
+    },
+    {
+        zone = "devZone2",
+        distance = 10000,
+        difficultyFunction = devZoneDifficulty,
+        transition = 100,
     }
 }

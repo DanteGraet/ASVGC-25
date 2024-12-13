@@ -10,6 +10,14 @@ local steping = false
 
 local loading
 
+-- deefault values
+riverBorders = {
+    left = -960,
+    right = 960,
+    up = 0,
+    down = 1080,
+}
+
 -- this should solve all our problems ☜(ﾟヮﾟ☜) 👍
 local pain = false
 
@@ -23,6 +31,13 @@ local function resize()
 
     sox = ((love.graphics.getWidth()/scale) - 1920) /2
     --soy = ((love.graphics.getHeight()/scale) - 1080) /2
+
+    riverBorders = {
+        left = -love.graphics.getWidth()/2 / scale,
+        right = love.graphics.getWidth()/2 / scale,
+        up =    player.y - camera.oy,
+        down =  player.y - camera.oy + love.graphics.getHeight()*scale,
+    }
 end
 
 
@@ -95,8 +110,10 @@ local function update(dt)
         else
             gameSpeed = math.min(gameSpeed + dt*5, 1)
         end
+
+
     else        
-            river:checkNextSegment()
+        river:checkNextSegment()
     end
 
     if steping then
@@ -155,8 +172,6 @@ end
 
 
 local function draw()
-
-
     if river:HasPoints() then
         love.graphics.scale(scale)
         love.graphics.setColor(1,1,1)
@@ -169,7 +184,7 @@ local function draw()
 
         river:Draw(scale)
         player:Draw()
-        river:DrawPoints()
+      --  river:DrawPoints()
 
         particles.drawParticles()
 
@@ -183,6 +198,10 @@ local function draw()
         if settingsMenu.isOpen then
             settingsMenu:Draw()
         end
+
+        love.graphics.reset()
+        love.graphics.setColor(0,0,0)
+        love.graphics.print(love.timer.getFPS())
     else
 
         local screenScale = love.graphics.getWidth()/1920

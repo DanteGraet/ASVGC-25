@@ -60,7 +60,6 @@ local function NextSegment(lastPoints, zone) -- {chanel1, chanel2, chanel3, etc.
         -- the end x of the segment
         -- this is based in 1920x1080 screen size (default that we scale around)
         local endX = math.random( -(1900 - endWidth)/2, (1900 - endWidth)/2 )
-        print("nedx:"  .. endX)
         --where it starts (used for mid thingss um yea)
         local startX = (lastPoints[i][1].x + lastPoints[i][2].x)/2
 

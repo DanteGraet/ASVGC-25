@@ -15,6 +15,7 @@ function RiverGenerator:New(riverData)
 
     obj.zones = riverData
     obj.currentZone = 1
+    obj.zoneDist = 0
     obj.distance = 0
 
 
@@ -27,8 +28,35 @@ function RiverGenerator:New(riverData)
     return obj
 end
 
-function RiverGenerator:GetZone()
-    return self.zones[self.currentZone]
+function RiverGenerator:GetZone(y, extra)
+    if not y then
+        return self.zones[self.currentZone]
+    else
+        local distRemaining = math.abs(y)
+        for i = 1,#self.zones do
+            local zone = self.zones[i]
+
+            if extra then
+
+                distRemaining = distRemaining - zone.distance
+
+                if distRemaining < 0 then
+                    return zone
+                elseif distRemaining < zone.transition then
+                    return {zone, self.zones[i+1] or zone, distRemaining/zone.transition}
+                end
+            else
+                distRemaining = distRemaining - zone.distance - zone.transition
+
+                if distRemaining < 0 then
+                    return zone
+                end
+            end
+            
+        end
+    end
+    -- return the last zone
+    return self.zones[#self.zones]
 end
 
 function RiverGenerator:Update()
@@ -57,9 +85,19 @@ function RiverGenerator:NextSegment()
 
         self.nextSegmentThread = love.thread.newThread("code/river/generator/nextSegment.lua")
 
-        nextSegment_lastPoints:push(river:GetLastPoints())
+        local lastPoints = river:GetLastPoints()
 
-        local zoneName = self.zones[self.currentZone].zone
+        nextSegment_lastPoints:push(lastPoints)
+
+        local zoneName
+        if lastPoints and lastPoints[1] and lastPoints[1][1] and lastPoints[1][1].y then
+            local zone = self:GetZone(lastPoints[1][1].y)
+            zoneName = zone.zone
+
+        else
+            zoneName = self.zones[self.currentZone].zone
+        end
+
         nextSegment_zone:push(assets.code.river.zone[zoneName].pathGeneration())
 
 
