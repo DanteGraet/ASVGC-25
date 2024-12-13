@@ -174,7 +174,7 @@ end
 
 function River:GetCurrent(yPos, xPos) -- returns the average direction angle of each path?
     local angle, speed
-    speed = 10  -- A temporary value TRUST :D
+    speed = 100  -- A temporary value TRUST :D
 
     if self.points and #self.points > 0 then
 
