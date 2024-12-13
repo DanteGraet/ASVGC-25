@@ -151,8 +151,6 @@ end
 
 
 local function draw()
-
-
     if river:HasPoints() then
         love.graphics.scale(scale)
         love.graphics.setColor(1,1,1)

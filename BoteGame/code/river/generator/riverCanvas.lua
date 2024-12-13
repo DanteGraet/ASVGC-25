@@ -55,8 +55,6 @@ function RiverCanvas:FillCanvasY(canvasY, globalY, canvasX, zone)
         zone2 = zone[2]
         chance = zone[3]
         zone = zone[1]
-
-        print("hahhahhahhhhhh", zone2, zone, chance)
     end
 
     for x = 1,self.canvas:getWidth() do

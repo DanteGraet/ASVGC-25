@@ -157,6 +157,16 @@ function River:Update()
 
         self.canvasFillY = camera.y- camera.oy
     end
+
+    -- delete old canvases
+    for i = 1,#self.canvases do
+        if self.canvases[1].y > camera.y + camera.oy - (love.graphics.getHeight()*GetRiverScale()[1]) then
+            table.remove(self.canvases, 1)
+            print("delete")
+        else
+            break
+        end
+    end
 end
 
 function River:IsInBounds(x, y)
