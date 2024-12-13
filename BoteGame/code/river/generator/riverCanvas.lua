@@ -16,7 +16,11 @@ function RiverCanvas:New(y, fill, zone)
         obj.y = 0
     end
 
+    obj.y = math.floor(obj.y/3)*3
+
     obj.x = - obj.canvas:getWidth()/2
+
+    obj.x = math.floor(obj.x/3)*3
 
 
     if fill then
@@ -27,24 +31,41 @@ function RiverCanvas:New(y, fill, zone)
         love.graphics.rectangle("fill", -100, -100, 100000, 100000)
 
         for i = 1,obj.canvas:getHeight() do
-
-            obj:FillCanvasY(i, obj.y + i*pixlesPerPixle, obj.x*pixlesPerPixle, zone)
+            obj:FillCanvasY(i, obj.y + i*pixlesPerPixle, obj.x*pixlesPerPixle, riverGenerator:GetZone(obj.y + i*pixlesPerPixle, true))
         end
+    else
+
+        -- removes flickering, height is already +2
+        obj:FillCanvasY(1, obj.y + pixlesPerPixle, obj.x*pixlesPerPixle, riverGenerator:GetZone(obj.y + pixlesPerPixle, true))
+
     end
 
 
     return obj  
 end
 
-function RiverCanvas:FillCanvasY(canvasY, globalY, canvasX, zone, zone2, chance)
+function RiverCanvas:FillCanvasY(canvasY, globalY, canvasX, zone)
     love.graphics.setCanvas(self.canvas)
+
+    local chance
+    local zone2
+
+    if zone[1] and type(zone[1]) == "table" then
+
+        zone2 = zone[2]
+        chance = zone[3]
+        zone = zone[1]
+
+        print("hahhahhahhhhhh", zone2, zone, chance)
+    end
 
     for x = 1,self.canvas:getWidth() do
         local colour
         local num = chance or -1
-        if zone2 and math.random(0, 100)/100 >= num then
+
+        if zone2 and math.random(0, 100)/100 < chance then
             colour = assets.code.river.zone[zone2.zone].GetColourAt((x + self.x)*3, globalY)
-            print("Death, the destroyer of worlds")
+
         else
             colour = assets.code.river.zone[zone.zone].GetColourAt((x + self.x)*3, globalY)
         end

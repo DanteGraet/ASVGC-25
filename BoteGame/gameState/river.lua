@@ -89,8 +89,10 @@ local function update(dt)
         else
             gameSpeed = math.min(gameSpeed + dt*5, 1)
         end
+
+
     else        
-            river:checkNextSegment()
+        river:checkNextSegment()
     end
 
     if steping then
@@ -160,7 +162,7 @@ local function draw()
         camera:TranslateCanvas()
         river:Draw(scale)
         player:Draw()
-        river:DrawPoints()
+      --  river:DrawPoints()
 
         love.graphics.reset()
         love.graphics.scale(screenScale)
@@ -172,6 +174,10 @@ local function draw()
         if settingsMenu.isOpen then
             settingsMenu:Draw()
         end
+
+        love.graphics.reset()
+        love.graphics.setColor(0,0,0)
+        love.graphics.print(love.timer.getFPS())
     else
 
         local screenScale = love.graphics.getWidth()/1920

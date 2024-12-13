@@ -24,17 +24,15 @@ end
 
 function River:AddNextCanvas(y)
     if #self.canvases > 0 then
-        table.insert(self.canvases, self.canvasGenerator:New(y, true, riverGenerator:GetZone()))
+        table.insert(self.canvases, self.canvasGenerator:New(y, false, riverGenerator:GetZone(y, true)))
     else
-        table.insert(self.canvases, self.canvasGenerator:New(100, true, riverGenerator:GetZone()))
+        table.insert(self.canvases, self.canvasGenerator:New(175, true, riverGenerator:GetZone(nil, true)))
         self.canvasFillY = self.canvases[#self.canvases].y
     end
 end
 
 function River:HasPoints()
-
     return self.farAhead
-
 end
 
 
@@ -131,24 +129,33 @@ function River:Update()
 
     --Canvases :D
     if self.canvases and #self.canvases > 0 and self.canvases[#self.canvases].y >= playerY-camera.oy-50 then
-        self:AddNextCanvas(playerY-camera.oy-50)
+        self:AddNextCanvas(playerY-camera.oy)
         print("new canvas --------------------------------------")
     end
 
-    if camera.y < self.canvasFillY then
+    if camera.y- camera.oy < self.canvasFillY then
 
         local currentCanvasNo = #self.canvases
         local currentCanvas = self.canvases[currentCanvasNo]
 
         if currentCanvas then
-            for i = math.floor(camera.y), math.floor(self.canvasFillY), 3 do
-
+            for i = math.floor(camera.y - camera.oy), math.floor(self.canvasFillY) , 3 do
                 local relativeY = math.floor((currentCanvas.y - i))
-                currentCanvas:FillCanvasY(relativeY, i, nil, riverGenerator:GetZone())
+
+
+
+                currentCanvas:FillCanvasY(math.abs(relativeY)/3, i, nil, riverGenerator:GetZone(i, true))
+
+                if relativeY + 3 > currentCanvas.canvas:getHeight() then
+                    currentCanvasNo = currentCanvasNo - 1
+                    currentCanvas = self.canvases[currentCanvasNo]
+                    currentCanvas:FillCanvasY(math.abs(relativeY)/3, i, nil, riverGenerator:GetZone(i, true))
+                end
+
             end
         end
 
-        self.canvasFillY = camera.y
+        self.canvasFillY = camera.y- camera.oy
     end
 end
 
@@ -174,7 +181,7 @@ end
 
 function River:GetCurrent(yPos, xPos) -- returns the average direction angle of each path?
     local angle, speed
-    speed = 10  -- A temporary value TRUST :D
+    speed = 300  -- A temporary value TRUST :D
 
     if self.points and #self.points > 0 then
 
