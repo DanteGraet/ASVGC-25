@@ -129,7 +129,9 @@ function River:Update()
 
     --Canvases :D
     if self.canvases and #self.canvases > 0 and self.canvases[#self.canvases].y >= playerY-camera.oy-50 then
-        self:AddNextCanvas(playerY-camera.oy)
+        local y = self.canvases[1].y - love.graphics.getHeight()*GetRiverScale()[1]
+        print(self.canvases[1].y, self.canvases[#self.canvases].y)
+        self:AddNextCanvas(y)
         print("new canvas --------------------------------------")
     end
 
@@ -162,7 +164,6 @@ function River:Update()
     for i = 1,#self.canvases do
         if self.canvases[1].y > camera.y + camera.oy - (love.graphics.getHeight()*GetRiverScale()[1]) then
             table.remove(self.canvases, 1)
-            print("delete")
         else
             break
         end

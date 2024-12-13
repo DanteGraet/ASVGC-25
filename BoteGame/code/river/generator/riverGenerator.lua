@@ -43,14 +43,12 @@ function RiverGenerator:GetZone(y, extra)
                 if distRemaining < 0 then
                     return zone
                 elseif distRemaining < zone.transition then
-                    print("transsition" .. distRemaining)
                     return {zone, self.zones[i+1] or zone, distRemaining/zone.transition}
                 end
             else
                 distRemaining = distRemaining - zone.distance - zone.transition
 
                 if distRemaining < 0 then
-                    print(zone.zone)
                     return zone
                 end
             end

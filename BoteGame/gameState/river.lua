@@ -10,6 +10,14 @@ local steping = false
 
 local loading
 
+-- deefault values
+riverBorders = {
+    left = -960,
+    right = 960,
+    up = 0,
+    down = 1080,
+}
+
 -- this should solve all our problems ☜(ﾟヮﾟ☜) 👍
 local pain = false
 
@@ -23,6 +31,13 @@ local function resize()
 
     sox = ((love.graphics.getWidth()/scale) - 1920) /2
     --soy = ((love.graphics.getHeight()/scale) - 1080) /2
+
+    riverBorders = {
+        left = -love.graphics.getWidth()/2 / scale,
+        right = love.graphics.getWidth()/2 / scale,
+        up =    player.y - camera.oy,
+        down =  player.y - camera.oy + love.graphics.getHeight()*scale,
+    }
 end
 
 
