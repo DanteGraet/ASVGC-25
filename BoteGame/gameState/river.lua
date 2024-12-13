@@ -37,6 +37,8 @@ local function resize()
         right = love.graphics.getWidth()/2 / scale,
         up =    player.y - camera.oy,
         down =  player.y - camera.oy + love.graphics.getHeight()*scale,
+        width = love.graphics.getWidth() / scale,
+        height= love.graphics.getHeight() / scale,
     }
 end
 

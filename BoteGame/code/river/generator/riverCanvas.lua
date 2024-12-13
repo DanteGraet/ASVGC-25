@@ -5,8 +5,8 @@ function RiverCanvas:New(y, fill, zone)
     local obj = setmetatable({}, RiverCanvas)
 
     obj.canvas = love.graphics.newCanvas(
-        math.ceil((love.graphics.getWidth()/GetRiverScale()[1]/pixlesPerPixle)) + 2, 
-        math.ceil((love.graphics.getHeight()/GetRiverScale()[1]/pixlesPerPixle))
+        math.ceil((riverBorders.width/pixlesPerPixle)) + 2, 
+        math.ceil((riverBorders.height/pixlesPerPixle))
     )
     obj.canvas:setFilter("nearest", "nearest")
 
