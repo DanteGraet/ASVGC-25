@@ -6,8 +6,8 @@ end
 
 return {
     {
-        zone = "devZone",
-        distance = 1000,
+        zone = "boulderValley",
+        distance = 10000,
         difficultyFunction = devZoneDifficulty,
         transition = 100,
     },
