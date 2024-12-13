@@ -67,6 +67,8 @@ local function load()
 
     resize()
 
+    particles.loadParticles()
+
     --riverGenerator:NextSegment()
 end
 
@@ -80,6 +82,10 @@ local function update(dt)
     if steping then
         dt = 1/60
     end
+
+    particles.updateParticles(dt)
+
+    spawnSnow(dt)
 
     riverGenerator:Update()
 
@@ -175,9 +181,14 @@ local function draw()
         love.graphics.translate(sox, soy)
 
         camera:TranslateCanvas()
+
+        --Objects which exist within the game world are to be drawn here
+
         river:Draw(scale)
         player:Draw()
       --  river:DrawPoints()
+
+        particles.drawParticles()
 
         love.graphics.reset()
         love.graphics.scale(screenScale)
@@ -203,10 +214,6 @@ local function draw()
         love.graphics.scale(screenScale)
         loading.image:Draw(love.graphics.getWidth()/screenScale/2 - 960, love.graphics.getHeight()/screenScale/2 - 540, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
     end
-
-
-
-
 
     love.graphics.reset()
 end
