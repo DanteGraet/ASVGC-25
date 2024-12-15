@@ -55,10 +55,21 @@ local function load()
         {"image/titleScreen/parallax/3.png", .2},
     }, true)
 
+    world = love.physics.newWorld(0, 0, false)
+    world:setCallbacks( beginContact, endContact, preSolve, postSolve )
+    love.physics.setMeter(100)
+
     player = assets.code.player.playerBoat():New()
     camera = assets.code.camera():New(0, 0, 960, 900)
     river = assets.code.river.river():New()
     riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName]())
+    obstacles = {}
+    local zoneObsitcalList = {}
+    for i = 1,#riverGenerator.zones do
+        local zone = riverGenerator.zones[i]
+        zoneObsitcalList[zone.zone] = assets.code.river.zone[zone.zone].obsticals()
+    end
+    obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
 
 
     if keybindSaveLocation then
@@ -87,9 +98,7 @@ local function update(dt)
         dt = 1/60
     end
 
-    particles.updateParticles(dt)
 
-    spawnSnow(dt)
 
     riverGenerator:Update()
 
@@ -98,6 +107,10 @@ local function update(dt)
         local inputs = inputManager:GetInput()
 
         local gs = tweens.sineInOut(gameSpeed)
+
+        particles.updateParticles(dt*gs)
+
+        spawnSnow(dt*gs)
 
         -- Update the player first, all other things rely on it basically
         player:Update(dt*gs, inputs)
@@ -111,15 +124,38 @@ local function update(dt)
         -- update the river after the player so we can generate based on the players position.
         river:Update()
 
+        obstacleSpawner:Update()
+
+        world:update(dt)
+
+        local contacts = world:getContacts()
+
+        for _, contact in ipairs(contacts) do
+            local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
+            local dataA = fixtureA:getUserData()
+            local dataB = fixtureB:getUserData()
+            if  dataA.first then
+                dataA.remove = true
+                fixtureA:setUserData(dataA)
+            elseif dataB.first then
+                dataB.remove = true
+                fixtureB:setUserData(dataB)
+            end
+        end
+
+        for i = #obstacles,1, -1 do
+            obstacles[i]:Update(i)
+        end
+
         if settingsMenu.isOpen then
             local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
         
             settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
 
-            gameSpeed = math.max(gameSpeed - dt*5, 0)
+            gameSpeed = math.max(gameSpeed - dt*2, 0)
         else
-            gameSpeed = math.min(gameSpeed + dt*5, 1)
+            gameSpeed = math.min(gameSpeed + dt*2, 1)
         end
 
 
@@ -194,6 +230,11 @@ local function draw()
         --Objects which exist within the game world are to be drawn here
 
         river:Draw(scale)
+        for i = 1,#obstacles do
+            obstacles[i]:Draw(i)
+
+            --obstacles[i]:DrawHitbox()
+        end
 
         particles.drawParticles("bottom")
 
@@ -210,8 +251,12 @@ local function draw()
         local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
         love.graphics.translate(sox, soy)
     
-        if settingsMenu.isOpen then
-            settingsMenu:Draw()
+        local gs = tweens.sineInOut(gameSpeed)
+        
+        if 1-gs > 0 then
+        --if settingsMenu.isOpen then
+            
+            settingsMenu:Draw(1-gs)
         end
 
         love.graphics.reset()

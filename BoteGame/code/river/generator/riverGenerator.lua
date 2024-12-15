@@ -59,6 +59,20 @@ function RiverGenerator:GetZone(y, extra)
     return self.zones[#self.zones]
 end
 
+function RiverGenerator:GetPercentageThrough(y)
+    local distRemaining = math.abs(y)
+    for i = 1,#self.zones do
+        local zone = self.zones[i]
+
+        if distRemaining <= zone.distance + zone.transition then
+            return distRemaining / (zone.distance + zone.transition)
+        end
+
+        distRemaining = distRemaining - zone.distance - zone.transition
+        
+    end
+end
+
 function RiverGenerator:Update()
     if self.generatingSegment == true then
         local result = self:NextSegment()

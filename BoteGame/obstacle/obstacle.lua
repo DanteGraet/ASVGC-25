@@ -18,7 +18,7 @@ function Obstacle:New(x, y, shape)
     return obj
 end
 
-function Obstacle:Update(camY, no)
+function Obstacle:Update(no)
     if self.fixture:getUserData().first then
         local data = self.fixture:getUserData()
         data.first = false
@@ -33,11 +33,11 @@ function Obstacle:Update(camY, no)
         self.fixture:setUserData(data)
     elseif self.fixture:getUserData().remove then
         self.body:destroy()
-        table.remove(obsticals, no)
+        table.remove(obstacles, no)
         return
-    elseif self.y > -camY + love.graphics.getHeight()/screenScale + 250 then
+    elseif self.y > riverBorders.down + 250 then
         self.body:destroy()
-        table.remove(obsticals, no)
+        table.remove(obstacles, no)
         return
     end
 end

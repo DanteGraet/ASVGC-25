@@ -60,7 +60,7 @@ function DynamicLoading:Run()
     end
 
     print("\n============ Loaded Assets ============")
-    dante.printTable(assets)
+    --dante.printTable(assets)
 end
 
 
@@ -92,12 +92,12 @@ function DynamicLoading:AddItem(path, current, original)
 
                 if original[2] == "addObstacles" then
                     for name, _ in pairs(current[string.sub(file, 1, #file-4)]()) do
-                        table.insert(self.loadList, #self.loadList+1, {"obstacle/" .. name .. ".lua"})
+                        table.insert(self.loadList, #self.loadList+1, {"obstacle/" .. name .. ".lua", "run"})
                     end
                 end
             end
 
-            print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
+            --print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
         end
         
     else

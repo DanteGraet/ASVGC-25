@@ -11,11 +11,14 @@ local toLoad = {
     {"code/river/river.lua"},
     {"code/river/generator/riverGenerator.lua"},
     {"code/river/generator/riverCanvas.lua"},
-
+    {"code/river/generator/obstacleSpawner.lua"},
 
     {"code/camera.lua"},
     {"code/inputManager.lua"},
     {"code/settingsMenu/keybinds.lua"},
+
+    {"obstacle/obstacle.lua", "run"},
+
 }
 
 for i = 1,#riverZones do

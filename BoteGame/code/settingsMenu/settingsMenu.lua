@@ -122,17 +122,17 @@ function SettingsMenu:Update(dt, x, y)
 end
 
 
-function SettingsMenu:Draw()
+function SettingsMenu:Draw(gs)
     love.graphics.reset()
 
-    love.graphics.setColor(0,0,0,0.5)
+    love.graphics.setColor(0,0,0,0.5*gs)
     love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 
     love.graphics.scale(screenScale)
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2 + 960
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2 + 540
-    love.graphics.translate(sox, soy)
+    love.graphics.translate(sox, soy + 1500*(1-gs))
 
     --Draw a basic outline
     love.graphics.setColor(0.8,0.7,1,1)
