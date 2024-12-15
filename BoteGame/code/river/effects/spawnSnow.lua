@@ -1,4 +1,4 @@
-windSpeed = 500
+windSpeed = 250
 snowAmount = 100
 
 

@@ -36,6 +36,7 @@ local function loadParticleClasses()
         particle.y = spawnY or 0
 
         particle.angle = spawnAngle or 0
+        particle.size = math.random(5, 2)
 
         particle.speed = love.math.random(windSpeed*0.75,windSpeed*1.25)
         particle.yVel = love.math.random(-windSpeed/5,windSpeed/5)
@@ -49,6 +50,8 @@ local function loadParticleClasses()
         particle.x = particle.x + particle.speed*dt
         particle.y = particle.y + particle.yVel*dt
 
+        particle.size = particle.size - 0.1*dt
+
         if particle.x > love.graphics.getWidth()/2/GetRiverScale()[1]+100 then
             particle.delete = true
         end
@@ -61,8 +64,9 @@ local function loadParticleClasses()
     end
 
     particleDraw["snow"] = function(particle)
-        love.graphics.setColor(1,1,1,0.9)
-        love.graphics.rectangle("fill",particle.x,particle.y,5,5)
+        love.graphics.setColor(1,1,1,0.8)
+        love.graphics.circle("fill", particle.x,particle.y,particle.size)
+        --love.graphics.rectangle("fill",particle.x,particle.y,5,5)
     end
 
     --Player trail
@@ -74,7 +78,7 @@ local function loadParticleClasses()
 
         particle.angle = spawnAngle or math.rad(love.math.random(1,360))
 
-        particle.speed = love.math.random(20,50)
+        particle.speed = -player.speed
 
         particle.life = love.math.random(100,300)/100
 

@@ -21,23 +21,22 @@ end
 
 function createTrailParticle(num)
 
-    local x = player.x + math.cos(player.dir)*-25
-    local y = player.y + math.sin(player.dir)*-25
+    local x = player.x + math.cos(player.dir)*25
+    local y = player.y + math.sin(player.dir)*25
     local angle
 
     if num then
-        x = player.x + math.cos(player.dir+math.sin(num)*0.2)*30
-        y = player.y + math.sin(player.dir+math.sin(num)*0.2)*30
+        x = player.x --+ math.cos(player.dir+math.sin(num)*0.2)*30
+        y = player.y --+ math.sin(player.dir+math.sin(num)*0.2)*30
         angle = num + math.rad(love.math.random(-20,20))
     else
         local dir = math.random(0, 1)
         if dir == 0 then
             dir = -1
         end 
-        angle = player.dir+math.pi + math.rad(love.math.random(75,150))*dir
+        angle = player.dir+math.pi + math.rad(love.math.random(100,150))*dir
     end
 
-    print(player.dir)
 
     particles.spawnParticle("trail",x,y,angle)
     if love.math.random(1,5) == 1 then particles.spawnParticle("trail2",x,y,angle) end
