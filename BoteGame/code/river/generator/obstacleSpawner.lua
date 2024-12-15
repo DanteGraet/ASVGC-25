@@ -13,7 +13,9 @@ function ObstacleSpawner:New(obsticals)
 end
 
 function ObstacleSpawner:Update()
+    if self.lastY == math.ceil((riverBorders.up - 250)/3)*3 then return end
     for y = math.ceil(self.lastY/3)*3, math.ceil((riverBorders.up - 250)/3)*3, -3 do
+       
         -- check if we are going to spawn an obtical here
         local zone = riverGenerator:GetZone(y)
         local chance = zone.difficultyFunction(riverGenerator:GetPercentageThrough(y))
@@ -46,9 +48,10 @@ function ObstacleSpawner:Update()
                 end
             end
         end
-    end
 
-    self.lastY = riverBorders.up - 250
+    end
+    self.lastY = math.ceil((riverBorders.up - 250)/3)*3
+
 end
 
 return ObstacleSpawner
