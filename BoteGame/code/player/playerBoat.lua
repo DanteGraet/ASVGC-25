@@ -12,7 +12,7 @@ function PlayerBoat:New(skin)
     obj.x = 0
     obj.y = 0
 
-    obj.speed = 0
+    obj.speed = 100
     obj.acceleration = 10
     obj.maxSpeed = 150
     obj.minSpeed = 0
@@ -49,6 +49,9 @@ function PlayerBoat:Update(dt, inputs)
 
         self.current = currentAngle
     end
+
+    spawnTrail(dt)
+
 end
 
 function PlayerBoat:Draw()

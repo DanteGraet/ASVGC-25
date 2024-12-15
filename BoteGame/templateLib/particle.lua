@@ -12,7 +12,7 @@ local function spawnParticle(spawnClass,spawnX,spawnY,spawnAngle,spawnData)
     particle.class = spawnClass
 
     particleClass["default"](particle,spawnX,spawnY,spawnAngle,spawnData)
-    if type(spawnClass) == "string" then particleClass[particle.class](particle,spawnX,spawnY,spawnData) end
+    if type(spawnClass) == "string" then particleClass[particle.class](particle,spawnX,spawnY,spawnAngle,spawnData) end
 
     table.insert(particleTable,particle)
 
@@ -29,9 +29,9 @@ local function updateParticles(dt)
 
 end
 
-local function drawParticles()
+local function drawParticles(layer)
     for i = #particleTable, 1, -1 do
-        particleDraw[particleTable[i].class](particleTable[i])
+        if particleTable[i].layer == layer then particleDraw[particleTable[i].class](particleTable[i]) end
     end
     love.graphics.setColor(1,1,1,1)
 end

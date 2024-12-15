@@ -9,6 +9,8 @@ local function loadParticleClasses()
 
         particle.angle = spawnAngle or 0
 
+        particle.layer = "top"
+
         if spawnData then particle.data = spawnData end
     end
 
@@ -62,6 +64,83 @@ local function loadParticleClasses()
         love.graphics.setColor(1,1,1,0.9)
         love.graphics.rectangle("fill",particle.x,particle.y,5,5)
     end
+
+    --Player trail
+
+    particleClass["trail"] = function(particle,spawnX,spawnY,spawnAngle,spawnData)
+
+        particle.x = spawnX + love.math.random(-8,8)
+        particle.y = spawnY + love.math.random(-8,8)
+
+        particle.angle = spawnAngle or math.rad(love.math.random(1,360))
+
+        particle.speed = love.math.random(20,50)
+
+        particle.life = love.math.random(100,300)/100
+
+        particle.layer = "bottom"
+
+        particle.colour = {0.2*love.math.random(150,200)/100,0.3*love.math.random(150,200)/100,0.6*love.math.random(150,200)/100,1}
+
+        if spawnData then particle.data = spawnData end
+    end
+
+    particleUpdate["trail"] = function(particle,dt)
+
+        particle.x = particle.x + particle.speed*math.cos(particle.angle)*dt
+        particle.y = particle.y + particle.speed*math.sin(particle.angle)*dt
+
+        if particle.life > 0 then
+            particle.life = particle.life - dt
+        else
+            particle.delete = true
+        end
+
+    end
+
+    particleDraw["trail"] = function(particle)
+        particle.colour[4] = quindoc.clamp(particle.life,0,0.1)
+        love.graphics.setColor(particle.colour)
+        love.graphics.circle("fill",particle.x,particle.y,8)
+    end
+
+    particleClass["trail2"] = function(particle,spawnX,spawnY,spawnAngle,spawnData)
+
+        particle.x = spawnX + love.math.random(-8,8)
+        particle.y = spawnY + love.math.random(-8,8)
+
+--        particle.angle = math.rad(love.math.random(-90,90))-player.dir
+
+--        particle.speed = love.math.random(20,50)
+
+        particle.life = love.math.random(30,70)/100
+
+        particle.layer = "bottom"
+
+        particle.colour = {love.math.random(80,90)/100,love.math.random(80,90)/100,love.math.random(90,100)/100,1}
+
+        if spawnData then particle.data = spawnData end
+    end
+
+    particleUpdate["trail2"] = function(particle,dt)
+
+--        particle.x = particle.x + particle.speed*math.cos(particle.angle)*dt
+--        particle.y = particle.y + particle.speed*math.sin(particle.angle)*dt
+
+        if particle.life > 0 then
+            particle.life = particle.life - dt
+        else
+            particle.delete = true
+        end
+
+    end
+
+    particleDraw["trail2"] = function(particle)
+        particle.colour[4] = quindoc.clamp(particle.life,0,0.15)
+        love.graphics.setColor(particle.colour)
+        love.graphics.circle("fill",particle.x,particle.y,3)
+    end
+
 
 
 end

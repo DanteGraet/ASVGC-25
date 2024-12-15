@@ -194,10 +194,13 @@ local function draw()
         --Objects which exist within the game world are to be drawn here
 
         river:Draw(scale)
+
+        particles.drawParticles("bottom")
+
         player:Draw()
       --  river:DrawPoints()
 
-        particles.drawParticles()
+        particles.drawParticles("top")
 
 
         love.graphics.reset()

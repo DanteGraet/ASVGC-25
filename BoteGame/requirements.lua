@@ -12,6 +12,7 @@ require("code/dynamicLoading")
 require("code/parallaxImage")
 
 require("code/river/effects/spawnSnow")
+require("code/river/effects/playerTrail")
 
 -- Global variables
 assets = {}
