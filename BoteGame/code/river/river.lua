@@ -13,6 +13,8 @@ function River:New()
     obj.canvases = {}
     obj.canvasFillY = 0
 
+    obj.fakeCanvases = {}
+
     obj.farAhead = false
 
 
@@ -150,8 +152,11 @@ function River:Update()
 
                 if relativeY + 3 > currentCanvas.canvas:getHeight() then
                     currentCanvasNo = currentCanvasNo - 1
-                    currentCanvas = self.canvases[currentCanvasNo]
-                    currentCanvas:FillCanvasY(math.abs(relativeY)/3, i, nil, riverGenerator:GetZone(i, true))
+                    if currentCanvasNo > 0 then
+                        currentCanvas = self.canvases[currentCanvasNo]
+
+                        currentCanvas:FillCanvasY(math.abs(relativeY)/3, i, nil, riverGenerator:GetZone(i, true))
+                    end
                 end
 
             end
@@ -164,8 +169,65 @@ function River:Update()
     for i = 1,#self.canvases do
         if self.canvases[1].y > riverBorders.down then
             table.remove(self.canvases, 1)
+        end
+    end
+
+    for i = 1,#self.fakeCanvases do
+        if self.fakeCanvases[1].y > riverBorders.down then
+            table.remove(self.fakeCanvases, 1)
+        end
+    end
+end
+
+function River:AddFakeCanvases()
+    -- reset the current canvases
+    self.fakeCanvases = {}
+
+    local left = math.floor(riverBorders.left/3) - 2
+    local right = math.floor(riverBorders.right/3) - 2
+
+    for i = 1,#self.canvases do
+        local canvasToCopy = self.canvases[i]
+        if canvasToCopy.x > left then
+            local xDiff = canvasToCopy.x - left
+
+            local leftCanvas = self.canvasGenerator:New()
+            leftCanvas.canvas = love.graphics.newCanvas(xDiff + 4, canvasToCopy.canvas:getHeight())
+            leftCanvas.canvas:setFilter("nearest","nearest")
+            leftCanvas.y = canvasToCopy.y
+            leftCanvas.x = left
+
+            local rightCanvas = self.canvasGenerator:New()
+            rightCanvas.canvas = love.graphics.newCanvas(xDiff + 8, canvasToCopy.canvas:getHeight())
+            rightCanvas.canvas:setFilter("nearest","nearest")
+
+            rightCanvas.y = canvasToCopy.y
+            rightCanvas.x = right - xDiff - 3
+
+            for i = 1,leftCanvas.canvas:getHeight() do
+                leftCanvas:FillCanvasY(i, leftCanvas.y + i*pixlesPerPixle, leftCanvas.x*pixlesPerPixle, riverGenerator:GetZone(leftCanvas.y + i*pixlesPerPixle, true))
+                rightCanvas:FillCanvasY(i, rightCanvas.y + i*pixlesPerPixle, rightCanvas.x*pixlesPerPixle, riverGenerator:GetZone(rightCanvas.y + i*pixlesPerPixle, true))
+
+            end
+
+            table.insert(self.fakeCanvases, leftCanvas)
+            table.insert(self.fakeCanvases, rightCanvas)
         else
-            break
+            -- addd the canvas to the bottom    
+            local canvasToCopy = self.canvases[1]
+
+            if canvasToCopy.y + canvasToCopy.canvas:getHeight()*pixlesPerPixle < riverBorders.down then
+                local newCanvas = self.canvasGenerator:New()
+                newCanvas.canvas:setFilter("nearest","nearest")
+
+                newCanvas.y = canvasToCopy.y + canvasToCopy.canvas:getHeight()*pixlesPerPixle - 3
+                for i = 1,newCanvas.canvas:getHeight() do
+                    newCanvas:FillCanvasY(i, newCanvas.y + i*pixlesPerPixle, newCanvas.x*pixlesPerPixle, riverGenerator:GetZone(newCanvas.y + i*pixlesPerPixle, true))
+                end
+
+                table.insert(self.fakeCanvases, newCanvas)
+
+            end
         end
     end
 end
@@ -299,13 +361,13 @@ function River:Draw(scale)
 
     love.graphics.setColor(1,1,1)
     for i = 1,#self.canvases do
+
         love.graphics.draw(self.canvases[i].canvas, self.canvases[i].x*pixlesPerPixle, self.canvases[i].y, 0, pixlesPerPixle, pixlesPerPixle)
 
-        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 100)
-        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 500)
-        love.graphics.circle("line", self.canvases[i].x*pixlesPerPixle, self.canvases[i].y*pixlesPerPixle, 1000)
+    end
 
-
+    for i = 1,#self.fakeCanvases do
+        love.graphics.draw(self.fakeCanvases[i].canvas, self.fakeCanvases[i].x*pixlesPerPixle, self.fakeCanvases[i].y, 0, pixlesPerPixle, pixlesPerPixle)
     end
 
     love.graphics.pop()

@@ -32,14 +32,18 @@ local function resize()
     sox = ((love.graphics.getWidth()/scale) - 1920) /2
     --soy = ((love.graphics.getHeight()/scale) - 1080) /2
 
+    local oldWidth = riverBorders.width
+
     riverBorders = {
         left = -love.graphics.getWidth()/2 / scale,
         right = love.graphics.getWidth()/2 / scale,
         up =    player.y - camera.oy,
-        down =  player.y - camera.oy + love.graphics.getHeight()*scale,
+        down =  player.y - camera.oy + love.graphics.getHeight()/scale,
         width = love.graphics.getWidth() / scale,
         height= love.graphics.getHeight() / scale,
     }
+
+    river:AddFakeCanvases()
 end
 
 
@@ -97,8 +101,13 @@ local function update(dt)
 
         -- Update the player first, all other things rely on it basically
         player:Update(dt*gs, inputs)
-        -- update the camera after the player so it doesn't lag behind slightly
+
+        -- update the camera and similar variables after the player so it doesn't lag behind slightly
         camera:SetPosition(0, player:GetPosition().y)
+
+        riverBorders.up =    player.y - camera.oy
+        riverBorders.down =  player.y - camera.oy + love.graphics.getHeight()/scale
+
         -- update the river after the player so we can generate based on the players position.
         river:Update()
 
@@ -189,6 +198,7 @@ local function draw()
       --  river:DrawPoints()
 
         particles.drawParticles()
+
 
         love.graphics.reset()
         love.graphics.scale(screenScale)

@@ -1,11 +1,11 @@
 local RiverCanvas = {}
 RiverCanvas.__index = RiverCanvas
 
-function RiverCanvas:New(y, fill, zone)
+function RiverCanvas:New(y, fill)
     local obj = setmetatable({}, RiverCanvas)
 
     obj.canvas = love.graphics.newCanvas(
-        math.ceil((riverBorders.width/pixlesPerPixle)) + 2, 
+        math.ceil((riverBorders.width/pixlesPerPixle)) + 4, 
         math.ceil((riverBorders.height/pixlesPerPixle))
     )
     obj.canvas:setFilter("nearest", "nearest")
@@ -27,8 +27,6 @@ function RiverCanvas:New(y, fill, zone)
         love.graphics.reset()
         love.graphics.setCanvas(obj.canvas)
 
-        love.graphics.setColor(1,1,1, 0.5)
-        love.graphics.rectangle("fill", -100, -100, 100000, 100000)
 
         for i = 1,obj.canvas:getHeight() do
             obj:FillCanvasY(i, obj.y + i*pixlesPerPixle, obj.x*pixlesPerPixle, riverGenerator:GetZone(obj.y + i*pixlesPerPixle, true))
