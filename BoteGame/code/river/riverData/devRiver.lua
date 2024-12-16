@@ -40,22 +40,7 @@ return {
         distance = 1000,
         difficultyFunction = devZoneDifficulty,
         transition = 100,
-<<<<<<< Updated upstream
-    },
-    {
-        zone = "devZone",
-        distance = 10000,
-        difficultyFunction = devZoneDifficulty2,
-        transition = 100,
-    },
-    {
-        zone = "devZone2",
-        distance = 10000,
-        difficultyFunction = devZoneDifficulty,
-        transition = 100,
-=======
         snowAmount = 1,
         windSpeed = 100,
->>>>>>> Stashed changes
     }
 }
