@@ -38,17 +38,26 @@ local function loadParticleClasses()
         particle.angle = spawnAngle or 0
         particle.size = math.random(5, 2)
 
-        particle.speed = love.math.random(windSpeed*0.75,windSpeed*1.25)
-        particle.yVel = love.math.random(-windSpeed/5,windSpeed/5)
-        particle.yAccel = love.math.random(-windSpeed/20,windSpeed/20)
+        particle.speed = love.math.random(75,125)/100
+        particle.yVel = love.math.random(-200,200)/1000
+        --particle.yAccel = love.math.random(-30,30)/100000
+        particle.savedWindSpeed = windSpeed
 
         if spawnData then particle.data = spawnData end
     end
 
     particleUpdate["snow"] = function(particle,dt)
 
-        particle.x = particle.x + particle.speed*dt
-        particle.y = particle.y + particle.yVel*dt
+        if particle.savedWindSpeed < windSpeed then
+
+            particle.savedWindSpeed = windSpeed
+        
+        end
+
+        particle.x = particle.x + particle.speed*particle.savedWindSpeed*dt
+        particle.y = particle.y + particle.yVel*particle.savedWindSpeed*dt
+
+       -- particle.yVel = particle.yVel + particle.yAccel*dt*particle.savedWindSpeed
 
         particle.size = particle.size - 0.1*dt
 
@@ -58,8 +67,9 @@ local function loadParticleClasses()
 
         if particle.y > player.y - camera.oy + love.graphics.getHeight()/GetRiverScale()[1] + 100 then
             particle.y = player.y - camera.oy - 100
-            particle.yVel = particle.yVel + particle.yAccel*dt
         end
+
+        
 
     end
 

@@ -13,15 +13,34 @@ end
 return {
     {
         zone = "boulderValley",
-        distance = 10000,
+        distance = 1000,
+        difficultyFunction = devZoneDifficulty,
+        transition = 400,
+        snowAmount = 30,
+        windSpeed = 200,
+    },
+    {
+        zone = "devZone2",
+        distance = 1000,
+        difficultyFunction = devZoneDifficulty,
+        transition = 400,
+        snowAmount = 100,
+        windSpeed = 400,
+    },
+    {
+        zone = "devZone",
+        distance = 1000,
         difficultyFunction = devZoneDifficulty,
         transition = 100,
+        snowAmount = 300,
+        windSpeed = 700,
     },
     {
         zone = "devZone2",
         distance = 1000,
         difficultyFunction = devZoneDifficulty,
         transition = 100,
+<<<<<<< Updated upstream
     },
     {
         zone = "devZone",
@@ -34,5 +53,9 @@ return {
         distance = 10000,
         difficultyFunction = devZoneDifficulty,
         transition = 100,
+=======
+        snowAmount = 1,
+        windSpeed = 100,
+>>>>>>> Stashed changes
     }
 }

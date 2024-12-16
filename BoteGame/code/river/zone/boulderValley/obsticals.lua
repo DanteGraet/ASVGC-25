@@ -1,6 +1,6 @@
 return {
     -- Add the stats? for each obstical here, not just the actual obsticals.
-    rock = {
+    leaderRock = {
         -- the base spawnWeight that this obstical has
         spawnWeight = 5,
 
@@ -13,4 +13,4 @@ return {
         -- divider for the noise.
         noiseDiv = 10
     } 
-}
+} 
