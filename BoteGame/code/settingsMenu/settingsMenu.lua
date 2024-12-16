@@ -58,6 +58,15 @@ function SettingsMenu:GenerateButtons()
     self.Ui:GetButtons()["close"].functions.release = {SettingsMenu.Close, self}
 end
 
+local function sliderFunction(value, slider)
+    slider.value = value
+    print(slider)
+end
+
+local function toggleFunction(value, toggle)
+    toggle.value = value
+end
+
 
 function SettingsMenu.SetCatagory(data)
     local self = data[1] 
@@ -86,6 +95,15 @@ function SettingsMenu.SetCatagory(data)
             self.Ui:AddSlider(name, currentX+font1:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
 
             self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -font1:getWidth(currentSetting.displayName) - 10, -20, 1000)
+            self.Ui:GetButtons("settings")[name].func = {sliderFunction, currentSetting}
+
+        elseif currentSetting.type == "toggle" then
+            self.Ui:AddToggle(name, currentX, currentHeight, 400, font1:getHeight(), currentSetting.value, "settings")
+
+            self.Ui:GetButtons("settings")[name].button1:AddText(currentSetting.displayName, nil, font1, 0, 0, 1000)
+            self.Ui:GetButtons("settings")[name].button2:AddText(currentSetting.displayName, nil, font1, 0, 0, 1000)
+
+            self.Ui:GetButtons("settings")[name].func = {sliderFunction, currentSetting}
         end
 
         currentHeight = currentHeight + font1:getHeight()
@@ -179,8 +197,4 @@ function SettingsMenu:Draw(gs)
     love.graphics.setLineWidth(1)
     self.Ui:Draw()
     self.Ui:Draw("settings", 0, self.scroll)
-
-
-
-
 end

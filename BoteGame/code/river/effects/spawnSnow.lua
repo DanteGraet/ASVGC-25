@@ -25,7 +25,7 @@ function spawnSnow(dt)
         if not snowCounter then snowCounter = 0 end
 
         if snowCounter < snowTime then
-            snowCounter = snowCounter + dt
+            snowCounter = snowCounter + dt*settings.graphics.particles.value*2
         else
             while snowCounter > snowTime do
                 createSnowParticle()

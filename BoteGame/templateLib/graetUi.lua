@@ -1,5 +1,6 @@
 local Button = require("templateLib.graetUi.graetUiButton")
 local Slider = require("templateLib.graetUi.graetUiSlider")
+local Toggle = require("templateLib.graetUi.graetUiToggle")
 
 GraetUi = {}
 GraetUi.__index = GraetUi
@@ -73,6 +74,16 @@ function GraetUi:AddSlider(name, x, y, bsx, bsy, rsx, rsy, value, layer)
     layer[name] = Slider:New(x, y, bsx, bsy, rsx, rsy, value)
 end
 
+function GraetUi:AddToggle(name, x, y, sx, sy, value, layer)
+    if layer ~= nil then
+        if self.layers[layer] == nil then
+            self.layers[layer] = {}
+        end
+    end
+    local layer = self.layers[layer] or self.layers[self.currentLayer]
+
+    layer[name] = Toggle:New(x, y, sx, sy, value)
+end
 
 
 

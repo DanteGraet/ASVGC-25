@@ -10,9 +10,7 @@ end
 
 return {
     graphics = {
-        testing = {type = "button", displayName = "reloadTest"},
-        slider = {type = "slider", displayName = "Slider", value = 0.5},
-        slider2 = {type = "slider", displayName = "Slider Again", value = 0.24},
+        particles = {type = "slider", displayName = "Spawn Particles", value = 0.5},
     },
     audio = {
 
@@ -32,9 +30,7 @@ return {
     -- Order is here so we load it in at the same time, we can then hvae key, value tables in an ordeer that is not alphabetti-spaghetti.
     order = {
         graphics = {
-            "testing",
-            "slider",
-            "slider2",
+            "particles",
         },
         audio = {
     

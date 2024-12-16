@@ -197,7 +197,7 @@ function GraetSlider:Release(mx, my)
     if self.mouseMode == "click" then  
 
         if #self.func > 0 then
-            self.func[1](self.value)
+            self.func[1](self.value, self.func[2])
         end
         
     end
