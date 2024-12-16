@@ -144,7 +144,7 @@ local function update(dt)
         end
 
         for i = #obstacles,1, -1 do
-            obstacles[i]:Update(i)
+            obstacles[i]:Update(i, dt)
         end
 
         if settingsMenu.isOpen then

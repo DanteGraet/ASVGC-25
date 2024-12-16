@@ -13,22 +13,18 @@ function Obstacle:New(x, y, shape)
     obj.shape = shape or love.physics.newCircleShape(50)
     obj.body = love.physics.newBody(world, obj.x, obj.y, "dynamic")
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
-    obj.fixture:setUserData({type = "obstical", first = true, remove = false})
+    obj.fixture:setUserData({type = "obstacle", first = true, remove = false})
 
     return obj
 end
 
-function Obstacle:Update(no)
+function Obstacle:Update(no, dt)
+
     if self.fixture:getUserData().first then
         local data = self.fixture:getUserData()
         data.first = false
 
         self.body:setType("static")
-
-        self.x, self.y = self.body:getPosition()
-
-
-        --self.body = love.physics.newBody(world, self.x, self.y, "static")
 
         self.fixture:setUserData(data)
     elseif self.fixture:getUserData().remove then
@@ -40,6 +36,9 @@ function Obstacle:Update(no)
         table.remove(obstacles, no)
         return
     end
+
+    self.x, self.y = self.body:getPosition()
+
 end
 
 
