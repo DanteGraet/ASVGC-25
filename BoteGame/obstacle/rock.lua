@@ -1,7 +1,7 @@
 local rockShape = love.physics.newCircleShape(10)
 local rockImages = {}
 
-for i = 1, 1 do
+for i = 1, 11 do
     local image = love.graphics.newImage("image/obstacle/rock/rock"..i..".png")
     table.insert(rockImages,image)
 end

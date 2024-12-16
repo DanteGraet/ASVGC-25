@@ -38,16 +38,19 @@ function leaderRockObstacle:New(x, y)
 
                 chainDiff = chainDiff + math.random(600,800)
                 table.insert(obstacles, assets.obstacle.hugeRock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
+                angle = angle + math.random(-50,50)/100
 
             elseif randNum == 3 or randNum == 4 then
 
                 chainDiff = chainDiff + math.random(350,500)
                 table.insert(obstacles, assets.obstacle.bigRock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
+                angle = angle + math.random(-50,50)/100
 
             else
 
                 chainDiff = chainDiff + math.random(170,220)
                 table.insert(obstacles, assets.obstacle.rock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
+                angle = angle + math.random(-50,50)/100
 
             end
 
