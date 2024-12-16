@@ -26,15 +26,18 @@ function PlayerBoat:New(skin)
     obj.maxAngle = math.rad(120)
     obj.up = -math.rad(90)
 
+    obj.baseTurnSpeed = 0.4 --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness
+    obj.baseXSpeed = 50 --you wouldn't want that would you? no,because otherwise you will lose the game
+
     return obj
 end
 
 function PlayerBoat:Update(dt, inputs)
     if inputs.left and not inputs.right then
-        self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed), self.up - self.maxAngle/2)
+        self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up - self.maxAngle/2)
     end
     if inputs.right and not inputs.left then
-        self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed), self.up + self.maxAngle/2 )
+        self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up + self.maxAngle/2 )
     end
     if inputs.accelerate then
         self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
@@ -42,7 +45,7 @@ function PlayerBoat:Update(dt, inputs)
         self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
     end
 
-    self.x = self.x + math.cos(self.dir)*self.speed * dt
+    self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt
     self.y = self.y + math.sin(self.dir)*self.speed * dt
 
     -- current

@@ -15,7 +15,7 @@ local leaderRockObstacle = setmetatable({}, { __index = Obstacle })
 leaderRockObstacle.__index = leaderRockObstacle
 
 leaderRockObstacle.xFunc = function()
-    return 0
+    return math.random(-200,200)
 end
 
 function leaderRockObstacle:New(x, y)
