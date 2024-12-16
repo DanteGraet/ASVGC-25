@@ -224,6 +224,7 @@ local function draw()
         love.graphics.setColor(1,1,1)
 
         love.graphics.translate(sox, soy)
+        love.graphics.push()
 
         camera:TranslateCanvas()
 
@@ -243,6 +244,8 @@ local function draw()
 
         particles.drawParticles("top")
 
+        love.graphics.pop()
+        love.graphics.draw(assets.image.ui["Sprite-0007"])
 
         love.graphics.reset()
         love.graphics.scale(screenScale)
