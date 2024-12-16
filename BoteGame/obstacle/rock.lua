@@ -20,8 +20,6 @@ function rockObstacle:New(x, y)
     obj.body:setType("kinematic")
 
     --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
-
-    table.insert(obstacles, assets.obstacle.rock:New(obj.x+1,obj.y+1))
     
     return obj
 end
