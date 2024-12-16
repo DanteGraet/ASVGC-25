@@ -14,9 +14,9 @@ end
 local bigRockObstacle = setmetatable({}, { __index = Obstacle }) 
 bigRockObstacle.__index = bigRockObstacle
 
---bigRockObstacle.xFunc = function()
---    return math.random(-600,600)
---end
+bigRockObstacle.xFunc = function()
+    return math.random(-600,600)
+end
 
 function bigRockObstacle:New(x, y)
     local obj = Obstacle:New(x, y, bigRockShape)

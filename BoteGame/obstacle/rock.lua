@@ -1,7 +1,7 @@
 local rockShape = love.physics.newCircleShape(10)
 local rockImages = {}
 
-for i = 1, 9 do
+for i = 1, 1 do
     local image = love.graphics.newImage("image/obstacle/rock/rock"..i..".png")
     table.insert(rockImages,image)
 end
@@ -13,9 +13,9 @@ end
 local rockObstacle = setmetatable({}, { __index = Obstacle }) 
 rockObstacle.__index = rockObstacle
 
---rockObstacle.xFunc = function()
---    return math.random(-800,800)
---end
+rockObstacle.xFunc = function()
+    return math.random(-800,800)
+end
 
 function rockObstacle:New(x, y)
     local obj = Obstacle:New(x, y, rockShape)

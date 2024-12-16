@@ -14,9 +14,9 @@ end
 local leaderRockObstacle = setmetatable({}, { __index = Obstacle }) 
 leaderRockObstacle.__index = leaderRockObstacle
 
---leaderRockObstacle.xFunc = function()
---    return 0
---end
+leaderRockObstacle.xFunc = function()
+    return 0
+end
 
 function leaderRockObstacle:New(x, y)
     local obj = Obstacle:New(x, y, leaderRockShape)
