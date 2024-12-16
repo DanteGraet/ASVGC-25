@@ -72,7 +72,10 @@ function DynamicLoading:AddItem(path, current, original)
             current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
             print("Loaded Image " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
-            if original[2] ~= "blur" then
+            if original[2] == "blur" then
+                current[string.sub(file, 1, #file-4)]:setFilter("linear", "linear")
+
+            else
                 current[string.sub(file, 1, #file-4)]:setFilter("nearest", "nearest")
             end
 
