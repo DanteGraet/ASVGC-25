@@ -29,7 +29,7 @@ function ObstacleSpawner:Update()
             local totalWeight = 0
             for key, value in pairs(self.obsticals[zone.zone]) do
                 local noise = (love.math.noise(y/value.noiseDiv, value.noise/value.noiseDiv, love.math.getRandomSeed())-0.5)*2 * value.weightChange
-                totalWeight = value.spawnWeight + noise
+                totalWeight = totalWeight + value.spawnWeight + noise
 
                 table.insert(obsticalIndexList, {
                     name = key,
@@ -41,7 +41,13 @@ function ObstacleSpawner:Update()
 
             for i = 1,#obsticalIndexList do
                 if obsticalNumber < obsticalIndexList[i].weight then
-                    table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(math.random(-960, 960), y))
+
+                    if assets.obstacle[obsticalIndexList[i].name].xFunc then
+                        table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(assets.obstacle[obsticalIndexList[i].name].xFunc(), y))
+                    else
+                        table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(math.random(-960, 960), y))
+                    end
+
                     break
                 else
                     obsticalNumber = obsticalNumber - obsticalIndexList[i].weight

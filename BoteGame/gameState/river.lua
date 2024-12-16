@@ -234,7 +234,7 @@ local function draw()
         for i = 1,#obstacles do
             obstacles[i]:Draw(i)
 
-            --obstacles[i]:DrawHitbox()
+            --obstacles[i]:DrawFlyingSpaghettiMonster() --drawhitbox
         end
 
         particles.drawParticles("bottom")

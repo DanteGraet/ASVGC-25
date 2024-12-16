@@ -1,30 +1,59 @@
-local rockShape = love.physics.newCircleShape(10)
-local rockImages = {
-    love.graphics.newImage("image/obstacle/rock/1.png"),
-    love.graphics.newImage("image/obstacle/rock/2.png"),
-    love.graphics.newImage("image/obstacle/rock/3.png")
-}
+local leaderRockShape = love.physics.newCircleShape(25)
 
-for i = 1,#rockImages do
-    rockImages[i]:setFilter("nearest", "nearest")
+local leaderRockImages = {}
+
+for i = 1, 5 do
+    local image = love.graphics.newImage("image/obstacle/bigRock/bigRock"..i..".png")
+    table.insert(leaderRockImages,image)
+end
+
+for i = 1,#leaderRockImages do
+    leaderRockImages[i]:setFilter("nearest", "nearest")
 end
 
 local leaderRockObstacle = setmetatable({}, { __index = Obstacle }) 
 leaderRockObstacle.__index = leaderRockObstacle
 
+--leaderRockObstacle.xFunc = function()
+--    return 0
+--end
+
 function leaderRockObstacle:New(x, y)
-    local obj = Obstacle:New(x, y, rockShape)
+    local obj = Obstacle:New(x, y, leaderRockShape)
     setmetatable(obj, self)
-    obj.image = rockImages[math.random(1, #rockImages)]
+    obj.image = leaderRockImages[math.random(1, #leaderRockImages)]
 
     --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
 
     local angle = math.random(0,1)*(math.pi+1.5) - math.random(1,140)/100
+    local chainLength = math.random(2,5)
+    chainDiff = math.random(170,220)
 
-    for i = 1, 5 do
+    if chainLength > 0 then
+        for i = 1, chainLength do
 
-        table.insert(obstacles, assets.obstacle.rock:New(obj.x+200*i*math.cos(angle),obj.y+200*i*math.sin(angle)))
+            local randNum = math.random(1,5)
 
+            if randNum == 1 or randNum == 2 then
+
+                chainDiff = chainDiff + math.random(600,800)
+                table.insert(obstacles, assets.obstacle.hugeRock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
+
+            elseif randNum == 3 or randNum == 4 then
+
+                chainDiff = chainDiff + math.random(350,500)
+                table.insert(obstacles, assets.obstacle.bigRock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
+
+            else
+
+                chainDiff = chainDiff + math.random(170,220)
+                table.insert(obstacles, assets.obstacle.rock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
+
+            end
+
+            
+
+        end
     end
     
     return obj
