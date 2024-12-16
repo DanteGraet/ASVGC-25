@@ -19,19 +19,17 @@ function rockObstacle:New(x, y)
     obj.fixture:getUserData().first = false 
     obj.body:setType("kinematic")
 
-    --print(obj.body)
+    --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
+    
     return obj
 end
 
 function rockObstacle:Update(no, dt)
     if self.body then
 
-        local x, y = self.body:getPosition()
-
-        self.body:setPosition(x+100*dt,y)
+        --CODE FOR UPDATING OBSTACLE GOES HERE
 
         Obstacle.Update(self, no, dt)
-
     end
 end
 
