@@ -350,7 +350,7 @@ function River:FindHighAndLowPoints(channel, side, yPos)
     end
 
     --just guess at this point
-    return self.points[channel][1][2], self.points[channel][1][1]
+    return self.points[channel][1][1], self.points[channel][1][2]
 end
 
 function River:Draw(scale)
