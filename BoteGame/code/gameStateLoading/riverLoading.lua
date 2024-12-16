@@ -19,6 +19,10 @@ local toLoad = {
 
     {"obstacle/obstacle.lua", "run"},
 
+
+    {"image/ui/Sprite-0007.png"},
+
+
 }
 
 for i = 1,#riverZones do

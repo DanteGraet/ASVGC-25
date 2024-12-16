@@ -4,6 +4,12 @@ local function devZoneDifficulty(percentage)
     return 0.01
 end
 
+local function devZoneDifficulty2(percentage)
+    -- a function that SHOULD increase the return amount if hard mode is active
+    -- might want to add a dicciculty curve also with math so...
+    return 0.1
+end
+
 return {
     {
         zone = "boulderValley",
@@ -20,7 +26,7 @@ return {
     {
         zone = "devZone",
         distance = 10000,
-        difficultyFunction = devZoneDifficulty,
+        difficultyFunction = devZoneDifficulty2,
         transition = 100,
     },
     {
