@@ -12,6 +12,10 @@ function PlayerBoat:New(skin)
     obj.x = 0
     obj.y = 0
 
+    obj.maxHealth = 5
+    obj.health = 2
+
+
     obj.speed = 100
     obj.acceleration = 10
     obj.maxSpeed = 150
@@ -27,10 +31,10 @@ end
 
 function PlayerBoat:Update(dt, inputs)
     if inputs.left and not inputs.right then
-        self.dir = math.max(self.dir - self.turnSpeed*dt, self.up - self.maxAngle/2)
+        self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed), self.up - self.maxAngle/2)
     end
     if inputs.right and not inputs.left then
-        self.dir = math.min(self.dir + self.turnSpeed*dt, self.up + self.maxAngle/2 )
+        self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed), self.up + self.maxAngle/2 )
     end
     if inputs.accelerate then
         self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)

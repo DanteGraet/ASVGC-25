@@ -60,6 +60,7 @@ local function load()
     love.physics.setMeter(100)
 
     player = assets.code.player.playerBoat():New()
+    ui = assets.code.player.playerUi()
     camera = assets.code.camera():New(0, 0, 960, 900)
     river = assets.code.river.river():New()
     riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName]())
@@ -245,7 +246,8 @@ local function draw()
         particles.drawParticles("top")
 
         love.graphics.pop()
-        love.graphics.draw(assets.image.ui["Sprite-0007"])
+        --love.graphics.draw(assets.image.ui["Sprite-0007"])
+
 
         love.graphics.reset()
         love.graphics.scale(screenScale)
@@ -253,6 +255,8 @@ local function draw()
         local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
         local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
         love.graphics.translate(sox, soy)
+
+        ui:Draw()
     
         local gs = tweens.sineInOut(gameSpeed)
         

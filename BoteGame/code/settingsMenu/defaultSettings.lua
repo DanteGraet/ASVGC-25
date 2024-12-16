@@ -10,7 +10,12 @@ end
 
 return {
     graphics = {
+        uiScale = {type = "slider", displayName = "UI Scale", value = 0.5},
+        uiSide = {type = "toggle", displayName = "Left Ui]I", value = true},
+        uiLock = {type = "toggle", displayName = "Lock UI to 16 X 9", value = false},
+
         particles = {type = "slider", displayName = "Spawn Particles", value = 0.5},
+
     },
     audio = {
 
@@ -30,6 +35,9 @@ return {
     -- Order is here so we load it in at the same time, we can then hvae key, value tables in an ordeer that is not alphabetti-spaghetti.
     order = {
         graphics = {
+            "uiScale",
+            "uiSide",
+            "uiLock",
             "particles",
         },
         audio = {

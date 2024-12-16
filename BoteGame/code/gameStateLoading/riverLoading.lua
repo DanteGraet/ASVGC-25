@@ -7,6 +7,8 @@ local toLoad = {
 
     -- actual player code
     {"code/player/playerBoat.lua"},
+    {"code/player/playerUi.lua"},
+
 
     {"code/river/river.lua"},
     {"code/river/generator/riverGenerator.lua"},
@@ -20,7 +22,11 @@ local toLoad = {
     {"obstacle/obstacle.lua", "run"},
 
 
-    {"image/ui/Sprite-0007.png"},
+    {"image/ui/needle.png"},
+    {"image/ui/speedometer.png"},
+    {"image/ui/speedometerFront.png"},
+    {"image/ui/currentBar.png"},
+
 
 
 }
