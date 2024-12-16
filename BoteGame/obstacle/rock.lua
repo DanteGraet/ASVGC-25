@@ -16,9 +16,7 @@ function rockObstacle:New(x, y)
     local obj = Obstacle:New(x, y, rockShape)
     setmetatable(obj, self)
     obj.image = rockImages[math.random(1, #rockImages)]
-    obj.fixture:getUserData().first = false 
-    obj.body:setType("kinematic")
-
+    
     --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
     
     return obj
