@@ -53,6 +53,11 @@ function love.resize(w, h)
     end
 end
 
+function love.focus(focus)
+    if game[gameState] and game[gameState].focus then
+        game[gameState].focus(focus)
+    end
+end
 
 function love.load()
     if game[gameState] and game[gameState].load then

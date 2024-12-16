@@ -26,12 +26,12 @@ local function GenerateLastPoints(zone)
     table.insert(lastPoints[1], {})
 
     lastPoints[1][1].x = -size/2
-    lastPoints[1][1].y = (1080 - love.graphics.getHeight()*scale)
+    lastPoints[1][1].y = (1080/scale)
 
     table.insert(lastPoints[1], {})
 
     lastPoints[1][2].x = size/2
-    lastPoints[1][2].y = (1080 - love.graphics.getHeight()*scale)
+    lastPoints[1][2].y = (1080/scale)
 
     return lastPoints
 end

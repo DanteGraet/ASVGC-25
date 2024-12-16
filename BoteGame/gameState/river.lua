@@ -92,6 +92,9 @@ function GetRiverScale()
     return {scale, sox}
 end
 
+local function focus(focus)
+    settingsMenu.isOpen = true
+end
 
 local function update(dt)
     step = true
@@ -287,6 +290,7 @@ end
 
 return {
     load = load,
+    focus = focus,
     mousepressed = mousepressed,
     mousereleased = mousereleased,
     keyreleased = keyreleased,

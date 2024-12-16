@@ -23,6 +23,8 @@ function UI.Draw()
         end
     
         side = 1
+    elseif not settings.graphics.uiLock.value then
+        x = -sox + 10
     end
 
     if settings.graphics.uiLock.value then
@@ -42,7 +44,7 @@ function UI.Draw()
 
     local playerSpeedPercentage = player.speed/player.maxSpeed
     local dir = playerSpeedPercentage*math.rad(210) - math.rad(30)
-    love.graphics.draw(assets.image.ui.needle, x - 480*scale, y - 320*scale, dir, scale, scale, (assets.image.ui.needle:getWidth())-32*side, assets.image.ui.needle:getHeight()/2)
+    love.graphics.draw(assets.image.ui.needle, x - 480*scale + 960*(1-side)*scale, y - 320*scale, dir, scale, scale, (assets.image.ui.needle:getWidth())-32, assets.image.ui.needle:getHeight()/2)
 end
 
 return UI
