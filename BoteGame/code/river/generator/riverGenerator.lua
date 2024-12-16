@@ -88,12 +88,8 @@ function RiverGenerator:Update()
 end
 
 function RiverGenerator:NextSegment()
-    if nextSegment_error:pop() ~= nil then
-        print(nextSegment_error:pop())
-    end
 
     if self.generatingSegment == false then
-        print("starting generating")
         -- run if we are not already
         self.generatingSegment = true
 
@@ -117,7 +113,6 @@ function RiverGenerator:NextSegment()
 
         self.nextSegmentThread:start()
     else
-        print("generating ...")
 
         local result = nextSegment_return:pop()
         

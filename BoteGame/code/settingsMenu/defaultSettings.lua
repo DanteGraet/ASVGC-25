@@ -11,7 +11,7 @@ end
 return {
     graphics = {
         uiScale = {type = "slider", displayName = "UI Scale", value = 0.5},
-        uiSide = {type = "toggle", displayName = "Left Ui]I", value = true},
+        uiSide = {type = "toggle", displayName = "Left Ui", value = true},
         uiLock = {type = "toggle", displayName = "Lock UI to 16 X 9", value = false},
 
         particles = {type = "slider", displayName = "Spawn Particles", value = 0.5},
