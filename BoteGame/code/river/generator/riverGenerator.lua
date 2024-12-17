@@ -71,6 +71,7 @@ function RiverGenerator:GetPercentageThrough(y)
         distRemaining = distRemaining - zone.distance - zone.transition
         
     end
+    return 1
 end
 
 function RiverGenerator:Update()

@@ -254,7 +254,23 @@ end
 
 function River:GetCurrent(yPos, xPos) -- returns the average direction angle of each path?
     local angle, speed
-    speed = 100  -- A temporary value TRUST :D
+
+    local p = riverGenerator:GetPercentageThrough(player.y)
+   
+    zones = riverGenerator:GetZone(camera.y, true) 
+
+    if type(zones[1]) == "table" then --if we are in a transition
+
+        current = (zones[1].current(p) or 0)*(1-zones[3]) + (zones[2].current(p) or 0)*zones[3] 
+
+    else --just set the snow amount to what it needs to be
+
+        current = zones.current(p) or 0 --current is a GLOBAL VALUE for a reason btw
+
+    end    
+
+    speed = current
+
 
     if self.points and #self.points > 0 then
 

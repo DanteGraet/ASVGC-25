@@ -37,8 +37,8 @@ function PlayerBoat:New(skin)
     obj.maxAngle = math.rad(120)
     obj.up = -math.rad(90)
 
-    obj.baseTurnSpeed = 0.4 --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness
-    obj.baseXSpeed = 50 --you wouldn't want that would you? no,because otherwise you will lose the game
+    obj.baseTurnSpeed = 1 --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness
+    obj.baseXSpeed = 0 --you wouldn't want that would you? no,because otherwise you will lose the game
 
     return obj
 end
@@ -60,6 +60,8 @@ function PlayerBoat:Update(dt, inputs)
         elseif inputs.decelerate then
             self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
         end
+
+        self.baseXSpeed = 10*math.sqrt(current or 0)
 
         self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt
         self.y = self.y + math.sin(self.dir)*self.speed * dt

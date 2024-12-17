@@ -4,21 +4,25 @@
 
 function spawnSnow(dt)
 
+    local p = riverGenerator:GetPercentageThrough(player.y)
+
     if not snowAmount then windSpeed = 0 snowAmount = 0 end
 
     zones = riverGenerator:GetZone(camera.y, true) 
 
-    if type(zones[1]) == "table" then --if we are in a transition
+    if type(zones[1]) == "table" and zones[1].snowAmount and zones[2].snowAmount  then --if we are in a transition
 
-        snowAmount = (zones[1].snowAmount or 0)*(1-zones[3]) + (zones[2].snowAmount or 0)*zones[3] 
-        windSpeed = (zones[1].windSpeed or 100)*(1-zones[3]) + (zones[2].windSpeed or 100)*zones[3] 
+        snowAmount = (zones[1].snowAmount(p) )*(1-zones[3]) + (zones[2].snowAmount(p) )*zones[3] 
+        windSpeed = (zones[1].windSpeed(p) )*(1-zones[3]) + (zones[2].windSpeed(p) )*zones[3] 
 
-    else --just set the snow amount to what it needs to be
+    elseif zones.snowAmount then --just set the snow amount to what it needs to be
 
-        snowAmount = zones.snowAmount or 0
-        windSpeed = zones.windSpeed or 100
+        snowAmount = zones.snowAmount(p) or 0
+        windSpeed = zones.windSpeed(p) or 100
 
-    end    
+    else
+        snowAmount = 0 
+    end
 
     if snowAmount > 0 then
         snowTime = 1/snowAmount
