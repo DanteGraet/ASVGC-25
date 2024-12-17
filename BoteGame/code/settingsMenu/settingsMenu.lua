@@ -72,10 +72,14 @@ local function toggleFunction(value, toggle)
 end
 
 function SettingsMenu:toggleFullscreen()
+    local mx, my = love.mouse.getPosition()
 
+    mx, my = mx/screenScale, my/screenScale
     love.window.setFullscreen(not love.window.getFullscreen())
     love.resize(love.graphics.getWidth(), love.graphics.getHeight())
     self.Ui:GetButtons("settings")["fullscreen"].value = love.window.getFullscreen()
+
+    love.mouse.setPosition(mx*screenScale, my*screenScale)
 end
 
 
