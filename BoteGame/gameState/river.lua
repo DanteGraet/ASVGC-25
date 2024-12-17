@@ -81,7 +81,7 @@ local function load()
         inputManager = assets.code.inputManager():New( keybindSaveLocation )
     else
         print("Loading default keybinds")
-        inputManager = assets.code.inputManager():New( assets.code.settingsMenu.keybinds() )
+        inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
 
     end
 
