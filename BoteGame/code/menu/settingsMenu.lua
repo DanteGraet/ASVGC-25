@@ -169,11 +169,14 @@ function SettingsMenu:Update(dt, x, y)
 end
 
 
-function SettingsMenu:Draw(gs)
+function SettingsMenu:Draw(gs, dark)
     love.graphics.reset()
 
-    love.graphics.setColor(0,0,0,0.5*gs)
-    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    if not dark then
+        love.graphics.setColor(0,0,0,0.5*gs)
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    end
+
 
     love.graphics.scale(screenScale)
 
