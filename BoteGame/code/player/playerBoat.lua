@@ -1,4 +1,4 @@
-local playerShape = love.physics.newCircleShape(15)
+local playerShape = love.physics.newCircleShape(22)
 
 local PlayerBoat = {}
 PlayerBoat.__index = PlayerBoat
@@ -67,7 +67,11 @@ function PlayerBoat:Update(dt, inputs)
             self.current = currentAngle
         end
 
-        spawnTrail(dt)
+        spawnTrail(dt) --spawning damage smoke is in here also
+
+        if not uiSineCounter then uiSineCounter = 0 end
+        uiSineCounter = uiSineCounter + dt
+        if uiSineCounter > 2*math.pi then uiSineCounter = 0 end
 
         self.body:setPosition(self.x, self.y)
     else

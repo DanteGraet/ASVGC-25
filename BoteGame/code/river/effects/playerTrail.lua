@@ -17,6 +17,12 @@ function spawnTrail(dt)
         end
     end
 
+    --[[player damage smoke --i added this and then didn't like it so :P
+
+    if player.health < 3 and  math.random(1, player.health*10) == 1 then
+        particles.spawnParticle("damageSmoke",player.x,player.y)
+    end]]
+
 end
 
 function createTrailParticle(num)

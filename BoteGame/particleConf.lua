@@ -157,6 +157,49 @@ local function loadParticleClasses()
 
 
 
+
+
+    particleClass["damageSmoke"] = function(particle,spawnX,spawnY,spawnAngle,spawnData)
+
+        particle.x = spawnX + love.math.random(-20,20)
+        particle.y = spawnY + love.math.random(-20,20)
+
+--        particle.angle = math.rad(love.math.random(-90,90))-player.dir
+
+--        particle.speed = love.math.random(20,50)
+
+        particle.life = love.math.random(50,150)/100
+
+        particle.layer = "top"
+
+        local grey = love.math.random(30,70)/100
+
+        particle.colour = {grey,grey,grey}
+
+        if spawnData then particle.data = spawnData end
+    end
+
+    particleUpdate["damageSmoke"] = function(particle,dt)
+
+--        particle.x = particle.x + particle.speed*math.cos(particle.angle)*dt
+--        particle.y = particle.y + particle.speed*math.sin(particle.angle)*dt
+
+        if particle.life > 0 then
+            particle.life = particle.life - dt
+        else
+            particle.delete = true
+        end
+
+    end
+
+    particleDraw["damageSmoke"] = function(particle)
+        particle.colour[4] = quindoc.clamp(particle.life,0,0.5)
+        love.graphics.setColor(particle.colour)
+        love.graphics.circle("fill",particle.x,particle.y,5)
+    end
+
+
+
 end
 
 return loadParticleClasses

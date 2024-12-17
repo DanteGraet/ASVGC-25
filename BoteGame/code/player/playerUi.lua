@@ -31,6 +31,12 @@ function UI.Draw()
         y = 1080 - 10
     end
 
+    if player.health < 3 then 
+        love.graphics.setColor(1,1,1,0.5*math.sin(uiSineCounter*3)/player.health)
+        love.graphics.draw(assets.image.ui.ouchGlow, x+12.5, y+12.5, 0, scale, scale, assets.image.ui.ouchGlow:getWidth()*side, assets.image.ui.ouchGlow:getHeight()) 
+        love.graphics.setColor(1,1,1,1)
+    end
+
     love.graphics.draw(assets.image.ui.currentBar, x, y, 0, scale, scale, assets.image.ui.currentBar:getWidth()*side + 520 - 1040*(1-side), assets.image.ui.currentBar:getHeight())
     love.graphics.draw(assets.image.ui.speedometer, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
 
@@ -39,8 +45,12 @@ function UI.Draw()
     local angle2 = -math.rad(215)
     love.graphics.arc("fill", x - 480*scale + 960*(1-side)*scale, y - 320*scale, 480*scale, angle1, angle2)
     love.graphics.setColor(1,1,1)
-    love.graphics.draw(assets.image.ui.speedometerFront, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
-
+    
+    if player.health < 2 then
+        love.graphics.draw(assets.image.ui.speedometerFrontVeryDamage, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
+    elseif player.health < 3 then
+        love.graphics.draw(assets.image.ui.speedometerFrontDamage, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
+    else love.graphics.draw(assets.image.ui.speedometerFront, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight()) end
 
     local playerSpeedPercentage = player.speed/player.maxSpeed
     local dir = playerSpeedPercentage*math.rad(210) - math.rad(30)
