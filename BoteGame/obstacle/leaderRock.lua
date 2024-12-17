@@ -1,4 +1,4 @@
-local leaderRockShape = love.physics.newCircleShape(25)
+local leaderRockShape = love.physics.newCircleShape(25*3)
 
 local leaderRockImages = {}
 

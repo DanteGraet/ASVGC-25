@@ -35,7 +35,7 @@ function UI.Draw()
     love.graphics.draw(assets.image.ui.speedometer, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
 
     love.graphics.setColor(.9,.1,.2)
-    local angle1 = math.rad(0 - (215*(1-(player.health/player.maxHealth)))) 
+    local angle1 = math.rad(35 - ((215 + 35)*(1-(player.health/player.maxHealth)))) 
     local angle2 = -math.rad(215)
     love.graphics.arc("fill", x - 480*scale + 960*(1-side)*scale, y - 320*scale, 480*scale, angle1, angle2)
     love.graphics.setColor(1,1,1)

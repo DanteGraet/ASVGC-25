@@ -47,7 +47,11 @@ local function resize()
 end
 
 
+
 local function load()
+    love.physics.setMeter(100)
+
+
     loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
     {
         {"image/titleScreen/parallax/1.png", 0},
@@ -57,7 +61,8 @@ local function load()
 
     world = love.physics.newWorld(0, 0, false)
     world:setCallbacks( beginContact, endContact, preSolve, postSolve )
-    love.physics.setMeter(100)
+
+
 
     player = assets.code.player.playerBoat():New()
     ui = assets.code.player.playerUi()
@@ -135,15 +140,33 @@ local function update(dt)
         local contacts = world:getContacts()
 
         for _, contact in ipairs(contacts) do
-            local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
-            local dataA = fixtureA:getUserData()
-            local dataB = fixtureB:getUserData()
-            if  dataA.first then
-                dataA.remove = true
-                fixtureA:setUserData(dataA)
-            elseif dataB.first then
-                dataB.remove = true
-                fixtureB:setUserData(dataB)
+            if contact:isTouching() then
+                local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
+                local dataA = fixtureA:getUserData()
+                local dataB = fixtureB:getUserData()
+                if dataA.first then
+                    dataA.remove = true
+                    fixtureA:setUserData(dataA)
+                elseif dataB.first then
+                    dataB.remove = true
+                    fixtureB:setUserData(dataB)
+                elseif dataA.type == "player" or dataB.type == "player" then
+                    local playerData
+                    local collideData
+
+                    if dataA.type == "player" then
+                        playerData = dataA
+                        collideData = dataB
+                    else
+                        playerData = dataB
+                        collideData = dataA
+                    end
+
+                    if not collideData.hasCollided then
+                        collideData.hasCollided = true
+                        player.health = player.health - 1
+                    end
+                end    
             end
         end
 

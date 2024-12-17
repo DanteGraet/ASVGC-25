@@ -51,5 +51,13 @@ end
 
 
 function Obstacle:DrawHitbox()
+    if self.fixture:getUserData().hasCollided then
+        love.graphics.setColor(1,0,0)
+    end
+
     love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
+
+    if self.fixture:getUserData().hasCollided then
+        love.graphics.setColor(1,1,1)
+    end
 end

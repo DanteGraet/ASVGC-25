@@ -1,4 +1,4 @@
-local bigRockShape = love.physics.newCircleShape(25)
+local bigRockShape = love.physics.newCircleShape(25*3)
 local bigRockImages = {}
 
 for i = 1, 5 do

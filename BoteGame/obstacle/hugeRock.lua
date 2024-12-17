@@ -1,4 +1,4 @@
-local hugeRockShape = love.physics.newCircleShape(50)
+local hugeRockShape = love.physics.newCircleShape(50*3)
 local hugeRockImages = {
     love.graphics.newImage("image/obstacle/hugeRock/hugeRock1.png"),
     love.graphics.newImage("image/obstacle/hugeRock/hugeRock2.png"),

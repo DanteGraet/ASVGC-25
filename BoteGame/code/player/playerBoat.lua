@@ -1,4 +1,4 @@
-local playerShape = love.physics.newCircleShape(20)
+local playerShape = love.physics.newCircleShape(15)
 
 local PlayerBoat = {}
 PlayerBoat.__index = PlayerBoat
@@ -8,9 +8,11 @@ function PlayerBoat:New(skin)
     local obj = setmetatable({}, PlayerBoat)
 
     obj.shape = playerShape
-    obj.body = love.physics.newBody(world, obj.x, obj.y, "kinematic")
+    obj.body = love.physics.newBody(world, obj.x, obj.y, "dynamic")
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
     obj.fixture:setUserData({type = "player"})
+
+    obj.fixture:setSensor(true)
 
     obj.image = skin or assets.image.player.default
     obj.imageOx = obj.image:getWidth()/2
@@ -20,7 +22,8 @@ function PlayerBoat:New(skin)
     obj.y = 0
 
     obj.maxHealth = 5
-    obj.health = 2
+    obj.health = obj.maxHealth
+    obj.deathTime = 0
 
     obj.speed = 100
     obj.acceleration = 100
@@ -39,50 +42,69 @@ function PlayerBoat:New(skin)
 end
 
 function PlayerBoat:Update(dt, inputs)
-    if inputs.left and not inputs.right then
-        self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up - self.maxAngle/2)
+    if player.health > 0 then
+        if inputs.left and not inputs.right then
+            self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up - self.maxAngle/2)
+        end
+        if inputs.right and not inputs.left then
+            self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up + self.maxAngle/2 )
+        end
+        if inputs.accelerate then
+            self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
+        elseif inputs.decelerate then
+            self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
+        end
+
+        self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt
+        self.y = self.y + math.sin(self.dir)*self.speed * dt
+
+        -- current
+        local currentAngle, currentSpeed = river:GetCurrent(self.y)
+        if currentAngle then
+            self.x = self.x + math.cos(currentAngle)*currentSpeed * dt
+            self.y = self.y + math.sin(currentAngle)*currentSpeed * dt
+
+            self.current = currentAngle
+        end
+
+        spawnTrail(dt)
+
+        self.body:setPosition(self.x, self.y)
+    else
+        self.deathTime = self.deathTime + dt
+
+        local speedEase = tweens.sineInOut(math.max(1-(self.deathTime/2.5), 0))
+
+        self.x = self.x + (math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt)*speedEase
+        self.y = self.y + (math.sin(self.dir)*self.speed * dt) * speedEase
+
+        -- current
+        local currentAngle, currentSpeed = river:GetCurrent(self.y)
+        if currentAngle then
+            self.x = self.x + (math.cos(currentAngle)*currentSpeed * dt) * speedEase
+            self.y = self.y + (math.sin(currentAngle)*currentSpeed * dt) * speedEase
+
+            self.current = currentAngle
+        end
     end
-    if inputs.right and not inputs.left then
-        self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up + self.maxAngle/2 )
-    end
-    if inputs.accelerate then
-        self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
-    elseif inputs.decelerate then
-        self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
-    end
-
-    self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt
-    self.y = self.y + math.sin(self.dir)*self.speed * dt
-
-    -- current
-    local currentAngle, currentSpeed = river:GetCurrent(self.y)
-    if currentAngle then
-        self.x = self.x + math.cos(currentAngle)*currentSpeed * dt
-        self.y = self.y + math.sin(currentAngle)*currentSpeed * dt
-
-        self.current = currentAngle
-    end
-
-    spawnTrail(dt)
-
-    self.body:setPosition(self.x, self.y)
 end
 
 function PlayerBoat:Draw()
-    if river:IsInBounds(self.x, self.y ) then
-        love.graphics.setColor(1,1,1)
-    else
-        love.graphics.setColor(1,0,0)
+    if player.health > 0 then
+        love.graphics.draw(self.image, self.x, self.y, self.dir, 3, 3, self.imageOx, self.imageOy)
     end
-
-    love.graphics.draw(self.image, self.x, self.y, self.dir, 3, 3, self.imageOx, self.imageOy)
-
-
 end
 
 
 function PlayerBoat:DrawHitbox()
     love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
+
+    love.graphics.setColor(1,0,0)
+    local x, y = self.body:getLinearVelocity( )
+    love.graphics.line(self.body:getX(), self.body:getY(), self.body:getX() +x , self.body:getY()+y)
+
+
+    love.graphics.setColor(1,1,1)
 
     if self.current then   
         love.graphics.line(self.x, self.y, self.x+math.cos(self.current)*100, self.y+math.sin(self.current)*100)
