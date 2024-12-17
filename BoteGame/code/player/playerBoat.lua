@@ -132,6 +132,8 @@ function PlayerBoat:TakeDamage(amount)
     if self.immunity == 0 then
         self.health = self.health - amount
         self.immunity = 1
+
+        camera:AddScreenShake(10)
     end
 end
 

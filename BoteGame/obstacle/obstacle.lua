@@ -11,7 +11,9 @@ function Obstacle:New(x, y, shape)
     obj.dir = math.rad(math.random(1,4)*90)
 
     obj.shape = shape or love.physics.newCircleShape(50)
-    obj.body = love.physics.newBody(world, obj.x, obj.y, "static")
+
+    -- DONT CHNAGE THIS AGAIN. IT HAS TO BE DYNAMIC BY DEFAULT
+    obj.body = love.physics.newBody(world, obj.x, obj.y, "dynamic")
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
     obj.fixture:setUserData({type = "obstacle", first = true, remove = false})
 

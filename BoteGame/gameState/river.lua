@@ -10,6 +10,9 @@ local steping = false
 
 local loading
 
+local pauseMenu
+local settingsTween
+
 -- deefault values
 riverBorders = {
     left = -960,
@@ -61,7 +64,7 @@ local function load()
     world = love.physics.newWorld(0, 0, false)
     world:setCallbacks( beginContact, endContact, preSolve, postSolve )
 
-
+    pauseMenu = PauseMenu:New()--assets.code.menu.pauseMenu():New()
 
     player = assets.code.player.playerBoat():New()
     ui = assets.code.player.playerUi()
@@ -97,7 +100,7 @@ function GetRiverScale()
 end
 
 local function focus(focus)
-    settingsMenu.isOpen = true
+    pauseMenu.isOpen = true
 end
 
 local function update(dt)
@@ -127,6 +130,7 @@ local function update(dt)
 
         -- update the camera and similar variables after the player so it doesn't lag behind slightly
         camera:SetPosition(0, player:GetPosition().y)
+        camera:Update(dt*gs)
 
         riverBorders.up =    player.y - camera.oy
         riverBorders.down =  player.y - camera.oy + love.graphics.getHeight()/scale
@@ -175,13 +179,17 @@ local function update(dt)
             obstacles[i]:Update(i, dt)
         end
 
-        if settingsMenu.isOpen then
+        if pauseMenu.isOpen then
             local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
         
-            settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+            pauseMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
 
             gameSpeed = math.max(gameSpeed - dt*2, 0)
+
+            if pauseMenu.settingsTimer > 0 then
+                settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+            end
         else
             gameSpeed = math.min(gameSpeed + dt*2, 1)
         end
@@ -215,6 +223,8 @@ local function mousepressed(x, y, button)
 
     if settingsMenu.isOpen == true then
         settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    elseif pauseMenu.isOpen == true then
+        pauseMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     end
 end
 
@@ -223,7 +233,9 @@ local function mousereleased(x, y, button)
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
     if settingsMenu.isOpen == true then
-        settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)        
+        settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
+    elseif pauseMenu.isOpen == true then
+        pauseMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
     end
 end
 
@@ -232,7 +244,8 @@ local function keyreleased(key)
     local input = inputManager:Send("keyboard", key)
 
     if input == "pause" then
-        settingsMenu.isOpen = not settingsMenu.isOpen
+        if settingsMenu.isOpen then settingsMenu.isOpen = false
+        elseif player.health > 0 then pauseMenu.isOpen = not pauseMenu.isOpen end
     end
 
     if key == "return" and step then
@@ -290,16 +303,19 @@ local function draw()
     
         local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
         local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-        love.graphics.translate(sox, soy)
+        local sx, sy = camera:GetShake()
+        love.graphics.translate(sox + sx, soy + sy)
 
         ui:Draw()
     
         local gs = tweens.sineInOut(gameSpeed)
         
         if 1-gs > 0 then
-        --if settingsMenu.isOpen then
-            
-            settingsMenu:Draw(1-gs)
+            pauseMenu:Draw(1-gs)
+
+            if pauseMenu.settingsTimer > 0 then
+                settingsMenu:Draw(tweens.sineInOut(pauseMenu.settingsTimer), true)
+            end
         end
 
         love.graphics.reset()
