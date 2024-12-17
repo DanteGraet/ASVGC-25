@@ -33,7 +33,10 @@ end
 
 function tsb.playButtonRelease()
     -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
-    gameState = "levelSelect"
+    --gameState = "levelSelect"
+
+    riverName = "mvpRiver"
+    gameState = "river"
 end
 
 function tsb.devRiverButtonRelease()

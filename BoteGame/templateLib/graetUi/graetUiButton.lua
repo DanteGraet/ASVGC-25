@@ -6,7 +6,7 @@ local Image = require("templateLib.graetUi.graetUiImageElement")
 local GraetButton = {}
 GraetButton.__index = GraetButton
 
-local drawHitboxes = true
+local drawHitboxes = false
 
 function GraetButton.toglehitboxes()
     drawHitboxes = not drawHitboxes
