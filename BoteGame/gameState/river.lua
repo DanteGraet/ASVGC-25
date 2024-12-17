@@ -130,6 +130,7 @@ local function update(dt)
 
         -- update the camera and similar variables after the player so it doesn't lag behind slightly
         camera:SetPosition(0, player:GetPosition().y)
+        camera:Update(dt*gs)
 
         riverBorders.up =    player.y - camera.oy
         riverBorders.down =  player.y - camera.oy + love.graphics.getHeight()/scale
@@ -302,15 +303,14 @@ local function draw()
     
         local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
         local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-        love.graphics.translate(sox, soy)
+        local sx, sy = camera:GetShake()
+        love.graphics.translate(sox + sx, soy + sy)
 
         ui:Draw()
     
         local gs = tweens.sineInOut(gameSpeed)
         
         if 1-gs > 0 then
-            
-            
             pauseMenu:Draw(1-gs)
 
             if pauseMenu.settingsTimer > 0 then
