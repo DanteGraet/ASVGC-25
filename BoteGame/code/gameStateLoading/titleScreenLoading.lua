@@ -13,7 +13,7 @@ return {
     {"code/titleScreen/titleScreenButtons.lua"},
 
     --settings menu stuff is also here :D
-    {"code/settingsMenu/settingsMenu.lua"},
+    {"code/menu/settingsMenu.lua"},
     {"image/ui/settings/bar.png", "blur"},
     {"image/ui/settings/indicator.png", "blur"},
     {"image/ui/settings/check.png", "blur"},

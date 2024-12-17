@@ -46,7 +46,7 @@ local function load()
     titleScreenButtons = assets.code.titleScreen.titleScreenButtons()
     titleScreenButtons.CreateButtons(titleScreenUI)
 
-    local tempMenu = assets.code.settingsMenu.settingsMenu()
+    local tempMenu = assets.code.menu.settingsMenu()
     settingsMenu = SettingsMenu:New()
 end
 

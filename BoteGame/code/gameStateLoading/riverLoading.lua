@@ -17,7 +17,7 @@ local toLoad = {
 
     {"code/camera.lua"},
     {"code/inputManager.lua"},
-    {"code/settingsMenu/keybinds.lua"},
+    {"code/menu/keybinds.lua"},
 
     {"obstacle/obstacle.lua", "run"},
 
