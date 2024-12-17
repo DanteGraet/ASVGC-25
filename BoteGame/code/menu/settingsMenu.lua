@@ -26,7 +26,7 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
     obj.isOpen = false
     obj.scroll = 0
 
-    settings = love.filesystem.load("code/settingsMenu/defaultSettings.lua")()
+    settings = love.filesystem.load("code/menu/defaultSettings.lua")()
 
     if DEV then
         print("========= Loaded Default Settings =========")
