@@ -6,7 +6,7 @@ local Image = require("templateLib.graetUi.graetUiImageElement")
 local GraetSlider = {}
 GraetSlider.__index = GraetSlider
 
-local drawHitboxes = true
+local drawHitboxes = false
 
 function GraetSlider.toglehitboxes()
     drawHitboxes = not drawHitboxes
@@ -211,12 +211,13 @@ end
 function GraetSlider:Draw(ox, oy)
     local startX = ((self.railSize - self.bsx)*self.value)
 
-    for i = 1,#self.railGraphics do
-        self.railGraphics[i]:Draw(self.x + startX + ox, self.y + oy, self.mouseMode, self.modeTryangle)
-    end
     for i = 1,#self.graphics do
         self.graphics[i]:Draw(self.x + ox, self.y + oy, self.mouseMode, self.modeTryangle)
     end
+    for i = 1,#self.railGraphics do
+        self.railGraphics[i]:Draw(self.x + startX + ox, self.y + oy, self.mouseMode, self.modeTryangle)
+    end
+
 
     if drawHitboxes then
         if self.mouseMode == "click" then

@@ -89,9 +89,8 @@ end
 
 function love.keypressed(key)
     if key == "f11" then
-        love.window.setFullscreen(not love.window.getFullscreen())
+        settingsMenu:toggleFullscreen()
 
-        love.resize(love.graphics.getWidth(), love.graphics.getHeight())
     end
 
     if key == "g" and love.keyboard.isDown("lctrl") and DEV then

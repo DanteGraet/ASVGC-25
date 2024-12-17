@@ -237,16 +237,26 @@ local function draw()
         river:Draw(scale)
         for i = 1,#obstacles do
             obstacles[i]:Draw(i)
-
-            --obstacles[i]:DrawFlyingSpaghettiMonster() --drawhitbox
         end
 
         particles.drawParticles("bottom")
 
         player:Draw()
-      --  river:DrawPoints()
+      --  
 
         particles.drawParticles("top")
+
+        --draww hitboxes over everythingh
+        if settings.dev.drawHitboxes.value then
+            river:DrawPoints()
+
+            for i = 1,#obstacles do
+                obstacles[i]:DrawHitbox() --
+            end
+            
+            player:DrawHitbox()
+        end
+
 
         love.graphics.pop()
         --love.graphics.draw(assets.image.ui["Sprite-0007"])

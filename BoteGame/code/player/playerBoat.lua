@@ -1,9 +1,16 @@
+local playerShape = love.physics.newCircleShape(20)
+
 local PlayerBoat = {}
 PlayerBoat.__index = PlayerBoat
 
 
 function PlayerBoat:New(skin)
     local obj = setmetatable({}, PlayerBoat)
+
+    obj.shape = playerShape
+    obj.body = love.physics.newBody(world, obj.x, obj.y, "kinematic")
+    obj.fixture = love.physics.newFixture(obj.body, obj.shape)
+    obj.fixture:setUserData({type = "player"})
 
     obj.image = skin or assets.image.player.default
     obj.imageOx = obj.image:getWidth()/2
@@ -14,7 +21,6 @@ function PlayerBoat:New(skin)
 
     obj.maxHealth = 5
     obj.health = 2
-
 
     obj.speed = 100
     obj.acceleration = 100
@@ -59,6 +65,7 @@ function PlayerBoat:Update(dt, inputs)
 
     spawnTrail(dt)
 
+    self.body:setPosition(self.x, self.y)
 end
 
 function PlayerBoat:Draw()
@@ -70,11 +77,17 @@ function PlayerBoat:Draw()
 
     love.graphics.draw(self.image, self.x, self.y, self.dir, 3, 3, self.imageOx, self.imageOy)
 
-    if self.current then   
-        --love.graphics.line(self.x, self.y, self.x+math.cos(self.current)*100, self.y+math.sin(self.current)*100)
-    end
+
 end
 
+
+function PlayerBoat:DrawHitbox()
+    love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
+
+    if self.current then   
+        love.graphics.line(self.x, self.y, self.x+math.cos(self.current)*100, self.y+math.sin(self.current)*100)
+    end
+end
 
 function PlayerBoat:GetPosition()
     return {x = self.x, y = self.y, dir = self.dir}

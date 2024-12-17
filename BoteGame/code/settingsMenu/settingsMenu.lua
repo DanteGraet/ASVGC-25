@@ -60,11 +60,22 @@ end
 
 local function sliderFunction(value, slider)
     slider.value = value
-    print(slider)
 end
 
 local function toggleFunction(value, toggle)
     toggle.value = value
+
+
+    if toggle == settings.graphics.fullscreen then
+        settingsMenu:toggleFullscreen()
+    end
+end
+
+function SettingsMenu:toggleFullscreen()
+
+    love.window.setFullscreen(not love.window.getFullscreen())
+    love.resize(love.graphics.getWidth(), love.graphics.getHeight())
+    self.Ui:GetButtons("settings")["fullscreen"].value = love.window.getFullscreen()
 end
 
 
@@ -94,16 +105,29 @@ function SettingsMenu.SetCatagory(data)
         elseif currentSetting.type == "slider" then
             self.Ui:AddSlider(name, currentX+font1:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
 
+            self.Ui:GetButtons("settings")[name]:AddImageRail(0, -15, assets.image.ui.settings.indicator)
+            self.Ui:GetButtons("settings")[name]:AddImage(0, -10, assets.image.ui.settings.bar)
+            self.Ui:GetButtons("settings")[name]:SetElementColourRail({1,1,1, 1}, {0.9,0.9,0.9, 1}, {0.8,0.8,0.8, 1})
+
             self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -font1:getWidth(currentSetting.displayName) - 10, -20, 1000)
             self.Ui:GetButtons("settings")[name].func = {sliderFunction, currentSetting}
 
+
+
         elseif currentSetting.type == "toggle" then
-            self.Ui:AddToggle(name, currentX, currentHeight, 400, font1:getHeight(), currentSetting.value, "settings")
+            self.Ui:AddToggle(name, currentX, currentHeight, font1:getWidth(currentSetting.displayName) + 40, font1:getHeight(), currentSetting.value, "settings")
 
-            self.Ui:GetButtons("settings")[name].button1:AddText(currentSetting.displayName, nil, font1, 0, 0, 1000)
-            self.Ui:GetButtons("settings")[name].button2:AddText(currentSetting.displayName, nil, font1, 0, 0, 1000)
+            self.Ui:GetButtons("settings")[name].button1:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
+            self.Ui:GetButtons("settings")[name].button1:AddImage(0, 3, assets.image.ui.settings.check)
+            self.Ui:GetButtons("settings")[name].button1:SetElementColour({1,1,1}, {0.9,0.9,0.9}, {0.8,0.8,0.8})
 
-            self.Ui:GetButtons("settings")[name].func = {sliderFunction, currentSetting}
+            self.Ui:GetButtons("settings")[name].button2:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
+            self.Ui:GetButtons("settings")[name].button2:AddImage(0, 3, assets.image.ui.settings.empty)
+            self.Ui:GetButtons("settings")[name].button2:SetElementColour({1,1,1}, {0.9,0.9,0.9}, {0.8,0.8,0.8})
+
+
+
+            self.Ui:GetButtons("settings")[name].func = {toggleFunction, currentSetting}
         end
 
         currentHeight = currentHeight + font1:getHeight()
@@ -112,8 +136,6 @@ end
 function SettingsMenu.Close(self)
     self.isOpen = false 
 end
-
-
 
 function SettingsMenu:KeyRelased(key)
     if key == "escape" then

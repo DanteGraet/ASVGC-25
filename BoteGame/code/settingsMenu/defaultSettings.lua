@@ -11,11 +11,12 @@ end
 return {
     graphics = {
         uiScale = {type = "slider", displayName = "UI Scale", value = 0.5},
-        uiSide = {type = "toggle", displayName = "Left Ui", value = true},
+        uiSide = {type = "toggle", displayName = "Right UI", value = true},
         uiLock = {type = "toggle", displayName = "Lock UI to 16 X 9", value = false},
 
         particles = {type = "slider", displayName = "Spawn Particles", value = 0.5},
 
+        fullscreen = {type = "toggle", displayName = "Fullscreen", value = love.window.getFullscreen()}
     },
     audio = {
 
@@ -30,11 +31,15 @@ return {
         unlockAll = {type = "button", displayName = "Unlock All"},
         reloadGamestate = {type = "button", displayName = "Reload Gamestate", func = ReloadGameState},
         printAssetTree = {type = "button", displayName = "Print Asset Tree", func = PrintAssetTree},
+
+        drawHitboxes = {type = "toggle", displayName = "Draw Hitboxes", value = false},
+
     },
 
     -- Order is here so we load it in at the same time, we can then hvae key, value tables in an ordeer that is not alphabetti-spaghetti.
     order = {
         graphics = {
+            "fullscreen",
             "uiScale",
             "uiSide",
             "uiLock",
@@ -51,6 +56,8 @@ return {
             "unlockAll",
             "reloadGamestate",
             "printAssetTree",
+
+            "drawHitboxes",
         },
     }
 }

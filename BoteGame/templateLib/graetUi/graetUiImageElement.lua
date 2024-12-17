@@ -32,7 +32,7 @@ function GraetUiImage:Draw(x, y, mouseMode, modeTryangle)
             local r = self.colour1[1]*cLerp(modeTryangle[1]) + self.colour2[1]*cLerp(modeTryangle[2]) + self.colour3[1]*cLerp(modeTryangle[3])
             local g = self.colour1[2]*cLerp(modeTryangle[1]) + self.colour2[2]*cLerp(modeTryangle[2]) + self.colour3[2]*cLerp(modeTryangle[3])
             local b = self.colour1[3]*cLerp(modeTryangle[1]) + self.colour2[3]*cLerp(modeTryangle[2]) + self.colour3[3]*cLerp(modeTryangle[3])
-            local a = (self.colour1[4] or 1)*cLerp(modeTryangle[1]) + (self.colour2[4] or 1)*cLerp(modeTryangle[2]) + (self.colour3[4] or 1)*cLerp(modeTryangle[3])
+            local a = 1--(self.colour1[4] or 1)*cLerp(modeTryangle[1]) + (self.colour2[4] or 1)*cLerp(modeTryangle[2]) + (self.colour3[4] or 1)*cLerp(modeTryangle[3])
 
             love.graphics.setColor(r, g, b, a)
         else

@@ -6,7 +6,7 @@ local Image = require("templateLib.graetUi.graetUiImageElement")
 local GraetButton = {}
 GraetButton.__index = GraetButton
 
-local drawHitboxes = false
+local drawHitboxes = true
 
 function GraetButton.toglehitboxes()
     drawHitboxes = not drawHitboxes
@@ -161,16 +161,18 @@ function GraetButton:Click(mx, my)
 end
 
 function GraetButton:Release(mx, my)
-    self.mouseMode = "none"
 
-    if mx > self.x and mx < self.x + self.sx and my > self.y and my < self.y + self.sy then
+    if mx > self.x and mx < self.x + self.sx and my > self.y and my < self.y + self.sy and self.mouseMode == "click" then
         
         self.mouseMode = "hover"
         if #self.functions.release > 0 then
             self.functions.release[1](self.functions.release[2])
         end
+    else
+        self.mouseMode = "none"
         
     end
+
 end
 
 
