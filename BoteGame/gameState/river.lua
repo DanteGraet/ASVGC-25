@@ -51,7 +51,6 @@ end
 local function load()
     love.physics.setMeter(100)
 
-
     loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
     {
         {"image/titleScreen/parallax/1.png", 0},
@@ -123,6 +122,8 @@ local function update(dt)
 
         -- Update the player first, all other things rely on it basically
         player:Update(dt*gs, inputs)
+        
+        ui:Update(dt*gs)
 
         -- update the camera and similar variables after the player so it doesn't lag behind slightly
         camera:SetPosition(0, player:GetPosition().y)
@@ -135,7 +136,7 @@ local function update(dt)
 
         obstacleSpawner:Update()
 
-        world:update(dt)
+        world:update(dt*gs)
 
         local contacts = world:getContacts()
 
@@ -164,7 +165,7 @@ local function update(dt)
 
                     if not collideData.hasCollided then
                         collideData.hasCollided = true
-                        player.health = player.health - 1
+                        player:TakeDamage(1)
                     end
                 end    
             end
@@ -184,7 +185,6 @@ local function update(dt)
         else
             gameSpeed = math.min(gameSpeed + dt*2, 1)
         end
-
 
     else        
         river:checkNextSegment()

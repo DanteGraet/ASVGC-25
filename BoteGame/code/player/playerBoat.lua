@@ -21,6 +21,8 @@ function PlayerBoat:New(skin)
     obj.x = 0
     obj.y = 0
 
+    obj.immunity = 1
+
     obj.maxHealth = 5
     obj.health = obj.maxHealth
     obj.deathTime = 0
@@ -42,6 +44,10 @@ function PlayerBoat:New(skin)
 end
 
 function PlayerBoat:Update(dt, inputs)
+    if self.immunity > 0 then
+        self.immunity = math.max(self.immunity - dt, 0)
+    end
+
     if player.health > 0 then
         if inputs.left and not inputs.right then
             self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up - self.maxAngle/2)
@@ -113,6 +119,14 @@ end
 
 function PlayerBoat:GetPosition()
     return {x = self.x, y = self.y, dir = self.dir}
+end
+
+
+function PlayerBoat:TakeDamage(amount)
+    if self.immunity == 0 then
+        self.health = self.health - amount
+        self.immunity = 1
+    end
 end
 
 return PlayerBoat
