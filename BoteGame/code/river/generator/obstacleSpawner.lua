@@ -18,7 +18,7 @@ function ObstacleSpawner:Update()
        
         -- check if we are going to spawn an obtical here
         local zone = riverGenerator:GetZone(y)
-        local chance = zone.difficultyFunction(riverGenerator:GetPercentageThrough(y))
+        local chance = quindoc.runIfFunc(zone.difficultyFunction,(riverGenerator:GetPercentageThrough(y)))
 
         if chance >= math.random(0, 1000)/1000 then
             -- spawwn the obtical

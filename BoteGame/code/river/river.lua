@@ -261,11 +261,11 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
 
     if type(zones[1]) == "table" then --if we are in a transition
 
-        current = (zones[1].current(p) or 0)*(1-zones[3]) + (zones[2].current(p) or 0)*zones[3] 
+        current = (quindoc.runIfFunc(zones[1].current,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].current,p) or 0)*zones[3] 
 
     else --just set the snow amount to what it needs to be
 
-        current = zones.current(p) or 0 --current is a GLOBAL VALUE for a reason btw
+        current = quindoc.runIfFunc(zones.current,p) or 0 --current is a GLOBAL VALUE for a reason btw
 
     end    
 

@@ -28,8 +28,8 @@ function PlayerBoat:New(skin)
     obj.deathTime = 0
 
     obj.speed = 100
-    obj.acceleration = 100
-    obj.maxSpeed = 150
+    obj.acceleration = 150
+    obj.maxSpeed = 300
     obj.minSpeed = 0
 
     obj.turnSpeed = math.pi/3

@@ -79,3 +79,9 @@ function quindoc.drawBar(x, y, width, height, fill, colour, r1, r2)
         love.graphics.setColor(1,1,1)
     end
 end
+
+function quindoc.runIfFunc(func,args) --if you want multiple arguements then put a table in "args". the function will then have to unpack that table itself though.
+    if type(func) == "function" then return func(args)
+    else return func end
+end
+    
