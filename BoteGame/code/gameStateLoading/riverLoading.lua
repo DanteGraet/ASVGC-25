@@ -19,6 +19,8 @@ local toLoad = {
     {"code/inputManager.lua"},
     {"code/menu/keybinds.lua"},
     {"code/menu/pauseMenu.lua", "run"},
+    {"code/menu/gameOverMenu.lua", "run"},
+
 
 
     {"obstacle/obstacle.lua", "run"},

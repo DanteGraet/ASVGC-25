@@ -11,6 +11,7 @@ local steping = false
 local loading
 
 local pauseMenu
+local gameOverMenu
 local settingsTween
 
 -- deefault values
@@ -65,6 +66,7 @@ local function load()
     world:setCallbacks( beginContact, endContact, preSolve, postSolve )
 
     pauseMenu = PauseMenu:New()--assets.code.menu.pauseMenu():New()
+    gameOverMenu = GameOverMenu:New()
 
     player = assets.code.player.playerBoat():New()
     ui = assets.code.player.playerUi()
@@ -100,7 +102,9 @@ function GetRiverScale()
 end
 
 local function focus(focus)
-    pauseMenu.isOpen = true
+    if player.health > 0 then
+        pauseMenu.isOpen = true
+    end
 end
 
 local function update(dt)
@@ -179,7 +183,13 @@ local function update(dt)
             obstacles[i]:Update(i, dt)
         end
 
-        if pauseMenu.isOpen then
+        if player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+            local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+            local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+            gameOverMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+            --gameSpeed = math.max(gameSpeed - dt*2, 0)
+        elseif pauseMenu.isOpen then
             local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
         
@@ -221,6 +231,10 @@ local function mousepressed(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
+    if player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+        gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    end
+
     if settingsMenu.isOpen == true then
         settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     elseif pauseMenu.isOpen == true then
@@ -231,6 +245,10 @@ end
 local function mousereleased(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+    if player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+        gameOverMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    end
 
     if settingsMenu.isOpen == true then
         settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
@@ -310,6 +328,11 @@ local function draw()
     
         local gs = tweens.sineInOut(gameSpeed)
         
+        if player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+            local tween = tweens.sineInOut(quindoc.clamp((player.deathTime-1)*2, 0, 1))
+            gameOverMenu:Draw(tween)
+        end
+
         if 1-gs > 0 then
             pauseMenu:Draw(1-gs)
 

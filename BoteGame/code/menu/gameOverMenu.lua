@@ -1,17 +1,18 @@
-local width = 500
-local height = 400
+local width = 700
+local height = 600
 
+local font3 = love.graphics.newFont(40)
 local font1 = love.graphics.newFont(50)
 local font2 = love.graphics.newFont(75)
 
 
-PauseMenu = {}
-PauseMenu.__index = PauseMenu
+GameOverMenu = {}
+GameOverMenu.__index = GameOverMenu
 
 
 
-function PauseMenu:New() -- data is a table {{image/path, layer}}
-    local obj = setmetatable({}, PauseMenu)
+function GameOverMenu:New() -- data is a table {{image/path, layer}}
+    local obj = setmetatable({}, GameOverMenu)
 
     obj.isOpen = false
     obj.scroll = 0
@@ -26,25 +27,17 @@ function PauseMenu:New() -- data is a table {{image/path, layer}}
     return obj
 end
 
-function PauseMenu.Close(self)
-    self.isOpen = false 
-end
-
-function PauseMenu.RestartGame(self)
+function GameOverMenu.RestartGame(self)
     self.isOpen = false
     previousGameState = "GetWreked"
 end
 
-function PauseMenu.Settings(self)
-    settingsMenu.isOpen = true
-end
-
-function PauseMenu.exit(self)
+function GameOverMenu.exit(self)
     -- UPDATE THIS LATER
     gameState = "titleScreen"
 end
 
-function PauseMenu:GenerateButtons()
+function GameOverMenu:GenerateButtons()
     --[[
         continue
         restart
@@ -56,38 +49,34 @@ function PauseMenu:GenerateButtons()
         {0.9,0.9,0.8},
         {.7,.7,.5}
     }
-    self.Ui:AddTextButton("continue", "Continue", "center", font1, 0, -height/2 + 100, width, colours)
-    self.Ui:AddTextButton("restart", "Restart", "center", font1, 0, -height/2 + 100 + 75, width, colours)
-    self.Ui:AddTextButton("settings", "Settings", "center", font1, 0, -height/2 + 100 + 150, width, colours)
-    self.Ui:AddTextButton("exit", "Exit", "center", font1, 0, -height/2 + 100 + 225, width, colours)
 
-    self.Ui:GetButtons()["continue"].functions.release = {PauseMenu.Close, self}
-    self.Ui:GetButtons()["restart"].functions.release = {PauseMenu.RestartGame, self}
-    self.Ui:GetButtons()["settings"].functions.release = {PauseMenu.Settings, self}
-    self.Ui:GetButtons()["exit"].functions.release = {PauseMenu.exit, self}
+    self.Ui:AddTextButton("restart", "Retry", "center", font1, -width/4, height/2 - 75, width, colours)
+    self.Ui:AddTextButton("exit", "Continue", "center", font1, width/4, height/2 - 75, width, colours)
 
-
-
+    self.Ui:GetButtons()["restart"].functions.release = {GameOverMenu.RestartGame, self}
+    self.Ui:GetButtons()["exit"].functions.release = {GameOverMenu.exit, self}
 end
 
 
-
-function PauseMenu:KeyRelased(key)
+function GameOverMenu:KeyRelased(key)
     if key == "escape" then
         self.isOpen = false 
     end
 end
 
-function PauseMenu:Click(x, y)
+
+function GameOverMenu:Click(x, y)
     self.Ui:Click(x - 960, y - 540)
 end
 
-function PauseMenu:Release(x, y)
+function GameOverMenu:Release(x, y)
     self.Ui:Release(x - 960, y - 540)
 end
 
-function PauseMenu:Update(dt, x, y)
+
+function GameOverMenu:Update(dt, x, y)
     self.Ui:Update(dt, x - 960, y - 540)
+
     if settingsMenu.isOpen then
 
         self.settingsTimer = math.min(self.settingsTimer + dt*2, 1)
@@ -98,7 +87,7 @@ function PauseMenu:Update(dt, x, y)
 end
 
 
-function PauseMenu:Draw(gs)
+function GameOverMenu:Draw(gs)
     love.graphics.reset()
 
     love.graphics.setColor(0,0,0,0.5*gs)
@@ -118,8 +107,24 @@ function PauseMenu:Draw(gs)
     love.graphics.setLineWidth(10)
     love.graphics.rectangle("line", -width/2, -height/2, width, height, 25)
 
+    -- line for the high scores
+    love.graphics.rectangle("line", 20, -height/2 + 100, width/2-40, height-200, 25)
+
+
     love.graphics.setFont(font2)
-    love.graphics.printf("Pause", -width/2, -height/2, width, "center")
+    love.graphics.printf("Game Over", -width/2, -height/2, width, "center")
+
+    love.graphics.setFont(font1)
+    love.graphics.printf("Score:", -width/2, -height/2 + 100, width/2, "center")
+
+    love.graphics.setFont(font3)
+    love.graphics.printf("High Scores:", 20, -height/2 + 115, width/2 - 40, "center")
+
+    print(player.y)
+    love.graphics.printf(dante.formatNnumber(math.floor(math.abs(player.y)), 2), -width/2, -height/2 + 150, width/2, "center")
+
+
+
 
     love.graphics.setLineWidth(1)
     self.Ui:Draw()

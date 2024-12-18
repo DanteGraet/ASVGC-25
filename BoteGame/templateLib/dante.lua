@@ -268,15 +268,32 @@ function dante.printTable(t, indent)
     end
 end
 
+function dante.formatNnumber(num, decimals)
 
-function dante.isNegative(num)
-    if num < 0 then
-        return -1
-    else
-        return 1
+    local num = num
+
+    local ends = {
+        "k",
+        "m",
+        "b",
+        "t",
+        "q",
+    }
+    print("-----------------------")
+    for i = 1,#ends do
+        print(num)
+        if num < 1000 then
+            local finalNumber = math.floor(num * (math.pow(10, decimals)))/(math.pow(10, decimals))
+            print(finalNumber)
+            return tostring(finalNumber) .. ends[i-1] or ""
+        else
+
+
+            num = num / 1000
+
+        end
     end
 end
-
 
 function dante.noQuantumEntanglememt(table)
     if debugText then
