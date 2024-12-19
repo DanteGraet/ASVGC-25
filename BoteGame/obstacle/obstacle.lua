@@ -33,7 +33,7 @@ function Obstacle:Update(no, dt)
         self.body:destroy()
         table.remove(obstacles, no)
         return
-    elseif self.y > riverBorders.down + 250 then
+    elseif self.y > riverBorders.down + 2500 then --TEMPORARILY 2500
         self.body:destroy()
         table.remove(obstacles, no)
         return

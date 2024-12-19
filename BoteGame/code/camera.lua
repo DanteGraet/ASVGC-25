@@ -14,6 +14,9 @@ function Camera:New(x, y, ox, oy)
     obj.sx = 0
     obj.sy = 0
 
+    obj.rsx = 0
+    obj.rsy = 0
+
 
     obj.scale = 1
 
@@ -39,12 +42,15 @@ function Camera:AddScreenShake(amount, angle)
 end
 
 function Camera:Update(dt)
-    self.sx = math.max(math.abs(self.sx) - dt*10, 0)*quindoc.sign(self.sx)
-    self.sy = math.max(math.abs(self.sy) - dt*10, 0)*quindoc.sign(self.sy)
+    self.sx = math.max(math.abs(self.sx) - dt*45, 0)*quindoc.sign(self.sx)
+    self.sy = math.max(math.abs(self.sy) - dt*45, 0)*quindoc.sign(self.sy)
+
+    self.rsx = math.random(self.sx*-100,self.sx*100)/1000
+    self.rsy = math.random(self.sy*-100,self.sy*100)/1000
 end
 
 function Camera:TranslateCanvas()
-    love.graphics.translate(-self.x + self.ox + self.sx, -self.y + self.oy + self.sy)
+    love.graphics.translate(-self.x + self.ox + self.sx + self.rsx, -self.y + self.oy + self.sy + self.rsx)
 end
 
 function Camera:GetShake()

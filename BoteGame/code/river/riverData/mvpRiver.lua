@@ -1,5 +1,5 @@
 local function boulderValleyDifficulty(percentage)
-    return 0.005
+    return 0.0005 + 0.001*percentage
 end
 
 local function boulderValleyWind(percentage)

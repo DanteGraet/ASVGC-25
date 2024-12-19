@@ -80,6 +80,22 @@ function quindoc.drawBar(x, y, width, height, fill, colour, r1, r2)
     end
 end
 
+function quindoc.hexcode(hex,alpha)
+
+    local hex = hex:gsub("#", "") --remove pesky hashtag
+
+    local r = tonumber(hex:sub(1, 2), 16) /255
+    local g = tonumber(hex:sub(3, 4), 16) /255
+    local b = tonumber(hex:sub(5, 6), 16) /255
+    
+    if alpha then 
+        return {r,g,b,alpha}
+    else
+        return {r,g,b}
+    end
+
+end
+
 function quindoc.runIfFunc(func,args) --if you want multiple arguements then put a table in "args". the function will then have to unpack that table itself though.
     if type(func) == "function" then return func(args)
     else return func end

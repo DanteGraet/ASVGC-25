@@ -52,14 +52,14 @@ function PauseMenu:GenerateButtons()
         menu
     ]]
     local colours = {
-        {1,1,1},
-        {0.9,0.9,0.8},
-        {.7,.7,.5}
+        {0,0,0},
+        {0,0,0.3},
+        {0.2,0.2,0.4},
     }
     self.Ui:AddTextButton("continue", "Continue", "center", font1, 0, -height/2 + 100, width, colours)
     self.Ui:AddTextButton("restart", "Restart", "center", font1, 0, -height/2 + 100 + 75, width, colours)
     self.Ui:AddTextButton("settings", "Settings", "center", font1, 0, -height/2 + 100 + 150, width, colours)
-    self.Ui:AddTextButton("exit", "Exit", "center", font1, 0, -height/2 + 100 + 225, width, colours)
+    self.Ui:AddTextButton("exit", "Quit to Menu", "center", font1, 0, -height/2 + 100 + 225, width, colours)
 
     self.Ui:GetButtons()["continue"].functions.release = {PauseMenu.Close, self}
     self.Ui:GetButtons()["restart"].functions.release = {PauseMenu.RestartGame, self}
@@ -97,6 +97,7 @@ function PauseMenu:Update(dt, x, y)
     end
 end
 
+--Colours: darkwood 45261b, lightwood 743f30
 
 function PauseMenu:Draw(gs)
     love.graphics.reset()
@@ -111,16 +112,36 @@ function PauseMenu:Draw(gs)
     love.graphics.translate(sox, soy + 1500*(1-gs))
 
     --Draw a basic outline
-    love.graphics.setColor(0.8,0.7,1,1)
+   -- love.graphics.setColor(quindoc.hexcode("45261b")) 
+    --love.graphics.rectangle("fill", -width/2, -height/2, width, height, 25)
+
+    love.graphics.setColor(quindoc.hexcode("743f30")) 
     love.graphics.rectangle("fill", -width/2, -height/2, width, height, 25)
 
-    love.graphics.setColor(1,1,1,1)
+    love.graphics.setColor(0,0,0,1)
     love.graphics.setLineWidth(10)
     love.graphics.rectangle("line", -width/2, -height/2, width, height, 25)
 
     love.graphics.setFont(font2)
     love.graphics.printf("Pause", -width/2, -height/2, width, "center")
 
+    love.graphics.setColor(1,1,1)
+
+    local offSet = 25
+
+    drawScrew(-width/2+offSet,height/2-offSet,0)
+    drawScrew(-width/2+offSet,-height/2+offSet,0.5*math.pi)
+    drawScrew(width/2-offSet,height/2-offSet,0)
+    drawScrew(width/2-offSet,-height/2+offSet,0.5*math.pi)
+
     love.graphics.setLineWidth(1)
     self.Ui:Draw()
 end
+
+--idk where to put this so i trust you to fix it in the clean-up >:)
+menuScrew = love.graphics.newImage("image/ui/settings/screw.png")
+
+function drawScrew(x,y,a)  
+    love.graphics.draw(menuScrew,x,y,a,1,1,11,11)
+end
+--idk where to put this so i trust you to fix it in the clean-up >:)

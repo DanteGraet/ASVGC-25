@@ -15,7 +15,7 @@ local leaderRockObstacle = setmetatable({}, { __index = Obstacle })
 leaderRockObstacle.__index = leaderRockObstacle
 
 leaderRockObstacle.xFunc = function()
-    return math.random(-200,200)
+    return math.random(600,800)*-1
 end
 
 function leaderRockObstacle:New(x, y)
@@ -25,36 +25,55 @@ function leaderRockObstacle:New(x, y)
 
     --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
 
-    local angle = math.random(0,1)*(math.pi+1.5) - math.random(1,140)/100
-    local chainLength = math.random(2,5)
-    chainDiff = math.random(170,220)
+    obj.debugTable = {}
+
+    table.insert(obj.debugTable, {x=obj.x,y=obj.y})
+
+    local angle = math.rad(360-math.random(25,70))  --math.random(0,1)*(math.pi+1.5) - math.random(1,140)/100
+    local chainLength = 10-- math.random(2,5)
+    local chainDiff = 0
+    local inheritChainDiff = 150
+    local tempDiff = 0
+
+    local x = obj.x
+    local y = obj.y
 
     if chainLength > 0 then
         for i = 1, chainLength do
 
-            local randNum = math.random(1,5)
+            local randNum = 5--math.random(1,5)
+            local obsToInsert = nil
 
             if randNum == 1 or randNum == 2 then
 
-                chainDiff = chainDiff + math.random(600,800)
-                table.insert(obstacles, assets.obstacle.hugeRock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
-                angle = angle + math.random(-50,50)/100
+                chainDiff = math.random(600,800)
+                obsToInsert = assets.obstacle.hugeRock
+
+                tempDiff = 50
 
             elseif randNum == 3 or randNum == 4 then
 
-                chainDiff = chainDiff + math.random(350,500)
-                table.insert(obstacles, assets.obstacle.bigRock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
-                angle = angle + math.random(-50,50)/100
+                chainDiff = math.random(350,500)
+                obsToInsert = assets.obstacle.bigRock
+
+                tempDiff = 50
 
             else
 
-                chainDiff = chainDiff + math.random(170,220)
-                table.insert(obstacles, assets.obstacle.rock:New(obj.x+chainDiff*i*math.cos(angle),obj.y+chainDiff*i*math.sin(angle)))
-                angle = angle + math.random(-50,50)/100
+                chainDiff = 50--math.random(80,120)
+                obsToInsert = assets.obstacle.rock
 
             end
 
-            
+            x = x+(chainDiff+inheritChainDiff)*math.cos(angle)
+            y = y+(chainDiff+inheritChainDiff)*math.sin(angle)
+
+            table.insert(obstacles, assets.obstacle.rock:New(x,y))
+            --angle = angle + 0.01
+
+            inheritChainDiff = chainDiff
+
+            table.insert(obj.debugTable, {x=x,y=y})
 
         end
     end
@@ -69,6 +88,16 @@ function leaderRockObstacle:Update(no, dt)
 
         Obstacle.Update(self, no, dt)
     end
+end
+
+function leaderRockObstacle:Draw(no)
+    local img = self.image
+    love.graphics.draw(img, self.x, self.y, self.dir, 3, 3, img:getWidth()/2, img:getHeight()/2)
+
+    for i = 1, #self.debugTable - 1 do
+        love.graphics.line(self.debugTable[i].x,self.debugTable[i].y, self.debugTable[i+1].x,self.debugTable[i+1].y)
+    end
+
 end
 
 return leaderRockObstacle

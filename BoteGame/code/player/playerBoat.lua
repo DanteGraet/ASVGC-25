@@ -21,15 +21,15 @@ function PlayerBoat:New(skin)
     obj.x = 0
     obj.y = 0
 
-    obj.immunity = 1
+    obj.immunity = 1000--debbug
 
     obj.maxHealth = 5
     obj.health = obj.maxHealth
     obj.deathTime = 0
 
-    obj.speed = 100
-    obj.acceleration = 150
-    obj.maxSpeed = 300
+    obj.speed = 1000--debug
+    obj.acceleration = 1500--debug
+    obj.maxSpeed = 1000--debug
     obj.minSpeed = 0
 
     obj.turnSpeed = math.pi/3
@@ -133,7 +133,7 @@ function PlayerBoat:TakeDamage(amount)
         self.health = self.health - amount
         self.immunity = 1
 
-        camera:AddScreenShake(10)
+        camera:AddScreenShake(30)
     end
 end
 

@@ -9,7 +9,7 @@ local font2 = love.graphics.newFont(35)
 SettingsMenu = {}
 SettingsMenu.__index = SettingsMenu
 
-
+--Colours: lightwood 45261b, darkwood 743f30
 
 function SettingsMenu:New() -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, SettingsMenu)
