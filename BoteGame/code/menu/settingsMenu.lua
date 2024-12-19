@@ -9,7 +9,6 @@ local font2 = love.graphics.newFont(35)
 SettingsMenu = {}
 SettingsMenu.__index = SettingsMenu
 
---Colours: lightwood 45261b, darkwood 743f30
 
 function SettingsMenu:New() -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, SettingsMenu)
@@ -169,6 +168,7 @@ function SettingsMenu:Update(dt, x, y)
 end
 
 
+--Colours: lightwood 743f30, darkwood 45261b
 function SettingsMenu:Draw(gs, dark)
     love.graphics.reset()
 
@@ -184,11 +184,16 @@ function SettingsMenu:Draw(gs, dark)
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2 + 540
     love.graphics.translate(sox, soy + 1500*(1-gs))
 
+    --this looks quite wierd otherwise
+    love.graphics.setColor(0,0,0,1)
+
+    love.graphics.rectangle("fill", -width/2, -height/2-5, width, 100, 25)
+
     --Draw a basic outline
-    love.graphics.setColor(0.8,0.7,1,1)
+    love.graphics.setColor(quindoc.hexcode("743f30"))
     love.graphics.rectangle("fill", -width/2, -height/2 + y, width, height, 25)
 
-    love.graphics.setColor(1,1,1,1)
+    love.graphics.setColor(0,0,0,1)
     love.graphics.setLineWidth(10)
     love.graphics.rectangle("line", -width/2, -height/2 + y, width, height, 25)
 
@@ -196,17 +201,23 @@ function SettingsMenu:Draw(gs, dark)
     xSize = xSize/#self.catagories
 
     for i = 1,#self.catagories do
-        love.graphics.setColor(0.8,0.7,1,1)
-
-        love.graphics.rectangle("fill", -width/2 + (i-1)*xSize, -height/2, xSize, 100, 25)
 
         if i == self.curentCatagroy then
+            love.graphics.setColor(quindoc.hexcode("743f30"))
+            love.graphics.rectangle("fill", -width/2 + (i-1)*xSize, -height/2, xSize, 100, 25)
+
            love.graphics.setScissor(0, 0, love.graphics.getWidth(), love.graphics.getHeight()/2 - (height/2 - 75)*screenScale)
            --love.graphics.setColor(1,0,0,0.5)
            --love.graphics.rectangle("fill", -2000, -2000, 5000, 5000)
+        else
+            love.graphics.setColor(quindoc.hexcode("45261b"))
+
+            love.graphics.rectangle("fill", -width/2 + (i-1)*xSize, -height/2, xSize, 100, 25)
+    
         end
 
-        love.graphics.setColor(1,1,1,1)
+
+        love.graphics.setColor(0,0,0,1)
 
         love.graphics.rectangle("line", -width/2 + (i-1)*xSize, -height/2, xSize, 100, 25)
 
@@ -220,13 +231,33 @@ function SettingsMenu:Draw(gs, dark)
         end
     end
 
-    --Draw the close button here to hide graphical isues
-    love.graphics.setColor(1,0.6,.8,1)
-    love.graphics.rectangle("fill", width/2 - 100, -height/2, 100, 100, 25)
+    --screws
+    local offSet = 25
+    local extraYOffset = 50
+
     love.graphics.setColor(1,1,1,1)
+
+    drawScrew(-width/2+offSet,height/2-offSet+extraYOffset,0)
+    drawScrew(-width/2+offSet,-height/2+offSet+2*extraYOffset,0.5*math.pi)
+    drawScrew(width/2-offSet,height/2-offSet+extraYOffset,0.5*math.pi)
+    drawScrew(width/2-offSet,-height/2+offSet+2*extraYOffset,0)
+
+
+    --Draw the close button here to hide graphical isues
+    love.graphics.setColor(.8,0,0,1)--temporary only
+    love.graphics.rectangle("fill", width/2 - 100, -height/2, 100, 100, 25)
+    love.graphics.setColor(0,0,0,1)
     love.graphics.rectangle("line", width/2 - 100, -height/2, 100, 100, 25)
 
     love.graphics.setLineWidth(1)
     self.Ui:Draw()
     self.Ui:Draw("settings", 0, self.scroll)
 end
+
+--idk where to put this so i trust you to fix it in the clean-up >:)
+menuScrew = love.graphics.newImage("image/ui/settings/screw.png")
+
+function drawScrew(x,y,a)  
+    love.graphics.draw(menuScrew,x,y,a,1,1,11,11)
+end
+--idk where to put this so i trust you to fix it in the clean-up >:)

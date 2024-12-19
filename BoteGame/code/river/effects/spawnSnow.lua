@@ -8,7 +8,7 @@ function spawnSnow(dt)
 
     if not snowAmount then windSpeed = 0 snowAmount = 0 end
 
-    zones = riverGenerator:GetZone(camera.y, true) 
+    local zones = riverGenerator:GetZone(camera.y, true) 
 
     if type(zones[1]) == "table" and zones[1].snowAmount and zones[2].snowAmount  then --if we are in a transition
 

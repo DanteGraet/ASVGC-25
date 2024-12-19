@@ -122,8 +122,9 @@ function PauseMenu:Draw(gs)
     love.graphics.setLineWidth(10)
     love.graphics.rectangle("line", -width/2, -height/2, width, height, 25)
 
+    
     love.graphics.setFont(font2)
-    love.graphics.printf("Pause", -width/2, -height/2, width, "center")
+    love.graphics.printf("Paused", -width/2, -height/2, width, "center")
 
     love.graphics.setColor(1,1,1)
 
@@ -131,17 +132,10 @@ function PauseMenu:Draw(gs)
 
     drawScrew(-width/2+offSet,height/2-offSet,0)
     drawScrew(-width/2+offSet,-height/2+offSet,0.5*math.pi)
-    drawScrew(width/2-offSet,height/2-offSet,0)
-    drawScrew(width/2-offSet,-height/2+offSet,0.5*math.pi)
+    drawScrew(width/2-offSet,height/2-offSet,0.5*math.pi)
+    drawScrew(width/2-offSet,-height/2+offSet,0)
 
     love.graphics.setLineWidth(1)
     self.Ui:Draw()
 end
 
---idk where to put this so i trust you to fix it in the clean-up >:)
-menuScrew = love.graphics.newImage("image/ui/settings/screw.png")
-
-function drawScrew(x,y,a)  
-    love.graphics.draw(menuScrew,x,y,a,1,1,11,11)
-end
---idk where to put this so i trust you to fix it in the clean-up >:)
