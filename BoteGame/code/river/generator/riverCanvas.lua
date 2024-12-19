@@ -6,7 +6,7 @@ function RiverCanvas:New(y, fill)
 
     obj.canvas = love.graphics.newCanvas(
         math.ceil((riverBorders.width/pixlesPerPixle)) + 4, 
-        math.ceil((riverBorders.height/pixlesPerPixle))
+        math.ceil((riverBorders.height/pixlesPerPixle)) + 10
     )
     obj.canvas:setFilter("nearest", "nearest")
 
@@ -16,7 +16,7 @@ function RiverCanvas:New(y, fill)
         obj.y = 0
     end
 
-    obj.y = math.floor(obj.y/3)*3
+    obj.y = math.ceil((obj.y)/3)*3
 
     obj.x = - obj.canvas:getWidth()/2
 
@@ -33,8 +33,9 @@ function RiverCanvas:New(y, fill)
         end
     else
 
-        -- removes flickering, height is already +2
-        obj:FillCanvasY(1, obj.y + pixlesPerPixle, obj.x*pixlesPerPixle, riverGenerator:GetZone(obj.y + pixlesPerPixle, true))
+        for i = obj.canvas:getHeight()-15, obj.canvas:getHeight() do
+            obj:FillCanvasY(1, obj.y + i*pixlesPerPixle, obj.x*pixlesPerPixle, riverGenerator:GetZone(obj.y + i*pixlesPerPixle, true))
+        end
 
     end
 

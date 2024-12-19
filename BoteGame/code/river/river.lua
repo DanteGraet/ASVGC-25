@@ -130,11 +130,9 @@ function River:Update()
     end
 
     --Canvases :D
-    if self.canvases and #self.canvases > 0 and self.canvases[#self.canvases].y >= playerY-camera.oy-50 then
+    if self.canvases and #self.canvases > 0 and self.canvases[#self.canvases].y >= riverBorders.up then
         local y = self.canvases[#self.canvases].y --+ riverBorders.up
-        print(self.canvases[1].y, self.canvases[#self.canvases].y)
         self:AddNextCanvas(y)
-        print("new canvas --------------------------------------")
     end
 
     if camera.y- camera.oy < self.canvasFillY then
@@ -143,19 +141,25 @@ function River:Update()
         local currentCanvas = self.canvases[currentCanvasNo]
 
         if currentCanvas then
-            for i = math.floor(camera.y - camera.oy), math.floor(self.canvasFillY) , 3 do
+            for i = math.floor(riverBorders.up), math.floor(self.canvasFillY) , 3 do
                 local relativeY = math.floor((currentCanvas.y - i))
 
 
 
                 currentCanvas:FillCanvasY(math.abs(relativeY)/3, i, nil, riverGenerator:GetZone(i, true))
 
-                if relativeY + 3 > currentCanvas.canvas:getHeight() then
+                if math.abs(relativeY/3) > currentCanvas.canvas:getHeight() then
+                    print("------------------=======================canvasSkip")
+
                     currentCanvasNo = currentCanvasNo - 1
                     if currentCanvasNo > 0 then
                         currentCanvas = self.canvases[currentCanvasNo]
+                        local relativeY = math.floor((currentCanvas.y - i))
 
-                        currentCanvas:FillCanvasY(math.abs(relativeY)/3, i, nil, riverGenerator:GetZone(i, true))
+                        for j = -1,4 do
+                            currentCanvas:FillCanvasY(math.abs(relativeY)/3 + j, i + j, nil, riverGenerator:GetZone(i+j, true))
+                        end
+
                     end
                 end
 
@@ -178,6 +182,7 @@ function River:Update()
         end
     end
 end
+
 
 function River:AddFakeCanvases()
     -- reset the current canvases

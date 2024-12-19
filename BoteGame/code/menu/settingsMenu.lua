@@ -77,7 +77,10 @@ function SettingsMenu:toggleFullscreen()
     mx, my = mx/screenScale, my/screenScale
     love.window.setFullscreen(not love.window.getFullscreen())
     love.resize(love.graphics.getWidth(), love.graphics.getHeight())
-    self.Ui:GetButtons("settings")["fullscreen"].value = love.window.getFullscreen()
+
+    if self.catagories[self.curentCatagroy].name == "graphics" then
+        self.Ui:GetButtons("settings")["fullscreen"].value = love.window.getFullscreen()
+    end
 
     love.mouse.setPosition(mx*screenScale, my*screenScale)
 end

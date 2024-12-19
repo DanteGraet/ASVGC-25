@@ -259,7 +259,10 @@ end
 
 
 local function keyreleased(key)
-    local input = inputManager:Send("keyboard", key)
+    local input = {}
+    if inputManager then
+        input = inputManager:Send("keyboard", key)
+    end
 
     if input == "pause" then
         if settingsMenu.isOpen then settingsMenu.isOpen = false
