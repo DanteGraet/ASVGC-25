@@ -112,9 +112,24 @@ function leaderRockObstacle:Draw(no)
     local img = self.image
     love.graphics.draw(img, self.x, self.y, self.dir, 3, 3, img:getWidth()/2, img:getHeight()/2)
 
+end
+
+function leaderRockObstacle:DrawHitbox()
+    if self.fixture:getUserData().hasCollided then
+        love.graphics.setColor(1,0,0)
+    end
+
+    love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
+
+    if self.fixture:getUserData().hasCollided then
+        love.graphics.setColor(1,1,1)
+    end
+
+    
     for i = 1, #self.debugTable - 1 do
         love.graphics.line(self.debugTable[i].x,self.debugTable[i].y, self.debugTable[i+1].x,self.debugTable[i+1].y)
     end
+
 
 end
 
