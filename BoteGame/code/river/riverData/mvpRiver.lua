@@ -14,6 +14,10 @@ local function boulderValleyCurrent(percentage)
     return 400*percentage + 100
 end
 
+local function boulderValleyChainLengthCoefficient(percentage)
+    return 1.35 - 0.2*percentage
+end
+
 
 return {
     {
@@ -23,7 +27,8 @@ return {
         transition = 400,
         snowAmount = boulderValleySnow,
         windSpeed = boulderValleyWind,
-        current = boulderValleyCurrent
+        current = boulderValleyCurrent,
+        chainLengthCoefficient = boulderValleyChainLengthCoefficient
     },
 }
 

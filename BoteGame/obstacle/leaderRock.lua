@@ -31,7 +31,7 @@ function leaderRockObstacle:New(x, y)
 
     --we ignore the edge case of transitions because.... i can't be bothered :)
     if type(zones[1]) ~= "table" and zones.chainLengthCoefficient then
-        chainLengthCoefficient = runIfFunc(zones.chainLengthCoefficient,riverGenerator:GetPercentageThrough(player.y))
+        chainLengthCoefficient = quindoc.runIfFunc(zones.chainLengthCoefficient,riverGenerator:GetPercentageThrough(player.y))
     end
 
     obj.debugTable = {}
