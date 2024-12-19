@@ -38,7 +38,7 @@ function UI.Draw()
         y = 1080 - 10
     end
 
-    if player.health < 3 then 
+    if player.health < 3 and uiSineCounter then 
         love.graphics.setColor(1,1,1,0.5*math.sin(uiSineCounter*3)/player.health)
         love.graphics.draw(assets.image.ui.ouchGlow, x+12.5, y+12.5, 0, scale, scale, assets.image.ui.ouchGlow:getWidth()*side, assets.image.ui.ouchGlow:getHeight()) 
         love.graphics.setColor(1,1,1,1)

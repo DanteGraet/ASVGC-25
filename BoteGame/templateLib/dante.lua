@@ -273,6 +273,7 @@ function dante.formatNnumber(num, decimals)
     local num = num
 
     local ends = {
+        "",
         "k",
         "m",
         "b",
@@ -285,7 +286,7 @@ function dante.formatNnumber(num, decimals)
         if num < 1000 then
             local finalNumber = math.floor(num * (math.pow(10, decimals)))/(math.pow(10, decimals))
             print(finalNumber)
-            return tostring(finalNumber) .. ends[i-1] or ""
+            return tostring(finalNumber) .. ends[i]
         else
 
 
