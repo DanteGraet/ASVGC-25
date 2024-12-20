@@ -149,8 +149,6 @@ function River:Update()
                 currentCanvas:FillCanvasY(math.abs(relativeY)/3, i, nil, riverGenerator:GetZone(i, true))
 
                 if math.abs(relativeY/3) > currentCanvas.canvas:getHeight() then
-                    print("------------------=======================canvasSkip")
-
                     currentCanvasNo = currentCanvasNo - 1
                     if currentCanvasNo > 0 then
                         currentCanvas = self.canvases[currentCanvasNo]

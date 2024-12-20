@@ -106,7 +106,7 @@ function GetRiverScale()
 end
 
 local function focus(focus)
-    if player.health > 0 then
+    if not player or player.health > 0 then
         pauseMenu.isOpen = true
     end
 end
@@ -117,10 +117,7 @@ local function update(dt)
         dt = 1/60
     end
 
-
-
     riverGenerator:Update()
-
 
     if river:HasPoints() then
         local inputs = inputManager:GetInput()
@@ -235,11 +232,11 @@ local function mousepressed(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+    if player and player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
         gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     end
 
-    if settingsMenu.isOpen == true then
+    if settingsMenu and settingsMenu.isOpen == true then
         settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     elseif pauseMenu.isOpen == true then
         pauseMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
@@ -250,11 +247,11 @@ local function mousereleased(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+    if player and player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
         gameOverMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     end
 
-    if settingsMenu.isOpen == true then
+    if settingsMenu and settingsMenu.isOpen == true then
         settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
     elseif pauseMenu.isOpen == true then
         pauseMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      

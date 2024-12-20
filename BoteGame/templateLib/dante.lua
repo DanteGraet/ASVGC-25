@@ -152,12 +152,9 @@ function dante.formatNnumber(num, decimals)
         "t",
         "q",
     }
-    print("-----------------------")
     for i = 1,#ends do
-        print(num)
         if num < 1000 then
             local finalNumber = math.floor(num * (math.pow(10, decimals)))/(math.pow(10, decimals))
-            print(finalNumber)
             return tostring(finalNumber) .. ends[i]
         else
 
