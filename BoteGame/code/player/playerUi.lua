@@ -22,6 +22,31 @@ function UI.Draw()
 
     local scale = ((settings.graphics.uiScale.value) + 0.5)/4
 
+    --PLACEHOLDER STORM EFFECT
+    --hopefully one day i will replace this with a shader - but not today. :)
+--[[
+    love.graphics.push()
+
+    love.graphics.reset()
+
+    love.graphics.scale(screenScale)
+    
+    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+    love.graphics.translate(sox, soy)
+
+
+    --this box needs to be big enough as to fill the whole screen
+
+    local scaleX = love.graphics.getWidth() / 1920
+    local scaleY = love.graphics.getHeight() / 1080
+
+    love.graphics.setColor(1,1,1,1)]]
+--[[]]
+
+    --END PLACEHOLDER
+
     if settings.graphics.uiSide.value then
         if settings.graphics.uiLock.value then
             x = 1920 - 10
@@ -44,17 +69,18 @@ function UI.Draw()
         love.graphics.setColor(1,1,1,1)
     end
 
+    local tweendHealth = math.floor(storedHealth) + tweens.sineInOut(storedHealth%1)
+
     healthColour = {.9,.1,.2}
     if player.health == 1 and math.sin(uiSineCounter*30) > 0 then
         healthColour = {1,0.6,0.6}
-    elseif player.health == 2 and math.sin(uiSineCounter*10) > 0 then
+    elseif tweendHealth and tweendHealth > player.health and math.sin(uiSineCounter*30) > 0 then
         healthColour = {1,0.6,0.6}
     end
 
     love.graphics.draw(assets.image.ui.currentBar, x, y, 0, scale, scale, assets.image.ui.currentBar:getWidth()*side + 520 - 1040*(1-side), assets.image.ui.currentBar:getHeight())
     love.graphics.draw(assets.image.ui.speedometer, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
 
-    local tweendHealth = math.floor(storedHealth) + tweens.sineInOut(storedHealth%1)
     love.graphics.setColor(healthColour)
 
     local angle1 = math.rad(35 - ((215 + 35)*(1-(tweendHealth/player.maxHealth)))) 

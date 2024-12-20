@@ -12,8 +12,8 @@ function spawnSnow(dt)
 
     if type(zones[1]) == "table" and zones[1].snowAmount and zones[2].snowAmount  then --if we are in a transition
 
-        snowAmount = quindoc.runIfFunc(zones[1].snowAmount,p)*(1-zones[3]) + quindoc.runIfFunc(zones[2].snowAmount,p)*zones[3] 
-        windSpeed = quindoc.runIfFunc(zones[1].windSpeed,p)*(1-zones[3]) + quindoc.runIfFunc(zones[2].windSpeed,p)*zones[3] 
+        snowAmount = quindoc.runIfFunc(zones[1].snowAmount,p)*(1-zones[3]) + quindoc.runIfFunc(zones[2].snowAmount,0)*zones[3] 
+        windSpeed = quindoc.runIfFunc(zones[1].windSpeed,p)*(1-zones[3]) + quindoc.runIfFunc(zones[2].windSpeed,0)*zones[3] 
 
     elseif zones.snowAmount then --just set the snow amount to what it needs to be
 
