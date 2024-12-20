@@ -110,6 +110,11 @@ function love.keyreleased(key)
     end
 end
 
+function love.quit()
+    if game[gameState] and game[gameState].unload then
+        game[gameState].unload()
+    end
+end
 
 function love.mousepressed(mx, my, button)
     if game[gameState] and game[gameState].mousepressed then
@@ -126,6 +131,10 @@ end
 function love.update(dt)
 
     if gameState ~= previousGameState then
+        if game[previousGameState] and game[previousGameState].unload then
+            game[previousGameState].unload()
+        end
+
         if game[gameState] and game[gameState].load then
             game[gameState].load()
         end

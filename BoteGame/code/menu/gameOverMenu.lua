@@ -120,8 +120,22 @@ function GameOverMenu:Draw(gs)
     love.graphics.setFont(font3)
     love.graphics.printf("High Scores:", 20, -height/2 + 115, width/2 - 40, "center")
 
-    print(player.y)
-    love.graphics.printf(dante.formatNnumber(math.floor(math.abs(player.y/10)), 2).."m", -width/2, -height/2 + 150, width/2, "center")
+    love.graphics.printf(dante.formatNnumber(math.floor(math.abs(player.score)), 2).."m", -width/2, -height/2 + 160, width/2, "center")
+
+    -- white is there so if the player gets the same score (unlikely like very unlikey) then there will only on white score
+    local white = false
+    for i = 1,#assets.save.highscore do
+        local pref = ""
+        local suf = ""
+        if assets.save.highscore[i] == player.score and not white then
+            love.graphics.setColor(0.1,0.1,0.1)
+            white = true
+        else
+            love.graphics.setColor(0,0,0)
+                
+        end
+        love.graphics.printf(pref .. dante.formatNnumber(math.floor(math.abs(assets.save.highscore[i])), 2).."m" .. suf, 20, -height/2 + 115 + i*55, width/2 - 40, "center")
+    end
 
     local offSet = 25
 

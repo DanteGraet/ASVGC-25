@@ -15,10 +15,10 @@
 --  └─┘┴ ┴ └┘ ┴┘└┘└─┘┘  ┴─┘└─┘┴ ┴─┴┘┴┘└┘└─┘┘  ┴ ┴┘└┘─┴┘  └─┘└─┘┴ ┴└─┘  └─┘ ┴ ┴ ┴└─┘┴└─  └─┘ ┴ └─┘└  └    --
 --                                                                                                       --
 --=======================================================================================================--
---  ChangeLog:                                                                                       V3  --
---    -> Hey look! I added a title, I had some time                                                      --
---    -> Made some functions local                                                                       --
---    -> Debug Text                                                                                      --
+--  ChangeLog:                                                                                       V4  --
+--    -> I changed the saving/loading system so it uses lua files or whatever                            --
+--    -> Updated printTable function                                                                     --
+--    -> added varToString function                                                                      --
 --=======================================================================================================--
 
 dante = {}
@@ -33,223 +33,95 @@ function dante.toggleDebugText()
     end
 end
 
-local function encrypt(data)      --TYGPT
-    if debugText then
-        print("[Dante.lua]: Encrypting " .. data .. " (" .. data:type() .. ")")
-        if data:type() == "table" then
-            dante.printTable(data)
-        end
-    end
-
-    if data then
-        local result = "{"
-        for key, value in pairs(data) do
-            if type(value) == "table" then
-                result = result .. key .. "=" .. encrypt(value) .. ","
-            elseif type(value) == "string" then
-                local text = ""
-                for i = 1,#value do
-                    local char = value:sub(i, i)
-                    if char == "," or char == "{" or char == "}" or char == "=" or char == "~" then
-                        text = text .. "~"
-                    end
-                    text = text .. char
-                end
-                result = result .. key .. "=" .. tostring(text) .. ","
-            else
-                result = result .. key .. "=" .. tostring(value) .. ","
-            end
-        end
-        result = result:sub(1, -2) .. "}"  -- Remove the trailing comma and add closing brace
-
-        if debugText then
-            print("[Dante.lua]: Encrypted " .. result)
-        end
-
-        return result
-    end
-end
 
 
-local function decrypt(data)
+function dante.save(data, folder, fileName)
+    local saveData = "return " .. dante.dataToString(data)
 
-    if debugText then
-        print("[Dante.lua]: Decrypting " .. data)
-    end
-
-    local keys = {}
-    local value = nil
-    local type = "key"
-    local currentValue = ""
-
-    local finalTable = {}
-    local currentTable = finalTable
-
-    for i = 2, #data do -- remove the first character
-        local char = data:sub(i, i)
-        local preChar = data:sub(i-1, i-1)
-
-        if char == "{" and preChar ~= "~" then
-            table.insert(keys, currentValue)
-
-            -- Create a new key for the nested table
-            currentTable[currentValue] = {}
-            currentTable = currentTable[currentValue]
-
-            currentValue = ""
-        elseif char == "}" or char == "," then
-            if preChar ~= "~"  then
-                if currentValue ~= "" then
-                    addData(finalTable, keys, currentValue)
-                end
-
-                -- Move back to the parent table
-                if #keys > 0 then
-
-                end
-                table.remove(keys, #keys)
-                currentTable = finalTable
-
-                currentValue = ""
-            else
-                currentValue = currentValue .. char
-            end
-
-        elseif char == "=" and preChar ~= "~"  then
-            if data:sub(i + 1, i + 1) ~= "{" then
-                table.insert(keys, currentValue)
-                currentValue = ""
-            end
-        elseif char == "~" then
-
-        else
-            currentValue = currentValue .. char
-        end
-    end
-
-
-    if debugText then
-        print("[Dante.lua]: Finnished decrypting " .. data)
-        dante.printTable(finalTable)
-    end
-    return finalTable
-end
-
-
-
-function addData(data, keys, value)
-    if value ~= "" then
-        local data = data
-        local keys = keys
-        local value = value
-
-        local textForDebug = ""
-
-        -- Ensure there are keys and the data table is initialized
-        if #keys > 0 and data ~= "" then
-            local currentTable = data
-
-            -- Iterate through keys, excluding the last one
-            for i = 1, #keys - 1 do
-                local key = tonumber(keys[i]) or keys[i]
-
-                -- Create a nested table if it doesn't exist
-                currentTable[key] = currentTable[key] or {}
-
-                -- Move to the next level
-                currentTable = currentTable[key]
-            end
-
-            -- Insert the text into the final nested table
-            local lastKey = tonumber(keys[#keys]) or keys[#keys]
-            local numericValue = tonumber(value) or value
-
-            if type(currentTable[lastKey]) == "table" then
-                -- If the last key points to a table, add the value to that table
-                table.insert(currentTable[lastKey], numericValue)
-            else
-                -- Otherwise, set the value for the last key
-                currentTable[lastKey] = numericValue
-            end
-
-        end
-    end
-end
-
-
-
-function dante.save(data, folder, file, compress) --IDIDMYSELF
-    local text = nul
-    if type(data) == "table" then
-        text = encrypt(data)
-
-    elseif type(data) == "string" then
-        text = data
-    else
-        print("BAD type ig")
-        return
-    end
-
-    if compress then
-        text = love.data.compress("string", "zlib", text)
-    end
-    
     if love.filesystem.getInfo(folder, "directory") then
     else
         love.filesystem.createDirectory(folder)
     end
-    love.filesystem.write(folder .. "/" .. file, text)
-
-    if debugText then
-        print("[Dante.lua]: saved" .. file .. " at " .. folder)
-    end
+    love.filesystem.write(folder .. "/" .. fileName .. ".lua", saveData)
 end
 
-function dante.load(file, compress)       --IDIDMYSELF
+
+function dante.load(file)
     if love.filesystem.getInfo(file, "file") then
-        local fileContents, fileSize = love.filesystem.read(file)
+
+        local fileContents = love.filesystem.load(file .. ".lua")
+
         if debugText then
-            print("[Dante.lua]: Found " .. file)
+            print("[Dante.lua]: Found " .. file .. ".lua")
         end
 
-        if compress then
-            fileContents = love.data.decompress("string", "zlib", fileContents)
-        end
-
-        return clean(decrypt(fileContents))
+        return fileContents()
     else
         if debugText then
-            print("[Dante.lua]: Can't Find " .. file)
+            print("[Dante.lua]: Can't Find " .. file .. ".lua")
         end
     end
 end
 
 
-function clean(inputTable)
-    if debugText then
-        print("[Dante.lua]: Cleaning " .. inputTable)
-    end
-    local resultTable = {}
-
-    for key, value in pairs(inputTable) do
-        if type(value) == "table" then
-            -- Recursively remove empty tables
-            local nonEmptyTable = clean(value)
-            if next(nonEmptyTable) ~= nil then
-                resultTable[key] = nonEmptyTable
-            end
+function dante.varToString(var)
+    if var == nil then
+        return "nil"
+    elseif type(var) == "function" then
+        return "function"
+    elseif type(var) == "string" then
+        return '"' .. var .. '"'
+    elseif type(var) == "number" then
+        return tostring(var)
+    elseif type(var) == "boolean" then
+        if var then
+            return "true"
         else
-            resultTable[key] = value
+            return "false"
         end
     end
+end
 
-    return resultTable
+function dante.dataToString(data, indent)
+    local indent = indent or 0
+    local indentString = string.rep("    ", indent)
+
+    local string = ""
+
+    if type(data) == "table" then
+        string = string .. "{\n"
+
+        for key, value in pairs(data) do
+            local name = key
+            if type(key) == "number" then
+                name = "[" .. key .. "]"
+            end
+            if type(data) == "table" then
+                local cocatString = dante.dataToString(value, indent + 1)
+                if cocatString then
+                    string = string .. indentString .. "    " .. name .. " = " .. cocatString  .. ",\n"
+                end
+            else
+                string = string .. indentString .. name .. " = " .. dante.varToString(data) .. ",\n"
+            end
+        end
+
+        string = string .. indentString .. "}"
+
+    else
+        string = dante.varToString(data)
+    end
+
+    return string
 end
 
 
+function dante.printTable(t)
 
-function dante.printTable(t, indent)
-    indent = indent or 0
+    -- this is her so we dont break anything
+    print(dante.dataToString(t))
+
+    --[[indent = indent or 0
     for key, value in pairs(t) do
         local formatting = string.rep("  ", indent)
 
@@ -265,7 +137,7 @@ function dante.printTable(t, indent)
         else
             print(formatting .. tostring(value))
         end
-    end
+    end]]
 end
 
 function dante.formatNnumber(num, decimals)

@@ -20,10 +20,11 @@ function PlayerBoat:New(skin)
 
     obj.x = 0
     obj.y = 0
+    obj.score = 0
 
     obj.immunity = 1
 
-    obj.maxHealth = 1--5
+    obj.maxHealth = 5
     obj.health = obj.maxHealth
     obj.deathTime = 0
 
@@ -74,6 +75,7 @@ function PlayerBoat:Update(dt, inputs)
 
         self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt
         self.y = self.y + math.sin(self.dir)*self.speed * dt
+        self.score = math.abs(self.y/10)
 
         -- current
         local currentAngle, currentSpeed = river:GetCurrent(self.y)
@@ -143,6 +145,10 @@ function PlayerBoat:TakeDamage(amount)
         self.immunity = 1
 
         camera:AddScreenShake(30)
+
+        if self.health <= 0 then
+            UpdateHighScore(self.score)
+        end
     end
 end
 

@@ -9,6 +9,9 @@ local toLoad = {
     {"code/player/playerBoat.lua"},
     {"code/player/playerUi.lua"},
 
+    {"save/highscore.lua", "run"},
+
+
 
     {"code/river/river.lua"},
     {"code/river/generator/riverGenerator.lua"},

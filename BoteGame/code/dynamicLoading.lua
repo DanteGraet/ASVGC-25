@@ -88,7 +88,9 @@ function DynamicLoading:AddItem(path, current, original)
                 if original[3] then
                     current[original[3]] = love.filesystem.load(original[1])()
                 else
-                    current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])()
+                    if love.filesystem.getInfo(original[1], "file") then
+                        current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])()
+                    end
                 end
             else
                 current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])

@@ -51,6 +51,10 @@ local function resize()
 end
 
 
+local function unload()
+    UpdateHighScore()
+end
+
 
 local function load()
     love.physics.setMeter(100)
@@ -269,6 +273,10 @@ local function keyreleased(key)
         elseif player.health > 0 then pauseMenu.isOpen = not pauseMenu.isOpen end
     end
 
+    if key == "k" and DEV then
+        dante.printTable(assets.save.highscore)
+    end
+
     if key == "return" and step then
         step = false
 
@@ -361,6 +369,32 @@ local function draw()
     love.graphics.reset()
 end
 
+function UpdateHighScore(newScore)
+    if assets.save and assets.save.highscore and type(assets.save.highscore) == "table" then
+    else
+        if assets.save then
+        else
+            assets.save = {}
+        end
+        assets.save.highscore = {}
+    end
+
+    if newScore then
+        table.insert(assets.save.highscore, newScore)
+    end
+    table.sort(assets.save.highscore, function(a, b) return a > b end)
+
+    if assets.save.highscore then
+        dante.save(assets.save.highscore, "save", "highscore")
+    end
+
+    -- only store 6 records
+    if #assets.save.highscore > 6 then
+        while #assets.save.highscore > 6 do
+            table.remove(assets.save.highscore, #assets.save.highscore)
+        end
+    end
+end
 
 
 return {
@@ -372,6 +406,7 @@ return {
     update = update,
     resize = resize,
     draw = draw,
+    unload = unload,
 
     noTransform = true,
 }
