@@ -45,13 +45,13 @@ function GameOverMenu:GenerateButtons()
         menu
     ]]
     local colours = {
-        {1,1,1},
-        {0.9,0.9,0.8},
-        {.7,.7,.5}
+        {0,0,0},
+        {0,0,0.3},
+        {0.2,0.2,0.4},
     }
 
     self.Ui:AddTextButton("restart", "Retry", "center", font1, -width/4, height/2 - 75, width, colours)
-    self.Ui:AddTextButton("exit", "Continue", "center", font1, width/4, height/2 - 75, width, colours)
+    self.Ui:AddTextButton("exit", "Quit", "center", font1, width/4, height/2 - 75, width, colours)
 
     self.Ui:GetButtons()["restart"].functions.release = {GameOverMenu.RestartGame, self}
     self.Ui:GetButtons()["exit"].functions.release = {GameOverMenu.exit, self}
@@ -100,10 +100,10 @@ function GameOverMenu:Draw(gs)
     love.graphics.translate(sox, soy + 1500*(1-gs))
 
     --Draw a basic outline
-    love.graphics.setColor(0.8,0.7,1,1)
+    love.graphics.setColor(quindoc.hexcode("743f30"))
     love.graphics.rectangle("fill", -width/2, -height/2, width, height, 25)
 
-    love.graphics.setColor(1,1,1,1)
+    love.graphics.setColor(0,0,0,1)
     love.graphics.setLineWidth(10)
     love.graphics.rectangle("line", -width/2, -height/2, width, height, 25)
 
@@ -121,9 +121,16 @@ function GameOverMenu:Draw(gs)
     love.graphics.printf("High Scores:", 20, -height/2 + 115, width/2 - 40, "center")
 
     print(player.y)
-    love.graphics.printf(dante.formatNnumber(math.floor(math.abs(player.y)), 2), -width/2, -height/2 + 150, width/2, "center")
+    love.graphics.printf(dante.formatNnumber(math.floor(math.abs(player.y/10)), 2).."m", -width/2, -height/2 + 150, width/2, "center")
 
+    local offSet = 25
 
+    love.graphics.setColor(1,1,1,1)
+
+    drawScrew(-width/2+offSet,height/2-offSet,0)
+    drawScrew(-width/2+offSet,-height/2+offSet,0.5*math.pi)
+    drawScrew(width/2-offSet,height/2-offSet,0.5*math.pi)
+    drawScrew(width/2-offSet,-height/2+offSet,0)
 
 
     love.graphics.setLineWidth(1)

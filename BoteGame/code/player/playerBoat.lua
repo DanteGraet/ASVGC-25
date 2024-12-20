@@ -23,7 +23,7 @@ function PlayerBoat:New(skin)
 
     obj.immunity = 1
 
-    obj.maxHealth = 5
+    obj.maxHealth = 1--5
     obj.health = obj.maxHealth
     obj.deathTime = 0
 
@@ -70,7 +70,7 @@ function PlayerBoat:Update(dt, inputs)
             self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
         end
 
-        self.baseXSpeed = 10*math.sqrt(current or 0)
+        self.baseXSpeed = 15*math.sqrt(current or 0)
 
         self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt
         self.y = self.y + math.sin(self.dir)*self.speed * dt

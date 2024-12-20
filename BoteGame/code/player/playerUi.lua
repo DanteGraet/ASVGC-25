@@ -44,17 +44,24 @@ function UI.Draw()
         love.graphics.setColor(1,1,1,1)
     end
 
+    healthColour = {.9,.1,.2}
+    if player.health == 1 and math.sin(uiSineCounter*30) > 0 then
+        healthColour = {1,0.6,0.6}
+    elseif player.health == 2 and math.sin(uiSineCounter*10) > 0 then
+        healthColour = {1,0.6,0.6}
+    end
+
     love.graphics.draw(assets.image.ui.currentBar, x, y, 0, scale, scale, assets.image.ui.currentBar:getWidth()*side + 520 - 1040*(1-side), assets.image.ui.currentBar:getHeight())
     love.graphics.draw(assets.image.ui.speedometer, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
 
     local tweendHealth = math.floor(storedHealth) + tweens.sineInOut(storedHealth%1)
-    love.graphics.setColor(.9,.1,.2)
+    love.graphics.setColor(healthColour)
 
     local angle1 = math.rad(35 - ((215 + 35)*(1-(tweendHealth/player.maxHealth)))) 
     local angle2 = -math.rad(215)
     love.graphics.arc("fill", x - 480*scale + 960*(1-side)*scale, y - 320*scale, 480*scale, angle1, angle2)
 
-    love.graphics.setColor(.9,.1,.2)
+    love.graphics.setColor(healthColour)
     local angle1 = math.rad(35 - ((215 + 35)*(1-(player.health/player.maxHealth)))) 
     local angle2 = -math.rad(215)
     love.graphics.arc("fill", x - 480*scale + 960*(1-side)*scale, y - 320*scale, 480*scale, angle1, angle2)
