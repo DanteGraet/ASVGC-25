@@ -24,6 +24,9 @@ function PlayerBoat:New(skin)
 
     obj.immunity = 1
     obj.beachTimer = 1  -- 0 means the player has been beached
+    obj.shameTimer = 1
+    obj.takenBeachDamage = false
+    --obj.beachImmunity = 0
 
     obj.maxHealth = 5
     obj.health = obj.maxHealth
@@ -61,16 +64,34 @@ function PlayerBoat:Update(dt, inputs)
     end
 
     if river:IsInBounds(self.x, self.y) then
-        self.beachTimer = math.min(self.beachTimer + dt, 1)
-    else
-        self.beachTimer = math.max(self.beachTimer - dt, 0)
+        self.beachTimer = 1--math.min(self.beachTimer + 3*dt, 1)
+        self.shameTimer = 1
+        self.takenBeachDamage = false
+        --self.beachImmunity = math.max(self.beachImmunity - dt, 0)
 
-        if self.beachTimer == 0 then
+    else
+
+        if not noShake and self.beachTimer > 0 then
+            camera:AddScreenShake(4)
+        end
+
+        if self.takenBeachDamage == false then
+            self.immunity = 0 --no immunity hahaahahaha
+            self:TakeDamage(2, true)
+            self.takenBeachDamage = true
+        end
+
+        self.beachTimer = math.max(self.beachTimer - 2*dt, 0)
+
+        self.shameTimer = self.shameTimer - 0.5*dt
+
+        if self.beachTimer == 0 and self.shameTimer < 0 and player.health > 0 then
+
             -- the player is beached
-            self:TakeDamage(1, true)
             self:moveToCenter()
             self.beachTimer = 1
-            SetGameSpeed(0)
+            self.immunity = 2
+            --SetGameSpeed(0)
         end
     end
 
@@ -92,7 +113,7 @@ function PlayerBoat:Update(dt, inputs)
         self.baseXSpeed = 15*math.sqrt(current or 0)
 
         self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt * bt
-        self.y = self.y + math.sin(self.dir)*self.speed * dt * self.beachTimer
+        self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
         self.score = math.abs(self.y/10)
 
         -- current
@@ -133,8 +154,16 @@ end
 function PlayerBoat:Draw()
     if self.health > 0 then
 
+        local alpha = 1
+
+        if uiSineCounter and self.immunity > 0 and math.sin(uiSineCounter*30) < 0 and self.beachTimer == 1 then
+            alpha = 0.5
+        end
+
         if self.health ~= self.maxHealth then
-            love.graphics.setColor(1,tweens.sineOut(1-self.immunity),tweens.sineOut(1-self.immunity))
+            love.graphics.setColor(1,tweens.sineOut(1-self.immunity),tweens.sineOut(1-self.immunity),alpha)
+        else
+            love.graphics.setColor(1,1,1,alpha)
         end
 
         love.graphics.draw(self.image, self.x, self.y, self.dir, 3, 3, self.imageOx, self.imageOy)
