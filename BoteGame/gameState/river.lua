@@ -70,6 +70,13 @@ local function load()
         {"image/titleScreen/parallax/3.png", .2},
     }, true)
 
+    scrapImages = {}
+    for i = 1, 5 do
+        scrapImages[i] = love.graphics.newImage("image/player/scrap/scrap"..i..".png")
+        scrapImages[i]:setFilter("nearest")
+    end --this has to go here because of how constrained the dynamic loading system is :/
+
+
     world = love.physics.newWorld(0, 0, false)
     world:setCallbacks( beginContact, endContact, preSolve, postSolve )
 

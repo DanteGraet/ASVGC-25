@@ -199,6 +199,50 @@ local function loadParticleClasses()
 
 
 
+
+    --scrap
+
+    particleClass["scrap"] = function(particle,spawnX,spawnY,spawnAngle,spawnData)
+
+        particle.x = spawnX + love.math.random(-8,8)
+        particle.y = spawnY + love.math.random(-8,8)
+
+        particle.angle = spawnAngle or math.rad(love.math.random(1,360))
+
+        particle.speed = love.math.random(300,400)
+
+        particle.life = love.math.random(100,300)/100
+
+        particle.colour = {1,1,1}
+
+        particle.layer = "top"
+
+        particle.scrapImage = math.random(1,5)
+
+    end
+
+    particleUpdate["scrap"] = function(particle,dt)
+
+        particle.x = particle.x + particle.speed*math.cos(particle.angle)*dt
+        particle.y = particle.y + particle.speed*math.sin(particle.angle)*dt
+
+        if particle.life > 0 then
+            particle.life = particle.life - 3*dt
+        else
+            particle.delete = true
+        end
+
+        particle.speed = particle.speed - 200*dt
+
+    end
+
+    particleDraw["scrap"] = function(particle)
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.draw(scrapImages[particle.scrapImage],particle.x,particle.y,particle.angle,3*quindoc.clamp(particle.life,0,1),3*quindoc.clamp(particle.life,0,1),5,5)
+    end
+
+
+
 end
 
 return loadParticleClasses

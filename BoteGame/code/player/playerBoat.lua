@@ -214,12 +214,21 @@ function PlayerBoat:TakeDamage(amount, noShake)
         self.health = self.health - amount
         self.immunity = 1
 
+        for i = 1, 7 do
+            particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)))
+        end
+
         if not noShake then
             camera:AddScreenShake(30)
         end
 
         if self.health <= 0 then
             UpdateHighScore(self.score)
+
+            for i = 1, 5 do
+                particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)))
+            end
+
         end
     end
 end

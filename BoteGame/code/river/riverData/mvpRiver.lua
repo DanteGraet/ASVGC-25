@@ -26,11 +26,11 @@ local function boulderValleyDifficulty_STORM(percentage)
 end
 
 local function boulderValleyWind_STORM(percentage)
-    return 400 + 300*quindoc.clamp(percentage,0,1)
+    return 400 + 600*quindoc.clamp(percentage,0,1)
 end
 
 local function boulderValleySnow_STORM(percentage)
-    return 13 + 17*quindoc.clamp(percentage,0,1)
+    return 13 + 27*quindoc.clamp(percentage,0,1)
 end
 
 local function boulderValleyCurrent_STORM(percentage)

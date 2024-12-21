@@ -37,9 +37,6 @@ local toLoad = {
     {"image/ui/speedometerFrontVeryDamage.png", "blur"},
     {"image/ui/currentBar.png", "blur"},
     {"image/ui/ouchGlow.png", "blur"},
-
-
-
 }
 
 for i = 1,#riverZones do
@@ -49,6 +46,8 @@ for i = 1,#riverZones do
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/backgroundGeneration.lua", "run", "GetColourAt"})
 
 end
+
+
 
 -- load this file in a more permenant position.
 table.insert(toLoad, {"code/river/riverData/" .. riverName .. ".lua"})
