@@ -7,7 +7,7 @@ local function boulderValleyWind(percentage)
 end
 
 local function boulderValleySnow(percentage)
-    return 3 + 10*quindoc.clamp(percentage,0,1)
+    return 10*quindoc.clamp(percentage,0,1)
 end
 
 local function boulderValleyCurrent(percentage)
