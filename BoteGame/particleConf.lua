@@ -69,10 +69,9 @@ local function loadParticleClasses()
             particle.y = player.y - camera.oy - 100
         end
 
-        
-
     end
 
+    
     particleDraw["snow"] = function(particle)
         love.graphics.setColor(1,1,1,0.8)
         love.graphics.circle("fill", particle.x,particle.y,particle.size)

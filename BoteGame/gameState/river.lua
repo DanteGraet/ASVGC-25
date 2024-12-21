@@ -25,6 +25,10 @@ riverBorders = {
 -- this should solve all our problems ☜(ﾟヮﾟ☜) 👍
 local pain = false
 
+function SetGameSpeed(speed)
+    gameSpeed = speed
+end
+
 
 local function resize()
     scale = love.graphics.getWidth()/1920
@@ -189,7 +193,6 @@ local function update(dt)
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
             gameOverMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-            --gameSpeed = math.max(gameSpeed - dt*2, 0)
         elseif pauseMenu.isOpen then
             local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
@@ -202,7 +205,16 @@ local function update(dt)
                 settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
             end
         else
-            gameSpeed = math.min(gameSpeed + dt*2, 1)
+            if not player.wasBeached then
+                gameSpeed = math.min(gameSpeed + dt*2, 1)
+            else
+                gameSpeed = math.min(gameSpeed + dt, 1)
+
+                if gameSpeed == 1 then
+                    player.wasBeached = nil
+                end
+
+            end
         end
 
     else        
@@ -341,7 +353,8 @@ local function draw()
             gameOverMenu:Draw(tween)
         end
 
-        if 1-gs > 0 then
+
+        if 1-gs > 0 and not player.wasBeached then
             pauseMenu:Draw(1-gs)
 
             if pauseMenu.settingsTimer > 0 then
@@ -352,6 +365,9 @@ local function draw()
         love.graphics.reset()
         love.graphics.setColor(0,0,0)
         love.graphics.print(love.timer.getFPS())
+
+        love.graphics.print("player = " .. dante.dataToString(player), 0, 20)
+
     else
 
         local screenScale = love.graphics.getWidth()/1920

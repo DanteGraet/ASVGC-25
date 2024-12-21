@@ -23,6 +23,7 @@ function PlayerBoat:New(skin)
     obj.score = 0
 
     obj.immunity = 1
+    obj.beachTimer = 1  -- 0 means the player has been beached
 
     obj.maxHealth = 5
     obj.health = obj.maxHealth
@@ -53,17 +54,34 @@ function PlayerBoat:New(skin)
     return obj
 end
 
+
 function PlayerBoat:Update(dt, inputs)
     if self.immunity > 0 then
         self.immunity = math.max(self.immunity - dt, 0)
     end
 
-    if player.health > 0 then
+    if river:IsInBounds(self.x, self.y) then
+        self.beachTimer = math.min(self.beachTimer + dt, 1)
+    else
+        self.beachTimer = math.max(self.beachTimer - dt, 0)
+
+        if self.beachTimer == 0 then
+            -- the player is beached
+            self:TakeDamage(1, true)
+            self:moveToCenter()
+            self.beachTimer = 1
+            SetGameSpeed(0)
+        end
+    end
+
+    local bt = tweens.sineInOut(self.beachTimer)
+
+    if self.health > 0 then
         if inputs.left and not inputs.right then
-            self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up - self.maxAngle/2)
+            self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up - self.maxAngle/2)
         end
         if inputs.right and not inputs.left then
-            self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed), self.up + self.maxAngle/2 )
+            self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up + self.maxAngle/2 )
         end
         if inputs.accelerate then
             self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
@@ -73,15 +91,15 @@ function PlayerBoat:Update(dt, inputs)
 
         self.baseXSpeed = 15*math.sqrt(current or 0)
 
-        self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt
-        self.y = self.y + math.sin(self.dir)*self.speed * dt
+        self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt * bt
+        self.y = self.y + math.sin(self.dir)*self.speed * dt * self.beachTimer
         self.score = math.abs(self.y/10)
 
         -- current
         local currentAngle, currentSpeed = river:GetCurrent(self.y)
         if currentAngle then
-            self.x = self.x + math.cos(currentAngle)*currentSpeed * dt
-            self.y = self.y + math.sin(currentAngle)*currentSpeed * dt
+            self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
+            self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
 
             self.current = currentAngle
         end
@@ -98,14 +116,14 @@ function PlayerBoat:Update(dt, inputs)
 
         local speedEase = tweens.sineInOut(math.max(1-(self.deathTime/2.5), 0))
 
-        self.x = self.x + (math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt)*speedEase
-        self.y = self.y + (math.sin(self.dir)*self.speed * dt) * speedEase
+        self.x = self.x + (math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt)*speedEase * bt
+        self.y = self.y + (math.sin(self.dir)*self.speed * dt) * speedEase * bt
 
         -- current
         local currentAngle, currentSpeed = river:GetCurrent(self.y)
         if currentAngle then
-            self.x = self.x + (math.cos(currentAngle)*currentSpeed * dt) * speedEase
-            self.y = self.y + (math.sin(currentAngle)*currentSpeed * dt) * speedEase
+            self.x = self.x + (math.cos(currentAngle)*currentSpeed * dt) * speedEase * bt
+            self.y = self.y + (math.sin(currentAngle)*currentSpeed * dt) * speedEase * bt
 
             self.current = currentAngle
         end
@@ -113,7 +131,12 @@ function PlayerBoat:Update(dt, inputs)
 end
 
 function PlayerBoat:Draw()
-    if player.health > 0 then
+    if self.health > 0 then
+
+        if self.health ~= self.maxHealth then
+            love.graphics.setColor(1,tweens.sineOut(1-self.immunity),tweens.sineOut(1-self.immunity))
+        end
+
         love.graphics.draw(self.image, self.x, self.y, self.dir, 3, 3, self.imageOx, self.imageOy)
     end
 end
@@ -139,12 +162,32 @@ function PlayerBoat:GetPosition()
 end
 
 
-function PlayerBoat:TakeDamage(amount)
+
+function PlayerBoat:moveToCenter()
+    local leftPoint = river:FindHighAndLowPoints(1, 1, self.y)
+    local rightPoint = river:FindHighAndLowPoints(1, 2, self.y)
+    local midPoint = (leftPoint.x + rightPoint.x)/2
+
+    local newAngle = river:GetCurrent(self.y)
+    self.x = midPoint
+    self.body:setPosition(self.x, self.y)
+
+    self.dir = newAngle
+
+    self.wasBeached = true
+
+end
+
+
+
+function PlayerBoat:TakeDamage(amount, noShake)
     if self.immunity == 0 then
         self.health = self.health - amount
         self.immunity = 1
 
-        camera:AddScreenShake(30)
+        if not noShake then
+            camera:AddScreenShake(30)
+        end
 
         if self.health <= 0 then
             UpdateHighScore(self.score)

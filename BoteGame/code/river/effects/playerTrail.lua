@@ -7,7 +7,7 @@ function spawnTrail(dt)
     if not trailCounter then trailCounter = 0 end
 
     if trailCounter < trailTime then
-        trailCounter = trailCounter + dt*player.speed/50*settings.graphics.particles.value
+        trailCounter = trailCounter + dt*player.speed/50*settings.graphics.particles.value * tweens.sineInOut(player.beachTimer)
     else
         while trailCounter > trailTime do
             createTrailParticle()
