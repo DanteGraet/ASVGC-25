@@ -5,7 +5,7 @@ lockedAspectRatio = true
 screenBarColour = {0,0,0}
 
 function love.conf(t)
-    t.title = "Top Secret Jaraph Game " .. VERSION
+    t.title = "Bouyant Voyage " .. VERSION
     t.window.icon = "image/icon/icon256.png"
 
     t.window.width = 1920/2

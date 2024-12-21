@@ -29,6 +29,7 @@ local toLoad = {
     {"obstacle/obstacle.lua", "run"},
 
 
+    {"image/ui/viginette.png", "blur"},
     {"image/ui/needle.png", "blur"},
     {"image/ui/speedometer.png", "blur"},
     {"image/ui/speedometerFront.png", "blur"},
