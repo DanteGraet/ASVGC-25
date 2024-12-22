@@ -28,11 +28,21 @@ function leaderRockObstacle:New(x, y)
     local zones = riverGenerator:GetZone(camera.y, true) 
 
     local chainLengthCoefficient = 1.25
-
+--[[
     --we ignore the edge case of transitions because.... i can't be bothered :)
     if type(zones[1]) ~= "table" and zones.chainLengthCoefficient then
         chainLengthCoefficient = quindoc.runIfFunc(zones.chainLengthCoefficient,riverGenerator:GetPercentageThrough(player.y))
-    end
+    end]]
+
+    local p = riverGenerator:GetPercentageThrough(player.y)
+
+    zones = riverGenerator:GetZone(camera.y, true) 
+
+    if type(zones[1]) == "table" then --if we are in a transition
+        chainLengthCoefficient = (quindoc.runIfFunc(zones[1].chainLengthCoefficient,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].chainLengthCoefficient,0) or 0)*zones[3] 
+    else --just set the snow amount to what it needs to be
+        chainLengthCoefficient = quindoc.runIfFunc(zones.chainLengthCoefficient,p) or 0
+    end    
 
     obj.debugTable = {}
 
