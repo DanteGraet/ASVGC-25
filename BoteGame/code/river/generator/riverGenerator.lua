@@ -6,6 +6,8 @@ local nextSegment_zone = love.thread.getChannel("nextSegment_zone")
 
 local nextSegment_return = love.thread.getChannel("nextSegment_return")
 local nextSegment_error = love.thread.getChannel("nextSegment_error")
+local nextSegment_rSeed = love.thread.getChannel("nextSegment_rSeed")
+
 
 
 function RiverGenerator:New(riverData)
@@ -111,6 +113,7 @@ function RiverGenerator:NextSegment()
 
         nextSegment_zone:push(assets.code.river.zone[zoneName].pathGeneration())
 
+        nextSegment_rSeed:push(math.random(-100, 100))
 
         self.nextSegmentThread:start()
     else

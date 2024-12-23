@@ -7,7 +7,7 @@ local math = require("math")
 local table = require("table")
 local string = require("string")
 
-math.randomseed(os.time())
+math.randomseed(os.time() + love.thread.getChannel("nextSegment_rSeed"):pop())
 
 
 local function GenerateLastPoints(zone)
