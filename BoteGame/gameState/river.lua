@@ -257,7 +257,7 @@ local function mousepressed(x, y, button)
 
     if settingsMenu and settingsMenu.isOpen == true then
         settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-    elseif pauseMenu.isOpen == true then
+    elseif pauseMenu and pauseMenu.isOpen == true then
         pauseMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     end
 end
@@ -272,7 +272,7 @@ local function mousereleased(x, y, button)
 
     if settingsMenu and settingsMenu.isOpen == true then
         settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
-    elseif pauseMenu.isOpen == true then
+    elseif pauseMenu and pauseMenu.isOpen == true then
         pauseMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
     end
 end
