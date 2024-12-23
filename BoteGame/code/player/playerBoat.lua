@@ -12,7 +12,9 @@ function PlayerBoat:New(skin)
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
     obj.fixture:setUserData({type = "player"})
 
-    --obj.fixture:setSensor(true)
+    if settings.dev.ab_playerCollision.value then
+        obj.fixture:setSensor(true)
+    end
 
     obj.image = skin or assets.image.player.default
     obj.imageOx = obj.image:getWidth()/2
@@ -59,6 +61,7 @@ end
 
 
 function PlayerBoat:Update(dt, inputs)
+    
     self.x, self.y = self.body:getPosition()
 
     if self.immunity > 0 then
@@ -151,6 +154,7 @@ function PlayerBoat:Update(dt, inputs)
             self.current = currentAngle
         end
     end
+
 end
 
 function PlayerBoat:Draw()

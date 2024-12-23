@@ -10,6 +10,10 @@ end
 
 return {
     graphics = {
+        h_ui = {type = "header", displayName = "User Interface"},
+        h_other = {type = "header", displayName = "Other"},
+
+
         uiScale = {type = "slider", displayName = "UI Scale", value = 0.5},
         uiSide = {type = "toggle", displayName = "Right UI", value = true},
         uiLock = {type = "toggle", displayName = "Lock UI to 16 X 9", value = false},
@@ -34,15 +38,22 @@ return {
 
         drawHitboxes = {type = "toggle", displayName = "Draw Hitboxes", value = false},
 
+        h_ab = {type = "header", displayName = "AB testing"},
+
+        ab_playerCollision = {type = "toggle", displayName = "AB Player sensor", value = false}
     },
 
     -- Order is here so we load it in at the same time, we can then hvae key, value tables in an ordeer that is not alphabetti-spaghetti.
     order = {
         graphics = {
             "fullscreen",
+
+            "h_ui",
             "uiScale",
             "uiSide",
             "uiLock",
+
+            "h_other",
             "particles",
         },
         audio = {
@@ -55,9 +66,12 @@ return {
             "removeSave",
             "unlockAll",
             "reloadGamestate",
-            "printAssetTree",
 
             "drawHitboxes",
+
+
+            "h_ab",
+            "ab_playerCollision"
         },
     }
 }

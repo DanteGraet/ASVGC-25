@@ -255,6 +255,25 @@ function River:IsInBounds(x, y)
     return false
 end
 
+function River:getDistToEdge(x, y)
+    if self.points and #self.points > 0 then
+        for channel = 1,#self.points do
+            local leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, y)
+            local rightHight, rightLow = self:FindHighAndLowPoints(channel, 2, y)
+
+            local leftPercentage = (y - leftLow.y)/(leftHight.y - leftLow.y)
+            local rightPercentage = (y - rightLow.y)/(rightHight.y - rightLow.y)
+
+            local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+            local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
+
+
+            return math.max(leftX - x, (rightX - x)*-1)
+
+        end
+    end
+end
+
 function River:GetCurrent(yPos, xPos) -- returns the average direction angle of each path?
     local angle, speed
 
@@ -274,69 +293,8 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
 
     speed = current
 
-
     if self.points and #self.points > 0 then
-
         for channel = 1,#self.points do
-            --[[local leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, yPos)
-            local rightHight, rightLow = self:FindHighAndLowPoints(channel, 2, yPos)
-
-            local leftPercentage = (leftLow.y - yPos)/(leftHight.y - leftLow.y)
-            local rightPercentage = (rightLow.y - yPos)/(rightHight.y - rightLow.y)
-
-            local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
-            local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
-
-            local centerPos = {x = (leftX + rightX)/2, y = yPos}
-
-            if xPos then
-                if leftX < xPos and rightX > xPos then
-                    -- we can overwrite these values now
-                        -- Could be adding a smaller number but a largr value will make it "smoother"
-                    leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, yPos - 25)
-                    rightHight, rightLow = self:FindHighAndLowPoints(channel, 2, yPos - 25)
-        
-                    leftPercentage = (leftLow.y - yPos)/(leftHight.y - leftLow.y)
-                    rightPercentage = (rightLow.y - yPos)/(rightHight.y - rightLow.y)
-        
-        
-                    leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
-                    rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
-                    
-                    -- this one has to be another variable
-                    local centerPos2 = {x = (leftX + rightX)/2, y = yPos - 25}
-                    angle = math.atan2(centerPos2.y - centerPos.y, centerPos2.x - centerPos.x)   
-
-                    print("angle" .. angle)
-
-                    return angle, speed
-                else
-                    print("DAM", leftX, xPos, rightX)
-                    return
-                end
-            end
-
-                    -- we can overwrite these values now
-            -- Could be adding a smaller number but a largr value will make it "smoother"
-            leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, yPos - 25)
-            rightHight, rightLow = self:FindHighAndLowPoints(channel, 2, yPos - 25)
-
-            leftPercentage = (leftLow.y - yPos)/(leftHight.y - leftLow.y)
-            rightPercentage = (rightLow.y - yPos)/(rightHight.y - rightLow.y)
-
-            leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
-            rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
-            
-            -- this one has to be another variable
-            local centerPos2 = {x = (leftX + rightX)/2, y = yPos - 25}
-            local angle
-
-            angle = math.atan2(centerPos2.y - centerPos.y, centerPos2.x - centerPos.x)   
-
-            --print("aaangle" .. angle)
-
-            print(angle, centerPos2.y - centerPos.y,  centerPos2.x - centerPos.x,  rightPercentage, leftPercentage)]]
-
 
             -- its been like 5 hrs so im trying a simpler thing
             local leftHight, leftLow = self:FindHighAndLowPoints(channel, 1, yPos)

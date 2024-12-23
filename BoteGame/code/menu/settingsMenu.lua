@@ -93,9 +93,9 @@ function SettingsMenu.SetCatagory(data)
     
     -- Create the settings buttons here
     local colours = {
-        {1,1,1},
-        {.8,1,.8},
-        {.8,.8,1},
+        {.9,.9,.9},
+        {.7,.9,.7},
+        {.6,.6,.6},
     }
     local currentHeight = -height/2 + y + 55
     local currentX = -width/2 + 10
@@ -115,7 +115,7 @@ function SettingsMenu.SetCatagory(data)
 
                 self.Ui:GetButtons("settings")[name]:AddImageRail(0, -15, assets.image.ui.settings.indicator)
                 self.Ui:GetButtons("settings")[name]:AddImage(0, -10, assets.image.ui.settings.bar)
-                self.Ui:GetButtons("settings")[name]:SetElementColourRail({1,1,1, 1}, {0.9,0.9,0.9, 1}, {0.8,0.8,0.8, 1})
+                self.Ui:GetButtons("settings")[name]:SetElementColourRail({.9,.9,.9},{.7,.9,.7},{.6,.6,.6})
 
                 self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -font1:getWidth(currentSetting.displayName) - 10, -20, 1000)
                 self.Ui:GetButtons("settings")[name].func = {sliderFunction, currentSetting}
@@ -136,6 +136,11 @@ function SettingsMenu.SetCatagory(data)
 
 
                 self.Ui:GetButtons("settings")[name].func = {toggleFunction, currentSetting}
+
+            elseif currentSetting.type == "header" then
+                self.Ui:AddTextButton(name, currentSetting.displayName, nil, font2, currentX, currentHeight + 10, 400, {{1,1,1}}, "settings")
+
+                currentHeight = currentHeight + font2:getHeight() - font1:getHeight() + 10
             end
 
             currentHeight = currentHeight + font1:getHeight()
