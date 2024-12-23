@@ -30,7 +30,7 @@ function PlayerBoat:New(skin)
     obj.takenBeachDamage = false
     --obj.beachImmunity = 0
 
-    obj.maxHealth = 5
+    obj.maxHealth = 500
     obj.health = obj.maxHealth
     obj.deathTime = 0
 
