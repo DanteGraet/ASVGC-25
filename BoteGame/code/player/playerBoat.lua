@@ -12,7 +12,7 @@ function PlayerBoat:New(skin)
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
     obj.fixture:setUserData({type = "player"})
 
-    obj.fixture:setSensor(true)
+    --obj.fixture:setSensor(true)
 
     obj.image = skin or assets.image.player.default
     obj.imageOx = obj.image:getWidth()/2
@@ -59,6 +59,8 @@ end
 
 
 function PlayerBoat:Update(dt, inputs)
+    self.x, self.y = self.body:getPosition()
+
     if self.immunity > 0 then
         self.immunity = math.max(self.immunity - dt, 0)
     end
