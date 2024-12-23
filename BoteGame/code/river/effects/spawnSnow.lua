@@ -47,7 +47,7 @@ function createSnowParticle()
     local relativeBottomOfScreen = love.graphics.getHeight()/GetRiverScale()[1]
 
     local randY = love.math.random(-100,100+love.graphics.getHeight()/GetRiverScale()[1]) + topOfScreen
-    particles.spawnParticle("snow",-love.graphics.getWidth()/2/GetRiverScale()[1]-100,randY)
+    particles.spawnParticle("snow",-love.graphics.getWidth()/2/GetRiverScale()[1]-100,randY, nil, nil,"top")
 
 end
 

@@ -215,7 +215,7 @@ function PlayerBoat:TakeDamage(amount, noShake)
         self.immunity = 1
 
         for i = 1, 7 do
-            particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)))
+            particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
         end
 
         if not noShake then
@@ -226,7 +226,7 @@ function PlayerBoat:TakeDamage(amount, noShake)
             UpdateHighScore(self.score)
 
             for i = 1, 5 do
-                particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)))
+                particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
             end
 
         end

@@ -44,8 +44,8 @@ function createTrailParticle(num)
     end
 
 
-    particles.spawnParticle("trail",x,y,angle)
-    if love.math.random(1,5) == 1 then particles.spawnParticle("trail2",x,y,angle) end
+    particles.spawnParticle("trail",x,y,angle, nil, "bottom")
+    if love.math.random(1,5) == 1 then particles.spawnParticle("trail2",x,y,angle,nil, "bottom") end
 
 end
 

@@ -18,7 +18,7 @@ end
 
 return {
     {
-        zone = "boulderValley",
+        zone = "boulderValley_STORM",
         distance = 10000,
         difficultyFunction = boulderValleyDifficulty,
         transition = 400,

@@ -4,7 +4,7 @@ require("templateLib/dante")
 tweens = require("templateLib/tweens")
 buttons = require("templateLib/graetUi")
 particles = require("templateLib/particle")
-particles.loadParticleClasses = require("particleConf")
+--particles.loadParticleClasses = require("particleConf")
 
 require("templateLib/audioManager")
 
