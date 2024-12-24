@@ -28,9 +28,8 @@ function PlayerBoat:New(skin)
     obj.beachTimer = 1  -- 0 means the player has been beached
     obj.shameTimer = 1
     obj.takenBeachDamage = false
-    --obj.beachImmunity = 0
 
-    obj.maxHealth = 500
+    obj.maxHealth = 5--00
     obj.health = obj.maxHealth
     obj.deathTime = 0
 

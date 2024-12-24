@@ -1,7 +1,9 @@
 return {
     -- Add the stats? for each obstical here, not just the actual obsticals.
     {
-        type = "random",
+        type = "timer",
+        minTime = 1000,
+        maxTime = 1000,
         data = {
             rock = {
                 -- the base spawnWeight that this obstical has
