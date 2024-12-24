@@ -96,8 +96,11 @@ function DynamicLoading:AddItem(path, current, original)
                 current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])
 
                 if original[2] == "addObstacles" then
-                    for name, _ in pairs(current[string.sub(file, 1, #file-4)]()) do
-                        table.insert(self.loadList, #self.loadList+1, {"obstacle/" .. name .. ".lua", "run"})
+                    local c = current[string.sub(file, 1, #file-4)]()
+                    for i = 1,#c do
+                        for name, _ in pairs(c[i].data) do
+                            table.insert(self.loadList, #self.loadList+1, {"obstacle/" .. name .. ".lua", "run"})
+                        end
                     end
                 end
             end

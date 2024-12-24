@@ -17,6 +17,8 @@ function River:New()
 
     obj.farAhead = false
 
+    obj.movedPlayer = false
+
 
     --{"code/river/generator/riverCanvas.lua"},
     --
@@ -53,10 +55,15 @@ function River:MergePoints(newPoints)
                 local data = {
                     x = newPoints[channel][side][point],
                     y = newPoints[channel][side][point + 1],
-                }
+                }   
                 table.insert(self.points[channel][side], data)
             end
         end
+    end
+
+    if not self.movedPlayer then
+        self.movedPlayer = true
+        --player:moveToCenter()
     end
     --self.farAhead = true
     self.callNextSegment = true
