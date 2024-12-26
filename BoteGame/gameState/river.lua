@@ -126,7 +126,34 @@ local function update(dt)
     step = true
     if steping then
         dt = 1/60
+    else   --don't strike lightning if stepping
+
+        local stormIntensity = 0
+
+        if zones and type(zones[1]) == "table" then --if we are in a storm
+
+            local p = riverGenerator:GetPercentageThrough(player.y)
+            stormIntensity = (quindoc.runIfFunc(zones[1].stormIntensity,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].stormIntensity,0) or 0)*zones[3] 
+    
+        elseif zones then --just set the storm amount to what it needs to be
+    
+            local p = riverGenerator:GetPercentageThrough(player.y)
+            stormIntensity = quindoc.runIfFunc(zones.stormIntensity,p) or 0 --current is a GLOBAL VALUE for a reason btw
+    
+        end    
+
+        if not lightningAlpha then lightningAlpha = 0 end
+        --at MAXIMUM storm intensity, lighting will strike on average once per 10 seconds
+        if stormIntensity and stormIntensity > 500 and math.random(1,600/(stormIntensity/1000) * (1/60/dt)) == 1 then
+            local strikeIntensity = math.random(2,6)/10
+            lightningAlpha = strikeIntensity
+            --TODO: Play lightning sound here, based on intensity
+        else
+            lightningAlpha = math.max(lightningAlpha-2*dt,0)
+        end
     end
+
+
 
     riverGenerator:Update()
 
@@ -346,13 +373,11 @@ local function draw()
         if stormIntensity then love.graphics.setColor(1,1,1,stormIntensity/1000) end
         love.graphics.draw(assets.image.ui.viginette, -riverBorders.width/2-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, 0, riverBorders.width/1920, riverBorders.height/1080)
 
-        --LIGHTNING STRIKES
-        --at maximum storm intensity, lighting will strike on average once per 10 seconds
-        if stormIntensity > 500 and math.random(1,600/(stormIntensity/1000)) == 1 then
-            love.graphics.setColor(1,1,1,0.5)
-            love.graphics.rectangle("fill",riverBorders.left-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, riverBorders.width+100*riverBorders.width/1920,riverBorders.height+100*riverBorders.height/1080)
-            --TODO: Play lightning sound here (not sure you can play sounds in love.draw)
-        end
+       -- print(lightningAlpha)
+
+        love.graphics.setColor(1,1,1,lightningAlpha)
+        love.graphics.rectangle("fill",riverBorders.left-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, riverBorders.width+100*riverBorders.width/1920,riverBorders.height+100*riverBorders.height/1080)
+        love.graphics.setColor(1,1,1,1)
 
         --draww hitboxes over everythingh
         if settings.dev.drawHitboxes.value then

@@ -24,6 +24,7 @@ return {
         transition = 400,
         snowAmount = 30,
         windSpeed = 200,
+        stormIntensity = 1000
     },
     {
         zone = "devZone2",

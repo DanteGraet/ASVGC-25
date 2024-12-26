@@ -46,14 +46,15 @@ function PlayerBoat:New(skin)
     obj.baseTurnSpeed = 1 --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness
     obj.baseXSpeed = 0 --you wouldn't want that would you? no,because otherwise you will lose the game
 
-    --[[
+    
     --for testing
     obj.immunity = 10000
+    obj.health = 1000
     obj.speed = 100
     obj.acceleration = 3000
-    obj.maxSpeed = 1000
+    obj.maxSpeed = 3000
     obj.minSpeed = -1000
-    ]]
+    
 
     return obj
 end
