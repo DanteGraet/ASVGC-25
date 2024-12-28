@@ -31,6 +31,7 @@ end
 
 
 local function resize()
+    
     scale = love.graphics.getWidth()/1920
 
     if love.graphics.getHeight()/1080 < scale then
@@ -123,6 +124,7 @@ local function focus(focus)
 end
 
 local function update(dt)
+    
     step = true
     if steping then
         dt = 1/60

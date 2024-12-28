@@ -1,5 +1,6 @@
 local randomSpawner = love.filesystem.load("code/river/generator/randomSpawner.lua")()
 local timerSpawner = love.filesystem.load("code/river/generator/timerSpawner.lua")()
+local difficultyIndependentSpawner = love.filesystem.load("code/river/generator/difficultyIndependentSpawner.lua")()
 
 
 local ObstacleSpawner = {}
@@ -17,9 +18,10 @@ function ObstacleSpawner:New(obsticals)
         for i = 1,#obsticals[key] do
             if obsticals[key][i].type == "random" then
                 table.insert(obj.spawners[key], randomSpawner:New(obsticals[key][i].data))
-            end
-            if obsticals[key][i].type == "timer" then
+            elseif obsticals[key][i].type == "timer" then
                 table.insert(obj.spawners[key], timerSpawner:New(obsticals[key][i].data, obsticals[key][i].minTime, obsticals[key][i].maxTime))
+            elseif obsticals[key][i].type == "difficultyIndependent" then
+                table.insert(obj.spawners[key], difficultyIndependentSpawner:New(obsticals[key][i].data, obsticals[key][i].chance))
             end
         end
     end

@@ -1,5 +1,5 @@
 local function boulderValleyDifficulty(percentage)
-    return 0.0005 + 0.001*quindoc.clamp(percentage,0,1)
+    return 0.0015 + 0.0035*quindoc.clamp(percentage,0,1)
 end
 
 local function boulderValleyWind(percentage)
@@ -22,7 +22,7 @@ end
 
 
 local function boulderValleyDifficulty_STORM(percentage)
-    return 0.0015 + 0.001*quindoc.clamp(percentage,0,1)
+    return 0.005
 end
 
 local function boulderValleyWind_STORM(percentage)
