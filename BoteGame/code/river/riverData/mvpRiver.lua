@@ -26,15 +26,55 @@ local function boulderValleyDifficulty_STORM(percentage)
 end
 
 local function boulderValleyWind_STORM(percentage)
-    return 400 + 600*quindoc.clamp(percentage,0,1)
+
+    local idk = percentage
+
+    if percentage < 0.8 then
+
+        idk = percentage*1.25
+
+    else
+
+        idk = 1 - 2*((percentage - 0.8) * 5)
+
+    end
+
+    return 400 + 600*quindoc.clamp(idk,-0.5,1)
 end
 
 local function boulderValleySnow_STORM(percentage)
-    return 13 + 27*quindoc.clamp(percentage,0,1)
+
+    local idk = percentage
+
+    if percentage < 0.8 then
+
+        idk = percentage*1.25
+
+    else
+
+        idk = 1 - 2*((percentage - 0.8) * 5)
+
+    end
+
+    return 13 + 27*quindoc.clamp(idk,-0.3,1)
 end
 
 local function boulderValleyCurrent_STORM(percentage)
-    return 300 + 200*quindoc.clamp(percentage,0,1) 
+
+    local idk = percentage
+
+    if percentage < 0.8 then
+
+        idk = percentage*1.25
+
+    else
+
+        idk = 1 - 2*((percentage - 0.8) * 5)
+
+    end
+
+    return 300 + 200*quindoc.clamp(idk,-0.5,1) 
+    
 end
 
 local function boulderValleyChainLengthCoefficient_STORM(percentage)
@@ -42,14 +82,34 @@ local function boulderValleyChainLengthCoefficient_STORM(percentage)
 end
 
 local function boulderValleyStormIntensity_STORM(percentage)
-    return 1000*quindoc.clamp(percentage,0,1)
+
+    local idk = percentage
+
+    if percentage < 0.8 then
+
+        idk = percentage*1.25
+
+    else
+
+        idk = 1 - 2*((percentage - 0.8) * 5)
+
+    end
+
+    return 1000*quindoc.clamp(idk,0,1)
 end
 
 
 return {
     {
+        zone = "mvpForest",
+        distance = 10000,
+        difficultyFunction = 0.01,
+        transition = 0,
+        current = 100,
+    },
+    {
         zone = "boulderValley",
-        distance = 50000,
+        distance = 4000,
         difficultyFunction = boulderValleyDifficulty,
         transition = 1,
         snowAmount = boulderValleySnow,
@@ -59,15 +119,16 @@ return {
     },
     {
         zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
-        distance = 50000,
+        distance = 4000,
         stormIntensity = boulderValleyStormIntensity_STORM,
         difficultyFunction = boulderValleyDifficulty_STORM,
-        transition = 0,
+        transition = 500,
         snowAmount = boulderValleySnow_STORM,
         windSpeed = boulderValleyWind_STORM,
         current = boulderValleyCurrent_STORM,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM
     },
+
 }
 
 

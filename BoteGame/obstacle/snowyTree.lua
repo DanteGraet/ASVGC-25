@@ -36,7 +36,9 @@ function snowyTreeObstacle:New(x, y)
         if assets.code.river.zone[zones.zone].GetColourAt(x,y)[1] == snowyTreeAcceptedColours[i] then 
             obj = Obstacle:New(x, y, snowyTreeShape)
             setmetatable(obj, self)
-            obj.image = snowyTreeImages[math.random(1, #snowyTreeImages)]      
+            obj.image = snowyTreeImages[math.random(1, #snowyTreeImages)]  
+            obj.dir = math.rad(math.random(1,360))    
+            obj.fixture:setSensor(true)   
         end
     end
 
