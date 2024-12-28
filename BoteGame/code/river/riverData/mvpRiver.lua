@@ -100,13 +100,7 @@ end
 
 
 return {
-    {
-        zone = "mvpForest",
-        distance = 10000,
-        difficultyFunction = 0.01,
-        transition = 0,
-        current = 100,
-    },
+
     {
         zone = "boulderValley",
         distance = 4000,
@@ -127,6 +121,13 @@ return {
         windSpeed = boulderValleyWind_STORM,
         current = boulderValleyCurrent_STORM,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM
+    },
+    {
+        zone = "mvpForest",
+        distance = 10000,
+        difficultyFunction = 0.01,
+        transition = 0,
+        current = 100,
     },
 
 }
