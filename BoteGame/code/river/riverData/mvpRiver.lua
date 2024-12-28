@@ -103,7 +103,7 @@ return {
 
     {
         zone = "boulderValley",
-        distance = 4000,
+        distance = 30000,
         difficultyFunction = boulderValleyDifficulty,
         transition = 1,
         snowAmount = boulderValleySnow,
@@ -113,7 +113,7 @@ return {
     },
     {
         zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
-        distance = 4000,
+        distance = 50000,
         stormIntensity = boulderValleyStormIntensity_STORM,
         difficultyFunction = boulderValleyDifficulty_STORM,
         transition = 500,
