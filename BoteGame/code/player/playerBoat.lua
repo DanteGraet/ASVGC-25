@@ -24,6 +24,8 @@ function PlayerBoat:New(skin)
     obj.y = 0
     obj.score = 0
 
+    obj.winTimer = 0
+
     obj.immunity = 1
     obj.beachTimer = 1  -- 0 means the player has been beached
     obj.shameTimer = 1
@@ -48,11 +50,11 @@ function PlayerBoat:New(skin)
 
     
     --for testing
-    obj.immunity = 10000
+    --[[obj.immunity = 10000
     obj.health = 1000
     obj.speed = 100
     obj.acceleration = 3000
-    obj.maxSpeed = 3000
+    obj.maxSpeed = 3000]]
     --obj.minSpeed = -1000
     
 
@@ -102,41 +104,115 @@ function PlayerBoat:Update(dt, inputs)
 
     local bt = tweens.sineInOut(self.beachTimer)
 
-    if self.health > 0 then
-        if inputs.left and not inputs.right then
-            self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up - self.maxAngle/2)
-        end
-        if inputs.right and not inputs.left then
-            self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up + self.maxAngle/2 )
-        end
-        if inputs.accelerate then
+    if self.health > 0 and player.y > riverBorders.up - 100 then
+        if -player.y < riverGenerator:GetLegnth() then
+            -- player has not won
+
+            if inputs.left and not inputs.right then
+                self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up - self.maxAngle/2)
+            end
+            if inputs.right and not inputs.left then
+                self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up + self.maxAngle/2 )
+            end
+            if inputs.accelerate then
+                self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
+            elseif inputs.decelerate then
+                self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
+            end
+
+            self.baseXSpeed = 15*math.sqrt(current or 0)
+
+            self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt * bt
+            self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
+            self.score = math.abs(self.y/10)
+
+            -- current
+            local currentAngle, currentSpeed = river:GetCurrent(self.y)
+            if currentAngle then
+                self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
+                self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
+
+                self.current = currentAngle
+            end
+
+            spawnTrail(dt) --spawning damage smoke is in here also
+
+            if not uiSineCounter then uiSineCounter = 0 end
+            uiSineCounter = uiSineCounter + dt
+            if uiSineCounter > 2*math.pi then uiSineCounter = 0 end
+
+            self.body:setPosition(self.x, self.y)
+        else
+            -- player has won
+            --print("wwin")
+            if not self.winY then
+                self.winY = self.y
+            end
+
+            self.winTimer = math.min(self.winTimer + dt, 1)
+
+            local center = river:getCenter(self.y - 100)
+
+            local dir = nil
+            
+            if math.abs(center - self.x) > 100 then
+                if center - self.x > 0 then
+                    dir = "left"
+                else
+                    dir = "right"
+                end
+            else
+                local angle = math.atan2(self.y - 100, self.x-center)
+
+                --print(angle, self.dir)
+                if math.abs(angle - self.dir) > self.winTimer/2 then
+                    if angle - self.dir > 0 then
+                        dir = "left"
+                        
+                    else
+                        dir = "right"
+                        
+                    end
+
+                end
+                
+            end
+
+
+            if dir =="right" then
+                self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up - self.maxAngle/2)
+            end
+            if dir =="left" then
+                self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up + self.maxAngle/2 )
+            end
+
             self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
-        elseif inputs.decelerate then
-            self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
+
+
+            self.baseXSpeed = 15*math.sqrt(current or 0)
+
+            self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt * bt
+            self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
+
+            self.winY = self.winY + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer)) * tweens.sineInOut(1-self.winTimer)
+
+            -- current
+            local currentAngle, currentSpeed = river:GetCurrent(self.y)
+            if currentAngle then
+                self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
+                self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
+
+                self.current = currentAngle
+            end
+
+            spawnTrail(dt) --spawning damage smoke is in here also
+
+            if not uiSineCounter then uiSineCounter = 0 end
+            uiSineCounter = uiSineCounter + dt
+            if uiSineCounter > 2*math.pi then uiSineCounter = 0 end
+
+            self.body:setPosition(self.x, self.y)
         end
-
-        self.baseXSpeed = 15*math.sqrt(current or 0)
-
-        self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt * bt
-        self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
-        self.score = math.abs(self.y/10)
-
-        -- current
-        local currentAngle, currentSpeed = river:GetCurrent(self.y)
-        if currentAngle then
-            self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
-            self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
-
-            self.current = currentAngle
-        end
-
-        spawnTrail(dt) --spawning damage smoke is in here also
-
-        if not uiSineCounter then uiSineCounter = 0 end
-        uiSineCounter = uiSineCounter + dt
-        if uiSineCounter > 2*math.pi then uiSineCounter = 0 end
-
-        self.body:setPosition(self.x, self.y)
     else
         self.deathTime = self.deathTime + dt
 
@@ -184,7 +260,6 @@ function PlayerBoat:DrawHitbox()
     local x, y = self.body:getLinearVelocity( )
     love.graphics.line(self.body:getX(), self.body:getY(), self.body:getX() +x , self.body:getY()+y)
 
-
     love.graphics.setColor(1,1,1)
 
     if self.current then   
@@ -193,7 +268,11 @@ function PlayerBoat:DrawHitbox()
 end
 
 function PlayerBoat:GetPosition()
-    return {x = self.x, y = self.y, dir = self.dir}
+    if self.winTimer == 0 then
+        return {x = self.x, y = self.y, dir = self.dir}
+    else
+        return {x = self.x, y = (self.winY or self.y), dir = self.dir}
+    end
 end
 
 
@@ -210,7 +289,6 @@ function PlayerBoat:moveToCenter()
     self.dir = newAngle
 
     self.wasBeached = true
-
 end
 
 
@@ -220,7 +298,7 @@ function PlayerBoat:TakeDamage(amount, noShake)
         self.health = self.health - amount
         self.immunity = 1
 
-        for i = 1, 7 do
+        for i = 1, 7*settings.graphics.particles.value do
             particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
         end
 
@@ -231,7 +309,7 @@ function PlayerBoat:TakeDamage(amount, noShake)
         if self.health <= 0 then
             UpdateHighScore(self.score)
 
-            for i = 1, 5 do
+            for i = 1, 5*settings.graphics.particles.value do
                 particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
             end
 

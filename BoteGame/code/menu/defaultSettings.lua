@@ -20,7 +20,7 @@ return {
 
         zoneTitles = {type = "toggle", displayName = "Show Biome Titles", value = true},
 
-        particles = {type = "slider", displayName = "Spawn Particles", value = 0.5},
+        particles = {type = "slider", displayName = "Spawn Particles", value = 1},
 
         fullscreen = {type = "toggle", displayName = "Fullscreen", value = love.window.getFullscreen()}
     },

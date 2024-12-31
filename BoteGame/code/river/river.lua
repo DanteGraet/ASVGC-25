@@ -93,7 +93,7 @@ end
 function River:checkNextSegment()
     -- check if we need to generate the next segment
     if #self.points > 0 then
-        if self.points[1][1][#self.points[1][1]].y > player.y+50 - 5000 then
+        if self.points[1][1][#self.points[1][1]].y > (player.winY or player.y)+50 - 5000 then
             --River
             if self.callNextSegment then
                 riverGenerator:NextSegment()
@@ -112,7 +112,7 @@ end
 
 function River:Update()
     -- local variable so it runs slightly faster
-    local playerY = player.y + 50
+    local playerY = (player.winY or player.y) + 50
 
     if self.points and #self.points > 0 then
 
@@ -262,6 +262,19 @@ function River:IsInBounds(x, y)
     return false
 end
 
+function River:getCenter(y)     -- MERICA 🦅🦅🦅
+    local leftHight, leftLow = self:FindHighAndLowPoints(1, 1, y)
+    local rightHight, rightLow = self:FindHighAndLowPoints(1, 2, y)
+
+    local leftPercentage = (y - leftLow.y)/(leftHight.y - leftLow.y)
+    local rightPercentage = (y - rightLow.y)/(rightHight.y - rightLow.y)
+
+    local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+    local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
+
+    return (leftX + rightX)/2 
+end
+
 function River:getDistToEdge(x, y)
     if self.points and #self.points > 0 then
         for channel = 1,#self.points do
@@ -286,7 +299,6 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
 
     local p = riverGenerator:GetPercentageThrough(player.y)
    
-    zones = riverGenerator:GetZone(camera.y, true) 
 
     if type(zones[1]) == "table" then --if we are in a transition
 

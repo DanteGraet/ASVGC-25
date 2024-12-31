@@ -26,7 +26,7 @@ function snowyTreeObstacle:New(x, y)
 
     local obj = {}
     obj.spawnFail = true
-
+    
     if zones[1] and type(zones[1]) == "table" then
         zones = zones[1]
     end

@@ -91,10 +91,8 @@ local function load()
     riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName]())
     obstacles = {}
     local zoneObsitcalList = {}
-    print("hhhhhhhhhhhhhhhhhhhh")
     for i = 1,#riverGenerator.zones do
         local zone = riverGenerator.zones[i]
-        print(zone.zone)
         zoneObsitcalList[zone.zone] = assets.code.river.zone[zone.zone].obsticals()
         dante.printTable(zoneObsitcalList[zone.zone])
     end
@@ -121,12 +119,13 @@ function GetRiverScale()
 end
 
 local function focus(focus)
-    if not player or player.health > 0 then
+    if not player or player.health > 0 or self.winTimer < 1 then
         pauseMenu.isOpen = true
     end
 end
 
 local function update(dt)
+    zones = riverGenerator:GetZone(camera.y, true) 
     
     step = true
     if steping then
@@ -180,8 +179,8 @@ local function update(dt)
         camera:SetPosition(0, player:GetPosition().y)
         camera:Update(dt*gs)
 
-        riverBorders.up =    player.y - camera.oy
-        riverBorders.down =  player.y - camera.oy + love.graphics.getHeight()/scale
+        riverBorders.up =    (player.winY or player.y) - camera.oy
+        riverBorders.down =  (player.winY or player.y) - camera.oy + love.graphics.getHeight()/scale
 
         -- update the river after the player so we can generate based on the players position.
         river:Update()
@@ -227,7 +226,7 @@ local function update(dt)
             obstacles[i]:Update(i, dt)
         end
 
-        if player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+        if (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
             local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
@@ -283,7 +282,7 @@ local function mousepressed(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if player and player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+    if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
         gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     end
 
@@ -298,7 +297,7 @@ local function mousereleased(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if player and player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+    if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
         gameOverMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     end
 
@@ -318,7 +317,7 @@ local function keyreleased(key)
 
     if input == "pause" then
         if settingsMenu.isOpen then settingsMenu.isOpen = false
-        elseif player.health > 0 then pauseMenu.isOpen = not pauseMenu.isOpen end
+        elseif player.health > 0 and not player.winTimer > 0 then pauseMenu.isOpen = not pauseMenu.isOpen end
     end
 
     if key == "k" and DEV then
@@ -381,8 +380,6 @@ local function draw()
         if stormIntensity then love.graphics.setColor(1,1,1,stormIntensity/2000) end --and yeah draw it again at half alpha because it isn't strong enough and lazy :/
         love.graphics.draw(assets.image.ui.viginette, -riverBorders.width/2-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, 0, riverBorders.width/1920, riverBorders.height/1080)
 
-       -- print(lightningAlpha)
-
         love.graphics.setColor(1,1,1,lightningAlpha)
         love.graphics.rectangle("fill",riverBorders.left-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, riverBorders.width+100*riverBorders.width/1920,riverBorders.height+100*riverBorders.height/1080)
         love.graphics.setColor(1,1,1,1)
@@ -414,7 +411,7 @@ local function draw()
     
         local gs = tweens.sineInOut(gameSpeed)
         
-        if player.health <= 0 and player.deathTime >= 1 and not pauseMenu.isOpen then
+        if (player.health <= 0 or player.deathTime >= 1) and not pauseMenu.isOpen then
             local tween = tweens.sineInOut(quindoc.clamp((player.deathTime-1)*2, 0, 1))
             gameOverMenu:Draw(tween)
         end

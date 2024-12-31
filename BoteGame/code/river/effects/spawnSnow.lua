@@ -1,5 +1,18 @@
 ---windSpeed = 250
----snowAmount = 100
+local snowAmount
+local snowTime
+local snowCounter
+
+local function createSnowParticle()
+
+    local topOfScreen = player.y - camera.oy
+    local relativeBottomOfScreen = love.graphics.getHeight()/GetRiverScale()[1]
+
+    local randY = love.math.random(-100,100+love.graphics.getHeight()/GetRiverScale()[1]) + topOfScreen
+    particles.spawnParticle("snow",-love.graphics.getWidth()/2/GetRiverScale()[1]-100,randY, nil, nil,"top")
+
+end
+
 
 
 function spawnSnow(dt)
@@ -29,7 +42,7 @@ function spawnSnow(dt)
         if not snowCounter then snowCounter = 0 end
 
         if snowCounter < snowTime then
-            snowCounter = snowCounter + dt*settings.graphics.particles.value*2
+            snowCounter = snowCounter + dt*settings.graphics.particles.value
         else
             while snowCounter > snowTime do
                 createSnowParticle()
@@ -41,13 +54,4 @@ function spawnSnow(dt)
 
 end
 
-function createSnowParticle()
-
-    local topOfScreen = player.y - camera.oy
-    local relativeBottomOfScreen = love.graphics.getHeight()/GetRiverScale()[1]
-
-    local randY = love.math.random(-100,100+love.graphics.getHeight()/GetRiverScale()[1]) + topOfScreen
-    particles.spawnParticle("snow",-love.graphics.getWidth()/2/GetRiverScale()[1]-100,randY, nil, nil,"top")
-
-end
 

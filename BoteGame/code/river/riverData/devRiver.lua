@@ -19,35 +19,11 @@ end
 return {
     {
         zone = "devZone",
-        distance = 100000,
+        distance = 1000,
         difficultyFunction = boulderValleyDifficulty,
         transition = 400,
         snowAmount = 30,
         windSpeed = 200,
         stormIntensity = 1000
     },
-    {
-        zone = "devZone2",
-        distance = 1000,
-        difficultyFunction = devZoneDifficulty,
-        transition = 400,
-        snowAmount = 100,
-        windSpeed = 400,
-    },
-    {
-        zone = "devZone",
-        distance = 1000,
-        difficultyFunction = devZoneDifficulty,
-        transition = 100,
-        snowAmount = 300,
-        windSpeed = 700,
-    },
-    {
-        zone = "devZone2",
-        distance = 1000,
-        difficultyFunction = devZoneDifficulty,
-        transition = 100,
-        snowAmount = 1,
-        windSpeed = 100,
-    }
 }

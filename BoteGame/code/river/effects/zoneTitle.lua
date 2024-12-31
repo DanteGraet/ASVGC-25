@@ -1,3 +1,9 @@
+local displayTitleCounter
+local displayTitleAlpha
+local savedDisplayName
+local savedSubtitle
+local savedDistance
+
 function updateZoneTitles(dt)
 
     if zones.displayName and zones.displayName ~= savedDisplayName then
@@ -23,7 +29,6 @@ function drawZoneTitle()
 
     if savedDisplayName then
         love.graphics.setColor(1,1,1,displayTitleAlpha)
-        print(displayTitleAlpha)
         love.graphics.setFont(assets.font.fontBlack64)
         love.graphics.printf(savedDisplayName,0,300-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100),1920,"center")
         love.graphics.setFont(assets.font.fontBlack24)

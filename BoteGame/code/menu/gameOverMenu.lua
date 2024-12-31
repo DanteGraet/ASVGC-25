@@ -112,7 +112,11 @@ function GameOverMenu:Draw(gs)
 
 
     love.graphics.setFont(font2)
-    love.graphics.printf("Game Over", -width/2, -height/2, width, "center")
+    if player.health <=0 then
+        love.graphics.printf("Game Over", -width/2, -height/2, width, "center")
+    else
+        love.graphics.printf("You Win!", -width/2, -height/2, width, "center")
+    end
 
     love.graphics.setFont(font1)
     love.graphics.printf("Score:", -width/2, -height/2 + 100, width/2, "center")

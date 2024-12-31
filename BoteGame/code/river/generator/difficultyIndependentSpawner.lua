@@ -9,8 +9,6 @@ function difficultyIndependentSpawner:New(obsticals,chance)
     obj.chance = chance
     obj.lastY = riverBorders.up - 250
 
-    print("\n\n==\n\n")
-    dante.printTable(obsticals)
 
     return obj
 end

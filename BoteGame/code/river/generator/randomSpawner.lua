@@ -8,8 +8,7 @@ function RandomSpawner:New(obsticals)
     obj.obsticals = obsticals
     obj.lastY = riverBorders.up - 250
 
-    print("\n\n==\n\n")
-    dante.printTable(obsticals)
+
 
     return obj
 end
