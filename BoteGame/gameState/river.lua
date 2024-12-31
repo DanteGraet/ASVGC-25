@@ -91,9 +91,12 @@ local function load()
     riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName]())
     obstacles = {}
     local zoneObsitcalList = {}
+    print("hhhhhhhhhhhhhhhhhhhh")
     for i = 1,#riverGenerator.zones do
         local zone = riverGenerator.zones[i]
+        print(zone.zone)
         zoneObsitcalList[zone.zone] = assets.code.river.zone[zone.zone].obsticals()
+        dante.printTable(zoneObsitcalList[zone.zone])
     end
     obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
 

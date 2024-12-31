@@ -34,12 +34,15 @@ end
 
 function ObstacleSpawner:Update()
     local zone = riverGenerator:GetZone(riverBorders.up - 250).zone
-
+    --print(zone)
     if self.spawners[zone] then
         for i = 1,#self.spawners[zone] do
+
             self.spawners[zone][i]:Update(zone ~= self.lastZone)
         end
     end
+
+    self.lastZone = zone
 end
 
 return ObstacleSpawner

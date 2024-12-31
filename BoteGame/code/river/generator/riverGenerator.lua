@@ -12,7 +12,7 @@ local nextSegment_rSeed = love.thread.getChannel("nextSegment_rSeed")
 
 function RiverGenerator:New(riverData)
     local obj = setmetatable({}, RiverGenerator)
-
+    print("River Generator Zones")
     dante.printTable(riverData)
 
     obj.zones = riverData

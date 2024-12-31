@@ -53,7 +53,7 @@ function PlayerBoat:New(skin)
     obj.speed = 100
     obj.acceleration = 3000
     obj.maxSpeed = 3000
-    obj.minSpeed = -1000
+    --obj.minSpeed = -1000
     
 
     return obj
