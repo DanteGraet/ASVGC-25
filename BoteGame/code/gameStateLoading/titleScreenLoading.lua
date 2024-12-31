@@ -19,5 +19,9 @@ return {
     {"image/ui/settings/check.png", "blur"},
     {"image/ui/settings/empty.png", "blur"},
 
+    {"font/fontBlack.ttf",24},
+    {"font/fontBlack.ttf",32},
+    {"font/fontBlack.ttf",64},
+
 
 }

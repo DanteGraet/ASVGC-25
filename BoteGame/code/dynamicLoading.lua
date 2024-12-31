@@ -106,6 +106,8 @@ function DynamicLoading:AddItem(path, current, original)
             end
 
             --print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
+        elseif file:match("%.ttf$") then
+            current[string.sub(file, 1, #file-4)..original[2] or "32"] = love.graphics.newFont(original[1],original[2] or 32)
         end
         
     else

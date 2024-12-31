@@ -8,6 +8,7 @@ function UI:Update(dt)
     if storedHealth > player.health then
         storedHealth = math.max(storedHealth - dt*3, player.health)
     end
+    updateZoneTitles(dt)
 end
 
 function UI.Draw()
@@ -46,6 +47,10 @@ function UI.Draw()
 --[[]]
 
     --END PLACEHOLDER
+
+    if settings.graphics.zoneTitles.value then
+        drawZoneTitle()
+    end
 
     if settings.graphics.uiSide.value then
         if settings.graphics.uiLock.value then

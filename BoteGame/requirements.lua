@@ -13,6 +13,7 @@ require("code/parallaxImage")
 
 require("code/river/effects/spawnSnow")
 require("code/river/effects/playerTrail")
+require("code/river/effects/zoneTitle")
 
 -- Global variables
 assets = {}

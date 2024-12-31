@@ -50,4 +50,15 @@ function tweens.sineIn(percent, pos1, pos2)
     return pos1 + amt*pos2
 end
 
+--Cubic
+function tweens.cubicOut(percent,pos1,pos2)
+    local pos1, pos2 = pos1 or 0, pos2 or 1
+
+    local diff = pos1 - pos2
+    local amt = 1 - (1 - percent)^3
+    return pos1+amt*pos2
+end
+
+
+
 return tweens

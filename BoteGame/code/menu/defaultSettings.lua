@@ -18,6 +18,8 @@ return {
         uiSide = {type = "toggle", displayName = "Right UI", value = true},
         uiLock = {type = "toggle", displayName = "Lock UI to 16 X 9", value = false},
 
+        zoneTitles = {type = "toggle", displayName = "Show Biome Titles", value = true},
+
         particles = {type = "slider", displayName = "Spawn Particles", value = 0.5},
 
         fullscreen = {type = "toggle", displayName = "Fullscreen", value = love.window.getFullscreen()}
@@ -55,6 +57,7 @@ return {
 
             "h_other",
             "particles",
+            "zoneTitles",
         },
         audio = {
     

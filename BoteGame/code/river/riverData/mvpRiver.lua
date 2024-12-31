@@ -82,7 +82,7 @@ local function boulderValleyCurrent_STORM(percentage)
 end
 
 local function boulderValleyChainLengthCoefficient_STORM(percentage)
-    return 1.15 - 0.15*quindoc.clamp(percentage,0,1)
+    return 1.15 - 0.05*quindoc.clamp(percentage,0,1)
 end
 
 local function boulderValleyStormIntensity_STORM(percentage)
@@ -106,10 +106,23 @@ local function boulderValleyStormIntensity_STORM(percentage)
     return 1000*quindoc.clamp(idk,0,1)
 end
 
+local function coniferousMountainsideDifficulty(percentage)
+
+    if percentage > 0.9 then
+        return 0
+    else
+        return 0.01
+    end
+
+end
+
 
 return {
     {
         zone = "icePlains",
+        displayName = "Ice Plains",
+        distanceTitle = "Starting Point",
+        subtitle = "River's Source",
         distance = 25000,
         difficultyFunction = 0.01,
         transition = 300,
@@ -119,6 +132,9 @@ return {
     },
     {
         zone = "boulderValley",
+        displayName = "Boulder Valley",
+        distanceTitle = "-- 1.5KM --",
+        subtitle = "Rock-Chain Gully",
         distance = 15000,
         difficultyFunction = boulderValleyDifficulty,
         transition = 1,
@@ -129,6 +145,8 @@ return {
     },
     {
         zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
+        displayName = "Boulder Valley",
+        distanceTitle = "-- 5KM --",
         distance = 50000,
         stormIntensity = boulderValleyStormIntensity_STORM,
         difficultyFunction = boulderValleyDifficulty_STORM,
@@ -140,8 +158,11 @@ return {
     },
     {
         zone = "coniferousMountainside",
+        subtitle = "-- Almost There! --",
+        displayName = "Coniferous Highlands",
+        distanceTitle = "-- Almost There! --",
         distance = 10000,
-        difficultyFunction = 0.01,
+        difficultyFunction = coniferousMountainsideDifficulty,
         transition = 0,
         current = 100,
         snowAmount = 3,
