@@ -15,10 +15,11 @@ snowyTreeObstacle.__index = snowyTreeObstacle
 
 local snowyTreeAcceptedColours = {
     0.9,
+    0.821,
 }
 
 snowyTreeObstacle.xFunc = function()
-    return math.random(600,960) * (math.random(0,1)*2-1)
+    return math.random(300,960) * (math.random(0,1)*2-1)
 end
 
 function snowyTreeObstacle:New(x, y)

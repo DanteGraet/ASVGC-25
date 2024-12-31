@@ -375,6 +375,9 @@ local function draw()
         if stormIntensity then love.graphics.setColor(1,1,1,stormIntensity/1000) end
         love.graphics.draw(assets.image.ui.viginette, -riverBorders.width/2-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, 0, riverBorders.width/1920, riverBorders.height/1080)
 
+        if stormIntensity then love.graphics.setColor(1,1,1,stormIntensity/2000) end --and yeah draw it again at half alpha because it isn't strong enough and lazy :/
+        love.graphics.draw(assets.image.ui.viginette, -riverBorders.width/2-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, 0, riverBorders.width/1920, riverBorders.height/1080)
+
        -- print(lightningAlpha)
 
         love.graphics.setColor(1,1,1,lightningAlpha)

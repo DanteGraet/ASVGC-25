@@ -1,3 +1,7 @@
+local function iceplainsCurrent(percentage)
+    return 100*quindoc.clamp(percentage,0,1) + 100
+end
+
 local function boulderValleyDifficulty(percentage)
     return 0.0015 + 0.0035*quindoc.clamp(percentage,0,1)
 end
@@ -7,7 +11,7 @@ local function boulderValleyWind(percentage)
 end
 
 local function boulderValleySnow(percentage)
-    return 10*quindoc.clamp(percentage,0,1)
+    return 10*quindoc.clamp(percentage,0,1) + 5
 end
 
 local function boulderValleyCurrent(percentage)
@@ -39,7 +43,7 @@ local function boulderValleyWind_STORM(percentage)
 
     end
 
-    return 400 + 600*quindoc.clamp(idk,-0.5,1)
+    return 400 + 600*quindoc.clamp(idk,-0.2,1)
 end
 
 local function boulderValleySnow_STORM(percentage)
@@ -56,7 +60,7 @@ local function boulderValleySnow_STORM(percentage)
 
     end
 
-    return 13 + 27*quindoc.clamp(idk,-0.3,1)
+    return 23 + 20*quindoc.clamp(idk,-1,1)
 end
 
 local function boulderValleyCurrent_STORM(percentage)
@@ -85,9 +89,13 @@ local function boulderValleyStormIntensity_STORM(percentage)
 
     local idk = percentage
 
-    if percentage < 0.8 then
+    if percentage < 0.6 then
 
-        idk = percentage*1.25
+        idk = percentage*1.66
+
+    elseif percentage < 0.8 then
+
+        idk = 1
 
     else
 
@@ -100,10 +108,18 @@ end
 
 
 return {
-
+    {
+        zone = "icePlains",
+        distance = 25000,
+        difficultyFunction = 0.01,
+        transition = 300,
+        current = iceplainsCurrent,
+        snowAmount = 5,
+        windSpeed = 200,
+    },
     {
         zone = "boulderValley",
-        distance = 30000,
+        distance = 15000,
         difficultyFunction = boulderValleyDifficulty,
         transition = 1,
         snowAmount = boulderValleySnow,
@@ -123,12 +139,15 @@ return {
         chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM
     },
     {
-        zone = "mvpForest",
+        zone = "coniferousMountainside",
         distance = 10000,
         difficultyFunction = 0.01,
         transition = 0,
         current = 100,
+        snowAmount = 3,
+        windSpeed = 300,
     },
+
 
 }
 

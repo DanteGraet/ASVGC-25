@@ -14,7 +14,7 @@ local highlandsTreeObstacle = setmetatable({}, { __index = Obstacle })
 highlandsTreeObstacle.__index = highlandsTreeObstacle
 
 local highlandsTreeAcceptedColours = {
-    0.2,
+    0.12,
 }
 
 highlandsTreeObstacle.xFunc = function()
