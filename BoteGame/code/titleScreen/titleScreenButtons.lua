@@ -3,9 +3,9 @@ local fontBlack72 = love.graphics.newFont("font/fontBlack.ttf",100)--get trolled
 
 function tsb.CreateButtons(UI)
     --Font is temporary i hope.
-    UI:AddTextButton("quitButton", "Quit", "left", fontBlack72, 175, 460, 1920, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
-    UI:AddTextButton("settingsButton", "Settings", "left", fontBlack72, 175, 560, 960, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
-    UI:AddTextButton("playButton", "Play", "left", fontBlack72, 175, 660, 960, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
+    UI:AddTextButton("quitButton", "Quit", "left", fontBlack72, 175, 460 + fontBlack72:getHeight()*2, 1920, {{1,1,1}, {0.9, 0.8, 0.9}, {0.8, 0.6, 0.6}})
+    UI:AddTextButton("settingsButton", "Settings", "left", fontBlack72, 175, 460 + fontBlack72:getHeight(), 960, {{1,1,1}, {0.8, 0.8, 0.9}, {0.6, 0.6, 0.7}})
+    UI:AddTextButton("playButton", "Play", "left", fontBlack72, 175, 460 + fontBlack72:getHeight()*0, 960, {{1,1,1}, {0.8, 0.8, 0.9}, {0.6, 0.6, 0.7}})
 
     --Temporary fix for adding functions to buttons :D
     UI:GetButtons()["quitButton"].functions.release =       {tsb.quitButtonRelease}

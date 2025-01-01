@@ -119,7 +119,7 @@ function GetRiverScale()
 end
 
 local function focus(focus)
-    if not player or player.health > 0 or self.winTimer < 1 then
+    if not player or player.health > 0 or player.winTimer < 1 then
         pauseMenu.isOpen = true
     end
 end
@@ -257,6 +257,8 @@ local function update(dt)
 
     else        
         river:checkNextSegment()
+
+        player:moveToCenter()
     end
 
     if steping then

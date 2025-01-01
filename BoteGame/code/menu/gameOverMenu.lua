@@ -1,9 +1,9 @@
 local width = 700
 local height = 600
 
-local font3 = love.graphics.newFont(40)
-local font1 = love.graphics.newFont(50)
-local font2 = love.graphics.newFont(75)
+local font3 = love.graphics.newFont("font/fontBlack.ttf", 40)
+local font1 = love.graphics.newFont("font/fontBlack.ttf", 50)
+local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
 
 
 GameOverMenu = {}

@@ -1,8 +1,8 @@
 local width = 500
 local height = 400
 
-local font1 = love.graphics.newFont(50)
-local font2 = love.graphics.newFont(75)
+local font1 = love.graphics.newFont("font/fontBlack.ttf", 50)
+local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
 
 
 PauseMenu = {}

@@ -61,10 +61,6 @@ function River:MergePoints(newPoints)
         end
     end
 
-    if not self.movedPlayer then
-        self.movedPlayer = true
-        --player:moveToCenter()
-    end
     --self.farAhead = true
     self.callNextSegment = true
 end

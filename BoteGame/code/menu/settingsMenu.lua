@@ -2,8 +2,8 @@ local width = 1000
 local height = 660
 local y = 50
 
-local font1 = love.graphics.newFont(30)
-local font2 = love.graphics.newFont(35)
+local font1 = love.graphics.newFont("font/fontBlack.ttf", 30)
+local font2 = love.graphics.newFont("font/fontBlack.ttf", 35)
 
 
 SettingsMenu = {}
@@ -50,7 +50,7 @@ function SettingsMenu:GenerateButtons()
 
         self.Ui:AddButton(c.name, -width/2 + (i-1)*xSize, -height/2, xSize, 100)
         self.Ui:GetButtons()[c.name].functions.release = {SettingsMenu.SetCatagory, {self, i}}
-        self.Ui:GetButtons()[c.name]:AddText(c.displayName, "center", love.graphics.newFont(40), nil, 25, xSize)
+        self.Ui:GetButtons()[c.name]:AddText(c.displayName, "center", love.graphics.newFont("font/fontBlack.ttf", 40), nil, 15, xSize)
     end
 
     -- create the close button here
@@ -113,8 +113,8 @@ function SettingsMenu.SetCatagory(data)
             elseif currentSetting.type == "slider" then
                 self.Ui:AddSlider(name, currentX+font1:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
 
-                self.Ui:GetButtons("settings")[name]:AddImageRail(0, -15, assets.image.ui.settings.indicator)
-                self.Ui:GetButtons("settings")[name]:AddImage(0, -10, assets.image.ui.settings.bar)
+                self.Ui:GetButtons("settings")[name]:AddImageRail(0, -9, assets.image.ui.settings.indicator)
+                self.Ui:GetButtons("settings")[name]:AddImage(0, -4, assets.image.ui.settings.bar)
                 self.Ui:GetButtons("settings")[name]:SetElementColourRail({.9,.9,.9},{.7,.9,.7},{.6,.6,.6})
 
                 self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -font1:getWidth(currentSetting.displayName) - 10, -20, 1000)
@@ -126,11 +126,11 @@ function SettingsMenu.SetCatagory(data)
                 self.Ui:AddToggle(name, currentX, currentHeight, font1:getWidth(currentSetting.displayName) + 40, font1:getHeight(), currentSetting.value, "settings")
 
                 self.Ui:GetButtons("settings")[name].button1:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
-                self.Ui:GetButtons("settings")[name].button1:AddImage(0, 3, assets.image.ui.settings.check)
+                self.Ui:GetButtons("settings")[name].button1:AddImage(0, 9, assets.image.ui.settings.check)
                 self.Ui:GetButtons("settings")[name].button1:SetElementColour({1,1,1}, {0.9,0.9,0.9}, {0.8,0.8,0.8})
 
                 self.Ui:GetButtons("settings")[name].button2:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
-                self.Ui:GetButtons("settings")[name].button2:AddImage(0, 3, assets.image.ui.settings.empty)
+                self.Ui:GetButtons("settings")[name].button2:AddImage(0, 9, assets.image.ui.settings.empty)
                 self.Ui:GetButtons("settings")[name].button2:SetElementColour({1,1,1}, {0.9,0.9,0.9}, {0.8,0.8,0.8})
 
 
