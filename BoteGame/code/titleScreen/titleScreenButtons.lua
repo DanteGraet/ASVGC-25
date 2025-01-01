@@ -1,10 +1,11 @@
 local tsb = {}
+local fontBlack72 = love.graphics.newFont("font/fontBlack.ttf",100)--get trolled
 
 function tsb.CreateButtons(UI)
     --Font is temporary i hope.
-    UI:AddTextButton("quitButton", "QUIT", "center", love.graphics.newFont(64), 100, 100, 1920, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
-    UI:AddTextButton("settingsButton", "Settings", "center", love.graphics.newFont(64), 175, 200, 960, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
-    UI:AddTextButton("playButton", "Play!!", "center", love.graphics.newFont(64), 175, 300, 960, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
+    UI:AddTextButton("quitButton", "Quit", "left", fontBlack72, 175, 460, 1920, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
+    UI:AddTextButton("settingsButton", "Settings", "left", fontBlack72, 175, 560, 960, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
+    UI:AddTextButton("playButton", "Play", "left", fontBlack72, 175, 660, 960, {{1,1,1}, {0.8, 0.8, 0.8}, {0.6, 0.6, 0.6}})
 
     --Temporary fix for adding functions to buttons :D
     UI:GetButtons()["quitButton"].functions.release =       {tsb.quitButtonRelease}
@@ -13,9 +14,9 @@ function tsb.CreateButtons(UI)
 
     -- these buttons can't be acsessed by normal players.
     if DEV then
-        UI:AddTextButton("devDeleteSaveButton", "Lose the game (save file)", "right", love.graphics.newFont(32), 0, 100, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
-        UI:AddTextButton("devRiverButton", "Dev River (soon™ * inf)", "right", love.graphics.newFont(32), 0, 200, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
-        UI:AddTextButton("devUnlockAllButton", "Unlocak All", "right", love.graphics.newFont(32), 0, 300, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
+        --UI:AddTextButton("devDeleteSaveButton", "Lose the game (save file)", "right", love.graphics.newFont(32), 0, 100, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
+        UI:AddTextButton("devRiverButton", "Dev River", "right", love.graphics.newFont(32), 0, 200, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
+        --UI:AddTextButton("devUnlockAllButton", "Unlocak All", "right", love.graphics.newFont(32), 0, 300, 1800, {{1,.5,.5}, {0.8, 0.4, 0.4}, {0.6, 0.2, 0.2}})
         
         UI:GetButtons()["devRiverButton"].functions.release =       {tsb.devRiverButtonRelease}
     end

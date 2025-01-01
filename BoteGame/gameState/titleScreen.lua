@@ -18,6 +18,8 @@ end
 local function load()
     resize()
 
+    fontBlack32 = love.graphics.newFont("font/fontBlack.ttf",32)
+
     DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", 
         {
             {"image/titleScreen/parallax/1.png", .03125},
@@ -131,6 +133,11 @@ local function draw()
     love.graphics.translate(sox, soy)
 
     titleScreenUI:Draw()
+
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.draw(assets.image.titleScreen.title,50,50,0,0.75,0.75)
+    love.graphics.setFont(fontBlack32)
+    love.graphics.print("Alpha Demo 1",350,350)
 
     settingsMenu:Draw(tweens.sineInOut(settingsTimer))
 end

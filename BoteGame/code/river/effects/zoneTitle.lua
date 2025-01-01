@@ -13,6 +13,8 @@ function updateZoneTitles(dt)
         displayTitleCounter = -1
     end
 
+    if not displayTitleCounter then displayTitleCounter = -1 end
+
     displayTitleCounter = math.min(displayTitleCounter+dt,5)
 
     if displayTitleCounter == -1 then
