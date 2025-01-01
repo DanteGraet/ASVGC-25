@@ -147,7 +147,8 @@ return {
     },
     {
         zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
-        displayName = "Boulder Valley",
+        displayName = "Storm Valley",
+        subtitle = "Blizzard Approaching",
         distanceTitle = "-- 5KM --",
         distance = 50000,
         stormIntensity = boulderValleyStormIntensity_STORM,
