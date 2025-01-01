@@ -124,7 +124,7 @@ function PlayerBoat:Update(dt, inputs)
 
             self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt * bt
             self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
-            self.score = math.abs(self.y/10)
+
 
             -- current
             local currentAngle, currentSpeed = river:GetCurrent(self.y)
@@ -147,6 +147,7 @@ function PlayerBoat:Update(dt, inputs)
             --print("wwin")
             if not self.winY then
                 self.winY = self.y
+                self:UpdateScore()
             end
 
             self.winTimer = math.min(self.winTimer + dt, 1)
@@ -252,6 +253,11 @@ function PlayerBoat:Draw()
     end
 end
 
+function PlayerBoat:UpdateScore()
+    self.score = math.abs(self.y/10)
+    UpdateHighScore(self.score)
+end
+
 
 function PlayerBoat:DrawHitbox()
     love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
@@ -307,7 +313,7 @@ function PlayerBoat:TakeDamage(amount, noShake)
         end
 
         if self.health <= 0 then
-            UpdateHighScore(self.score)
+            self:UpdateScore()
 
             for i = 1, 5*settings.graphics.particles.value do
                 particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
