@@ -4,6 +4,16 @@ local storedHealth = player.health
 
 local UI = {}
 
+local currentColours = {
+    {0, 199/255, 0},
+    {180/255, 199/255, 0},
+    {233/255, 132/255, 0},
+    {199/255, 52/255, 0},
+
+    {116/255, 63/255, 48/255},
+
+}
+
 function UI:Update(dt)
     if storedHealth > player.health then
         storedHealth = math.max(storedHealth - dt*3, player.health)
@@ -85,6 +95,24 @@ function UI.Draw()
 
     love.graphics.draw(assets.image.ui.currentBar, x, y, 0, scale, scale, assets.image.ui.currentBar:getWidth()*side + 520 - 1040*(1-side), assets.image.ui.currentBar:getHeight())
     love.graphics.draw(assets.image.ui.speedometer, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
+
+    for i = 1,riverGenerator:GetZone(player.y).currentIcons or 1 do
+        love.graphics.setColor(currentColours[i])
+        if side == 1 then
+            love.graphics.draw(assets.image.ui.current, x, y, 0, scale, scale, 1580 - (i*120), assets.image.ui.currentBar:getHeight())
+        else
+            love.graphics.draw(assets.image.ui.current, x, y, 0, scale, -scale, -830 - (i*120))
+        end
+    end
+
+    for i = riverGenerator:GetZone(player.y).currentIcons or 1, 4 do
+        love.graphics.setColor(currentColours[5])
+        if side == 1 then
+            love.graphics.draw(assets.image.ui.current, x, y, 0, scale, scale, 1580 - (i*120), assets.image.ui.currentBar:getHeight())
+        else
+            love.graphics.draw(assets.image.ui.current, x, y, 0, scale, -scale, -830 - (i*120))
+        end
+    end
 
     love.graphics.setColor(healthColour)
 

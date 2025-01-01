@@ -127,6 +127,7 @@ return {
         difficultyFunction = 0.01,
         transition = 300,
         current = iceplainsCurrent,
+        currentIcons = 2,
         snowAmount = 5,
         windSpeed = 200,
     },

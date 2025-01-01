@@ -36,6 +36,7 @@ local toLoad = {
     {"image/ui/speedometerFrontDamage.png", "blur"},
     {"image/ui/speedometerFrontVeryDamage.png", "blur"},
     {"image/ui/currentBar.png", "blur"},
+    {"image/ui/current.png", "blur"},
     {"image/ui/ouchGlow.png", "blur"},
 }
 
