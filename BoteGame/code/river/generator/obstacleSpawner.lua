@@ -26,8 +26,10 @@ function ObstacleSpawner:New(obsticals)
         end
     end
 
-    obj.lastY = riverBorders.up - 250
+    obj.lastY = -250
     obj.lastZone = riverGenerator:GetZone(obj.lastY).zone
+
+    --obj:Update()
 
     return obj
 end

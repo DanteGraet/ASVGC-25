@@ -97,6 +97,14 @@ local function load()
         zoneObsitcalList[zone.zone] = assets.code.river.zone[zone.zone].obsticals()
         dante.printTable(zoneObsitcalList[zone.zone])
     end
+
+    riverBorders = {
+        left = -960,
+        right = 960,
+        up = 0,
+        down = 1080,
+    }
+
     obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
 
 
