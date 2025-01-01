@@ -47,7 +47,7 @@ end
 
 
 function dante.load(file)
-    if love.filesystem.getInfo(file, "file") then
+    if love.filesystem.getInfo(file .. ".lua", "file") then
 
         local fileContents = love.filesystem.load(file .. ".lua")
 

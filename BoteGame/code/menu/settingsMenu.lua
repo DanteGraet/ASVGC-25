@@ -9,6 +9,24 @@ local font2 = love.graphics.newFont("font/fontBlack.ttf", 35)
 SettingsMenu = {}
 SettingsMenu.__index = SettingsMenu
 
+function saveSettings()
+    local savingSettings = {}
+
+    for key, value in pairs(settings) do
+        if (key ~= "DEV" or DEV) and key ~= "order" then
+            savingSettings[key] = {}
+
+            for setting, data in pairs(value) do
+
+                savingSettings[key][setting] = data.value
+
+            end
+
+        end
+    end
+
+    dante.save(savingSettings, "save", "settings")
+end
 
 function SettingsMenu:New() -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, SettingsMenu)
@@ -18,8 +36,12 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
         {name = "graphics", displayName = "Graphics", targetScroll = 0},
         {name = "audio", displayName = "Audio", targetScroll = 0},
         {name = "keybinds", displayName = "Keybinds", targetScroll = 0},
-        {name = "dev", displayName = "Dev", targetScroll = 0},
+
     }
+    if DEV then
+        table.insert(obj.catagories, {name = "dev", displayName = "Dev", targetScroll = 0})
+    end
+
 
 
     obj.isOpen = false
@@ -27,10 +49,25 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
 
     settings = love.filesystem.load("code/menu/defaultSettings.lua")()
 
-    if DEV then
-        print("========= Loaded Default Settings =========")
-        dante.printTable(settings)
+    local savedSettings = dante.load("save/settings")
+    if savedSettings then
+        for key, value in pairs(settings) do
+            if (key ~= "DEV" or DEV) and key ~= "order" then
+                if savedSettings[key] then
+                    for setting, data in pairs(value) do
+                        if savedSettings[key][setting] then
+                            data.value = savedSettings[key][setting]
+                        end
+                    end
+                end
+            end
+        end
     end
+
+    if settings.graphics.fullscreen.value then
+        love.window.setFullscreen(true)
+    end
+
 
     obj.Ui = GraetUi:New()
 
@@ -148,6 +185,7 @@ function SettingsMenu.SetCatagory(data)
     end
 end
 function SettingsMenu.Close(self)
+    saveSettings()
     self.isOpen = false 
 end
 
