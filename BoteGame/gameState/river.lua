@@ -14,6 +14,7 @@ local pauseMenu
 local gameOverMenu
 local settingsTween
 
+
 -- deefault values
 riverBorders = {
     left = -960,
@@ -111,6 +112,7 @@ local function load()
 
     particles.loadParticles()
 
+    gameSpeed = 0
     --riverGenerator:NextSegment()
 end
 
@@ -251,7 +253,6 @@ local function update(dt)
                 if gameSpeed == 1 then
                     player.wasBeached = nil
                 end
-
             end
         end
 
@@ -259,6 +260,7 @@ local function update(dt)
         river:checkNextSegment()
         if river:HasPoints() then
             player:moveToCenter()
+
         end
     end
 
