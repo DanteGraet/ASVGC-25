@@ -21,9 +21,10 @@ return {
         zone = "devZone",
         distance = 1000,
         difficultyFunction = boulderValleyDifficulty,
+        displayName = "Coniferous Highlands",
         transition = 400,
         snowAmount = 30,
         windSpeed = 200,
-        stormIntensity = 1000
+        stormIntensity = 0
     },
 }

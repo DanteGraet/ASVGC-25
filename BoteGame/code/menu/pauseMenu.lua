@@ -1,7 +1,7 @@
 local width = 500
 local height = 400
 
-local font1 = love.graphics.newFont("font/fontBlack.ttf", 50)
+local font1 = love.graphics.newFont("font/fontMedium.ttf", 50)
 local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
 
 
@@ -59,7 +59,7 @@ function PauseMenu:GenerateButtons()
     self.Ui:AddTextButton("continue", "Continue", "center", font1, 0, -height/2 + 100, width, colours)
     self.Ui:AddTextButton("restart", "Restart", "center", font1, 0, -height/2 + 100 + 75, width, colours)
     self.Ui:AddTextButton("settings", "Settings", "center", font1, 0, -height/2 + 100 + 150, width, colours)
-    self.Ui:AddTextButton("exit", "Quit to Menu", "center", font1, 0, -height/2 + 100 + 225, width, colours)
+    self.Ui:AddTextButton("exit", "Main Menu", "center", font1, 0, -height/2 + 100 + 225, width, colours)
 
     self.Ui:GetButtons()["continue"].functions.release = {PauseMenu.Close, self}
     self.Ui:GetButtons()["restart"].functions.release = {PauseMenu.RestartGame, self}

@@ -142,6 +142,7 @@ return {
         snowAmount = boulderValleySnow,
         windSpeed = boulderValleyWind,
         current = boulderValleyCurrent,
+        currentIcons = 3,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient
     },
     {
@@ -155,6 +156,7 @@ return {
         snowAmount = boulderValleySnow_STORM,
         windSpeed = boulderValleyWind_STORM,
         current = boulderValleyCurrent_STORM,
+        currentIcons = 4,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM
     },
     {
@@ -167,6 +169,7 @@ return {
         transition = 0,
         current = 100,
         snowAmount = 3,
+        currentIcons = 2,
         windSpeed = 300,
     },
 

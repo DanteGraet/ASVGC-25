@@ -1,8 +1,9 @@
 local width = 700
 local height = 600
 
-local font3 = love.graphics.newFont("font/fontBlack.ttf", 40)
-local font1 = love.graphics.newFont("font/fontBlack.ttf", 50)
+local font4 = love.graphics.newFont("font/fontMedium.ttf", 28)
+local font3 = love.graphics.newFont("font/fontMedium.ttf", 40)
+local font1 = love.graphics.newFont("font/fontMedium.ttf", 50)
 local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
 
 
@@ -108,7 +109,7 @@ function GameOverMenu:Draw(gs)
     love.graphics.rectangle("line", -width/2, -height/2, width, height, 25)
 
     -- line for the high scores
-    love.graphics.rectangle("line", 20, -height/2 + 100, width/2-40, height-200, 25)
+    love.graphics.rectangle("line", 20, -height/2 + 100, width/2-40, height-195, 25)
 
 
     love.graphics.setFont(font2)
@@ -118,6 +119,15 @@ function GameOverMenu:Draw(gs)
         love.graphics.printf("You Win!", -width/2, -height/2, width, "center")
     end
 
+    if savedDisplayName then
+
+        love.graphics.setFont(font1)
+        love.graphics.printf("Biome:", -width/2, -height/2 + 240, width/2, "center")
+
+        love.graphics.setFont(font4)
+        love.graphics.printf(savedDisplayName,-width/2,-height/2 + 300,width/2,"center")
+    end
+
     love.graphics.setFont(font1)
     love.graphics.printf("Score:", -width/2, -height/2 + 100, width/2, "center")
 
@@ -125,7 +135,7 @@ function GameOverMenu:Draw(gs)
     love.graphics.printf("High Scores:", 20, -height/2 + 115, width/2 - 40, "center")
 
     love.graphics.printf(dante.formatNnumber(math.floor(math.abs(player.score)), 2).."m", -width/2, -height/2 + 160, width/2, "center")
-
+    
     -- white is there so if the player gets the same score (unlikely like very unlikey) then there will only on white score
     local white = false
     for i = 1,#assets.save.highscore do
@@ -138,7 +148,7 @@ function GameOverMenu:Draw(gs)
             love.graphics.setColor(0,0,0)
                 
         end
-        love.graphics.printf(pref .. dante.formatNnumber(math.floor(math.abs(assets.save.highscore[i])), 2).."m" .. suf, 20, -height/2 + 115 + i*55, width/2 - 40, "center")
+        love.graphics.printf(pref .. dante.formatNnumber(math.floor(math.abs(assets.save.highscore[i])), 2).."m" .. suf, 20, -height/2 + 105 + i*55, width/2 - 40, "center")
     end
 
     local offSet = 25

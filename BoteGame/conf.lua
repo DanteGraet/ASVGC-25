@@ -1,5 +1,5 @@
 VERSION = "V0.1"
-DEV = false  
+DEV = true  
 
 lockedAspectRatio = true
 screenBarColour = {0,0,0}

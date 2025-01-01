@@ -1,6 +1,6 @@
 local displayTitleCounter
 local displayTitleAlpha
-local savedDisplayName
+savedDisplayName = nil --this needs to be global for various reasons
 local savedSubtitle
 local savedDistance
 

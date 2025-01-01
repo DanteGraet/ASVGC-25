@@ -2,7 +2,7 @@ local width = 1000
 local height = 660
 local y = 50
 
-local font1 = love.graphics.newFont("font/fontBlack.ttf", 30)
+local font1 = love.graphics.newFont("font/fontMedium.ttf", 30)
 local font2 = love.graphics.newFont("font/fontBlack.ttf", 35)
 
 

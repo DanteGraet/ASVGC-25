@@ -116,12 +116,12 @@ function UI.Draw()
 
     love.graphics.setColor(healthColour)
 
-    local angle1 = math.rad(35 - ((215 + 35)*(1-(tweendHealth/player.maxHealth)))) 
+    local angle1 = math.rad(35 - ((215 + 35)*(1-math.max(tweendHealth/player.maxHealth,0))))
     local angle2 = -math.rad(215)
     love.graphics.arc("fill", x - 480*scale + 960*(1-side)*scale, y - 320*scale, 480*scale, angle1, angle2)
 
     love.graphics.setColor(healthColour)
-    local angle1 = math.rad(35 - ((215 + 35)*(1-(player.health/player.maxHealth)))) 
+    local angle1 = math.rad((35 - ((215 + 35)*(1-math.max((player.health/player.maxHealth),0)))))
     local angle2 = -math.rad(215)
     love.graphics.arc("fill", x - 480*scale + 960*(1-side)*scale, y - 320*scale, 480*scale, angle1, angle2)
     love.graphics.setColor(1,1,1)

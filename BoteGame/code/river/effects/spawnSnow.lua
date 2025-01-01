@@ -5,10 +5,7 @@ local snowCounter
 
 local function createSnowParticle()
 
-    local topOfScreen = player.y - camera.oy
-    local relativeBottomOfScreen = love.graphics.getHeight()/GetRiverScale()[1]
-
-    local randY = love.math.random(-100,100+love.graphics.getHeight()/GetRiverScale()[1]) + topOfScreen
+    local randY = love.math.random(riverBorders.down+100,riverBorders.up)
     particles.spawnParticle("snow",-love.graphics.getWidth()/2/GetRiverScale()[1]-100,randY, nil, nil,"top")
 
 end

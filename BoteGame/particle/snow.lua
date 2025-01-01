@@ -31,8 +31,8 @@ function snowParticle:Update(dt)
         self.delete = true
     end
 
-    if self.y > player.y - camera.oy + love.graphics.getHeight()/GetRiverScale()[1] + 100 then
-        self.y = player.y - camera.oy - 100
+    if self.y > riverBorders.down + 100 then
+        self.y = riverBorders.up - 100
     end
 end
 

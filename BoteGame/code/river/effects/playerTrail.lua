@@ -14,11 +14,8 @@ local function createTrailParticle(num)
         y = player.y --+ math.sin(player.dir+math.sin(num)*0.2)*30
         angle = num + math.rad(love.math.random(-20,20))
     else
-        local dir = math.random(0, 1)
-        if dir == 0 then
-            dir = -1
-        end 
-        angle = player.dir+math.pi + math.rad(love.math.random(100,150))*dir
+        local dir = math.random(0, 1)*2-1
+        angle = player.dir+math.pi + math.rad(love.math.random(130,160))*dir
     end
 
 
@@ -33,7 +30,7 @@ function spawnTrail(dt)
     if not trailCounter then trailCounter = 0 end
 
     if trailCounter < trailTime then
-        trailCounter = trailCounter + dt*player.speed/100*settings.graphics.particles.value * tweens.sineInOut(player.beachTimer)
+        trailCounter = trailCounter + dt*player.speed/200*settings.graphics.particles.value * tweens.sineInOut(player.beachTimer)
     else
         while trailCounter > trailTime do
             createTrailParticle()

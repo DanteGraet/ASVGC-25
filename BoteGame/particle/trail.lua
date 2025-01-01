@@ -6,7 +6,7 @@ function trailParticle:New(spawnX,spawnY,spawnAngle,spawnData)
     setmetatable(obj, self)
 
     obj.speed = -player.speed
-    obj.life = love.math.random(100,300)/100
+    obj.life = love.math.random(60,120)/100
     obj.layer = "bottom"
 
     obj.colour = {0.2*love.math.random(150,200)/100,0.3*love.math.random(150,200)/100,0.6*love.math.random(150,200)/100,1}
@@ -23,6 +23,7 @@ function trailParticle:Update(dt)
     else
         self.delete = true
     end
+    
 end
 
 function trailParticle:Draw()
