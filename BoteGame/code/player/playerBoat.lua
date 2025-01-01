@@ -50,8 +50,8 @@ function PlayerBoat:New(skin)
 
     
     --for testing
-    --[[obj.immunity = 10000
-    obj.health = 1000
+    obj.immunity = -1
+    --[[obj.health = 1000
     obj.speed = 100
     obj.acceleration = 3000
     obj.maxSpeed = 3000]]

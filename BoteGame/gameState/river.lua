@@ -317,7 +317,7 @@ local function keyreleased(key)
 
     if input == "pause" then
         if settingsMenu.isOpen then settingsMenu.isOpen = false
-        elseif player.health > 0 and not player.winTimer > 0 then pauseMenu.isOpen = not pauseMenu.isOpen end
+        elseif player.health > 0 or not player.winTimer then pauseMenu.isOpen = not pauseMenu.isOpen end
     end
 
     if key == "k" and DEV then
