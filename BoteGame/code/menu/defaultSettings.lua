@@ -22,7 +22,8 @@ return {
 
         particles = {type = "slider", displayName = "Spawn Particles", value = 1},
 
-        fullscreen = {type = "toggle", displayName = "Fullscreen", value = love.window.getFullscreen()}
+        fullscreen = {type = "toggle", displayName = "Fullscreen", value = love.window.getFullscreen()},
+        showFPS = {type = "toggle", displayName = "Show FPS", value = false},
     },
     audio = {
 
@@ -39,6 +40,7 @@ return {
         printAssetTree = {type = "button", displayName = "Print Asset Tree", func = PrintAssetTree},
 
         drawHitboxes = {type = "toggle", displayName = "Draw Hitboxes", value = false},
+        playerInfo = {type = "toggle", displayName = "Show Player Debug Info", value = false},
 
         h_ab = {type = "header", displayName = "AB testing"},
 
@@ -49,6 +51,7 @@ return {
     order = {
         graphics = {
             "fullscreen",
+            "showFPS",
 
             "h_ui",
             "uiScale",
@@ -71,6 +74,7 @@ return {
             "reloadGamestate",
 
             "drawHitboxes",
+            "playerInfo",
 
 
             "h_ab",

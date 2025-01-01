@@ -427,9 +427,13 @@ local function draw()
 
         love.graphics.reset()
         love.graphics.setColor(0,0,0)
-        love.graphics.print(love.timer.getFPS())
+        if settings.graphics.showFPS.value then
+            love.graphics.print("FPS: "..love.timer.getFPS())
+        end
 
-        love.graphics.print("player = " .. dante.dataToString(player), 0, 20)
+        if settings.dev.playerInfo.value then
+            love.graphics.print("player = " .. dante.dataToString(player), 0, 20)
+        end
 
     else
 
