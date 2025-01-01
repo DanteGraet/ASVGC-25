@@ -257,8 +257,9 @@ local function update(dt)
 
     else        
         river:checkNextSegment()
-
-        player:moveToCenter()
+        if river:HasPoints() then
+            player:moveToCenter()
+        end
     end
 
     if steping then
