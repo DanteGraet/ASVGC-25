@@ -5,7 +5,6 @@ local nextSegment_lastPoints = love.thread.getChannel("nextSegment_lastPoints")
 local nextSegment_zone = love.thread.getChannel("nextSegment_zone")
 
 local nextSegment_return = love.thread.getChannel("nextSegment_return")
-local nextSegment_error = love.thread.getChannel("nextSegment_error")
 local nextSegment_rSeed = love.thread.getChannel("nextSegment_rSeed")
 
 
@@ -91,8 +90,9 @@ function RiverGenerator:Update()
 
         if result then
             -- add it to the end of the actual river
+            print("merhing pointss ... ")
             river:MergePoints(result)
-
+            print("merged points ... ")
         end
     else
 
@@ -127,6 +127,7 @@ function RiverGenerator:NextSegment()
         self.nextSegmentThread:start()
     else
 
+
         local result = nextSegment_return:pop()
         
         if result then
@@ -134,6 +135,8 @@ function RiverGenerator:NextSegment()
             return result
         end
     end
+
+    print("updating next segment...")
 
     return nil
 end

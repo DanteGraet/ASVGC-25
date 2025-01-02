@@ -170,8 +170,11 @@ local function update(dt)
 
 
     riverGenerator:Update()
+    print("hhhhhhhhhhh")
 
     if river:HasPoints() then
+        print("river:HasPoints")
+
         local inputs = inputManager:GetInput()
 
         local gs = tweens.sineInOut(gameSpeed)
@@ -264,8 +267,11 @@ local function update(dt)
             end
         end
 
-    else        
+    else      
+        print("checkNextSegment")
+
         river:checkNextSegment()
+
         if river:HasPoints() then
             player:moveToCenter()
 

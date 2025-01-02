@@ -1,4 +1,8 @@
 local function GetColourAt(x, y)
+    if not river then
+        print("----------------------=====================================")
+    end
+
     local colour = {0.5,0.5,0.5}
 
     if river:IsInBounds(x, y) then

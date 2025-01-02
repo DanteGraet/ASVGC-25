@@ -28,9 +28,13 @@ end
 
 function River:AddNextCanvas(y)
     if #self.canvases > 0 then
+        print("self.canvases > 0")
         table.insert(self.canvases, self.canvasGenerator:New(y, false, riverGenerator:GetZone(y, true)))
     else
+        print("first canvas")
         table.insert(self.canvases, self.canvasGenerator:New(175, true, riverGenerator:GetZone(nil, true)))
+        print("---==first canva2")
+
         self.canvasFillY = self.canvases[#self.canvases].y
     end
 end
@@ -42,11 +46,14 @@ end
 
 function River:MergePoints(newPoints)
     for channel = 1,#newPoints do
+        print("merging chanel " .. channel)
         if not self.points[channel] then
             self.points[channel] = {}
         end
 
         for side = 1,#newPoints[channel] do
+            print("merging side " .. side)
+
             if not self.points[channel][side] then
                 self.points[channel][side] = {}
             end
@@ -88,8 +95,11 @@ end
 
 function River:checkNextSegment()
     -- check if we need to generate the next segment
+    print("River:checkNextSegment")
     if #self.points > 0 then
         if self.points[1][1][#self.points[1][1]].y > (player.winY or player.y)+50 - 5000 then
+            print("self.points[1][1][#self.points[1][1]].y > (player.winY or player.y)+50 - 5000")
+
             --River
             if self.callNextSegment then
                 riverGenerator:NextSegment()
@@ -97,6 +107,8 @@ function River:checkNextSegment()
             end
         else
             if not self.farAhead then
+                print("not far head")
+
                 river:AddNextCanvas()
             end
             self.farAhead = true

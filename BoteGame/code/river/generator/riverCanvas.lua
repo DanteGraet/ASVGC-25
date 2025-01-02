@@ -49,12 +49,15 @@ function RiverCanvas:FillCanvasY(canvasY, globalY, canvasX, zone)
     local chance
     local zone2
 
+    local colours = {}
+
     if zone[1] and type(zone[1]) == "table" then
 
         zone2 = zone[2]
         chance = zone[3]
         zone = zone[1]
     end
+
 
     for x = 1,self.canvas:getWidth() do
         local colour
@@ -67,11 +70,32 @@ function RiverCanvas:FillCanvasY(canvasY, globalY, canvasX, zone)
             colour = assets.code.river.zone[zone.zone].GetColourAt((x + self.x)*3, globalY)
         end
 
-        if love.graphics.getColor() ~= colour then
-            love.graphics.setColor(colour)
-        end
+        local colourName = "c" .. colour[1] .. colour[2] .. colour[3]
 
-        love.graphics.points(x, canvasY)
+        if not colours[colourName] then
+            colours[colourName] = {
+                colour = colour,
+                points = {}
+            }
+        end
+        table.insert(colours[colourName].points, x)
+        table.insert(colours[colourName].points, canvasY)
+
+
+
+       --[[ if love.graphics.getColor() ~= colour then
+            love.graphics.setColor(colour)
+        end]]
+
+        --love.graphics.points(x, canvasY)
+    end
+
+    for key, value in pairs(colours) do
+        love.graphics.setColor(value.colour)
+
+        love.graphics.points(value.points)
+
+        colours[key] = nil
     end
 
     love.graphics.setCanvas()
