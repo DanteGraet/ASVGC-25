@@ -129,8 +129,10 @@ function GetRiverScale()
 end
 
 local function focus(focus)
-    if not player or player.health > 0 or player.winTimer < 1 then
+    if not (player.health <= 0 or player.deathTime >= 1) then
+
         pauseMenu.isOpen = true
+
     end
 end
 
@@ -170,10 +172,8 @@ local function update(dt)
 
 
     riverGenerator:Update()
-    print("hhhhhhhhhhh")
 
     if river:HasPoints() then
-        print("river:HasPoints")
 
         local inputs = inputManager:GetInput()
 
@@ -268,8 +268,6 @@ local function update(dt)
         end
 
     else      
-        print("checkNextSegment")
-
         river:checkNextSegment()
 
         if river:HasPoints() then

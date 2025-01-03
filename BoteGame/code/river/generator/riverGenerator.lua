@@ -90,9 +90,7 @@ function RiverGenerator:Update()
 
         if result then
             -- add it to the end of the actual river
-            print("merhing pointss ... ")
             river:MergePoints(result)
-            print("merged points ... ")
         end
     else
 
@@ -136,7 +134,6 @@ function RiverGenerator:NextSegment()
         end
     end
 
-    print("updating next segment...")
 
     return nil
 end

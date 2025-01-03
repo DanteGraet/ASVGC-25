@@ -81,13 +81,6 @@ function RiverCanvas:FillCanvasY(canvasY, globalY, canvasX, zone)
         table.insert(colours[colourName].points, x)
         table.insert(colours[colourName].points, canvasY)
 
-
-
-       --[[ if love.graphics.getColor() ~= colour then
-            love.graphics.setColor(colour)
-        end]]
-
-        --love.graphics.points(x, canvasY)
     end
 
     for key, value in pairs(colours) do
