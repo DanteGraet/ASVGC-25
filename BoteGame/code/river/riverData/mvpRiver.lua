@@ -26,7 +26,7 @@ end
 
 
 local function boulderValleyDifficulty_STORM(percentage)
-    return 0.005
+    return 0.005 - 0.002*percentage --yeah, it gets easier as it goes on. this is to balance for current getting higher
 end
 
 local function boulderValleyWind_STORM(percentage)
@@ -116,6 +116,63 @@ local function coniferousMountainsideDifficulty(percentage)
 
 end
 
+local function icePlainsMusicManager()
+    musicTracks[1].targetVolume = 1
+    musicTracks[2].targetVolume = 1
+    musicTracks[3].targetVolume = 0
+    musicTracks[4].targetVolume = 0
+    musicTracks[5].targetVolume = 0
+    musicTracks[6].targetVolume = 0
+end
+
+local function boulderValleyMusicManager()
+    musicTracks[1].targetVolume = 0
+    musicTracks[2].targetVolume = 1
+    musicTracks[3].targetVolume = 1
+    musicTracks[4].targetVolume = 1
+    musicTracks[5].targetVolume = 0
+    musicTracks[6].targetVolume = 0
+end
+
+local function stormValleyMusicManager()
+
+    local percentage 
+    
+    if type(zones[1]) == "table" and zones[2].displayName == "Storm Valley" then
+        percentage = 0 
+    else
+        percentage = riverGenerator:GetPercentageThrough(player.y)
+    end
+    
+    local stormish
+
+    if percentage < 0.6 then
+        stormish = quindoc.clamp(2*percentage*1.66,0,2)
+    elseif percentage > 0.8 then
+        stormish = 2 - quindoc.clamp(4*((percentage-0.8) * 5),0,2)
+    else
+        stormish = 2
+    end
+
+
+    musicTracks[1].targetVolume = 0
+    musicTracks[2].targetVolume = math.max(1-stormish,0)
+    musicTracks[3].targetVolume = math.max(1-stormish,0)
+    musicTracks[4].targetVolume = math.max(1-stormish,0)
+    musicTracks[5].targetVolume = math.max(stormish-1,0)
+    musicTracks[6].targetVolume = stormish
+    
+end
+
+local function coniferousMountainsideMusicManager()
+    musicTracks[1].targetVolume = 1
+    musicTracks[2].targetVolume = 0
+    musicTracks[3].targetVolume = 0
+    musicTracks[4].targetVolume = 0
+    musicTracks[5].targetVolume = 0
+    musicTracks[6].targetVolume = 0
+end
+
 
 return {
     {
@@ -130,6 +187,7 @@ return {
         currentIcons = 2,
         snowAmount = 5,
         windSpeed = 200,
+        musicManager = icePlainsMusicManager,
     },
     {
         zone = "boulderValley",
@@ -138,12 +196,13 @@ return {
         subtitle = "Rock-Chain Gully",
         distance = 15000,
         difficultyFunction = boulderValleyDifficulty,
-        transition = 1,
+        transition = 0,
         snowAmount = boulderValleySnow,
         windSpeed = boulderValleyWind,
         current = boulderValleyCurrent,
         currentIcons = 3,
-        chainLengthCoefficient = boulderValleyChainLengthCoefficient
+        chainLengthCoefficient = boulderValleyChainLengthCoefficient,
+        musicManager = boulderValleyMusicManager,
     },
     {
         zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
@@ -158,7 +217,8 @@ return {
         windSpeed = boulderValleyWind_STORM,
         current = boulderValleyCurrent_STORM,
         currentIcons = 4,
-        chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM
+        chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM,
+        musicManager = stormValleyMusicManager,
     },
     {
         zone = "coniferousMountainside",
@@ -172,6 +232,7 @@ return {
         snowAmount = 3,
         currentIcons = 2,
         windSpeed = 300,
+        musicManager = coniferousMountainsideMusicManager,
     },
 
 

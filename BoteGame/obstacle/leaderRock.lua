@@ -23,6 +23,8 @@ function leaderRockObstacle:New(x, y)
     setmetatable(obj, self)
     obj.image = leaderRockImages[math.random(1, #leaderRockImages)]
 
+    obj.dir = math.rad(math.random(1,360))    
+
     --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
 
     local zones = riverGenerator:GetZone(camera.y, true) 

@@ -59,6 +59,12 @@ end
 
 local function unload()
     UpdateHighScore()
+    if musicTracks then
+        for i = 1, #musicTracks do
+            musicTracks[i].track:stop()
+        end
+    end
+    musicTracks = nil --this MUST be nil and not empty table!! for now.
 end
 
 
@@ -77,7 +83,6 @@ local function load()
         scrapImages[i] = love.graphics.newImage("image/player/scrap/scrap"..i..".png")
         scrapImages[i]:setFilter("nearest")
     end --this has to go here because of how constrained the dynamic loading system is :/
-
 
     world = love.physics.newWorld(0, 0, false)
     world:setCallbacks( beginContact, endContact, preSolve, postSolve )
@@ -106,7 +111,14 @@ local function load()
     }
 
     obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
+--[[
+    if musicTracks then
+        for i = 1, #musicTracks do
+            musicTracks[i].track:stop()
+        end
+    end]]
 
+    music.load()
 
     if keybindSaveLocation then
         inputManager = assets.code.inputManager():New( keybindSaveLocation )
@@ -168,8 +180,6 @@ local function update(dt)
             lightningAlpha = math.max(lightningAlpha-2*dt,0)
         end
     end
-
-
 
     riverGenerator:Update()
 
@@ -292,6 +302,9 @@ local function update(dt)
             end
         end
     end
+
+    if music.manager then music.manager(dt) end
+
 end
 
 
@@ -444,12 +457,17 @@ local function draw()
 
         love.graphics.reset()
         love.graphics.setColor(0,0,0)
+
         if settings.graphics.showFPS.value then
             love.graphics.print("FPS: "..love.timer.getFPS())
         end
 
         if settings.dev.playerInfo.value then
             love.graphics.print("player = " .. dante.dataToString(player), 0, 20)
+        end
+
+        if settings.dev.musicInfo.value then
+            love.graphics.printf("music = " .. dante.dataToString(music), 0, 0,riverBorders.right-10,"right")
         end
 
     else

@@ -26,6 +26,8 @@ return {
         showFPS = {type = "toggle", displayName = "Show FPS", value = false},
     },
     audio = {
+        h_music = {type = "header", displayName = "Music"},
+        musicVolume = {type = "slider", displayName = "Music Volume", value = 0.8},
 
     },
     keybinds = {
@@ -41,6 +43,7 @@ return {
 
         drawHitboxes = {type = "toggle", displayName = "Draw Hitboxes", value = false},
         playerInfo = {type = "toggle", displayName = "Show Player Debug Info", value = false},
+        musicInfo = {type = "toggle", displayName = "Show Music Debug Info", value = false}, 
 
         h_ab = {type = "header", displayName = "AB testing"},
 
@@ -63,6 +66,8 @@ return {
             "zoneTitles",
         },
         audio = {
+            "h_music",
+            "musicVolume",
     
         },
         keybinds = {
@@ -75,6 +80,7 @@ return {
 
             "drawHitboxes",
             "playerInfo",
+            "musicInfo",
 
 
             "h_ab",

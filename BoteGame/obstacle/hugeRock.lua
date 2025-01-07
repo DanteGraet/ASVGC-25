@@ -20,6 +20,8 @@ function hugeRockObstacle:New(x, y)
     local obj = Obstacle:New(x, y, hugeRockShape)
     setmetatable(obj, self)
     obj.image = hugeRockImages[math.random(1, #hugeRockImages)]
+
+    obj.dir = math.rad(math.random(1,360))    
     
     --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
     

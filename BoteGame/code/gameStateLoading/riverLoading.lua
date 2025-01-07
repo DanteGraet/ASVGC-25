@@ -49,9 +49,8 @@ for i = 1,#riverZones do
 
 end
 
-
-
 -- load this file in a more permenant position.
 table.insert(toLoad, {"code/river/riverData/" .. riverName .. ".lua"})
+table.insert(toLoad, {"code/river/riverData/" .. riverName .. "Music.lua", "run"})
 
 return toLoad

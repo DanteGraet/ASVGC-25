@@ -22,6 +22,8 @@ function rockObstacle:New(x, y)
     setmetatable(obj, self)
     obj.image = rockImages[math.random(1, #rockImages)]
 
+    obj.dir = math.rad(math.random(1,360))    
+
     --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
     
     return obj

@@ -15,5 +15,7 @@ require("code/river/effects/spawnSnow")
 require("code/river/effects/playerTrail")
 require("code/river/effects/zoneTitle")
 
+require("code/music")
+
 -- Global variables
 assets = {}
