@@ -8,8 +8,6 @@ local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
 PauseMenu = {}
 PauseMenu.__index = PauseMenu
 
-
-
 function PauseMenu:New() -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, PauseMenu)
 
@@ -45,12 +43,6 @@ function PauseMenu.exit(self)
 end
 
 function PauseMenu:GenerateButtons()
-    --[[
-        continue
-        restart
-        settings
-        menu
-    ]]
     local colours = {
         {0,0,0},
         {0,0,0.3},
@@ -65,9 +57,6 @@ function PauseMenu:GenerateButtons()
     self.Ui:GetButtons()["restart"].functions.release = {PauseMenu.RestartGame, self}
     self.Ui:GetButtons()["settings"].functions.release = {PauseMenu.Settings, self}
     self.Ui:GetButtons()["exit"].functions.release = {PauseMenu.exit, self}
-
-
-
 end
 
 
@@ -105,15 +94,12 @@ function PauseMenu:Draw(gs)
     love.graphics.setColor(0,0,0,0.5*gs)
     love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 
+    -- scaling
     love.graphics.scale(screenScale)
-
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2 + 960
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2 + 540
     love.graphics.translate(sox, soy + 1500*(1-gs))
 
-    --Draw a basic outline
-   -- love.graphics.setColor(quindoc.hexcode("45261b")) 
-    --love.graphics.rectangle("fill", -width/2, -height/2, width, height, 25)
 
     love.graphics.setColor(quindoc.hexcode("743f30")) 
     love.graphics.rectangle("fill", -width/2, -height/2, width, height, 25)
@@ -130,6 +116,7 @@ function PauseMenu:Draw(gs)
 
     local offSet = 25
 
+    -- screws :(
     drawScrew(-width/2+offSet,height/2-offSet,0)
     drawScrew(-width/2+offSet,-height/2+offSet,0.5*math.pi)
     drawScrew(width/2-offSet,height/2-offSet,0.5*math.pi)

@@ -1,6 +1,7 @@
 local width = 700
 local height = 600
 
+-- load the fonts that we will need here
 local font4 = love.graphics.newFont("font/fontMedium.ttf", 28)
 local font3 = love.graphics.newFont("font/fontMedium.ttf", 40)
 local font1 = love.graphics.newFont("font/fontMedium.ttf", 50)
@@ -9,7 +10,6 @@ local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
 
 GameOverMenu = {}
 GameOverMenu.__index = GameOverMenu
-
 
 
 function GameOverMenu:New() -- data is a table {{image/path, layer}}
@@ -39,12 +39,6 @@ function GameOverMenu.exit(self)
 end
 
 function GameOverMenu:GenerateButtons()
-    --[[
-        continue
-        restart
-        settings
-        menu
-    ]]
     local colours = {
         {0,0,0},
         {0,0,0.3},
@@ -91,11 +85,12 @@ end
 function GameOverMenu:Draw(gs)
     love.graphics.reset()
 
+    -- a background that fills the screen
     love.graphics.setColor(0,0,0,0.5*gs)
     love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 
+    -- scaling and offsets
     love.graphics.scale(screenScale)
-
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2 + 960
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2 + 540
     love.graphics.translate(sox, soy + 1500*(1-gs))
@@ -119,14 +114,15 @@ function GameOverMenu:Draw(gs)
         love.graphics.printf("You Win!", -width/2, -height/2, width, "center")
     end
 
-    if savedDisplayName then
 
+    if savedDisplayName then
         love.graphics.setFont(font1)
         love.graphics.printf("Biome:", -width/2, -height/2 + 240, width/2, "center")
 
         love.graphics.setFont(font4)
         love.graphics.printf(savedDisplayName,-width/2,-height/2 + 300,width/2,"center")
     end
+
 
     love.graphics.setFont(font1)
     love.graphics.printf("Score:", -width/2, -height/2 + 100, width/2, "center")
@@ -155,6 +151,7 @@ function GameOverMenu:Draw(gs)
 
     love.graphics.setColor(1,1,1,1)
 
+    -- add screws last
     drawScrew(-width/2+offSet,height/2-offSet,0)
     drawScrew(-width/2+offSet,-height/2+offSet,0.5*math.pi)
     drawScrew(width/2-offSet,height/2-offSet,0.5*math.pi)

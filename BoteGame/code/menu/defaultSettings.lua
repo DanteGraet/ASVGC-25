@@ -8,6 +8,7 @@ local function PrintAssetTree()
     dante.printTable(assets)
 end
 
+-- load each setting as catagories with special order table
 return {
     graphics = {
         h_ui = {type = "header", displayName = "User Interface"},

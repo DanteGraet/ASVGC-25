@@ -15,10 +15,12 @@
 --  └─┘┴ ┴ └┘ ┴┘└┘└─┘┘  ┴─┘└─┘┴ ┴─┴┘┴┘└┘└─┘┘  ┴ ┴┘└┘─┴┘  └─┘└─┘┴ ┴└─┘  └─┘ ┴ ┴ ┴└─┘┴└─  └─┘ ┴ └─┘└  └    --
 --                                                                                                       --
 --=======================================================================================================--
---  ChangeLog:                                                                                       V4  --
+--  ChangeLog:                                                                                      V4.0 --
 --    -> I changed the saving/loading system so it uses lua files or whatever                            --
 --    -> Updated printTable function                                                                     --
 --    -> added varToString function                                                                      --
+--                                                                                                  V4.1 --
+--    -> support for no folder when saving                                                               --
 --=======================================================================================================--
 
 dante = {}
@@ -38,11 +40,15 @@ end
 function dante.save(data, folder, fileName)
     local saveData = "return " .. dante.dataToString(data)
 
-    if love.filesystem.getInfo(folder, "directory") then
+    if folder then
+        if love.filesystem.getInfo(folder, "directory") then
+        else
+            love.filesystem.createDirectory(folder)
+        end
+        love.filesystem.write(folder .. "/" .. fileName .. ".lua", saveData)
     else
-        love.filesystem.createDirectory(folder)
+        love.filesystem.write(fileName .. ".lua", saveData)
     end
-    love.filesystem.write(folder .. "/" .. fileName .. ".lua", saveData)
 end
 
 
@@ -92,9 +98,14 @@ function dante.dataToString(data, indent)
         string = string .. "{\n"
 
         for key, value in pairs(data) do
-            local name = key
+            local name = tostring(key)
+
+
+
             if type(key) == "number" then
                 name = "[" .. key .. "]"
+            elseif tostring(name):find("[/:]") then
+                name = "['" .. key .. "']"
             end
             if type(data) == "table" then
                 local cocatString = dante.dataToString(value, indent + 1)

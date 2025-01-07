@@ -9,9 +9,9 @@ function quindoc.pythag(x,y)
 end
 
 function quindoc.round(num,digits)
-    num = num * 10^digits
+    num = num * 10^(digits or 0)
     num = math.floor(num + 0.5)
-    num = num / 10^digits
+    num = num / 10^(digits or 0)
     return num
 end
 

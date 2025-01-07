@@ -12,7 +12,7 @@ local toLoad = {
     {"save/highscore.lua", "run"},
 
 
-
+    -- generation suff
     {"code/river/river.lua"},
     {"code/river/generator/riverGenerator.lua"},
     {"code/river/generator/riverCanvas.lua"},
@@ -25,10 +25,10 @@ local toLoad = {
     {"code/menu/gameOverMenu.lua", "run"},
 
 
-
+    -- add this obstacle here, all others need it to be already loaded
     {"obstacle/obstacle.lua", "run"},
 
-
+    -- images
     {"image/ui/viginette.png", "blur"},
     {"image/ui/needle.png", "blur"},
     {"image/ui/speedometer.png", "blur"},
@@ -46,7 +46,6 @@ for i = 1,#riverZones do
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/pathGeneration.lua"})
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/backgroundGeneration.lua", "run", "GetColourAt"})
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/backgroundGeneration.lua", "run", "GetColourAt"})
-
 end
 
 -- load this file in a more permenant position.

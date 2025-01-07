@@ -8,7 +8,6 @@ return {
     {"image/titleScreen/parallax/6.png"},
     {"image/titleScreen/parallax/7.png"},
 
-
     --Scripts/Code
     {"code/titleScreen/titleScreenButtons.lua"},
 
@@ -24,6 +23,4 @@ return {
     {"font/fontBlack.ttf",64},
 
     {"image/titleScreen/title.png", "blur"},
-
-
 }
