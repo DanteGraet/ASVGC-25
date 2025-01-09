@@ -26,7 +26,7 @@ end
 
 
 local function boulderValleyDifficulty_STORM(percentage)
-    return 0.005 - 0.002*percentage --yeah, it gets easier as it goes on. this is to balance for current getting higher
+    return 0.005
 end
 
 local function boulderValleyWind_STORM(percentage)
@@ -160,7 +160,7 @@ local function stormValleyMusicManager()
     musicTracks[3].targetVolume = math.max(1-stormish,0)
     musicTracks[4].targetVolume = math.max(1-stormish,0)
     musicTracks[5].targetVolume = math.max(stormish-1,0)
-    musicTracks[6].targetVolume = stormish
+    musicTracks[6].targetVolume = quindoc.clamp(stormish,0,1)
     
 end
 

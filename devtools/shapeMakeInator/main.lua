@@ -1,5 +1,5 @@
-require("BoteGame/templateLib/dante")
-require("BoteGame/templateLib/quindoc")
+require("templateLib/dante")
+require("templateLib/quindoc")
 
 
 local lastSaves = {}
