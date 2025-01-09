@@ -40,7 +40,7 @@ local toLoad = {
     {"image/ui/ouchGlow.png", "blur"},
 }
 
-for i = 1,#riverZones do
+for i , value in pairs(riverZones) do
     -- add a falg to tell the code to add the obsticals to the loaded list later :/
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/obsticals.lua", "addObstacles"})
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/pathGeneration.lua"})

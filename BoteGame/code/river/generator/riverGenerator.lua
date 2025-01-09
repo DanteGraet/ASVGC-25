@@ -12,8 +12,20 @@ local nextSegment_rSeed = love.thread.getChannel("nextSegment_rSeed")
 function RiverGenerator:New(riverData)
     local obj = setmetatable({}, RiverGenerator)
 
+    if riverData[1] then
 
-    obj.zones = riverData
+        obj.zones = riverData
+    else
+
+        obj.infinite = true
+        obj.data = riverData
+
+        obj.zones = {}
+
+
+
+        obj:AddNextZones(10000)
+    end
     obj.currentZone = 1
     obj.zoneDist = 0
     obj.distance = 0
@@ -28,11 +40,100 @@ function RiverGenerator:New(riverData)
     return obj
 end
 
+function RiverGenerator:AddNextZones(y)
+    while y > self:GetLegnth() do
+        if self.zones and #self.zones > 0 then
+            local allOptions = self.zones[#self.zones].nextZone
+
+            local validOptions = {}
+            local weight = 0
+
+            for i = 1,#allOptions do
+                if type(allOptions[i]) == "string" then
+                    weight = weight + 1
+                    table.insert(validOptions, allOptions[i])
+                else
+                    if allOptions[i].validityFunction and allOptions[i].validityFunction() then
+                        weight = weight + (allOptions[i].weight or 1)
+                        table.insert(validOptions, allOptions[i])
+                    else
+                        weight = weight + (allOptions[i].weight or 1)
+                        table.insert(validOptions, allOptions[i])
+                    end
+                end
+            end
+
+            local no = math.random(1, weight)
+
+            for i = 1,#validOptions do
+                if type(validOptions[i]) == "string" then
+                    no = no -1
+
+                    if no < 1 then
+                        table.insert(self.zones, self:GenerateZoneData(self.data[validOptions[i]]))
+                        break
+                    end
+                else
+                    no = no - validOptions[i].weight or 1
+
+                    if no < validOptions[i].weight or 1 then
+                        table.insert(self.zones, self:GenerateZoneData(self.data[validOptions[i]].name))
+                        break
+                    end
+                end
+            end
+            
+        else
+            self.zones = {}
+            local foundFirst = false 
+            -- add the first zone
+            for key, value in pairs(self.data) do
+                if value.isFirst then
+                    table.insert(self.zones, self:GenerateZoneData(value))
+                    foundFirst = true
+                    break
+                end
+            end
+
+            if not foundFirst then
+                error("no zone with 'isFirst' flag :(")
+            end
+        end
+    end
+
+end
+
+function RiverGenerator:GenerateZoneData(zone)
+    local tempZone = {}
+
+    for key, value in pairs(zone) do
+        if type(value) == "table" then
+            if key ~= "nextZone" then
+                if value[1] then
+                    -- pick a random one
+                    tempZone[key] = value[math.random(1, #value)]
+                else
+                    -- min, max garbage
+                    tempZone[key] = math.random(value.min, value.max)
+                end
+            else
+                tempZone[key] = value
+            end
+        else
+            tempZone[key] = value
+        end
+    end
+
+    return tempZone
+end
+
 function RiverGenerator:GetLegnth()
     local l = 0
-    for i = 1,#self.zones do
-        local zone = self.zones[i]
-        l = l + zone.distance + zone.transition
+    if self.zones then
+        for i = 1,#self.zones do
+            local zone = self.zones[i]
+            l = l + zone.distance + zone.transition
+        end
     end
 
     return l
@@ -85,6 +186,10 @@ function RiverGenerator:GetPercentageThrough(y)
 end
 
 function RiverGenerator:Update()
+    if self.infinite then
+        self:AddNextZones(-player.y + 10000)
+    end
+
     if self.generatingSegment == true then
         local result = self:NextSegment()
 
@@ -92,6 +197,8 @@ function RiverGenerator:Update()
             -- add it to the end of the actual river
             river:MergePoints(result)
         end
+
+
     else
 
     end
