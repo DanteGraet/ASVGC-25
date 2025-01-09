@@ -132,7 +132,7 @@ function GameOverMenu:Draw(gs)
 
     local displayNum
     if settings.graphics.shortNumbers.value then
-        displayNum = dante.formatNnumber(math.floor(math.abs(player.score), 2))
+        displayNum = dante.formatNnumber(math.floor(math.abs(player.score)), 2)
     else
         displayNum = math.floor(math.abs(player.score))
     end
