@@ -130,7 +130,13 @@ function GameOverMenu:Draw(gs)
     love.graphics.setFont(font3)
     love.graphics.printf("High Scores:", 20, -height/2 + 115, width/2 - 40, "center")
 
-    love.graphics.printf(dante.formatNnumber(math.floor(math.abs(player.score)), 2).."m", -width/2, -height/2 + 160, width/2, "center")
+    local displayNum
+    if settings.graphics.shortNumbers.value then
+        displayNum = dante.formatNnumber(math.floor(math.abs(player.score), 2))
+    else
+        displayNum = math.floor(math.abs(player.score))
+    end
+    love.graphics.printf(displayNum, -width/2, -height/2 + 160, width/2, "center")
     
     -- white is there so if the player gets the same score (unlikely like very unlikey) then there will only on white score
     local white = false
@@ -140,11 +146,21 @@ function GameOverMenu:Draw(gs)
         if assets.save.highscore[i] == player.score and not white then
             love.graphics.setColor(0.1,0.1,0.1)
             white = true
+
+            pref = ">"
+            suf = "<"
         else
-            love.graphics.setColor(0,0,0)
-                
+            love.graphics.setColor(0,0,0)   
         end
-        love.graphics.printf(pref .. dante.formatNnumber(math.floor(math.abs(assets.save.highscore[i])), 2).."m" .. suf, 20, -height/2 + 105 + i*55, width/2 - 40, "center")
+
+        local displayNum
+        if settings.graphics.shortNumbers.value then
+            displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[i])), 2)
+        else
+            displayNum = math.floor(math.abs(assets.save.highscore[i]))
+        end
+
+        love.graphics.printf(pref .. displayNum --[[.."m"]] .. suf, 20, -height/2 + 105 + i*55, width/2 - 40, "center")
     end
 
     local offSet = 25

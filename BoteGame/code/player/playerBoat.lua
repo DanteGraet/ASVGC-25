@@ -23,6 +23,7 @@ function PlayerBoat:New(skin)
     obj.x = 0
     obj.y = 0
     obj.score = 0
+    obj.runTime = 0
 
     obj.winTimer = 0
 
@@ -64,6 +65,8 @@ end
 
 function PlayerBoat:Update(dt, inputs)
     
+    self.runTime = self.runTime + dt
+
     self.x, self.y = self.body:getPosition()
 
     if self.immunity > 0 then
@@ -254,7 +257,7 @@ function PlayerBoat:Draw()
 end
 
 function PlayerBoat:UpdateScore()
-    self.score = math.abs(self.y/10)
+    self.score = math.abs(self.y/10) - self.runTime + self.health*1000
     UpdateHighScore(self.score)
 end
 

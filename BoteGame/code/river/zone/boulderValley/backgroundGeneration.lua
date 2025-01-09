@@ -1,12 +1,7 @@
 local function GetColourAt(x, y)
-    if not river then
-        print("----------------------=====================================")
-    end
-
     local colour = {0.5,0.5,0.5}
 
     if river:IsInBounds(x, y) then
-
         local noiseA = love.math.noise(y/300.01)/100
         local noiseB = love.math.noise(y/2000.01)/30
         local noiseC = love.math.noise(y/10000.01)/20

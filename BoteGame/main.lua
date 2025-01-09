@@ -114,7 +114,6 @@ function love.quit()
     if game[gameState] and game[gameState].unload then
         game[gameState].unload()
     end
-    dante.save("Quited", "save", "quit")
 end
 
 function love.mousepressed(mx, my, button)

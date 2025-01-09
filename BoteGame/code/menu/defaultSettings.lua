@@ -22,9 +22,13 @@ return {
         zoneTitles = {type = "toggle", displayName = "Show Biome Titles", value = true},
 
         particles = {type = "slider", displayName = "Spawn Particles", value = 1},
+        
 
         fullscreen = {type = "toggle", displayName = "Fullscreen", value = love.window.getFullscreen()},
         showFPS = {type = "toggle", displayName = "Show FPS", value = false},
+
+        shortNumbers = {type = "toggle", displayName = "Short Numbers", value = true},
+
     },
     audio = {
         h_music = {type = "header", displayName = "Music"},
@@ -61,6 +65,7 @@ return {
             "uiScale",
             "uiSide",
             "uiLock",
+            "shortNumbers",
 
             "h_other",
             "particles",
