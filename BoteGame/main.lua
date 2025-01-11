@@ -29,10 +29,10 @@ function log.point(name)
     log.time = love.timer.getTime()
 end
 
-function endLog()
+function log.stop()
     table.sort(log.logs, function(a,b) return a.time > b.time end)
 
-    print(log.logs[1].name,  (log..logs[1].time * 1000) .. "ms")
+    print(log.logs[1].name,  (log.logs[1].time * 1000) .. "ms")
 end
 
 
@@ -162,7 +162,7 @@ end
 
 
 function love.update(dt)
-
+    log.start()
 
     if gameState ~= previousGameState then
         if game[previousGameState] and game[previousGameState].unload then
@@ -179,10 +179,13 @@ function love.update(dt)
     if game[gameState] and game[gameState].update then
         game[gameState].update(dt)
     end
+
+    log.point("update")
 end
 
 
 function love.draw()
+    log.jump()
     love.graphics.reset()
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
@@ -213,4 +216,8 @@ function love.draw()
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth()/screenScale, -soy)
         love.graphics.rectangle("fill", 0, 1080, love.graphics.getWidth()/screenScale, soy)
     end
+
+    log.point("Draw")
+
+    log.stop()
 end
