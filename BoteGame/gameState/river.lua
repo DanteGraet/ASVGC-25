@@ -148,6 +148,35 @@ local function focus(focus)
     end
 end
 
+local logs = {}
+local logStart = 0
+
+function startLog()
+    logs = {}
+    logStart = love.timer.getTime()
+end
+
+function jumplog()
+    logStart = love.timer.getTime()
+end
+
+function logPoint(name)
+    table.insert(
+        logs, 
+        {
+            name = name,
+            time = love.timer.getTime() - logStart
+        }
+    )
+    logStart = love.timer.getTime()
+end
+
+function endLog()
+    table.sort(logs, function(a,b) return a.time > b.time end)
+
+    print(logs[1].name,  (logs[1].time * 1000) .. "ms")
+end
+
 local function update(dt)
     zones = riverGenerator:GetZone(camera.y, true) 
     
@@ -183,20 +212,26 @@ local function update(dt)
 
     riverGenerator:Update()
 
+
     if river:HasPoints() then
 
         local inputs = inputManager:GetInput()
 
         local gs = tweens.sineInOut(gameSpeed)
 
+
         particles.updateParticles(dt*gs)
 
         spawnSnow(dt*gs)
 
+
         -- Update the player first, all other things rely on it basically
         player:Update(dt*gs, inputs)
+
+
         
         ui:Update(dt*gs)
+
 
         -- update the camera and similar variables after the player so it doesn't lag behind slightly
         camera:SetPosition(0, player:GetPosition().y)
@@ -205,10 +240,15 @@ local function update(dt)
         riverBorders.up =    (player.winY or player.y) - camera.oy
         riverBorders.down =  (player.winY or player.y) - camera.oy + love.graphics.getHeight()/scale
 
+        startLog()
         -- update the river after the player so we can generate based on the players position.
         river:Update()
 
+        logPoint("river Update")
+
         obstacleSpawner:Update()
+
+        logPoint("obstacleSpawner update")
 
         world:update(dt*gs)
 
@@ -249,6 +289,9 @@ local function update(dt)
             obstacles[i]:Update(i, dt)
         end
 
+    logPoint("physics")
+
+
         if (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
             local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
@@ -277,6 +320,9 @@ local function update(dt)
             end
         end
 
+    logPoint("game over")
+
+
     else      
         river:checkNextSegment()
 
@@ -303,7 +349,14 @@ local function update(dt)
         end
     end
 
+    logPoint("garbage")
+
+
     if music.manager then music.manager(dt) end
+
+    logPoint("mussic")
+
+    endLog()
 
 end
 

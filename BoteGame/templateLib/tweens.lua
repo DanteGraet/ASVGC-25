@@ -8,7 +8,7 @@ function tweens.linear(percent, pos1, pos2)
 end
 
 
---verticle line
+--verticle linerive
 function tweens.mid(percent, pos1, pos2)
     if percent > 0.5 then return pos2 or 1 end
     return pos1 or 0

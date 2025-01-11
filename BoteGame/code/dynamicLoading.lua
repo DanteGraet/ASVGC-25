@@ -15,6 +15,10 @@ function DynamicLoading:New(toLoad, parallaxImage, autoRun) -- data is a table {
         end
     end
 
+    obj:Draw(0, 0)
+
+    collectgarbage("collect")
+
     if autoRun then
         if obj:Run() == "QUIT" then
             love.event.quit()
