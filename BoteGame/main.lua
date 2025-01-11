@@ -23,7 +23,7 @@ function log.point(name)
         log.logs, 
         {
             name = name,
-            time = love.timer.getTime() - time
+            time = love.timer.getTime() - log.time
         }
     )
     log.time = love.timer.getTime()
