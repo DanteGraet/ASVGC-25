@@ -5,6 +5,9 @@ function music.manager(dt)
     --play the actual music
     if not musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value ~= 0 then
         for i = 1, #musicTracks do
+
+            musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume,0.001,1)
+
             musicTracks[i].track:play()
             --play all tracks at once to avoid desync
         end
@@ -31,7 +34,7 @@ function music.manager(dt)
 --        if musicTracks[i].drumTrack == nil then
 
             if musicTracks[i].volume ~= musicTracks[i].targetVolume then
-                musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+(music.crossFadeSpeed*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0,1)
+                musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+(music.crossFadeSpeed*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1)
             end
         
             musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value)
