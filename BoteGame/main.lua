@@ -162,7 +162,6 @@ end
 
 
 function love.update(dt)
-    log.start()
 
     if gameState ~= previousGameState then
         if game[previousGameState] and game[previousGameState].unload then
@@ -180,12 +179,11 @@ function love.update(dt)
         game[gameState].update(dt)
     end
 
-    log.point("update")
 end
 
 
 function love.draw()
-    log.jump()
+
     love.graphics.reset()
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
@@ -217,7 +215,5 @@ function love.draw()
         love.graphics.rectangle("fill", 0, 1080, love.graphics.getWidth()/screenScale, soy)
     end
 
-    log.point("Draw")
 
-    log.stop()
 end
