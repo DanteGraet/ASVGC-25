@@ -4,6 +4,38 @@ gameState = ""
 previousGameState = ""
 game = {}
 
+
+
+log = {
+
+}
+function log.start()
+    log.logs = {}
+    log.time = love.timer.getTime()
+end
+
+function log.jump()
+    log.time = love.timer.getTime()
+end
+
+function log.point(name)
+    table.insert(
+        log.logs, 
+        {
+            name = name,
+            time = love.timer.getTime() - time
+        }
+    )
+    log.time = love.timer.getTime()
+end
+
+function endLog()
+    table.sort(log.logs, function(a,b) return a.time > b.time end)
+
+    print(log.logs[1].name,  (log..logs[1].time * 1000) .. "ms")
+end
+
+
 local function loadGameStates()
     local gameStateList = love.filesystem.getDirectoryItems("gameState")
 
