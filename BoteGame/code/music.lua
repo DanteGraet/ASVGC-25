@@ -8,6 +8,8 @@ function music.manager(dt)
 
             musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume,0.001,1)
 
+            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5)
+
             musicTracks[i].track:play()
             --play all tracks at once to avoid desync
         end
@@ -37,7 +39,7 @@ function music.manager(dt)
                 musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+(music.crossFadeSpeed*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1)
             end
         
-            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value)
+            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5)
 
 --        elseif music.firstFrameInBar then
 --            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value)
