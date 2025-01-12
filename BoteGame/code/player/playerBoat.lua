@@ -53,6 +53,8 @@ function PlayerBoat:New(skin)
     obj.image = assets.code.player.playerData.data[selectedBoat[1]][selectedBoat[2]].skin
     assets.code.player.playerData.modifyBoat[selectedBoat[1]](obj)
 
+    obj.image:setFilter("nearest", "nearest")
+
     --for testing
    -- obj.immunity = -1
     --[[obj.health = 1000
