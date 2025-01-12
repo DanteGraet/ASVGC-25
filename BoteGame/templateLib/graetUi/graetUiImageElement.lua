@@ -9,8 +9,9 @@ function GraetUiImage:New(x, y, image, sx, sy) -- data is a table {{image/path, 
 
     obj.image = image
 
-    obj.sx = sx
-    obj.sy = sy
+
+    obj.sx = sx or 1
+    obj.sy = sy or 1
 
     return obj
 end
@@ -25,6 +26,7 @@ end
 
 
 function GraetUiImage:Draw(x, y, mouseMode, modeTryangle)
+
     if self.colour1 then
         if modeTryangle then
             local cLerp = self.cLerp or tweens.sineInOut
@@ -50,6 +52,7 @@ function GraetUiImage:Draw(x, y, mouseMode, modeTryangle)
     end
 
     love.graphics.draw(self.image, x + self.x, y + self.y, 0, self.sx, self.sy)
+
 end
 
 return GraetUiImage

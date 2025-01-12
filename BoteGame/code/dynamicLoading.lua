@@ -17,7 +17,7 @@ function DynamicLoading:New(toLoad, parallaxImage, autoRun) -- data is a table {
 
     obj:Draw(0, 0)
 
-    collectgarbage("collect")
+    ---collectgarbage("collect")
 
     if autoRun then
         if obj:Run() == "QUIT" then

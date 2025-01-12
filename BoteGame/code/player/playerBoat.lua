@@ -50,6 +50,9 @@ function PlayerBoat:New(skin)
     obj.baseXSpeed = 0 --you wouldn't want that would you? no,because otherwise you will lose the game
 
     
+    obj.image = assets.code.player.playerData.data[selectedBoat[1]][selectedBoat[2]].skin
+    assets.code.player.playerData.modifyBoat[selectedBoat[1]](obj)
+
     --for testing
    -- obj.immunity = -1
     --[[obj.health = 1000

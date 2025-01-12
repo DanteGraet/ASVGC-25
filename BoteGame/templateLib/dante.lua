@@ -75,6 +75,8 @@ function dante.varToString(var)
         return "nil"
     elseif type(var) == "function" then
         return "function"
+    elseif type(var) == "image" then
+        return "image"
     elseif type(var) == "string" then
         return '"' .. var .. '"'
     elseif type(var) == "number" then
