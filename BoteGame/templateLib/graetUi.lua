@@ -45,6 +45,9 @@ function GraetUi:AddButton(name, x, y, sx, sy, layer)
             self.layers[layer] = {}
         end
     end
+    if self.layers == nil then
+        error("NO layers ?!")
+    end
     local layer = self.layers[layer] or self.layers[self.currentLayer]
 
     layer[name] = Button:New(x, y, sx, sy)

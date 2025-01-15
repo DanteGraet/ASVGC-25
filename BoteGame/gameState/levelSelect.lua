@@ -19,11 +19,30 @@ local function load()
     menus["boatSelectMenu"] = assets.code.menu.boatSelectMenu():New()
     levelSelectScreen = GraetUi:New()
 
+    
+    levelSelectScreen:AddButton("frostedChannel", 290 - 64, 545 - 128, 128, 128, "default")
+    levelSelectScreen:GetButtons()["frostedChannel"]:AddImage(0, 0, assets.image.levelSelect.flag)
+    levelSelectScreen:GetButtons()["frostedChannel"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
+    levelSelectScreen:GetButtons()["frostedChannel"].functions.release = {function() riverName = "frostedChannel"; gameState = "river" end}
+
+
+    levelSelectScreen:AddButton("autumnGrove", 735 - 64, 452 - 128, 128, 128, "default")
+    levelSelectScreen:GetButtons()["autumnGrove"]:AddImage(0, 0, assets.image.levelSelect.flag)
+    levelSelectScreen:GetButtons()["autumnGrove"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
+    levelSelectScreen:GetButtons()["autumnGrove"].functions.release = {function() riverName = "autumnGrove"; gameState = "river" end}
+
+    levelSelectScreen:AddButton("derelictDam", 1230 - 64, 565 - 128, 128, 128, "default")
+    levelSelectScreen:GetButtons()["derelictDam"]:AddImage(0, 0, assets.image.levelSelect.flag)
+    levelSelectScreen:GetButtons()["derelictDam"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
+    levelSelectScreen:GetButtons()["derelictDam"].functions.release = {function() riverName = "derelictDam"; gameState = "river" end}
+
+
     levelSelectScreen:AddTextButton("boatSelect", "Pick your bote :D", "left", fontBlack32, 0, 0, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
     levelSelectScreen:GetButtons()["boatSelect"].functions.release = {function() menus["boatSelectMenu"].isOpen = true end}
 
-    levelSelectScreen:AddTextButton("play", "Actually Play", "left", fontBlack32, 0, 300, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
-    levelSelectScreen:GetButtons()["play"].functions.release = {function() riverName = "mvpRiver"; gameState = "river" end}
+
+    --levelSelectScreen:AddTextButton("frostedChannel", "Actually Play", "left", fontBlack32, 0, 300, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
+
 end
 
 local function update(dt)
@@ -57,7 +76,8 @@ end
 
 
 local function draw()
-    love.graphics.draw(assets.image.levelSelect.background, 0, 0, 0, 3, 3)
+    love.graphics.setBackgroundColor(.5,.5,.5)
+    love.graphics.draw(assets.image.levelSelect.background, 0, 0, 0, 1, 1)
 
     levelSelectScreen:Draw()
 

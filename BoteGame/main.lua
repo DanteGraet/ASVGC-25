@@ -131,6 +131,10 @@ function love.keypressed(key)
     if key == "g" and love.keyboard.isDown("lctrl") and DEV then
         drawDebugRuler = not drawDebugRuler
     end
+
+    if key == "m" and love.keyboard.isDown("lctrl") and DEV then
+        print(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+    end
     
     if game[gameState] and game[gameState].keypressed then
         game[gameState].keypressed(key)

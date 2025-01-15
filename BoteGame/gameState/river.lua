@@ -457,7 +457,7 @@ local function draw()
         end
 
 
-        if 1-gs > 0 and not player.wasBeached then
+        if 1-gs > 0  then
             pauseMenu:Draw(1-gs)
 
             if pauseMenu.settingsTimer > 0 then
