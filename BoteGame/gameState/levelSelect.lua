@@ -19,22 +19,26 @@ local function load()
     menus["boatSelectMenu"] = assets.code.menu.boatSelectMenu():New()
     levelSelectScreen = GraetUi:New()
 
-    
-    levelSelectScreen:AddButton("frostedChannel", 290 - 64, 545 - 128, 128, 128, "default")
-    levelSelectScreen:GetButtons()["frostedChannel"]:AddImage(0, 0, assets.image.levelSelect.flag)
-    levelSelectScreen:GetButtons()["frostedChannel"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
-    levelSelectScreen:GetButtons()["frostedChannel"].functions.release = {function() riverName = "frostedChannel"; gameState = "river" end}
+    if assets.code.player.unlocks.levels.frostedChannel then
+        levelSelectScreen:AddButton("frostedChannel", 290 - 64, 545 - 128, 128, 128, "default")
+        levelSelectScreen:GetButtons()["frostedChannel"]:AddImage(0, 0, assets.image.levelSelect.flag)
+        levelSelectScreen:GetButtons()["frostedChannel"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
+        levelSelectScreen:GetButtons()["frostedChannel"].functions.release = {function() riverName = "frostedChannel"; gameState = "river" end}
+    end
 
+    if assets.code.player.unlocks.levels.autumnGrove then
+        levelSelectScreen:AddButton("autumnGrove", 735 - 64, 452 - 128, 128, 128, "default")
+        levelSelectScreen:GetButtons()["autumnGrove"]:AddImage(0, 0, assets.image.levelSelect.flag)
+        levelSelectScreen:GetButtons()["autumnGrove"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
+        levelSelectScreen:GetButtons()["autumnGrove"].functions.release = {function() riverName = "autumnGrove"; gameState = "river" end}
+    end
 
-    levelSelectScreen:AddButton("autumnGrove", 735 - 64, 452 - 128, 128, 128, "default")
-    levelSelectScreen:GetButtons()["autumnGrove"]:AddImage(0, 0, assets.image.levelSelect.flag)
-    levelSelectScreen:GetButtons()["autumnGrove"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
-    levelSelectScreen:GetButtons()["autumnGrove"].functions.release = {function() riverName = "autumnGrove"; gameState = "river" end}
-
-    levelSelectScreen:AddButton("derelictDam", 1230 - 64, 565 - 128, 128, 128, "default")
-    levelSelectScreen:GetButtons()["derelictDam"]:AddImage(0, 0, assets.image.levelSelect.flag)
-    levelSelectScreen:GetButtons()["derelictDam"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
-    levelSelectScreen:GetButtons()["derelictDam"].functions.release = {function() riverName = "derelictDam"; gameState = "river" end}
+    if assets.code.player.unlocks.levels.derelictDam then
+        levelSelectScreen:AddButton("derelictDam", 1230 - 64, 565 - 128, 128, 128, "default")
+        levelSelectScreen:GetButtons()["derelictDam"]:AddImage(0, 0, assets.image.levelSelect.flag)
+        levelSelectScreen:GetButtons()["derelictDam"]:SetElementColour({.6,.2,.2}, {.8,.1,.1}, {.8,0,0})
+        levelSelectScreen:GetButtons()["derelictDam"].functions.release = {function() riverName = "derelictDam"; gameState = "river" end}
+    end
 
 
     levelSelectScreen:AddTextButton("boatSelect", "Pick your bote :D", "left", fontBlack32, 0, 0, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})

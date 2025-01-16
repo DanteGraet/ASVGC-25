@@ -23,4 +23,7 @@ return {
     {"font/fontBlack.ttf",64},
 
     {"image/titleScreen/title.png", "blur"},
+
+    -- load the save
+    {"code/player/playerLoadSaveData.lua", "run"}
 }
