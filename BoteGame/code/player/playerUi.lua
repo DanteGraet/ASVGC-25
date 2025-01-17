@@ -134,7 +134,19 @@ function UI.Draw()
 
     local playerSpeedPercentage = player.speed/player.maxSpeed
     local dir = playerSpeedPercentage*math.rad(210) - math.rad(30)
-    love.graphics.draw(assets.image.ui.needle, x - 480*scale + 960*(1-side)*scale, y - 320*scale, dir, scale, scale, (assets.image.ui.needle:getWidth())-32, assets.image.ui.needle:getHeight()/2)
+
+    local randShakeX = 0
+    local randShakeY = 0
+    
+    if player.speed > player.autoSpeed then
+        local percentageOver = (player.speed-player.autoSpeed)/(player.maxSpeed-player.autoSpeed) 
+        randShakeX = math.random(-100,100)/20 * (percentageOver)*scale
+        randShakeY = math.random(-100,100)/20 * (percentageOver)*scale
+
+        love.graphics.setColor(1,1,0.5+0.5*(1-percentageOver))
+    end
+
+    love.graphics.draw(assets.image.ui.needle, x - 480*scale + 960*(1-side)*scale + randShakeX, y - 320*scale + randShakeY, dir, scale, scale, (assets.image.ui.needle:getWidth())-32, assets.image.ui.needle:getHeight()/2)
 end
 
 return UI

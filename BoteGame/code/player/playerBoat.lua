@@ -39,6 +39,7 @@ function PlayerBoat:New(skin)
     obj.speed = 150
     obj.acceleration = 150
     obj.maxSpeed = 300
+    obj.autoSpeed = 71.3*3
     obj.minSpeed = 0
 
     obj.turnSpeed = math.pi/3
@@ -124,8 +125,14 @@ function PlayerBoat:Update(dt, inputs)
             end
             if inputs.accelerate then
                 self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
+                
             elseif inputs.decelerate then
                 self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
+            elseif self.speed > self.autoSpeed then
+
+                self.speed = math.max(
+                    self.speed - math.min( (( 2 * math.abs(self.speed - self.autoSpeed) + 0.01*self.acceleration)) ,self.acceleration)*dt 
+                    , self.autoSpeed)
             end
 
             self.baseXSpeed = 15*math.sqrt(current or 0)
