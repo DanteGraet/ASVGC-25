@@ -31,6 +31,8 @@ return {
 
     },
     audio = {
+        masterVolume = {type = "slider", displayName = "Master Volume", value = 0.8},
+
         h_music = {type = "header", displayName = "Music"},
         musicVolume = {type = "slider", displayName = "Music Volume", value = 0.8},
 
@@ -72,7 +74,8 @@ return {
             "zoneTitles",
         },
         audio = {
-            "h_music",
+            "masterVolume",
+
             "musicVolume",
     
         },

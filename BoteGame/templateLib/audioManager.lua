@@ -31,6 +31,52 @@ local function playSound(sound, catagory, pitchChange, position)
     tempSound:play()
 end
 
+
+local loopingSounds = {}
+local function NewLoopingSound(name, sound, catagory, volume)
+    local tempSound = {}
+
+    --create the sound from either a table (pick random) or sound
+    if type(sound) == "table" then
+        tempSound.sound = sound[math.random(1,#sound)]:clone()
+    else
+        tempSound.sound = sound:clone()
+    end
+
+    -- modify volume
+    local subVolume = volume or 1
+    if catagory and settings.audio[catagory] then
+        subVolume = subVolume * settings.audio[catagory].value
+    end
+    local volume = settings.audio.masterVolume.value * subVolume
+    tempSound.volume = volume
+
+    tempSound.sound:setVolume(volume)
+    tempSound.sound:setLooping(true)
+    tempSound.sound:play()
+end
+local function ModifyLoopingSound(name, data)
+    for key, value in pairs(data) do
+        loopingSounds[key] = value
+
+        if key == "volume" or key == "catagory" then
+            local subVolume = loopingSounds[key].volume or 1
+            if value.catagory and settings.audio[value.catagory] then
+                subVolume = settings.audio[value.catagory].value
+            end
+            local volume = settings.audio.masterVolume.value * subVolume
+            value.volume = volume
+
+
+        end
+    end
+end
+local function RemoveLoopingSound(name)
+    loopingSounds[name].sound:stop()
+    loopingSounds[name] = nil
+end
+
+
 return {
     playSound = playSound,
 }
