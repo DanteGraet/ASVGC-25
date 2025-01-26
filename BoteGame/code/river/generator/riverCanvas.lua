@@ -64,7 +64,8 @@ function RiverCanvas:FillCanvasY(canvasY, globalY, canvasX, zone)
         local colour
         local num = chance or -1
 
-        if zone2 and math.random(0, 100)/100 < chance then
+        --if zone2 and math.random(0, 100)/100 < chance then
+        if zone2 and love.math.noise((x + self.x)*3/250, globalY/250) < chance then
             colour = assets.code.river.zone[zone2.zone].GetColourAt((x + self.x)*3, globalY)
 
         else
