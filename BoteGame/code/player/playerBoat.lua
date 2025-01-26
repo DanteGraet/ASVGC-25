@@ -1,4 +1,6 @@
 local playerShape = love.physics.newCircleShape(22)
+-- we use math alot so it should be faster
+local math = math
 
 local PlayerBoat = {}
 PlayerBoat.__index = PlayerBoat
