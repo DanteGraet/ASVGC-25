@@ -144,6 +144,7 @@ local function focus(focus)
     if not (player.health <= 0 or player.deathTime >= 1) then
 
         pauseMenu.isOpen = true
+        pauseMenu.hasOpend = true
 
     end
 end
@@ -357,7 +358,7 @@ local function keyreleased(key)
 
     if input == "pause" then
         if settingsMenu.isOpen then settingsMenu.isOpen = false
-        elseif player.health > 0 or not player.winTimer then pauseMenu.isOpen = not pauseMenu.isOpen end
+        elseif player.health > 0 or not player.winTimer then pauseMenu.isOpen = not pauseMenu.isOpen; pauseMenu.hasOpend = true end
     end
 
     if key == "k" and DEV then

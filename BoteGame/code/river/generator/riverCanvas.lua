@@ -2,6 +2,7 @@ local RiverCanvas = {}
 RiverCanvas.__index = RiverCanvas
 
 function RiverCanvas:New(y, fill)
+    local pixlesPerPixle = pixlesPerPixle
     local obj = setmetatable({}, RiverCanvas)
 
     obj.canvas = love.graphics.newCanvas(
