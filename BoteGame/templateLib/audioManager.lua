@@ -55,6 +55,7 @@ local function NewLoopingSound(name, sound, catagory, volume)
     tempSound.sound:setLooping(true)
     tempSound.sound:play()
 end
+
 local function ModifyLoopingSound(name, data)
     for key, value in pairs(data) do
         loopingSounds[key] = value

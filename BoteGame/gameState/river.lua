@@ -91,10 +91,11 @@ local function load()
     gameOverMenu = GameOverMenu:New()
 
     player = assets.code.player.playerBoat():New()
+    ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
     ui = assets.code.player.playerUi()
     camera = assets.code.camera():New(0, 0, 960, 900)
     river = assets.code.river.river():New()
-    riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName]())
+    riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName].zone())
     obstacles = {}
     local zoneObsitcalList = {}
     for i = 1,#riverGenerator.zones do
@@ -196,7 +197,8 @@ local function update(dt)
 
         particles.updateParticles(dt*gs)
 
-        spawnSnow(dt*gs)
+        --spawnSnow(dt*gs)
+        ambiance.update(dt*gs)
 
 
         -- Update the player first, all other things rely on it basically
@@ -496,6 +498,7 @@ local function draw()
 end
 
 function UpdateHighScore(newScore)
+    print(riverName, player.health)
     if assets.save and assets.save.highscore and type(assets.save.highscore) == "table" then
     else
         if assets.save then
@@ -505,19 +508,23 @@ function UpdateHighScore(newScore)
         assets.save.highscore = {}
     end
 
-    if newScore then
-        table.insert(assets.save.highscore, newScore)
+    if not assets.save.highscore[riverName] then
+        assets.save.highscore[riverName] = {}
     end
-    table.sort(assets.save.highscore, function(a, b) return a > b end)
 
-    if assets.save.highscore then
+    if newScore then
+        table.insert(assets.save.highscore[riverName], newScore)
+    end
+    table.sort(assets.save.highscore[riverName], function(a, b) return a > b end)
+
+    if assets.save.highscore[riverName] then
         dante.save(assets.save.highscore, "save", "highscore")
     end
 
     -- only store 6 records
-    if #assets.save.highscore > 6 then
-        while #assets.save.highscore > 6 do
-            table.remove(assets.save.highscore, #assets.save.highscore)
+    if #assets.save.highscore[riverName] > 6 then
+        while #assets.save.highscore[riverName] > 6 do
+            table.remove(assets.save.highscore[riverName], #assets.save.highscore[riverName])
         end
     end
 end

@@ -9,15 +9,15 @@ function snowParticle:New(spawnX,spawnY,spawnAngle,spawnData)
 
     obj.speed = love.math.random(75,125)/100
     obj.yVel = love.math.random(-200,200)/1000
-    obj.savedWindSpeed = windSpeed
+    obj.savedWindSpeed = ambiance.windSpeed
 
 
     return obj
 end
 
 function snowParticle:Update(dt)
-    if self.savedWindSpeed < windSpeed then
-        self.savedWindSpeed = windSpeed
+    if self.savedWindSpeed < ambiance.windSpeed then
+        self.savedWindSpeed = ambiance.windSpeed
     end
 
     self.x = self.x + self.speed*self.savedWindSpeed*dt

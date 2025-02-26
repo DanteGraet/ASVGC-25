@@ -6,13 +6,6 @@ local function boulderValleyDifficulty(percentage)
     return 0.0015 + 0.0035*quindoc.clamp(percentage,0,1)
 end
 
-local function boulderValleyWind(percentage)
-    return 100 + 300*quindoc.clamp(percentage,0,1)
-end
-
-local function boulderValleySnow(percentage)
-    return 10*quindoc.clamp(percentage,0,1) + 5
-end
 
 local function boulderValleyCurrent(percentage)
     return 200*quindoc.clamp(percentage,0,1) + 100
@@ -29,39 +22,7 @@ local function boulderValleyDifficulty_STORM(percentage)
     return 0.005
 end
 
-local function boulderValleyWind_STORM(percentage)
 
-    local idk = percentage
-
-    if percentage < 0.8 then
-
-        idk = percentage*1.25
-
-    else
-
-        idk = 1 - 2*((percentage - 0.8) * 5)
-
-    end
-
-    return 400 + 600*quindoc.clamp(idk,-0.2,1)
-end
-
-local function boulderValleySnow_STORM(percentage)
-
-    local idk = percentage
-
-    if percentage < 0.8 then
-
-        idk = percentage*1.25
-
-    else
-
-        idk = 1 - 2*((percentage - 0.8) * 5)
-
-    end
-
-    return 23 + 20*quindoc.clamp(idk,-1,1)
-end
 
 local function boulderValleyCurrent_STORM(percentage)
 
@@ -185,8 +146,6 @@ return {
         transition = 300,
         current = iceplainsCurrent,
         currentIcons = 2,
-        snowAmount = 5,
-        windSpeed = 200,
         musicManager = icePlainsMusicManager,
     },
     {
@@ -197,8 +156,6 @@ return {
         distance = 15000,
         difficultyFunction = boulderValleyDifficulty,
         transition = 0,
-        snowAmount = boulderValleySnow,
-        windSpeed = boulderValleyWind,
         current = boulderValleyCurrent,
         currentIcons = 3,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient,
@@ -213,8 +170,6 @@ return {
         stormIntensity = boulderValleyStormIntensity_STORM,
         difficultyFunction = boulderValleyDifficulty_STORM,
         transition = 500,
-        snowAmount = boulderValleySnow_STORM,
-        windSpeed = boulderValleyWind_STORM,
         current = boulderValleyCurrent_STORM,
         currentIcons = 4,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM,
@@ -229,9 +184,7 @@ return {
         difficultyFunction = coniferousMountainsideDifficulty,
         transition = 0,
         current = 100,
-        snowAmount = 3,
         currentIcons = 2,
-        windSpeed = 300,
         musicManager = coniferousMountainsideMusicManager,
     },
 

@@ -104,7 +104,6 @@ function PlayerBoat:Update(dt, inputs)
         self.shameTimer = self.shameTimer - 0.5*dt
 
         if self.beachTimer == 0 and self.shameTimer < 0 and player.health > 0 then
-
             -- the player is beached
             self:moveToCenter()
             self.beachTimer = 1
@@ -165,12 +164,13 @@ function PlayerBoat:Update(dt, inputs)
             if not self.winY then
                 self.winY = self.y
                 self:UpdateScore()
+
+                love.filesystem.load("code/player/checkUnlocks.lua")()
             end
 
             self.winTimer = math.min(self.winTimer + dt, 1)
 
             local center = river:getCenter(self.y - 100)
-
             local dir = nil
             
             if math.abs(center - self.x) > 100 then
@@ -186,14 +186,10 @@ function PlayerBoat:Update(dt, inputs)
                 if math.abs(angle - self.dir) > self.winTimer/2 then
                     if angle - self.dir > 0 then
                         dir = "left"
-                        
                     else
                         dir = "right"
-                        
                     end
-
                 end
-                
             end
 
 

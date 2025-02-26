@@ -1,5 +1,5 @@
 -- load this locally, to b removed later :D
-local riverZones = love.filesystem.load("code/river/riverData/" .. riverName .. ".lua")()
+local riverZones = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.lua")()
 
 local toLoad = {
     -- player skins
@@ -49,7 +49,9 @@ for i , value in pairs(riverZones) do
 end
 
 -- load this file in a more permenant position.
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. ".lua"})
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "Music.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/zone.lua"})
+table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/music.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/ambiance.lua", "run"})
+
 
 return toLoad

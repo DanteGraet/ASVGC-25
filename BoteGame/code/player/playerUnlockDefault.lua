@@ -4,5 +4,8 @@ return {
     },
     levels = {
         frostedChannel = true
+    },
+    beatenLevels = {
+
     }
 }

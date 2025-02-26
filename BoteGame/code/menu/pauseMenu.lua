@@ -30,6 +30,7 @@ function PauseMenu.Close(self)
 end
 
 function PauseMenu.RestartGame(self)
+    player.health = 0
     self.isOpen = false
     self.hasOpend = false
     previousGameState = "GetWreked"
@@ -41,7 +42,8 @@ end
 
 function PauseMenu.exit(self)
     -- UPDATE THIS LATER
-    gameState = "titleScreen"
+    player.health = 0
+    gameState = "levelSelect"
 end
 
 function PauseMenu:GenerateButtons()

@@ -8,6 +8,10 @@ local function PrintAssetTree()
     dante.printTable(assets)
 end
 
+local function OpenSaveFolder()
+    love.system.openURL(love.filesystem.getSaveDirectory())
+end
+
 -- load each setting as catagories with special order table
 return {
     graphics = {
@@ -45,6 +49,7 @@ return {
     dev = {
         removeSave = {type = "button", displayName = "Delete Save"},
         unlockAll = {type = "button", displayName = "Unlock All"},
+        openSaveFolder = {type = "button", displayName = "open Save Folder", func = OpenSaveFolder},
         reloadGamestate = {type = "button", displayName = "Reload Gamestate", func = ReloadGameState},
         printAssetTree = {type = "button", displayName = "Print Asset Tree", func = PrintAssetTree},
 
@@ -85,6 +90,7 @@ return {
         dev = {
             "removeSave",
             "unlockAll",
+            "openSaveFolder",
             "reloadGamestate",
 
             "drawHitboxes",

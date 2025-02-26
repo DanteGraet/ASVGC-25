@@ -22,41 +22,19 @@ function UI:Update(dt)
 end
 
 function UI.Draw()
+    local player = player
+    local love = love
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
     -- UiLock, false     Side, False
-    local x, y = 0 + 10, 1080 + soy - 10
+    local x, y = 10, 1070 + soy
 
     local side = 0
 
     local scale = ((settings.graphics.uiScale.value) + 0.5)/4
 
-    --PLACEHOLDER STORM EFFECT
-    --hopefully one day i will replace this with a shader - but not today. :)
---[[
-    love.graphics.push()
-
-    love.graphics.reset()
-
-    love.graphics.scale(screenScale)
-    
-    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-
-    love.graphics.translate(sox, soy)
-
-
-    --this box needs to be big enough as to fill the whole screen
-
-    local scaleX = love.graphics.getWidth() / 1920
-    local scaleY = love.graphics.getHeight() / 1080
-
-    love.graphics.setColor(1,1,1,1)]]
---[[]]
-
-    --END PLACEHOLDER
 
     if settings.graphics.zoneTitles.value then
         drawZoneTitle()
@@ -64,9 +42,9 @@ function UI.Draw()
 
     if settings.graphics.uiSide.value then
         if settings.graphics.uiLock.value then
-            x = 1920 - 10
+            x = 1910
         else
-            x = 1920 - 10 + sox
+            x = 1910 + sox
         end
     
         side = 1
@@ -75,7 +53,7 @@ function UI.Draw()
     end
 
     if settings.graphics.uiLock.value then
-        y = 1080 - 10
+        y = 1070
     end
 
     if player.health < 3 and uiSineCounter then 
@@ -86,7 +64,7 @@ function UI.Draw()
 
     local tweendHealth = math.floor(storedHealth) + tweens.sineInOut(storedHealth%1)
 
-    healthColour = {.9,.1,.2}
+    local healthColour = {.9,.1,.2}
     if player.health == 1 and math.sin(uiSineCounter*30) > 0 then
         healthColour = {1,0.6,0.6}
     elseif tweendHealth and tweendHealth > player.health and math.sin(uiSineCounter*30) > 0 then
@@ -132,7 +110,7 @@ function UI.Draw()
         love.graphics.draw(assets.image.ui.speedometerFrontDamage, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
     else love.graphics.draw(assets.image.ui.speedometerFront, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight()) end
 
-    local playerSpeedPercentage = player.speed/player.maxSpeed
+    local playerSpeedPercentage = (player.speed/player.maxSpeed)
     local dir = playerSpeedPercentage*math.rad(210) - math.rad(30)
 
     local randShakeX = 0

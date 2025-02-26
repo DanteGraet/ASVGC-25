@@ -45,7 +45,11 @@ function GameOverMenu:GenerateButtons()
         {0.2,0.2,0.4},
     }
 
-    self.Ui:AddTextButton("restart", "Retry", "center", font1, -width/4, height/2 - 75, width, colours)
+    if player and player.health > 0 then
+        self.Ui:AddTextButton("restart", "Play Again", "center", font1, -width/4, height/2 - 75, width, colours)
+    else
+        self.Ui:AddTextButton("restart", "Retry", "center", font1, -width/4, height/2 - 75, width, colours)
+    end
     self.Ui:AddTextButton("exit", "Quit", "center", font1, width/4, height/2 - 75, width, colours)
 
     self.Ui:GetButtons()["restart"].functions.release = {GameOverMenu.RestartGame, self}
@@ -140,10 +144,10 @@ function GameOverMenu:Draw(gs)
     
     -- white is there so if the player gets the same score (unlikely like very unlikey) then there will only on white score
     local white = false
-    for i = 1,#assets.save.highscore do
+    for i = 1,#assets.save.highscore[riverName] do
         local pref = ""
         local suf = ""
-        if assets.save.highscore[i] == player.score and not white then
+        if assets.save.highscore[riverName][i] == player.score and not white then
             love.graphics.setColor(0.1,0.1,0.1)
             white = true
 
@@ -155,9 +159,9 @@ function GameOverMenu:Draw(gs)
 
         local displayNum
         if settings.graphics.shortNumbers.value then
-            displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[i])), 2)
+            displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][i])), 2)
         else
-            displayNum = math.floor(math.abs(assets.save.highscore[i]))
+            displayNum = math.floor(math.abs(assets.save.highscore[riverName][i]))
         end
 
         love.graphics.printf(pref .. displayNum --[[.."m"]] .. suf, 20, -height/2 + 105 + i*55, width/2 - 40, "center")
