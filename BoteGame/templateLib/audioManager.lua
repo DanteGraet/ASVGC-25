@@ -1,4 +1,4 @@
-local function playSound(sound, catagory, pitchChange, position)
+local function playSound(sound, catagory, pitchChange, position, volumeOverride)
     local tempSound
 
     --create the sound from either a table (pick random) or sound
@@ -17,7 +17,7 @@ local function playSound(sound, catagory, pitchChange, position)
     if catagory and settings.audio[catagory] then
         subVolume = settings.audio[catagory].value
     end
-    local volume = settings.audio.masterVolume.value * subVolume
+    local volume = (settings.audio.masterVolume.value * subVolume) * volumeOverride or 1
     tempSound:setVolume(volume)
 
     -- 'move' the sound
@@ -80,4 +80,7 @@ end
 
 return {
     playSound = playSound,
+    NewLoopingSound = NewLoopingSound,
+    ModifyLoopingSound = ModifyLoopingSound,
+    RemoveLoopingSound = RemoveLoopingSound,
 }

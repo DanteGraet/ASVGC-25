@@ -4,6 +4,18 @@ a.snowUpdate = love.filesystem.load("code/river/effects/spawnSnow.lua")()
 
 a.windSpeed = 0
 
+a.sounds = {
+    bird = {
+        sound = {
+            love.audio.newSource("audio/ambient/bird/1.ogg", "static"),
+            love.audio.newSource("audio/ambient/bird/2.ogg", "static"),
+            love.audio.newSource("audio/ambient/bird/3.ogg", "static"),
+        },
+        timer = 0,
+        value = 0
+    }
+}
+
 function a.update(dt)
     -- set up variables
     local p = riverGenerator:GetPercentageThrough(player.y)
@@ -30,8 +42,33 @@ function a.update(dt)
     end
 
 
-    -- update windSpeed
+    -- update particle spawners
     a.snowUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
+
+    -- sounds
+
+    for name, data in pairs(a.sounds) do
+        if type(data.sound) == "table" then
+            -- static
+            if transitionZone then --if we are in a transition
+                data.value = quindoc.runIfFunc(currentZone.audio[name],p)*(1-transitionPercent) + quindoc.runIfFunc(currentZone.audio[name],0)*transitionPercent
+            elseif currentZone.audio and currentZone.audio[name] then --just set the snow amount to what it needs to be
+                data.value = quindoc.runIfFunc(currentZone.audio[name],p) or 100
+            else
+                data.value = 0
+            end
+
+            data.timer = data.timer + dt*5
+
+            if math.floor(math.random(0, data.timer)) > 10-data.value then
+                audioPlayer.playSound(data.sound, "ambient", nil, nil, tweens.sineInOut(math.min(data.value/10, 1)))
+                data.timer = 0
+            end
+        else
+            -- Looping
+
+        end
+    end
 end
 
 
