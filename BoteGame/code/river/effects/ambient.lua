@@ -48,15 +48,17 @@ function a.update(dt)
     -- sounds
 
     for name, data in pairs(a.sounds) do
+        if transitionZone then --if we are in a transition
+            data.value = quindoc.runIfFunc(currentZone.audio[name],p)*(1-transitionPercent) + quindoc.runIfFunc(currentZone.audio[name],0)*transitionPercent
+        elseif currentZone.audio and currentZone.audio[name] then --just set the snow amount to what it needs to be
+            data.value = quindoc.runIfFunc(currentZone.audio[name],p) or 100
+        else
+            data.value = 0
+        end
+
         if type(data.sound) == "table" then
             -- static
-            if transitionZone then --if we are in a transition
-                data.value = quindoc.runIfFunc(currentZone.audio[name],p)*(1-transitionPercent) + quindoc.runIfFunc(currentZone.audio[name],0)*transitionPercent
-            elseif currentZone.audio and currentZone.audio[name] then --just set the snow amount to what it needs to be
-                data.value = quindoc.runIfFunc(currentZone.audio[name],p) or 100
-            else
-                data.value = 0
-            end
+
 
             data.timer = data.timer + dt*5
 
@@ -66,7 +68,18 @@ function a.update(dt)
             end
         else
             -- Looping
+            if data.value > 0 then
+                if not data.playing then
+                    audioPlayer.NewLoopingSound("ambiance_" .. name, data.sound, "ambient", data.value)
+                end
 
+                audioPlayer.ModifyLoopingSound("ambiance_" .. name, {volume = data.value/10})
+
+            else
+                if data.playing == true then
+                    audioPlayer.RemoveLoopingSound("ambiance_" .. name)
+                end
+            end
         end
     end
 end
