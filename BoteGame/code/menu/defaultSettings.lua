@@ -26,6 +26,7 @@ return {
         zoneTitles = {type = "toggle", displayName = "Show Biome Titles", value = true},
 
         particles = {type = "slider", displayName = "Spawn Particles", value = 1},
+        lightning = {type = "toggle", displayName = "Lightning", value = true},
         
 
         fullscreen = {type = "toggle", displayName = "Fullscreen", value = love.window.getFullscreen()},
@@ -79,6 +80,7 @@ return {
             "h_other",
             "particles",
             "zoneTitles",
+            "lightning",
         },
         audio = {
             "masterVolume",

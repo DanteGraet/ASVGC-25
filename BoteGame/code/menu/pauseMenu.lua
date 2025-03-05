@@ -27,6 +27,7 @@ end
 
 function PauseMenu.Close(self)
     self.isOpen = false 
+    love.mouse.setVisible(false)
 end
 
 function PauseMenu.RestartGame(self)

@@ -6,7 +6,7 @@ function RiverCanvas:New(y, fill)
     local obj = setmetatable({}, RiverCanvas)
 
     obj.canvas = love.graphics.newCanvas(
-        math.ceil((riverBorders.width/pixlesPerPixle)) + 4, 
+        math.ceil(((riverBorders.width + 80)/pixlesPerPixle)) + 4, 
         math.ceil((riverBorders.height/pixlesPerPixle)) + 10
     )
     obj.canvas:setFilter("nearest", "nearest")

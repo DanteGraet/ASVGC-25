@@ -45,7 +45,7 @@ end
 
 
 function Obstacle:Draw()
-    if self.image then
+    if self.image and not self.fixture:getUserData().first then
         local img = self.image
         love.graphics.draw(img, self.x, self.y, self.dir, 3, 3, img:getWidth()/2, img:getHeight()/2)
     end

@@ -38,7 +38,7 @@ function highlandsTreeObstacle:New(x, y)
             setmetatable(obj, self)
             obj.image = highlandsTreeImages[math.random(1, #highlandsTreeImages)]   
             obj.dir = math.rad(math.random(1,360))   
-            obj.fixture:setSensor(true)
+            --obj.fixture:setSensor(true)
         end
     end
 

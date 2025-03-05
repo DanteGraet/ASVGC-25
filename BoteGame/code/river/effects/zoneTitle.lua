@@ -28,7 +28,6 @@ function updateZoneTitles(dt)
 end
 
 function drawZoneTitle()
-
     if savedDisplayName then
         love.graphics.setColor(1,1,1,displayTitleAlpha)
         love.graphics.setFont(assets.font.fontBlack64)

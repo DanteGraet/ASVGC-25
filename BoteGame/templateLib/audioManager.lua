@@ -73,8 +73,10 @@ local function ModifyLoopingSound(name, data)
     end
 end
 local function RemoveLoopingSound(name)
-    loopingSounds[name].sound:stop()
-    loopingSounds[name] = nil
+    if loopingSounds[name].sound then 
+        loopingSounds[name].sound:stop()
+        loopingSounds[name] = nil
+    end
 end
 
 

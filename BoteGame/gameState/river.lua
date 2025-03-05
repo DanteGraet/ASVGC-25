@@ -5,14 +5,13 @@ local scale
 local sox
 local soy = 0
 
-local step = true
-local steping = false
-
 local loading
 
 local pauseMenu
 local gameOverMenu
 local settingsTween
+
+local mouseTimer = 0
 
 
 -- deefault values
@@ -69,6 +68,9 @@ end
 
 
 local function load()
+    mouseTimer = 5
+    love.mouse.setVisible(false)
+
     love.physics.setMeter(100)
 
     loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
@@ -112,12 +114,7 @@ local function load()
     }
 
     obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
---[[
-    if musicTracks then
-        for i = 1, #musicTracks do
-            musicTracks[i].track:stop()
-        end
-    end]]
+
 
     music.load()
 
@@ -150,28 +147,34 @@ local function focus(focus)
     end
 end
 
-
+local lightningAlpha
 
 local function update(dt)
+    if mouseTimer < 1 and player.health > 0 then
+        mouseTimer = mouseTimer + dt*gameSpeed
+        if mouseTimer >= 1 then
+            love.mouse.setVisible(false)
+        end
+    end
+
     zones = riverGenerator:GetZone(camera.y, true) 
     
-    step = true
-    if steping then
-        dt = 1/60
-    else   --don't strike lightning if stepping
 
-        local stormIntensity = 0
+    --don't strike lightning if stepping
 
+    local stormIntensity = 0
+
+    if settings.graphics.lightning.value then
         if zones and type(zones[1]) == "table" then --if we are in a storm
 
             local p = riverGenerator:GetPercentageThrough(player.y)
             stormIntensity = (quindoc.runIfFunc(zones[1].stormIntensity,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].stormIntensity,0) or 0)*zones[3] 
-    
+
         elseif zones then --just set the storm amount to what it needs to be
-    
+
             local p = riverGenerator:GetPercentageThrough(player.y)
             stormIntensity = quindoc.runIfFunc(zones.stormIntensity,p) or 0 --current is a GLOBAL VALUE for a reason btw
-    
+
         end    
 
         if not lightningAlpha then lightningAlpha = 0 end
@@ -184,6 +187,7 @@ local function update(dt)
             lightningAlpha = math.max(lightningAlpha-2*dt,0)
         end
     end
+
 
     riverGenerator:Update()
 
@@ -211,7 +215,7 @@ local function update(dt)
 
         -- update the camera and similar variables after the player so it doesn't lag behind slightly
         camera:SetPosition(0, player:GetPosition().y)
-        camera:Update(dt*gs)
+        camera:Update(dt)
 
         riverBorders.up =    (player.winY or player.y) - camera.oy
         riverBorders.down =  (player.winY or player.y) - camera.oy + love.graphics.getHeight()/scale
@@ -359,19 +363,20 @@ local function keyreleased(key)
     end
 
     if input == "pause" then
-        if settingsMenu.isOpen then settingsMenu.isOpen = false
-        elseif player.health > 0 or not player.winTimer then pauseMenu.isOpen = not pauseMenu.isOpen; pauseMenu.hasOpend = true end
-    end
+        if settingsMenu.isOpen then 
+            settingsMenu.isOpen = false
 
-    if key == "k" and DEV then
-        dante.printTable(assets.save.highscore)
-    end
+        elseif player.health > 0 or not player.winTimer then 
+            pauseMenu.isOpen = not pauseMenu.isOpen
+            pauseMenu.hasOpend = true 
 
-    if key == "return" and step then
-        step = false
-
-        if love.keyboard.isDown("lctrl") then
-            steping = not steping
+            if pauseMenu.isOpen then
+                mouseTimer = 0
+                love.mouse.setVisible(true)
+            else
+                mouseTimer = 5
+                love.mouse.setVisible(false)
+            end
         end
     end
 end
@@ -498,7 +503,7 @@ local function draw()
 end
 
 function UpdateHighScore(newScore)
-    print(riverName, player.health)
+
     if assets.save and assets.save.highscore and type(assets.save.highscore) == "table" then
     else
         if assets.save then
@@ -530,6 +535,11 @@ function UpdateHighScore(newScore)
 end
 
 
+local function mousemoved()
+    mouseTimer = 0
+    love.mouse.setVisible(true)
+end
+
 return {
     load = load,
     focus = focus,
@@ -538,6 +548,7 @@ return {
     keyreleased = keyreleased,
     update = update,
     resize = resize,
+    mousemoved = mousemoved,
     draw = draw,
     unload = unload,
 

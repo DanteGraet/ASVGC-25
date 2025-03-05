@@ -89,13 +89,9 @@ function PlayerBoat:Update(dt, inputs)
 
     else
 
-        if not noShake and self.beachTimer > 0 then
-            camera:AddScreenShake(4)
-        end
-
         if self.takenBeachDamage == false then
             self.immunity = 0 --no immunity hahaahahaha
-            self:TakeDamage(2, true)
+            self:TakeDamage(2, false)
             self.takenBeachDamage = true
         end
 
@@ -103,7 +99,7 @@ function PlayerBoat:Update(dt, inputs)
 
         self.shameTimer = self.shameTimer - 0.5*dt
 
-        if self.beachTimer == 0 and self.shameTimer < 0 and player.health > 0 then
+        if self.beachTimer == 0 and self.shameTimer < 0 and self.health > 0 then
             -- the player is beached
             self:moveToCenter()
             self.beachTimer = 1

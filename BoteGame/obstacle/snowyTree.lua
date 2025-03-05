@@ -39,7 +39,7 @@ function snowyTreeObstacle:New(x, y)
             setmetatable(obj, self)
             obj.image = snowyTreeImages[math.random(1, #snowyTreeImages)]  
             obj.dir = math.rad(math.random(1,360))    
-            obj.fixture:setSensor(true)   
+            --obj.fixture:setSensor(true)   
         end
     end
 

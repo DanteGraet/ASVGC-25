@@ -141,7 +141,7 @@ function River:Update()
         self:AddNextCanvas(y)
     end
 
-    if camera.y- camera.oy < self.canvasFillY then
+    if camera.y- camera.oy - 40 < self.canvasFillY then
 
         local currentCanvasNo = #self.canvases
         local currentCanvas = self.canvases[currentCanvasNo]
@@ -192,8 +192,8 @@ function River:AddFakeCanvases()
     -- reset the current canvases
     self.fakeCanvases = {}
 
-    local left = math.floor(riverBorders.left/3) - 2
-    local right = math.floor(riverBorders.right/3) - 2
+    local left = math.floor(riverBorders.left/3) - 45
+    local right = math.floor(riverBorders.right/3) + 45
 
     for i = 1,#self.canvases do
         local canvasToCopy = self.canvases[i]
@@ -207,7 +207,7 @@ function River:AddFakeCanvases()
             leftCanvas.x = left
 
             local rightCanvas = self.canvasGenerator:New()
-            rightCanvas.canvas = love.graphics.newCanvas(xDiff + 8, canvasToCopy.canvas:getHeight())
+            rightCanvas.canvas = love.graphics.newCanvas(xDiff + 4, canvasToCopy.canvas:getHeight())
             rightCanvas.canvas:setFilter("nearest","nearest")
 
             rightCanvas.y = canvasToCopy.y

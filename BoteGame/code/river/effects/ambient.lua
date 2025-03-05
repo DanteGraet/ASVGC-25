@@ -48,12 +48,14 @@ function a.update(dt)
     -- sounds
 
     for name, data in pairs(a.sounds) do
-        if transitionZone then --if we are in a transition
-            data.value = quindoc.runIfFunc(currentZone.audio[name],p)*(1-transitionPercent) + quindoc.runIfFunc(currentZone.audio[name],0)*transitionPercent
-        elseif currentZone.audio and currentZone.audio[name] then --just set the snow amount to what it needs to be
-            data.value = quindoc.runIfFunc(currentZone.audio[name],p) or 100
-        else
-            data.value = 0
+        if currentZone and currentZone.audio then 
+            if transitionZone then --if we are in a transition
+                data.value = quindoc.runIfFunc(currentZone.audio[name],p)*(1-transitionPercent) + quindoc.runIfFunc(currentZone.audio[name],0)*transitionPercent
+            elseif currentZone.audio and currentZone.audio[name] then --just set the snow amount to what it needs to be
+                data.value = quindoc.runIfFunc(currentZone.audio[name],p) or 100
+            else
+                data.value = 0
+            end
         end
 
         if type(data.sound) == "table" then

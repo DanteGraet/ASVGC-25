@@ -165,7 +165,11 @@ function love.mousereleased(x, y, button)
     end
 end
 
-
+function love.mousemoved(x, y, dx, dy, istouch)
+    if game[gameState] and game[gameState].mousemoved then
+        game[gameState].mousemoved(x, y, dx, dy, istouch)
+    end
+end
 
 function love.update(dt)
 
