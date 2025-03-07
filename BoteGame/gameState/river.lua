@@ -187,8 +187,6 @@ local function update(dt)
             lightningAlpha = math.max(lightningAlpha-2*dt,0)
         end
     end
-
-
     riverGenerator:Update()
 
 
@@ -198,20 +196,16 @@ local function update(dt)
 
         local gs = tweens.sineInOut(gameSpeed)
 
-
         particles.updateParticles(dt*gs)
 
         --spawnSnow(dt*gs)
         ambiance.update(dt*gs)
 
-
         -- Update the player first, all other things rely on it basically
         player:Update(dt*gs, inputs)
 
 
-        
         ui:Update(dt*gs)
-
 
         -- update the camera and similar variables after the player so it doesn't lag behind slightly
         camera:SetPosition(0, player:GetPosition().y)
@@ -221,6 +215,7 @@ local function update(dt)
         riverBorders.down =  (player.winY or player.y) - camera.oy + love.graphics.getHeight()/scale
 
         -- update the river after the player so we can generate based on the players position.
+
         river:Update()
 
         obstacleSpawner:Update()
@@ -270,6 +265,7 @@ local function update(dt)
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
             gameOverMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+
         elseif pauseMenu.isOpen then
             local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
             local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
@@ -302,26 +298,8 @@ local function update(dt)
         end
     end
 
-    if steping then
-        local skull = 0
-        while step do
-            if love.event then
-                love.event.pump()
-                for name, a,b,c,d,e,f in love.event.poll() do
-                    if name == "quit" then
-                        if not love.quit or not love.quit() then
-                            return "QUIT"
-                        end
-                    end
-                    love.handlers[name](a,b,c,d,e,f)
-                end
-            end
-        end
-    end
-
 
     if music.manager then music.manager(dt) end
-
 end
 
 
