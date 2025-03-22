@@ -182,6 +182,7 @@ local function update(dt)
             stormIntensity = transition(riverObstacle[currentZoneName].stormIntensity, playerZonePercentage, riverObstacle[nextZoneName].stormIntensity, 0, transitionPercentage),
             current = transition(riverObstacle[currentZoneName].current, playerZonePercentage, riverObstacle[nextZoneName].current, 0, transitionPercentage),
             difficultyFunction = transition(riverObstacle[currentZoneName].difficultyFunction, playerZonePercentage, riverObstacle[nextZoneName].difficultyFunction, 0, transitionPercentage),
+            chainLengthCoefficient = transition(riverObstacle[currentZoneName].chainLengthCoefficient, playerZonePercentage, riverObstacle[nextZoneName].chainLengthCoefficient, 0, transitionPercentage),
         }
     else
         local zoneName = zones.displayName
@@ -189,6 +190,7 @@ local function update(dt)
             stormIntensity = quindoc.runIfFunc(riverObstacle[zoneName].stormIntensity, playerZonePercentage) or 0,
             current = quindoc.runIfFunc(riverObstacle[zoneName].current, playerZonePercentage) or 0,
             difficultyFunction = quindoc.runIfFunc(riverObstacle[zoneName].difficultyFunction, playerZonePercentage) or 0,
+            chainLengthCoefficient = quindoc.runIfFunc(riverObstacle[zoneName].chainLengthCoefficient, playerZonePercentage) or 1.25,
         }
 
     end
