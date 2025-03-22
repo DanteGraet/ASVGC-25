@@ -110,8 +110,8 @@ function PlayerBoat:Update(dt, inputs)
 
     local bt = tweens.sineInOut(self.beachTimer)
 
-    if self.health > 0 and player.y > riverBorders.up - 100 then
-        if -player.y < riverGenerator:GetLegnth() then
+    if self.health > 0 and self.y > riverBorders.up - 100 then
+        if -self.y < riverGenerator:GetLegnth() then
             -- player has not won
 
             if inputs.left and not inputs.right then

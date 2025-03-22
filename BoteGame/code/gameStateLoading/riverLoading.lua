@@ -52,6 +52,8 @@ end
 table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/zone.lua"})
 table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/music.lua", "run"})
 table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/ambiance.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/obstacle.lua", "run"})
+
 
 
 return toLoad

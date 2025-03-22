@@ -1,5 +1,5 @@
 return {
-{
+    {
         zone = "coniferousMountainside",
         subtitle = "-- Another Journey? --",
         displayName = "Coniferous Highlands",

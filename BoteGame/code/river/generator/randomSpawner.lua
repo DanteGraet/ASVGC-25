@@ -14,6 +14,8 @@ function RandomSpawner:New(obsticals)
 end
 
 function RandomSpawner:Update(val)
+    
+
     if val then
         self.lastY = riverBorders.up - 250
         return
@@ -23,12 +25,13 @@ function RandomSpawner:Update(val)
     for y = math.ceil(self.lastY/3)*3, math.ceil((riverBorders.up - 250)/3)*3, -3 do
        
         -- check if we are going to spawn an obtical here
+        --assets.code.river.riverData[riverName].ambiance[zoneNames[1].displayName]
         local zone = riverGenerator:GetZone(y)
-        local chance = quindoc.runIfFunc(zone.difficultyFunction,(riverGenerator:GetPercentageThrough(y)))
+        local obsVars = riverFileDirectory.obstacle[zone.displayName]
+
+        local chance = quindoc.runIfFunc(obsVars.difficultyFunction,(riverGenerator:GetPercentageThrough(y)))
 
         if chance >= math.random(0, 1000)/1000 then
-            -- spawwn the obtical
-
             local obsticalIndexList = {}
 
             -- calculate the weight of each obstical

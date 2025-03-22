@@ -40,7 +40,6 @@ function RiverCanvas:New(y, fill)
 
     end
 
-
     return obj  
 end
 

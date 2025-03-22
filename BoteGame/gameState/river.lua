@@ -63,15 +63,21 @@ local function unload()
             musicTracks[i].track:stop()
         end
     end
+
     musicTracks = nil --this MUST be nil and not empty table!! for now.
+
+    love.thread.getChannel("background_closeThread"):push(true)
+
 end
 
 
 local function load()
+
+    love.physics.setMeter(100)
+
     mouseTimer = 5
     love.mouse.setVisible(false)
 
-    love.physics.setMeter(100)
 
     loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
     {
@@ -79,6 +85,9 @@ local function load()
         {"image/titleScreen/parallax/2.png", .1},
         {"image/titleScreen/parallax/3.png", .2},
     }, true)
+
+    riverFileDirectory = assets.code.river.riverData[riverName]
+
 
     scrapImages = {}
     for i = 1, 5 do
@@ -97,14 +106,15 @@ local function load()
     ui = assets.code.player.playerUi()
     camera = assets.code.camera():New(0, 0, 960, 900)
     river = assets.code.river.river():New()
-    riverGenerator = assets.code.river.generator.riverGenerator():New(assets.code.river.riverData[riverName].zone())
+    riverGenerator = assets.code.river.generator.riverGenerator():New(riverName)
     obstacles = {}
     local zoneObsitcalList = {}
-    for i = 1,#riverGenerator.zones do
-        local zone = riverGenerator.zones[i]
-        zoneObsitcalList[zone.zone] = assets.code.river.zone[zone.zone].obsticals()
-        dante.printTable(zoneObsitcalList[zone.zone])
+
+    local zones = riverFileDirectory.zone()
+    for key, z in pairs(zones) do
+        zoneObsitcalList[z.zone] = assets.code.river.zone[z.zone].obsticals()
     end
+
 
     riverBorders = {
         left = -960,
@@ -118,20 +128,15 @@ local function load()
 
     music.load()
 
-    if keybindSaveLocation then
-        inputManager = assets.code.inputManager():New( keybindSaveLocation )
-    else
-        print("Loading default keybinds")
-        inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
 
-    end
+    inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
+
 
     resize()
 
     particles.loadParticles()
 
     gameSpeed = 0
-    --riverGenerator:NextSegment()
 end
 
 function GetRiverScale()
@@ -157,7 +162,36 @@ local function update(dt)
         end
     end
 
-    zones = riverGenerator:GetZone(camera.y, true) 
+    zones = riverGenerator:GetZone(camera.y, true)
+    local playerZonePercentage = riverGenerator:GetPercentageThrough(player.y)
+
+    local riverAmbiance = riverFileDirectory.ambiance
+    local riverObstacle = riverFileDirectory.obstacle
+
+    local function transition(data1, param1, data2, param2, percentage)
+        local a = (quindoc.runIfFunc(data1, param1 or 0) or 0) * (1 - percentage)
+        local b = (quindoc.runIfFunc(data2, param2 or 0) or 0) * percentage
+        return a + b
+    end
+
+    if zones and type(zones[1]) == "table" then
+        local currentZoneName =         zones[1].displayName
+        local nextZoneName =            zones[2].displayName
+        local transitionPercentage =    zones[3]
+        currentPlayerPos = {
+            stormIntensity = transition(riverObstacle[currentZoneName].stormIntensity, playerZonePercentage, riverObstacle[nextZoneName].stormIntensity, 0, transitionPercentage),
+            current = transition(riverObstacle[currentZoneName].current, playerZonePercentage, riverObstacle[nextZoneName].current, 0, transitionPercentage),
+            difficultyFunction = transition(riverObstacle[currentZoneName].difficultyFunction, playerZonePercentage, riverObstacle[nextZoneName].difficultyFunction, 0, transitionPercentage),
+        }
+    else
+        local zoneName = zones.displayName
+        currentPlayerPos = {
+            stormIntensity = quindoc.runIfFunc(riverObstacle[zoneName].stormIntensity, playerZonePercentage) or 0,
+            current = quindoc.runIfFunc(riverObstacle[zoneName].current, playerZonePercentage) or 0,
+            difficultyFunction = quindoc.runIfFunc(riverObstacle[zoneName].difficultyFunction, playerZonePercentage) or 0,
+        }
+
+    end
     
 
     --don't strike lightning if stepping
@@ -165,7 +199,7 @@ local function update(dt)
     local stormIntensity = 0
 
     if settings.graphics.lightning.value then
-        if zones and type(zones[1]) == "table" then --if we are in a storm
+        --[[if zones and type(zones[1]) == "table" then --if we are in a storm
 
             local p = riverGenerator:GetPercentageThrough(player.y)
             stormIntensity = (quindoc.runIfFunc(zones[1].stormIntensity,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].stormIntensity,0) or 0)*zones[3] 
@@ -175,11 +209,11 @@ local function update(dt)
             local p = riverGenerator:GetPercentageThrough(player.y)
             stormIntensity = quindoc.runIfFunc(zones.stormIntensity,p) or 0 --current is a GLOBAL VALUE for a reason btw
 
-        end    
+        end    ]]
 
         if not lightningAlpha then lightningAlpha = 0 end
         --at MAXIMUM storm intensity, lighting will strike on average once per 10 seconds
-        if stormIntensity and stormIntensity > 500 and math.random(1,600/(stormIntensity/1000) * (1/60/dt)) == 1 then
+        if currentPlayerPos.stormIntensity and currentPlayerPos.stormIntensity > 500 and math.random(1,600/(currentPlayerPos.stormIntensity/1000) * (1/60/dt)) == 1 then
             local strikeIntensity = math.random(2,6)/10
             lightningAlpha = strikeIntensity
             --TODO: Play lightning sound here, based on intensity

@@ -7,24 +7,41 @@ local nextSegment_zone = love.thread.getChannel("nextSegment_zone")
 local nextSegment_return = love.thread.getChannel("nextSegment_return")
 local nextSegment_rSeed = love.thread.getChannel("nextSegment_rSeed")
 
+-- Load channels
+local generatorThread_playerY = love.thread.getChannel("generator_playerY")
+local generatorThread_riverData = love.thread.getChannel("generator_riverData")
+local generatorThread_scale = love.thread.getChannel("generatorThread_scale")
+
+local generatorThread_backgroundImageData = love.thread.getChannel("generatorThread_backgroundImageData")
+local generatorThread_riverSegments = love.thread.getChannel("generatorThread_riverSegments")
+
+local generatorThread_minZones = love.thread.getChannel("generatorThread_minZones")
 
 
-function RiverGenerator:New(riverData)
+function RiverGenerator:New(name)
     local obj = setmetatable({}, RiverGenerator)
 
-    if riverData[1] then
+    local RD = assets.code.river.riverData[name].zone()
+    if RD[1] then
 
-        obj.zones = riverData
+        obj.zones = RD
     else
 
-        obj.infinite = true
+        for key, value in pairs(RD) do
+            if value.isFirst then
+                table.insert(self.zones, self:GenerateZoneData(value))
+                break
+            end
+        end
+
+        --[[obj.infinite = true
         obj.data = riverData
 
         obj.zones = {}
 
 
 
-        obj:AddNextZones(10000)
+        obj:AddNextZones(10000)]]
     end
     obj.currentZone = 1
     obj.zoneDist = 0
@@ -36,6 +53,21 @@ function RiverGenerator:New(riverData)
     -- load these channels
 
     obj:NextSegment()
+
+    obj.generatorThread = love.thread.newThread("code/river/generator/generatorThread.lua")
+    generatorThread_playerY:push(0)
+    print("-----------------------------------")
+    --dante.printTable(riverData)
+    generatorThread_riverData:push(name)
+
+    local scale = love.graphics.getWidth()/1920
+
+    if love.graphics.getHeight()/1080 < scale then
+        scale = love.graphics.getHeight()/1080
+    end
+    generatorThread_scale:push(scale)
+
+    obj.generatorThread:start()
 
     return obj
 end
@@ -140,32 +172,31 @@ function RiverGenerator:GetLegnth()
 end
 
 function RiverGenerator:GetZone(y, extra)
-    if not y then
-        return self.zones[self.currentZone]
-    else
-        local distRemaining = math.abs(y)
-        for i = 1,#self.zones do
-            local zone = self.zones[i]
+    local y = y or player.y
+    self.zones = generatorThread_minZones:peek() or self.zones
 
-            if extra then
+    local distRemaining = math.abs(y)
+    for i = 1,#self.zones do
+        local zone = self.zones[i]
 
-                distRemaining = distRemaining - zone.distance
+        if extra then
 
-                if distRemaining < 0 then
-                    return zone
-                elseif distRemaining < zone.transition then
-                    return {zone, self.zones[i+1] or zone, distRemaining/zone.transition}
-                end
-            else
-                distRemaining = distRemaining - zone.distance - zone.transition
+            distRemaining = distRemaining - zone.distance
 
-                if distRemaining < 0 then
-                    return zone
-                end
+            if distRemaining < 0 then
+                return zone
+            elseif distRemaining < zone.transition then
+                return {zone, self.zones[i+1] or zone, distRemaining/zone.transition}
             end
-            
+        else
+            distRemaining = distRemaining - zone.distance - zone.transition
+
+            if distRemaining < 0 then
+                return zone
+            end
         end
     end
+    
     -- return the last zone
     return self.zones[#self.zones]
 end
@@ -186,7 +217,15 @@ function RiverGenerator:GetPercentageThrough(y)
 end
 
 function RiverGenerator:Update()
-    if self.infinite then
+    generatorThread_playerY:clear()
+    generatorThread_playerY:push(-player.y)
+
+    local newPoints = generatorThread_riverSegments:pop()
+    if newPoints then
+        river:MergePoints(newPoints)
+    end
+
+    --[[if self.infinite then
         self:AddNextZones(-player.y + 10000)
     end
 
@@ -201,7 +240,7 @@ function RiverGenerator:Update()
 
     else
 
-    end
+    end]]
 end
 
 function RiverGenerator:NextSegment()

@@ -297,7 +297,7 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
     local angle, speed
 
     local p = riverGenerator:GetPercentageThrough(player.y)
-   
+    
 
     if type(zones[1]) == "table" then --if we are in a transition
 
@@ -309,7 +309,7 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
 
     end    
 
-    speed = current
+    speed = currentPlayerPos.current
 
     if self.points and #self.points > 0 then
         for channel = 1,#self.points do

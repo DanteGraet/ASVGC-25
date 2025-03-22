@@ -1,0 +1,294 @@
+local love = require("love")
+ love.math = require("love.math")
+local math = require("math")
+local table = require("table")
+local string = require("string")
+
+require("templateLib/dante")
+
+local threadRunning = true
+local playerY = love.thread.getChannel("generator_playerY"):pop() or 0
+
+
+local lastPoints = nil
+
+
+--[[assets.code.river.riverData[riverName].zone()]]
+local riverName = love.thread.getChannel("generator_riverData"):pop()
+local RD = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.lua")()
+local zones, infinite, data = nil, nil, nil
+local zoneData = {}
+
+local function GetZone(y, extra)
+    local y = y or playerY
+
+    local distRemaining = math.abs(y)
+    for i = 1,#zones do
+        local zone = zones[i]
+
+        if extra then
+
+            distRemaining = distRemaining - zone.distance
+
+            if distRemaining < 0 then
+                return zone
+            elseif distRemaining < zone.transition then
+                return {zone, zones[i+1] or zone, distRemaining/zone.transition}
+            end
+        else
+            distRemaining = distRemaining - zone.distance - zone.transition
+
+            if distRemaining < 0 then
+                return zone
+            end
+        end
+    end
+
+    -- return the last zone
+    return zones[#zones]
+end
+
+local function generateLastPoints(zoneName)
+    local zone = zoneData[zoneName].path 
+    local lastPoints = {}
+
+    local size = math.random(zone.minWidth, zone.maxWidth)
+
+    local scale = love.thread.getChannel("generatorThread_scale"):peek()
+
+    table.insert(lastPoints, {})
+
+    table.insert(lastPoints[1], {})
+
+    lastPoints[1][1].x = -size/2
+    lastPoints[1][1].y = (1080/scale)
+
+    table.insert(lastPoints[1], {})
+
+    lastPoints[1][2].x = size/2
+    lastPoints[1][2].y = (1080/scale)
+
+    return lastPoints
+end
+
+local function getLegnth()
+    local l = 0
+    if zones then
+        for i = 1,#zones do
+            local zone = zones[i]
+            l = l + zone.distance + zone.transition
+        end
+    end
+
+    return l
+end
+
+local function addNextZones(y)
+    while y > getLegnth() do
+        if zones and #zones > 0 then
+            local allOptions = zones[#zones].nextZone
+
+            local validOptions = {}
+            local weight = 0
+
+            for i = 1,#allOptions do
+                if type(allOptions[i]) == "string" then
+                    weight = weight + 1
+                    table.insert(validOptions, allOptions[i])
+                else
+                    if allOptions[i].validityFunction and allOptions[i].validityFunction() then
+                        weight = weight + (allOptions[i].weight or 1)
+                        table.insert(validOptions, allOptions[i])
+                    else
+                        weight = weight + (allOptions[i].weight or 1)
+                        table.insert(validOptions, allOptions[i])
+                    end
+                end
+            end
+
+            local no = math.random(1, weight)
+
+            for i = 1,#validOptions do
+                if type(validOptions[i]) == "string" then
+                    no = no -1
+
+                    if no < 1 then
+                        table.insert(zones, self:GenerateZoneData(data[validOptions[i]]))
+                        break
+                    end
+                else
+                    no = no - validOptions[i].weight or 1
+
+                    if no < validOptions[i].weight or 1 then
+                        table.insert(zones, self:GenerateZoneData(data[validOptions[i]].name))
+                        break
+                    end
+                end
+            end
+            
+        else
+            zones = {}
+            local foundFirst = false 
+            -- add the first zone
+            for key, value in pairs(data) do
+                if value.isFirst then
+                    table.insert(zones, self:GenerateZoneData(value))
+                    foundFirst = true
+                    break
+                end
+            end
+
+            if not foundFirst then
+                error("no zone with 'isFirst' flag :(")
+            end
+        end
+    end
+end
+
+local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
+    local zone = zoneData[zone.zone].path
+    local localLastPoints = lastPoints or generateLastPoints(GetZone(playerY).zone)
+    
+    -- the points we generate
+    local newPoints = {}
+
+    --loop throigh each channel
+    for i = 1,#localLastPoints do
+        print("stuffs")
+        -- generate the important stuff for each segment.
+        -- segment legnth is actually negative, the river goes up
+        local segLegnth = -math.random(zone.segLenMax, zone.segLenMin)
+
+        -- How wide the river is at certain points point
+        local midWidth = math.random(zone.minWidth, zone.maxWidth)      -- dont knoww if im gonna use this value yet
+        local endWidth = math.random(zone.minWidth, zone.maxWidth)
+
+        -- how far throught the curve the actual mid point should be (height as percentge)
+        local curveMidYPercentage = math.random(30, 70)/100
+
+        -- the end x of the segment
+        -- this is based in 1920x1080 screen size (default that we scale around)
+        local endX = math.random( -(1900 - endWidth)/2, (1900 - endWidth)/2 )
+        --where it starts (used for mid thingss um yea)
+        local startX = (localLastPoints[i][1].x + localLastPoints[i][2].x)/2
+
+        -- save the last positions so i can acsess then quickly
+        local lastLeftX = localLastPoints[i][1].x
+        local lastLeftY = localLastPoints[i][1].y
+
+        local lastRightX = localLastPoints[i][2].x
+        local lastRightY = localLastPoints[i][2].y
+
+        -- generate the end positions for each leftCurve
+        local endLeftX = endX - endWidth/2
+        local endLeftY = lastLeftY + segLegnth
+
+        local endRightX = endX + endWidth/2
+        local endRightY = endLeftY          -- the final y positions are the same so cant' ever get desynced like at all
+
+        -- generate the mid points of each curve
+        --local midLeftX = (startX - endX - midWidth)/2
+        local midLeftY = lastLeftY + segLegnth*curveMidYPercentage
+
+        --local midRightX = (startX - endX + midWidth)/2
+        local midRightY = lastRightY + segLegnth*curveMidYPercentage
+
+        -- adjust the middle sections to reduce the effects of squihsing
+            -- imagine the while river is rotated (traveling right) so we flip the x and y axis in atan2
+        local angle = math.atan2(startX - endX, -segLegnth)
+            -- trun the angle into a percentage (0-100)
+        local anglePercentage = angle/(math.pi/2)
+            -- finally change the y values
+        midLeftY = midLeftY + midWidth*anglePercentage
+        midRightY = midRightY - midWidth*anglePercentage
+
+
+        local leftCurve = love.math.newBezierCurve(
+            lastLeftX, lastLeftY,
+            --lastLeftX, lastLeftY - 0.1, -- make sure it is heading in the right direction
+
+            lastLeftX, midLeftY,
+            endLeftX, midLeftY,
+
+            --endLeftX, endLeftY + 0.1,
+            endLeftX, endLeftY
+        )
+        local rightCurve = love.math.newBezierCurve(
+            lastRightX, lastRightY,
+            --lastRightX, lastRightY - 0.1, -- make sure it is heading in the right direction
+
+            lastRightX, midRightY,
+            endRightX, midRightY,
+
+            --endRightX, endRightY + 0.1,
+            endRightX, endRightY
+        )
+
+        table.insert(newPoints, 
+            {
+                leftCurve:render(4),
+                rightCurve:render(4),
+            }
+        )
+    end
+
+    lastPoints = {}
+    for channel = 1,#newPoints do
+        table.insert(lastPoints, {})
+        for side = 1,#newPoints[channel] do
+            local s = newPoints[channel][side]
+            --add the sides
+            table.insert(lastPoints[channel], {})
+
+            --error("thread" .. dante.dataToString(lastPoints) .. s)
+
+            -- s is a table of {x, y, x, y, ...} values
+            lastPoints[channel][side].x = s[#s-1]
+            lastPoints[channel][side].y = s[#s]
+        end
+    end
+
+    return newPoints
+end
+
+--Get the riverData
+for key, value in pairs(RD) do
+    zoneData[value.zone] = {
+        path = love.filesystem.load("code/river/zone/" .. value.zone .. "/pathGeneration.lua")(),
+        background = love.filesystem.load("code/river/zone/" .. value.zone .. "/backgroundGeneration.lua")(),
+    }
+end
+
+if RD[1] then
+    zones = RD
+else
+    infinite = true
+    data = RD
+    zones = {}
+    addNextZones(10000)
+end
+love.thread.getChannel("generatorThread_minZones"):clear()
+love.thread.getChannel("generatorThread_minZones"):push(zones)
+
+local currentZone = 1
+RD = nil
+
+
+while threadRunning do
+    playerY = love.thread.getChannel("generator_playerY"):pop() or playerY
+
+    addNextZones(playerY + 10000)
+    -- Generate Background images
+
+    -- Generate river segments
+    if not lastPoints or lastPoints[1][#lastPoints[1]].y > -(playerY+50 + 5000) then
+        local p
+        if lastPoints then
+            p = nextSegment(GetZone(lastPoints[1][#lastPoints[1]].y))
+        else
+            p = nextSegment(GetZone(1))
+        end
+        print("pushing River Segment", lastPoints[1][#lastPoints[1]].y, -(playerY+50 + 5000))
+        love.thread.getChannel("generatorThread_riverSegments"):push(p)
+    end
+end
