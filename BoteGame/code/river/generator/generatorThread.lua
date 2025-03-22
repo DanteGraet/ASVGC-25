@@ -276,8 +276,9 @@ RD = nil
 
 while threadRunning do
     playerY = love.thread.getChannel("generator_playerY"):pop() or playerY
-
-    addNextZones(playerY + 10000)
+    if infinite then
+        addNextZones(playerY + 10000)
+    end
     -- Generate Background images
 
     -- Generate river segments

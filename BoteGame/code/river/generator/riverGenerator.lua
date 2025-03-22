@@ -245,7 +245,7 @@ end
 
 function RiverGenerator:NextSegment()
 
-    if self.generatingSegment == false then
+    --[[if self.generatingSegment == false then
         -- run if we are not already
         self.generatingSegment = true
 
@@ -281,7 +281,7 @@ function RiverGenerator:NextSegment()
     end
 
 
-    return nil
+    return nil]]
 end
 
 return RiverGenerator
