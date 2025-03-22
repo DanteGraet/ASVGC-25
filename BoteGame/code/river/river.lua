@@ -88,15 +88,11 @@ function River:GetLastPoints()
 end
 
 function River:checkNextSegment()
+    --!REMOVE Later
     -- check if we need to generate the next segment
     if #self.points > 0 then
         if self.points[1][1][#self.points[1][1]].y > (player.winY or player.y)+50 - 5000 then
 
-            --River
-            if self.callNextSegment then
-                riverGenerator:NextSegment()
-                self.callNextSegment = false
-            end
         else
             if not self.farAhead then
 
