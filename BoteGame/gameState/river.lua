@@ -51,8 +51,6 @@ local function resize()
         width = love.graphics.getWidth() / scale,
         height= love.graphics.getHeight() / scale,
     }
-
-    river:AddFakeCanvases()
 end
 
 
@@ -106,7 +104,9 @@ local function load()
     ui = assets.code.player.playerUi()
     camera = assets.code.camera():New(0, 0, 960, 900)
     river = assets.code.river.river():New()
+
     riverGenerator = assets.code.river.generator.riverGenerator():New(riverName)
+
     obstacles = {}
     local zoneObsitcalList = {}
 

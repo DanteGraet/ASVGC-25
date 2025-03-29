@@ -341,11 +341,11 @@ end
 
 
 local layersToGenerate = 25
-local function generateImageData(startY)
+local function generateImageData(startY, layers)
     local data = {
-        y = startY + layersToGenerate*3,
+        y = startY + (layers or layersToGenerate)*3,
         width = math.ceil(screenWidth/6)*2,
-        height = layersToGenerate + 3,
+        height = (layers or layersToGenerate) + 3,
         pixles = {},
     }
 

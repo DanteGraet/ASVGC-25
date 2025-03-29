@@ -46,6 +46,9 @@ function RiverGenerator:New(name)
 
     obj.generatorThread:start()
 
+    local startingPoints = generatorThread_riverSegments:demand()
+    river:MergePoints(startingPoints)
+
     return obj
 end
 
