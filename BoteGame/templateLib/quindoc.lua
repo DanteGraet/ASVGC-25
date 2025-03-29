@@ -1,6 +1,8 @@
 quindoc = {}
 drawDebugRuler = false
-debug = love.graphics.newFont(16)
+if love.graphics then
+    debug = love.graphics.newFont(16)
+end
 
 --Some stuff that i wished the math library had, and also some lazy tools.
 

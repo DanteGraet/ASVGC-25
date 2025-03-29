@@ -15,6 +15,8 @@ function River:New()
 
     obj.fakeCanvases = {}
 
+    obj.backgroundImages = {}
+
     obj.farAhead = false
 
     obj.movedPlayer = false
@@ -344,6 +346,22 @@ function River:FindHighAndLowPoints(channel, side, yPos)
     return self.points[channel][1][1], self.points[channel][1][2]
 end
 
+function River:addBackgorundFromData(imageData)
+    local tempImage = love.image.newImageData(imageData.width, imageData.height+1)
+
+    for y = 1,#imageData.pixles do
+        for x = 1,#imageData.pixles[y] do
+            local c = imageData.pixles[y][x]
+
+            tempImage:setPixel(x-1, y-1, c[1], c[2], c[3], 1)
+        end
+    end
+    local finalImage = love.graphics.newImage(tempImage)
+    finalImage:setFilter("nearest", "nearest")
+
+    table.insert(self.backgroundImages, {y = -imageData.y, image = finalImage, x = -(imageData.width/2)*pixlesPerPixle})
+end
+
 function River:Draw(scale)
     --love.graphics.setCanvas()
 
@@ -353,12 +371,17 @@ function River:Draw(scale)
     love.graphics.setColor(1,1,1)
     for i = 1,#self.canvases do
 
-        love.graphics.draw(self.canvases[i].canvas, self.canvases[i].x*pixlesPerPixle, self.canvases[i].y, 0, pixlesPerPixle, pixlesPerPixle)
+        --love.graphics.draw(self.canvases[i].canvas, self.canvases[i].x*pixlesPerPixle, self.canvases[i].y, 0, pixlesPerPixle, pixlesPerPixle)
 
     end
 
     for i = 1,#self.fakeCanvases do
-        love.graphics.draw(self.fakeCanvases[i].canvas, self.fakeCanvases[i].x*pixlesPerPixle, self.fakeCanvases[i].y, 0, pixlesPerPixle, pixlesPerPixle)
+        --love.graphics.draw(self.fakeCanvases[i].canvas, self.fakeCanvases[i].x*pixlesPerPixle, self.fakeCanvases[i].y, 0, pixlesPerPixle, pixlesPerPixle)
+    end
+
+    for i = 1,#self.backgroundImages do
+        local image = self.backgroundImages[i]
+        love.graphics.draw(image.image, image.x, image.y, 0, 3, 3)
     end
 
     love.graphics.pop()

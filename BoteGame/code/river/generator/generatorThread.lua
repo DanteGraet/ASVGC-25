@@ -4,7 +4,10 @@ local math = require("math")
 local table = require("table")
 local string = require("string")
 
+require("templateLib/quindoc")
 require("templateLib/dante")
+
+globals = {}
 
 local threadRunning = true
 local playerY = love.thread.getChannel("generator_playerY"):pop() or 0
@@ -12,17 +15,68 @@ local playerY = love.thread.getChannel("generator_playerY"):pop() or 0
 
 local lastPoints = nil
 
-
 --[[assets.code.river.riverData[riverName].zone()]]
 local riverName = love.thread.getChannel("generator_riverData"):pop()
 local screenWidth = love.thread.getChannel("generatorThread_screenWidthlove"):pop()
 local RD = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.lua")()
-local zones, infinite, data = nil, nil, nil
+local infinite, data = nil, nil
 local zoneData = {}
 
 local backgroundY = 0
 
 local tempRiver = {}
+
+--Load these first
+
+-- functions for generating the background
+local function FindHighAndLowPoints(channel, side, yPos)
+    local high, low
+
+    for point = 1,#tempRiver[channel][side] do
+        if tempRiver[channel][side][point].y < yPos then
+            low = tempRiver[channel][side][point]
+            high = tempRiver[channel][side][point-1] or tempRiver[channel][side][point]
+            return high, low
+        end
+    end
+
+    --just guess at this point
+    return tempRiver[channel][1][1], tempRiver[channel][1][2]
+end
+
+function getDistToEdge(x, y)    -- global so we can acsess in generating colours scripts
+    if tempRiver and #tempRiver > 0 then
+        for channel = 1,#tempRiver do
+            local leftHight, leftLow = FindHighAndLowPoints(channel, 1, y)
+            local rightHight, rightLow = FindHighAndLowPoints(channel, 2, y)
+
+            local leftPercentage = (y - leftLow.y)/(leftHight.y - leftLow.y)
+            local rightPercentage = (y - rightLow.y)/(rightHight.y - rightLow.y)
+
+            local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+            local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
+
+
+            return math.max(leftX - x, (rightX - x)*-1)
+
+        end
+    end
+end
+
+function GetPercentageThrough(y)
+    local distRemaining = math.abs(y)
+    for i = 1,zones do
+        local zone = zones[i]
+
+        if distRemaining <= zone.distance + zone.transition then
+            return distRemaining / (zone.distance + zone.transition)
+        end
+
+        distRemaining = distRemaining - zone.distance - zone.transition
+        
+    end
+    return 1
+end
 
 
 
@@ -162,7 +216,6 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
 
     --loop throigh each channel
     for i = 1,#localLastPoints do
-        print("stuffs")
         -- generate the important stuff for each segment.
         -- segment legnth is actually negative, the river goes up
         local segLegnth = -math.random(zone.segLenMax, zone.segLenMin)
@@ -282,32 +335,26 @@ local function mergePoints(newPoints)
     end
 end
 
--- functions for generating the background
-local function FindHighAndLowPoints(channel, side, yPos)
-    local high, low
 
-    for point = 1,#self.points[channel][side] do
-        if self.points[channel][side][point].y < yPos then
-            low = self.points[channel][side][point]
-            high = self.points[channel][side][point-1] or self.points[channel][side][point]
-            return high, low
-        end
-    end
 
-    --just guess at this point
-    return self.points[channel][1][1], self.points[channel][1][2]
-end
 
-local layersToGenerate = 10
+
+
+local layersToGenerate = 25
 local function generateImageData(startY)
     local data = {
         y = startY + layersToGenerate*3,
         width = math.ceil(screenWidth/6)*2,
-        height = layersToGenerate,
+        height = layersToGenerate + 3,
         pixles = {},
     }
 
-    for y = math.floor(startY/3), math.floor(startY/3) + data.height + 3 do
+    local top = startY + data.height*3
+    for y = math.floor(startY/3)+1, math.floor(startY/3) + data.height do
+        local relativeY = y-(math.floor(startY/3)+1)
+        data.pixles[relativeY] = {}
+
+
         local zone = GetZone(y*3, true)
         local zone2
         local chance
@@ -318,19 +365,19 @@ local function generateImageData(startY)
             zone = zone[1]
         end
 
-        for x = -data.width/2, data.width/2 do
+        for x = -data.width/2 + 1, data.width/2 do
             local colour
             local num = chance or -1
     
             --if zone2 and math.random(0, 100)/100 < chance then
             if zone2 and love.math.noise((x)*3/250, y*2/250) < chance then
-                colour = assets.code.river.zone[zone2.zone].GetColourAt(x*3, y*2)
+                colour = zoneData[zone2.zone].background(x*3, -top+relativeY*3)
     
             else
-                colour = assets.code.river.zone[zone.zone].GetColourAt(x*3, y*2)
+                colour = zoneData[zone.zone].background(x*3, -top+relativeY*3)
             end
 
-            table.insert(data.pixles, colour)
+            table.insert(data.pixles[relativeY], colour)
         end
     end
     backgroundY = backgroundY + layersToGenerate*3
@@ -338,24 +385,7 @@ local function generateImageData(startY)
     love.thread.getChannel("generatorThread_backgroundImageData"):push(data)
 end
 
-function getDistToEdge(x, y)    -- global so we can acsess in generating colours scripts
-    if self.points and #self.points > 0 then
-        for channel = 1,#self.points do
-            local leftHight, leftLow = FindHighAndLowPoints(channel, 1, y)
-            local rightHight, rightLow = FindHighAndLowPoints(channel, 2, y)
 
-            local leftPercentage = (y - leftLow.y)/(leftHight.y - leftLow.y)
-            local rightPercentage = (y - rightLow.y)/(rightHight.y - rightLow.y)
-
-            local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
-            local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
-
-
-            return math.max(leftX - x, (rightX - x)*-1)
-
-        end
-    end
-end
 
 --Get the riverData
 for key, value in pairs(RD) do
@@ -385,7 +415,7 @@ while threadRunning do
     if infinite then
         addNextZones(playerY + 10000)
     end
-    -- Generate Background images
+    
 
     -- Generate river segments
     if not lastPoints or lastPoints[1][#lastPoints[1]].y > -(playerY+50 + 5000) then
@@ -397,5 +427,28 @@ while threadRunning do
         end
         love.thread.getChannel("generatorThread_riverSegments"):push(p)
         mergePoints(p)
+    end
+
+    -- Generate Background images
+
+    if playerY + 1000 > backgroundY then
+        generateImageData(backgroundY)
+    end
+
+    --remove un-nessesary river points
+    for channel = 1,#tempRiver do
+        --loop though each side
+        for side = 1,#tempRiver[channel] do
+            for i = 1,#tempRiver[channel][side] do
+                local point = tempRiver[channel][side][2]
+
+                if point and -point.y < backgroundY then
+                    table.remove(tempRiver[channel][side], 1)
+                else
+                    -- no longer check this side of this channel
+                    break
+                end
+            end
+        end
     end
 end

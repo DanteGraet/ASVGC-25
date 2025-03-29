@@ -139,6 +139,11 @@ function RiverGenerator:Update()
     if newPoints then
         river:MergePoints(newPoints)
     end
+
+    local backgroundData = generatorThread_backgroundImageData:pop()
+    if backgroundData then
+        river:addBackgorundFromData(backgroundData)
+    end
 end
 
 return RiverGenerator
