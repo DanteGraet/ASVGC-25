@@ -11,6 +11,8 @@ local generatorThread_riverSegments = love.thread.getChannel("generatorThread_ri
 
 local generatorThread_minZones = love.thread.getChannel("generatorThread_minZones")
 
+local generatorThread_screenWidth = love.thread.getChannel("generatorThread_screenWidthlove")
+generatorThread_screenWidth:push((riverBorders.right + 15)*2)
 
 function RiverGenerator:New(name)
     local obj = setmetatable({}, RiverGenerator)

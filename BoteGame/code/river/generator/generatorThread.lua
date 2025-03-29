@@ -1,5 +1,5 @@
 local love = require("love")
- love.math = require("love.math")
+love.math = require("love.math")
 local math = require("math")
 local table = require("table")
 local string = require("string")
@@ -15,10 +15,18 @@ local lastPoints = nil
 
 --[[assets.code.river.riverData[riverName].zone()]]
 local riverName = love.thread.getChannel("generator_riverData"):pop()
+local screenWidth = love.thread.getChannel("generatorThread_screenWidthlove"):pop()
 local RD = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.lua")()
 local zones, infinite, data = nil, nil, nil
 local zoneData = {}
 
+local backgroundY = 0
+
+local tempRiver = {}
+
+
+
+-- functions for river generating
 local function GetZone(y, extra)
     local y = y or playerY
 
@@ -251,6 +259,104 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
     return newPoints
 end
 
+local function mergePoints(newPoints)
+    for channel = 1,#newPoints do
+        if not tempRiver[channel] then
+            tempRiver[channel] = {}
+        end
+
+        for side = 1,#newPoints[channel] do
+
+            if not tempRiver[channel][side] then
+                tempRiver[channel][side] = {}
+            end
+
+            for point = 1,#newPoints[channel][side], 2 do
+                local data = {
+                    x = newPoints[channel][side][point],
+                    y = newPoints[channel][side][point + 1],
+                }   
+                table.insert(tempRiver[channel][side], data)
+            end
+        end
+    end
+end
+
+-- functions for generating the background
+local function FindHighAndLowPoints(channel, side, yPos)
+    local high, low
+
+    for point = 1,#self.points[channel][side] do
+        if self.points[channel][side][point].y < yPos then
+            low = self.points[channel][side][point]
+            high = self.points[channel][side][point-1] or self.points[channel][side][point]
+            return high, low
+        end
+    end
+
+    --just guess at this point
+    return self.points[channel][1][1], self.points[channel][1][2]
+end
+
+local layersToGenerate = 10
+local function generateImageData(startY)
+    local data = {
+        y = startY + layersToGenerate*3,
+        width = math.ceil(screenWidth/6)*2,
+        height = layersToGenerate,
+        pixles = {},
+    }
+
+    for y = math.floor(startY/3), math.floor(startY/3) + data.height + 3 do
+        local zone = GetZone(y*3, true)
+        local zone2
+        local chance
+
+        if zone[1] and type(zone[1]) == "table" then
+            zone2 = zone[2]
+            chance = zone[3]
+            zone = zone[1]
+        end
+
+        for x = -data.width/2, data.width/2 do
+            local colour
+            local num = chance or -1
+    
+            --if zone2 and math.random(0, 100)/100 < chance then
+            if zone2 and love.math.noise((x)*3/250, y*2/250) < chance then
+                colour = assets.code.river.zone[zone2.zone].GetColourAt(x*3, y*2)
+    
+            else
+                colour = assets.code.river.zone[zone.zone].GetColourAt(x*3, y*2)
+            end
+
+            table.insert(data.pixles, colour)
+        end
+    end
+    backgroundY = backgroundY + layersToGenerate*3
+
+    love.thread.getChannel("generatorThread_backgroundImageData"):push(data)
+end
+
+function getDistToEdge(x, y)    -- global so we can acsess in generating colours scripts
+    if self.points and #self.points > 0 then
+        for channel = 1,#self.points do
+            local leftHight, leftLow = FindHighAndLowPoints(channel, 1, y)
+            local rightHight, rightLow = FindHighAndLowPoints(channel, 2, y)
+
+            local leftPercentage = (y - leftLow.y)/(leftHight.y - leftLow.y)
+            local rightPercentage = (y - rightLow.y)/(rightHight.y - rightLow.y)
+
+            local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+            local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
+
+
+            return math.max(leftX - x, (rightX - x)*-1)
+
+        end
+    end
+end
+
 --Get the riverData
 for key, value in pairs(RD) do
     zoneData[value.zone] = {
@@ -289,7 +395,7 @@ while threadRunning do
         else
             p = nextSegment(GetZone(1))
         end
-        print("pushing River Segment", lastPoints[1][#lastPoints[1]].y, -(playerY+50 + 5000))
         love.thread.getChannel("generatorThread_riverSegments"):push(p)
+        mergePoints(p)
     end
 end
