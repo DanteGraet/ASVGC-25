@@ -7,12 +7,13 @@ local generatorThread_riverData = love.thread.getChannel("generator_riverData")
 local generatorThread_scale = love.thread.getChannel("generatorThread_scale")
 
 local generatorThread_backgroundImageData = love.thread.getChannel("generatorThread_backgroundImageData")
+local generatorThread_requestBackground = love.thread.getChannel("generatorThread_requestBackground")
 local generatorThread_riverSegments = love.thread.getChannel("generatorThread_riverSegments")
 
 local generatorThread_minZones = love.thread.getChannel("generatorThread_minZones")
 
 local generatorThread_screenWidth = love.thread.getChannel("generatorThread_screenWidthlove")
-generatorThread_screenWidth:push((riverBorders.right + 15)*2)
+
 
 function RiverGenerator:New(name)
     local obj = setmetatable({}, RiverGenerator)
@@ -39,6 +40,13 @@ function RiverGenerator:New(name)
 
 
     obj.generatorThread = love.thread.newThread("code/river/generator/generatorThread.lua")
+    generatorThread_screenWidth:push((riverBorders.right + 15)*2)
+    generatorThread_requestBackground:push({
+        width = (riverBorders.right + 15)*2,
+        minHeight = -riverBorders.up,
+        maxHeight = -riverBorders.down,
+        riverPoints = river.point
+    })
 
     generatorThread_playerY:push(0)
     generatorThread_riverData:push(name)
@@ -48,6 +56,10 @@ function RiverGenerator:New(name)
 
     local startingPoints = generatorThread_riverSegments:demand()
     river:MergePoints(startingPoints)
+
+    local bgData = generatorThread_backgroundImageData:demand()
+
+    river:addBackgorundFromData(bgData)
 
     return obj
 end

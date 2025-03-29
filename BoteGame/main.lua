@@ -195,7 +195,7 @@ function love.update(dt)
         previousGameState = gameState
     end
 
-
+    local dt = math.min(dt, 1/10)
     if game[gameState] and game[gameState].update then
         game[gameState].update(dt)
     end

@@ -228,7 +228,6 @@ function River:Draw(scale)
     end
 
     love.graphics.pop()
-
 end
 
 function River:DrawPoints()
@@ -242,7 +241,7 @@ function River:DrawPoints()
                 end
             end
         end
-    end    
+    end
 end
 
 return River

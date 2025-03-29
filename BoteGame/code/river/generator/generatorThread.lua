@@ -7,7 +7,8 @@ local string = require("string")
 require("templateLib/quindoc")
 require("templateLib/dante")
 
-globals = {}
+math.randomseed(os.time())
+
 
 local threadRunning = true
 local playerY = love.thread.getChannel("generator_playerY"):pop() or 0
@@ -370,7 +371,7 @@ local function generateImageData(startY, layers)
             local num = chance or -1
     
             --if zone2 and math.random(0, 100)/100 < chance then
-            if zone2 and love.math.noise((x)*3/250, y*2/250) < chance then
+            if zone2 and love.math.noise((x)*3/250, -top+relativeY*3/250) < chance then
                 colour = zoneData[zone2.zone].background(x*3, -top+relativeY*3)
     
             else
@@ -380,9 +381,9 @@ local function generateImageData(startY, layers)
             table.insert(data.pixles[relativeY], colour)
         end
     end
-    backgroundY = backgroundY + layersToGenerate*3
+    backgroundY = startY + layersToGenerate*3
 
-    love.thread.getChannel("generatorThread_backgroundImageData"):push(data)
+    return data
 end
 
 
@@ -419,20 +420,31 @@ while threadRunning do
 
     -- Generate river segments
     if not lastPoints or lastPoints[1][#lastPoints[1]].y > -(playerY+50 + 5000) then
-        local p
-        if lastPoints then
-            p = nextSegment(GetZone(lastPoints[1][#lastPoints[1]].y))
-        else
-            p = nextSegment(GetZone(1))
+        while not lastPoints or lastPoints[1][#lastPoints[1]].y > -(playerY+50 + 5000) do
+            local p
+            if lastPoints then
+                p = nextSegment(GetZone(lastPoints[1][#lastPoints[1]].y))
+            else
+                p = nextSegment(GetZone(1))
+            end
+            love.thread.getChannel("generatorThread_riverSegments"):push(p)
+            mergePoints(p)
         end
-        love.thread.getChannel("generatorThread_riverSegments"):push(p)
-        mergePoints(p)
     end
 
     -- Generate Background images
 
-    if playerY + 1000 > backgroundY then
-        generateImageData(backgroundY)
+
+    local bgRequest = love.thread.getChannel("generatorThread_requestBackground"):pop()
+    if bgRequest then
+        love.thread.getChannel("generatorThread_backgroundImageData"):clear()
+        screenWidth = bgRequest.width
+
+        love.thread.getChannel("generatorThread_backgroundImageData"):push(generateImageData(math.floor(bgRequest.maxHeight/3)-3, math.floor((bgRequest.minHeight-bgRequest.maxHeight)/3)*3+3))
+    else        
+        if playerY + 1000 > backgroundY then
+            love.thread.getChannel("generatorThread_backgroundImageData"):push(generateImageData(backgroundY))
+        end
     end
 
     --remove un-nessesary river points
