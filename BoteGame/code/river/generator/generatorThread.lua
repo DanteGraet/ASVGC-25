@@ -358,7 +358,7 @@ local function generateImageData(startY, layers)
         data.pixles[relativeY] = {}
 
 
-        local zone = GetZone(y*3, true)
+        local zone = GetZone(-top+relativeY*3, true)
         local zone2
         local chance
 
