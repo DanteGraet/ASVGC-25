@@ -1,5 +1,6 @@
 return {
-    {"image/levelSelect/background.png"},
+    
+    {"image/levelSelect/background.png", "blur"},
     {"image/levelSelect/flag.png"},
 
 
