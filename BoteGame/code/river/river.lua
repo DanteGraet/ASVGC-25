@@ -42,9 +42,6 @@ function River:MergePoints(newPoints)
             end
         end
     end
-
-    print("merging Points")
-
 end
 
 function River:GetLastPoints()
@@ -88,6 +85,14 @@ function River:Update()
                     end
                 end
             end
+        end
+    end
+
+    for i = #self.backgroundImages, 1, -1 do
+        if self.backgroundImages[i].y > riverBorders.down then
+            table.remove(self.backgroundImages, i)
+        else
+            break
         end
     end
 end
