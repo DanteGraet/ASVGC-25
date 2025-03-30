@@ -29,139 +29,7 @@ function SetGameSpeed(speed)
     gameSpeed = speed
 end
 
-
-local function resize()
-    
-    scale = love.graphics.getWidth()/1920
-
-    if love.graphics.getHeight()/1080 < scale then
-        scale = love.graphics.getHeight()/1080
-    end
-
-    sox = ((love.graphics.getWidth()/scale) - 1920) /2
-    --soy = ((love.graphics.getHeight()/scale) - 1080) /2
-
-    local oldWidth = riverBorders.width
-
-    riverBorders = {
-        left = -love.graphics.getWidth()/2 / scale,
-        right = love.graphics.getWidth()/2 / scale,
-        up =    player.y - camera.oy,
-        down =  player.y - camera.oy + love.graphics.getHeight()/scale,
-        width = love.graphics.getWidth() / scale,
-        height= love.graphics.getHeight() / scale,
-    }
-end
-
-
-local function unload()
-    UpdateHighScore()
-    if musicTracks then
-        for i = 1, #musicTracks do
-            musicTracks[i].track:stop()
-        end
-    end
-
-    musicTracks = nil --this MUST be nil and not empty table!! for now.
-
-    love.thread.getChannel("background_closeThread"):push(true)
-
-end
-
-
-local function load()
-
-    love.physics.setMeter(100)
-
-    mouseTimer = 5
-    love.mouse.setVisible(false)
-
-
-    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
-    {
-        {"image/titleScreen/parallax/1.png", 0},
-        {"image/titleScreen/parallax/2.png", .1},
-        {"image/titleScreen/parallax/3.png", .2},
-    }, true)
-
-    riverFileDirectory = assets.code.river.riverData[riverName]
-
-
-    scrapImages = {}
-    for i = 1, 5 do
-        scrapImages[i] = love.graphics.newImage("image/player/scrap/scrap"..i..".png")
-        scrapImages[i]:setFilter("nearest")
-    end --this has to go here because of how constrained the dynamic loading system is :/
-
-    world = love.physics.newWorld(0, 0, false)
-    world:setCallbacks( beginContact, endContact, preSolve, postSolve )
-
-    pauseMenu = PauseMenu:New()--assets.code.menu.pauseMenu():New()
-    gameOverMenu = GameOverMenu:New()
-
-    player = assets.code.player.playerBoat():New()
-    ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
-    ui = assets.code.player.playerUi()
-    camera = assets.code.camera():New(0, 0, 960, 900)
-    river = assets.code.river.river():New()
-
-    riverGenerator = assets.code.river.generator.riverGenerator():New(riverName)
-
-    obstacles = {}
-    local zoneObsitcalList = {}
-
-    local zones = riverFileDirectory.zone()
-    for key, z in pairs(zones) do
-        zoneObsitcalList[z.zone] = assets.code.river.zone[z.zone].obsticals()
-    end
-
-
-    riverBorders = {
-        left = -960,
-        right = 960,
-        up = 0,
-        down = 1080,
-    }
-
-    obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
-
-
-    music.load()
-
-
-    inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
-
-
-    resize()
-
-    particles.loadParticles()
-
-    gameSpeed = 0
-end
-
-function GetRiverScale()
-    return {scale, sox}
-end
-
-local function focus(focus)
-    if not (player.health <= 0 or player.deathTime >= 1) then
-
-        pauseMenu.isOpen = true
-        pauseMenu.hasOpend = true
-
-    end
-end
-
-local lightningAlpha
-
-local function update(dt)
-    if mouseTimer < 1 and player.health > 0 then
-        mouseTimer = mouseTimer + dt*gameSpeed
-        if mouseTimer >= 1 then
-            love.mouse.setVisible(false)
-        end
-    end
-
+local function updateZonesAndRelatedData()
     zones = riverGenerator:GetZone(camera.y, true)
     local playerZonePercentage = riverGenerator:GetPercentageThrough(player.y)
 
@@ -194,6 +62,126 @@ local function update(dt)
         }
 
     end
+end
+
+local function resize()
+    scale = love.graphics.getWidth()/1920
+    if love.graphics.getHeight()/1080 < scale then
+        scale = love.graphics.getHeight()/1080
+    end
+
+    sox = ((love.graphics.getWidth()/scale) - 1920) /2
+
+    riverBorders = {
+        left = -love.graphics.getWidth()/2 / scale,
+        right = love.graphics.getWidth()/2 / scale,
+        up =    player.y - camera.oy,
+        down =  player.y - camera.oy + love.graphics.getHeight()/scale,
+        width = love.graphics.getWidth() / scale,
+        height= love.graphics.getHeight() / scale,
+    }
+end
+
+
+local function unload()
+    UpdateHighScore()
+    if musicTracks then
+        for i = 1, #musicTracks do
+            musicTracks[i].track:stop()
+        end
+    end
+
+    musicTracks = nil --this MUST be nil and not empty table!! for now.
+
+    love.thread.getChannel("background_closeThread"):push(true)
+end
+
+
+local function load()
+    love.physics.setMeter(100)
+
+    mouseTimer = 5
+    love.mouse.setVisible(false)
+
+
+    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
+    {
+        {"image/titleScreen/parallax/1.png", 0},
+        {"image/titleScreen/parallax/2.png", .1},
+        {"image/titleScreen/parallax/3.png", .2},
+    }, true)
+
+
+    riverFileDirectory = assets.code.river.riverData[riverName]
+
+    scrapImages = {}
+    for i = 1, 5 do
+        scrapImages[i] = love.graphics.newImage("image/player/scrap/scrap"..i..".png")
+        scrapImages[i]:setFilter("nearest")
+    end --this has to go here because of how constrained the dynamic loading system is :/
+
+    world = love.physics.newWorld(0, 0, false)
+    world:setCallbacks( beginContact, endContact, preSolve, postSolve )
+
+    pauseMenu = PauseMenu:New()--assets.code.menu.pauseMenu():New()
+    gameOverMenu = GameOverMenu:New()
+
+    player = assets.code.player.playerBoat():New()
+    ui = assets.code.player.playerUi()
+    camera = assets.code.camera():New(0, 0, 960, 900)
+
+    resize()
+
+    ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
+
+    river = assets.code.river.river():New()
+    riverGenerator = assets.code.river.generator.riverGenerator():New(riverName)
+
+    obstacles = {}
+    local zoneObsitcalList = {}
+    local riverZones = riverFileDirectory.zone()
+    for key, z in pairs(riverZones) do
+        zoneObsitcalList[z.zone] = assets.code.river.zone[z.zone].obsticals()
+    end
+    obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
+
+    music.load()
+
+    inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
+
+    particles.loadParticles()
+
+
+
+    gameSpeed = 0
+end
+
+function GetRiverScale()
+    return {scale, sox}
+end
+
+local function focus(focus)
+    if not (player.health <= 0 or player.deathTime >= 1) then
+
+        pauseMenu.isOpen = true
+        pauseMenu.hasOpend = true
+
+    end
+end
+
+local lightningAlpha
+
+
+
+local function update(dt)
+    if mouseTimer < 1 and player.health > 0 then
+        mouseTimer = mouseTimer + dt*gameSpeed
+        if mouseTimer >= 1 then
+            love.mouse.setVisible(false)
+        end
+    end
+
+    updateZonesAndRelatedData()
     
 
     --don't strike lightning if stepping
@@ -501,6 +489,8 @@ local function draw()
         if settings.dev.musicInfo.value then
             love.graphics.printf("music = " .. dante.dataToString(music), 0, 0,riverBorders.right-10,"right")
         end
+
+
 
     else
 

@@ -22,7 +22,7 @@ function PlayerBoat:New(skin)
     obj.imageOx = obj.image:getWidth()/2
     obj.imageOy = obj.image:getHeight()/2
 
-    obj.x = 0
+    obj.x = -1000000
     obj.y = 0
     obj.score = 0
     obj.runTime = 0
@@ -58,13 +58,7 @@ function PlayerBoat:New(skin)
 
     obj.image:setFilter("nearest", "nearest")
 
-    --for testing
-   -- obj.immunity = -1
-    --[[obj.health = 1000
-    obj.speed = 100
-    obj.acceleration = 3000
-    obj.maxSpeed = 3000]]
-    --obj.minSpeed = -1000
+
     
 
     return obj
@@ -72,6 +66,9 @@ end
 
 
 function PlayerBoat:Update(dt, inputs)
+    if self.x < -500000 then    -- player spawns out heaps
+        player:moveToCenter()
+    end
     
     self.runTime = self.runTime + dt
 

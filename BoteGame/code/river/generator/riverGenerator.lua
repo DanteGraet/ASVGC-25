@@ -36,7 +36,15 @@ function RiverGenerator:New(name)
 
     obj.generatingSegment = false
 
-    -- load these channels
+    -- clear all channels
+    generatorThread_playerY:clear()
+    generatorThread_riverData:clear()
+    generatorThread_scale:clear()
+    generatorThread_backgroundImageData:clear()
+    generatorThread_requestBackground:clear()
+    generatorThread_riverSegments:clear()
+    generatorThread_minZones:clear()
+    generatorThread_screenWidth:clear()
 
 
     obj.generatorThread = love.thread.newThread("code/river/generator/generatorThread.lua")

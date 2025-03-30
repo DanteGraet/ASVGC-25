@@ -172,7 +172,7 @@ function SettingsMenu.SetCatagory(data)
 
 
 
-                self.Ui:GetButtons("settings")[name].func = {toggleFunction, currentSetting}
+                self.Ui:GetButtons("settings")[name].func = {currentSetting.func or toggleFunction, currentSetting}
 
             elseif currentSetting.type == "header" then
                 self.Ui:AddTextButton(name, currentSetting.displayName, nil, font2, currentX, currentHeight + 10, 400, {{1,1,1}}, "settings")

@@ -1,3 +1,5 @@
+print("[RiverGeneratorThread]: Opening Thread")
+
 local love = require("love")
 love.math = require("love.math")
 local math = require("math")
@@ -23,7 +25,7 @@ local RD = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.l
 local infinite, data = nil, nil
 local zoneData = {}
 
-local backgroundY = 0
+local backgroundY = -180
 
 local tempRiver = {}
 
@@ -371,7 +373,7 @@ local function generateImageData(startY, layers)
             local num = chance or -1
     
             --if zone2 and math.random(0, 100)/100 < chance then
-            if zone2 and love.math.noise((x)*3/250, -top+relativeY*3/250) < chance then
+            if zone2 and love.math.noise((x)*3/250, (-top+relativeY*3)/250) < chance then
                 colour = zoneData[zone2.zone].background(x*3, -top+relativeY*3)
     
             else
@@ -439,8 +441,7 @@ while threadRunning do
     if bgRequest then
         love.thread.getChannel("generatorThread_backgroundImageData"):clear()
         screenWidth = bgRequest.width
-
-        love.thread.getChannel("generatorThread_backgroundImageData"):push(generateImageData(math.floor(bgRequest.maxHeight/3)-3, math.floor((bgRequest.minHeight-bgRequest.maxHeight)/3)*3+3))
+        love.thread.getChannel("generatorThread_backgroundImageData"):push(generateImageData(math.floor(bgRequest.maxHeight)-3, math.floor((bgRequest.minHeight-bgRequest.maxHeight)/3)+200))
     else        
         if playerY + 1000 > backgroundY then
             love.thread.getChannel("generatorThread_backgroundImageData"):push(generateImageData(backgroundY))
@@ -463,4 +464,7 @@ while threadRunning do
             end
         end
     end
+
+    local endThread = love.thread.getChannel("background_closeThread"):pop()
+    if endThread then threadRunning = false; print("[RiverGeneratorThread]: Closing Thread") end
 end

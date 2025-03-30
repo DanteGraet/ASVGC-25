@@ -42,6 +42,9 @@ function River:MergePoints(newPoints)
             end
         end
     end
+
+    print("merging Points")
+
 end
 
 function River:GetLastPoints()
@@ -135,8 +138,9 @@ function River:FindHighAndLowPoints(channel, side, yPos)
     end
 
     --just guess at this point
+    print("guessing :D")
     local h = self.points[channel][side][1]
-    local l =self.points[channel][side][2]
+    local l = self.points[channel][side][2]
     return h, l or h
 end
 
