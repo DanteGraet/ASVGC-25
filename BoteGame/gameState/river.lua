@@ -60,7 +60,6 @@ local function updateZonesAndRelatedData()
             difficultyFunction = quindoc.runIfFunc(riverObstacle[zoneName].difficultyFunction, playerZonePercentage) or 0,
             chainLengthCoefficient = quindoc.runIfFunc(riverObstacle[zoneName].chainLengthCoefficient, playerZonePercentage) or 1.25,
         }
-
     end
 end
 

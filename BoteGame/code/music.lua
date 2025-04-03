@@ -1,45 +1,70 @@
 music = {} --table for music functions and variables
 
-function music.manager(dt) 
+local crossFadeSpeed
+local musicTracks
+local zoneMusicTarget
+local lastZone = ""
 
+function music.load()
+    local data = love.filesystem.load("code/river/riverData/" .. riverName .. "/music.lua")()
+  
+    crossFadeSpeed = data.data.crossFadeSpeed
+    if musicTracks == nil then
+        musicTracks = data.data.tracks 
+    end
+    zoneMusicTarget = data.zones
+
+    --Actually update the music tracks instantly, might remove later
+    music.manager(0)
+end
+
+function music.manager(dt)
     --play the actual music
-    if not musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value ~= 0 then
+    if not musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value > 0 then
+        --play all tracks at once to avoid desync
         for i = 1, #musicTracks do
-
             musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume,0.001,1)
-
             musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5)
-
             musicTracks[i].track:play()
-            --play all tracks at once to avoid desync
         end
 
---        music.bar = -1
---        music.beat = 1
---        music.lastBar = 0
---        music.firstFrameInBar = true   
+        --music.bar = -1
+        --music.beat = 1
+        --music.lastBar = 0
+        --music.firstFrameInBar = true   
 
-    elseif musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value == 0 then
+    elseif musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value <= 0 then
         for i = 1, #musicTracks do
             musicTracks[i].track:stop()
         end
     end
 
     --so this manager manages the other managers. dunno enough about buisness to tell you what that role is called
-    if zones and type(zones[1]) == "table" and zones[1].musicManager then
-        zones[1].musicManager()
-    elseif zones.musicManager then
-        zones.musicManager()
+    local currentZoneName
+    if zones and type(zones[1]) == "table" then
+        currentZoneName = zones[1].displayName
+    elseif zones then
+        currentZoneName = zones.displayName
     end
+    if currentZoneName ~= lastZone then
+        if zoneMusicTarget[currentZoneName] then
+            local targets = quindoc.runIfFunc(zoneMusicTarget[currentZoneName])
+
+            for i = 1,#targets do
+                musicTracks[i].targetVolume = targets[i] or musicTracks[i].targetVolume
+            end
+        end
+        lastZone = currentZoneName
+    end
+
 
     for i = 1, #musicTracks do
 --        if musicTracks[i].drumTrack == nil then
-
-            if musicTracks[i].volume ~= musicTracks[i].targetVolume then
-                musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+(music.crossFadeSpeed*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1)
-            end
-        
-            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5)
+        if musicTracks[i].volume ~= musicTracks[i].targetVolume then
+            musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+(crossFadeSpeed*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1)
+        end
+    
+        musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5)
 
 --        elseif music.firstFrameInBar then
 --            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value)

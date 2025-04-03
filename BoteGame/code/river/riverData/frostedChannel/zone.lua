@@ -77,63 +77,6 @@ local function coniferousMountainsideDifficulty(percentage)
 
 end
 
-local function icePlainsMusicManager()
-    musicTracks[1].targetVolume = 1
-    musicTracks[2].targetVolume = 1
-    musicTracks[3].targetVolume = 0
-    musicTracks[4].targetVolume = 0
-    musicTracks[5].targetVolume = 0
-    musicTracks[6].targetVolume = 0
-end
-
-local function boulderValleyMusicManager()
-    musicTracks[1].targetVolume = 0
-    musicTracks[2].targetVolume = 1
-    musicTracks[3].targetVolume = 1
-    musicTracks[4].targetVolume = 1
-    musicTracks[5].targetVolume = 0
-    musicTracks[6].targetVolume = 0
-end
-
-local function stormValleyMusicManager()
-
-    local percentage 
-    
-    if type(zones[1]) == "table" and zones[2].displayName == "Storm Valley" then
-        percentage = 0 
-    else
-        percentage = riverGenerator:GetPercentageThrough(player.y)
-    end
-    
-    local stormish
-
-    if percentage < 0.6 then
-        stormish = quindoc.clamp(2*percentage*1.66,0,2)
-    elseif percentage > 0.8 then
-        stormish = 2 - quindoc.clamp(4*((percentage-0.8) * 5),0,2)
-    else
-        stormish = 2
-    end
-
-
-    musicTracks[1].targetVolume = 0
-    musicTracks[2].targetVolume = math.max(1-stormish,0)
-    musicTracks[3].targetVolume = math.max(1-stormish,0)
-    musicTracks[4].targetVolume = math.max(1-stormish,0)
-    musicTracks[5].targetVolume = math.max(stormish-1,0)
-    musicTracks[6].targetVolume = quindoc.clamp(stormish,0,1)
-    
-end
-
-local function coniferousMountainsideMusicManager()
-    musicTracks[1].targetVolume = 1
-    musicTracks[2].targetVolume = 0
-    musicTracks[3].targetVolume = 0
-    musicTracks[4].targetVolume = 0
-    musicTracks[5].targetVolume = 0
-    musicTracks[6].targetVolume = 0
-end
-
 
 return {
     {
@@ -146,7 +89,6 @@ return {
         transition = 300,
         --current = iceplainsCurrent,
         currentIcons = 2,
-        --musicManager = icePlainsMusicManager,
     },
     {
         zone = "boulderValley",
@@ -159,7 +101,6 @@ return {
         --current = boulderValleyCurrent,
         currentIcons = 3,
         --chainLengthCoefficient = boulderValleyChainLengthCoefficient,
-        --musicManager = boulderValleyMusicManager,
     },
     {
         zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
@@ -173,7 +114,6 @@ return {
         --current = boulderValleyCurrent_STORM,
         currentIcons = 4,
         --chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM,
-        --musicManager = stormValleyMusicManager,
     },
     {
         zone = "coniferousMountainside",
@@ -185,7 +125,6 @@ return {
         transition = 0,
         --current = 100,
         currentIcons = 2,
-        --musicManager = coniferousMountainsideMusicManager,
     },
 
 
