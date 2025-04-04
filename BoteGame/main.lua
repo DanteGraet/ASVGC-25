@@ -228,12 +228,12 @@ function love.draw()
     if lockedAspectRatio and not game[gameState].noTransform == true then
         love.graphics.setColor(screenBarColour)
         --x bars
-        love.graphics.rectangle("fill", 0, 0, -sox, love.graphics.getHeight()/screenScale)
-        love.graphics.rectangle("fill", 1920, 0, sox, love.graphics.getHeight()/screenScale)
+        --love.graphics.rectangle("fill", 0, 0, -sox, love.graphics.getHeight()/screenScale)
+        --love.graphics.rectangle("fill", 1920, 0, sox, love.graphics.getHeight()/screenScale)
 
         --y bars
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth()/screenScale, -soy)
-        love.graphics.rectangle("fill", 0, 1080, love.graphics.getWidth()/screenScale, soy)
+        --love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth()/screenScale, -soy)
+        --love.graphics.rectangle("fill", 0, 1080, love.graphics.getWidth()/screenScale, soy)
     end
 
 

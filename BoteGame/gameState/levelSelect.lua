@@ -81,7 +81,7 @@ end
 
 local function draw()
     love.graphics.setBackgroundColor(.5,.5,.5)
-    love.graphics.draw(assets.image.levelSelect.background, 0, 0, 0, 0.4126, 0.4126)
+    love.graphics.draw(assets.image.levelSelect.background, 0, 0, 0, 1920/5120, 1080/2880)
 
     levelSelectScreen:Draw()
 
