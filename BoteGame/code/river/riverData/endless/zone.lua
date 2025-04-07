@@ -79,51 +79,53 @@ end
 
 
 return {
-    {
+    icePlains = {
         zone = "icePlains",
         displayName = "Ice Plains",
-        distanceTitle = "Starting Point",
+        distanceTitle = "-- hmm --",
         subtitle = "River's Source",
-        distance = 24700,
-        --difficultyFunction = 0.01,
+
+        distance = {min = 3000, max = 10000},
         transition = 300,
-        --current = iceplainsCurrent,
+
+        nextZone = {"boulderValley", "coniferousMountainside"},
         currentIcons = 2,
+
+        isFirst = true
     },
-    {
+    boulderValley = {
         zone = "boulderValley",
         displayName = "Boulder Valley",
-        distanceTitle = "-- 1.5KM --",
+        distanceTitle = "-- okie? --",
         subtitle = "Rock-Chain Gully",
-        distance = 15000,
-        --difficultyFunction = boulderValleyDifficulty,
-        transition = 0,
-        --current = boulderValleyCurrent,
+        distance = {min = 5000, max = 25000},
+        transition = 300,
+
+        nextZone = {"boulderValley2", "coniferousMountainside", "icePlains"},
         currentIcons = 3,
-        --chainLengthCoefficient = boulderValleyChainLengthCoefficient,
     },
-    {
+    boulderValley2 = {
         zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
         displayName = "Storm Valley",
         subtitle = "Blizzard Approaching",
-        distanceTitle = "-- 5KM --",
-        distance = 49500,
-        --stormIntensity = boulderValleyStormIntensity_STORM,
-        --difficultyFunction = boulderValleyDifficulty_STORM,
-        transition = 500,
-        --current = boulderValleyCurrent_STORM,
+        distanceTitle = "-- nope --",
+
+        distance = {min = 5000, max = 25000},
+        transition = 300,
+
+        nextZone = {"boulderValley", "coniferousMountainside"},
         currentIcons = 4,
-        --chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM,
     },
-    {
+    coniferousMountainside = {
         zone = "coniferousMountainside",
-        subtitle = "-- Almost There! --",
+        subtitle = "-- haha --",
         displayName = "Coniferous Highlands",
-        distanceTitle = "-- Almost There! --",
-        distance = 10000,
-        --difficultyFunction = coniferousMountainsideDifficulty,
-        transition = 0,
-        --current = 100,
+        distanceTitle = "-- huh> --",
+
+        distance = {min = 5000, max = 20000},
+        transition = 300,
+
+        nextZone = {"boulderValley", "icePlains"},
         currentIcons = 2,
     },
 

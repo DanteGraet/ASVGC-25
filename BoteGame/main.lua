@@ -7,7 +7,6 @@ game = {}
 
 
 log = {
-
 }
 function log.start()
     log.logs = {}
@@ -202,6 +201,15 @@ function love.update(dt)
 
 end
 
+function getMouseSoxSoy()
+    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+    local mx = love.mouse.getX()/screenScale
+    local my = love.mouse.getY()/screenScale
+
+    return mx - sox, my - soy
+end
 
 function love.draw()
 

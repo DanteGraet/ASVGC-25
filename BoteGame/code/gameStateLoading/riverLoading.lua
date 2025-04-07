@@ -15,7 +15,6 @@ local toLoad = {
     -- generation suff
     {"code/river/river.lua"},
     {"code/river/generator/riverGenerator.lua"},
-    {"code/river/generator/riverCanvas.lua"},
     {"code/river/generator/obstacleSpawner.lua"},
 
     {"code/camera.lua"},
