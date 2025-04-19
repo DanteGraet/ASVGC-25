@@ -7,7 +7,6 @@ game = {}
 
 
 log = {
-
 }
 function log.start()
     log.logs = {}
@@ -61,7 +60,7 @@ local function loadGameStates()
                 gameState = stateName
 
                 --this one will load anyway.
-                previousGameState = stateName
+                --previousGameState = stateName
             end
         else
             print("this state is a bool, removing")
@@ -71,7 +70,7 @@ local function loadGameStates()
 
     if gameState == "" then
         gameState = string.sub(gameStateList[1], 1, -5)
-        previousGameState = gameState
+        --previousGameState = gameState
     end
 end
 
@@ -182,18 +181,26 @@ function love.mousemoved(x, y, dx, dy, istouch)
     end
 end
 
-function love.update(dt)
-
+function updateGamestate()
     if gameState ~= previousGameState then
-        if game[previousGameState] and game[previousGameState].unload then
-            game[previousGameState].unload()
-        end
+        if previousGameState == "" then
+            previousGameState = gameState
+        else
+            if game[previousGameState] and game[previousGameState].unload then
+                game[previousGameState].unload()
+            end
 
-        if game[gameState] and game[gameState].load then
-            game[gameState].load()
+            if game[gameState] and game[gameState].load then
+                game[gameState].load()
+            end
+            previousGameState = gameState
         end
-        previousGameState = gameState
     end
+end
+
+function love.update(dt)
+    updateGamestate()
+
 
     local dt = math.min(dt, 1/10)
     if game[gameState] and game[gameState].update then
@@ -202,25 +209,50 @@ function love.update(dt)
 
 end
 
+function getMouseSoxSoy()
+    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-function love.draw()
+    local mx = love.mouse.getX()/screenScale
+    local my = love.mouse.getY()/screenScale
+
+    return mx - sox, my - soy
+end
+
+function love.draw(pre)
 
     love.graphics.reset()
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if not game[gameState].noTransform == true then
 
-        love.graphics.scale(screenScale)
-        if lockedAspectRatio then
-            love.graphics.translate(sox, soy)
+
+    if not pre then
+        if not game[gameState].noTransform == true then
+
+            love.graphics.scale(screenScale)
+            if lockedAspectRatio then
+                love.graphics.translate(sox, soy)
+            end
+    
         end
 
-    end
+        if game[gameState] and game[gameState].draw then
+            game[gameState].draw()
+        end
+    elseif game[previousGameState] then
+        if not game[previousGameState].noTransform == true then
 
-    if game[gameState] and game[gameState].draw then
-        game[gameState].draw()
+            love.graphics.scale(screenScale)
+            if lockedAspectRatio then
+                love.graphics.translate(sox, soy)
+            end
+    
+        end
+        if game[previousGameState] and game[previousGameState].draw then
+            game[previousGameState].draw()
+        end
     end
 
     if drawDebugRuler then quindoc.drawRuler() end
@@ -228,12 +260,12 @@ function love.draw()
     if lockedAspectRatio and not game[gameState].noTransform == true then
         love.graphics.setColor(screenBarColour)
         --x bars
-        love.graphics.rectangle("fill", 0, 0, -sox, love.graphics.getHeight()/screenScale)
-        love.graphics.rectangle("fill", 1920, 0, sox, love.graphics.getHeight()/screenScale)
+        --love.graphics.rectangle("fill", 0, 0, -sox, love.graphics.getHeight()/screenScale)
+        --love.graphics.rectangle("fill", 1920, 0, sox, love.graphics.getHeight()/screenScale)
 
         --y bars
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth()/screenScale, -soy)
-        love.graphics.rectangle("fill", 0, 1080, love.graphics.getWidth()/screenScale, soy)
+        --love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth()/screenScale, -soy)
+        --love.graphics.rectangle("fill", 0, 1080, love.graphics.getWidth()/screenScale, soy)
     end
 
 

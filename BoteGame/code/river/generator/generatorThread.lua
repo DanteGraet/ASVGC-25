@@ -18,6 +18,8 @@ local playerY = love.thread.getChannel("generator_playerY"):pop() or 0
 
 local lastPoints = nil
 
+local lastLegnth = 10000
+
 --[[assets.code.river.riverData[riverName].zone()]]
 local riverName = love.thread.getChannel("generator_riverData"):pop()
 local screenWidth = love.thread.getChannel("generatorThread_screenWidthlove"):pop()
@@ -148,6 +150,30 @@ local function getLegnth()
     return l
 end
 
+local function GenerateZoneData(zone)
+    local tempZone = {}
+
+    for key, value in pairs(zone) do
+        if type(value) == "table" then
+            if key ~= "nextZone" then
+                if value[1] then
+                    -- pick a random one
+                    tempZone[key] = value[math.random(1, #value)]
+                else
+                    -- min, max garbage
+                    tempZone[key] = math.random(value.min, value.max)
+                end
+            else
+                tempZone[key] = value
+            end
+        else
+            tempZone[key] = value
+        end
+    end
+
+    return tempZone
+end
+
 local function addNextZones(y)
     while y > getLegnth() do
         if zones and #zones > 0 then
@@ -171,6 +197,7 @@ local function addNextZones(y)
                 end
             end
 
+
             local no = math.random(1, weight)
 
             for i = 1,#validOptions do
@@ -178,26 +205,26 @@ local function addNextZones(y)
                     no = no -1
 
                     if no < 1 then
-                        table.insert(zones, self:GenerateZoneData(data[validOptions[i]]))
+                        table.insert(zones, GenerateZoneData(data[validOptions[i]]))
                         break
                     end
                 else
                     no = no - validOptions[i].weight or 1
 
                     if no < validOptions[i].weight or 1 then
-                        table.insert(zones, self:GenerateZoneData(data[validOptions[i]].name))
+                        table.insert(zones, GenerateZoneData(data[validOptions[i]].name))
                         break
                     end
                 end
             end
             
         else
-            zones = {}
+
             local foundFirst = false 
             -- add the first zone
             for key, value in pairs(data) do
                 if value.isFirst then
-                    table.insert(zones, self:GenerateZoneData(value))
+                    table.insert(zones, GenerateZoneData(value))
                     foundFirst = true
                     break
                 end
@@ -208,6 +235,8 @@ local function addNextZones(y)
             end
         end
     end
+
+    lastLegnth = getLegnth()
 end
 
 local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
@@ -405,6 +434,7 @@ else
     data = RD
     zones = {}
     addNextZones(10000)
+    print("infinite river")
 end
 love.thread.getChannel("generatorThread_minZones"):clear()
 love.thread.getChannel("generatorThread_minZones"):push(zones)
@@ -415,8 +445,11 @@ RD = nil
 
 while threadRunning do
     playerY = love.thread.getChannel("generator_playerY"):pop() or playerY
-    if infinite then
+    if infinite and playerY + 10000 > lastLegnth  then
         addNextZones(playerY + 10000)
+
+        love.thread.getChannel("generatorThread_minZones"):clear()
+        love.thread.getChannel("generatorThread_minZones"):push(zones)
     end
     
 

@@ -19,7 +19,7 @@ function RiverGenerator:New(name)
     local obj = setmetatable({}, RiverGenerator)
 
     local RD = assets.code.river.riverData[name].zone()
-    if RD[1] then
+    --[[if RD[1] then
         obj.zones = RD
     else
         for key, value in pairs(RD) do
@@ -28,7 +28,8 @@ function RiverGenerator:New(name)
                 break
             end
         end
-    end
+    end]]
+    obj.zones = RD
     obj.currentZone = 1
     obj.zoneDist = 0
     obj.distance = 0

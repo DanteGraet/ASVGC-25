@@ -1,11 +1,20 @@
 DynamicLoading = {}
 DynamicLoading.__index = DynamicLoading
 
-function DynamicLoading:New(toLoad, parallaxImage, autoRun) -- data is a table {{image/path, layer}}
-    local obj = setmetatable({}, DynamicLoading)
+local dt = 1/10
+local timer = 0
+local angle = -0.1
+local ox = 0
+local oy = 0
 
-    obj.image = ParallaxImage:New(1920, 1080, parallaxImage)
-    obj.image.hovering = 1
+local loadPercentage = 0
+
+function DynamicLoading:New(toLoad, autoRun) -- data is a table {{image/path, layer}}
+    local obj = setmetatable({}, DynamicLoading)
+    loadPercentage = 0
+    obj.image = love.graphics.newImage("image/loading.png")
+    --obj.image = ParallaxImage:New(1920, 1080, parallaxImage)
+    --obj.image.hovering = 1
 
     local chunk, err = love.filesystem.load(toLoad)
     if chunk then
@@ -33,6 +42,28 @@ end
 function DynamicLoading:Run()
     local loadedList = {}
 
+    -- fade transition in the thing
+    if previousGameState == "" then
+        loadPercentage = 1
+        if love.timer then dt = love.timer.step() end
+        self:Update(dt)
+        love.graphics.clear()
+        self:Draw()
+        if love.timer then love.timer.sleep(0.001) end
+    else
+        while loadPercentage < 1 do
+            if love.timer then dt = love.timer.step() end
+            self:Update(dt)
+            loadPercentage = math.min(loadPercentage + dt, 1)
+    
+            love.graphics.clear()
+            love.draw(true)
+            self:Draw()
+            if love.timer then love.timer.sleep(0.001) end
+        end
+    end
+
+
     local i = 1
     --for i = 1,#self.loadList do
 
@@ -51,22 +82,80 @@ function DynamicLoading:Run()
 			end
 		end
 
-        local path = {}
-        for match in string.gmatch(self.loadList[i][1], "[^/]+") do
-            table.insert(path, match)
+        if type(self.loadList[i]) == "table" then
+            local path = {}
+            for match in string.gmatch(self.loadList[i][1], "[^/]+") do
+                table.insert(path, match)
+            end
+
+            self:AddItem(path, assets, self.loadList[i])
+        elseif type(self.loadList[i]) == "function" then
+            self.loadList[i]()
         end
 
-        self:AddItem(path, assets, self.loadList[i])
+        if love.timer then dt = love.timer.step() end
+        self:Update(dt)
 
-        self:Draw(i/#self.loadList, self.loadList[i][1])
+        love.graphics.clear()
+        love.draw(true)
+        self:Draw()
 
         i = i + 1
+        if love.timer then love.timer.sleep(0.001) end
     end
+
+    game[gameState].extraLoad()
+    game[gameState].update(dt)
+
+   --[[ while true do
+        -- Process events, taken from the wiki
+		if love.event then
+			love.event.pump()
+			for name, a,b,c,d,e,f in love.event.poll() do
+				if name == "quit" then
+					if not love.quit or not love.quit() then
+						return "QUIT"
+					end
+				end
+				love.handlers[name](a,b,c,d,e,f)
+			end
+		end
+
+
+
+        if love.timer then dt = love.timer.step() end
+        self:Update(dt)
+
+        self:Draw()
+    end]]
 
     print("\n============ Loaded Assets ============")
     --dante.printTable(assets)
+
+    --fade out of the transition
+    while loadPercentage < 2 do
+        if love.timer then dt = love.timer.step() end
+        self:Update(dt)
+        loadPercentage = math.min(loadPercentage + dt, 2)
+        
+        love.graphics.clear()
+        love.draw()
+        self:Draw()
+        if love.timer then love.timer.sleep(0.001) end
+    end
 end
 
+function DynamicLoading:Update(dt)
+    timer = timer + (dt*math.pi)/10
+    ox = ox - dt*24 -- dt*(100*math.sin(timer) + 200)/10
+
+    --oy = oy - dt*(100*math.cos(timer))/10
+
+    ox = ox % self.image:getWidth()
+    oy = oy % self.image:getHeight()
+
+
+end
 
 function DynamicLoading:AddItem(path, current, original)
     if #path == 1 then
@@ -128,7 +217,7 @@ end
 
 function DynamicLoading:Draw(percentage, current)
     love.graphics.origin()
-    love.graphics.clear()
+
 
     local screenScale = love.graphics.getWidth()/1920
     if love.graphics.getHeight()/1080 > screenScale then
@@ -136,7 +225,31 @@ function DynamicLoading:Draw(percentage, current)
     end
 
     love.graphics.scale(screenScale)
-    self.image:Draw(love.graphics.getWidth()/screenScale/2 - 960, love.graphics.getHeight()/screenScale/2 - 540, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+    love.graphics.rotate(angle)
+    local width = love.graphics.getWidth()/screenScale
+    local height = love.graphics.getHeight()/screenScale
+
+
+    local trigWidth = width * math.cos(-angle) - height * math.sin(-angle)--math.cos(angle + startAngle/2)*legnth
+    local trigHeight = width * math.sin(-angle) + height * math.cos(-angle)--math.sin(angle + startAngle/2)*height 
+
+    love.graphics.setColor(1,1,1,1)
+
+
+    for x = math.sin(angle)*height -50 - ox , trigWidth + 100, self.image:getWidth() do
+        for y = -(math.cos(angle)*width + math.cos(angle)*height) -50 - oy, trigHeight + 100 -oy, self.image:getHeight() do
+            if loadPercentage <= 1 then
+                love.graphics.draw(self.image, x + (trigWidth)*tweens.sineOut(loadPercentage) - (trigWidth), y) 
+            else
+                love.graphics.draw(self.image, x + (trigWidth + self.image:getWidth()*3)*tweens.sineIn(1-loadPercentage), y) 
+            end
+        end
+    end
+
+
+
+
+    --[[self.image:Draw(love.graphics.getWidth()/screenScale/2 - 960, love.graphics.getHeight()/screenScale/2 - 540, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
     
     love.graphics.origin()
     local uiScreenScale = love.graphics.getWidth()/1920
@@ -159,6 +272,8 @@ function DynamicLoading:Draw(percentage, current)
     love.graphics.rectangle("fill", width/2 - barSizeX/2 - outline, height - barSizeY*2 - outline, barSizeX + outline*2, barSizeY + outline*2, barSizeY/2)
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", width/2 - barSizeX/2, height - barSizeY*2, barSizeY + (barSizeX-barSizeY)*percentage, barSizeY, barSizeY/2)
+
+    ]]
 
     love.graphics.present()
 end
