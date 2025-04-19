@@ -20,17 +20,12 @@ local function load()
 
     fontBlack32 = love.graphics.newFont("font/fontBlack.ttf",32)
 
-    DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", 
-        {
-            {"image/titleScreen/parallax/1.png", .03125},
-            {"image/titleScreen/parallax/2.png", .0625},
-            {"image/titleScreen/parallax/3.png", .09375},
-            {"image/titleScreen/parallax/4.png", .125},
-            {"image/titleScreen/parallax/5.png", .15625},
-            {"image/titleScreen/parallax/6.png", .1875},
-            {"image/titleScreen/parallax/7.png", .21875},
-        }, true)
+    DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true)
 
+end
+
+local function extraLoad()
+    
     
     background = ParallaxImage:New(1920, 1080, {
         {assets.image.titleScreen.parallax["1"], .03125},
@@ -123,7 +118,9 @@ local function draw()
     local sox = ((love.graphics.getWidth()/backgroundScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/backgroundScale) - 1080) /2
 
-    background:Draw(sox, soy, love.mouse.getX()/backgroundScale, love.mouse.getY()/backgroundScale)
+    if background then
+        background:Draw(sox, soy, love.mouse.getX()/backgroundScale, love.mouse.getY()/backgroundScale)
+    end
 
     love.graphics.reset()
     love.graphics.scale(screenScale)
@@ -132,19 +129,24 @@ local function draw()
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
     love.graphics.translate(sox, soy)
 
-    titleScreenUI:Draw()
+    if titleScreenUI then
+        titleScreenUI:Draw()
+    end
 
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(assets.image.titleScreen.title,50,50,0,0.75,0.75)
     love.graphics.setFont(fontBlack32)
     love.graphics.print("Alpha Demo 1",350,350)
 
-    settingsMenu:Draw(tweens.sineInOut(settingsTimer))
+    if settingsMenu then
+        settingsMenu:Draw(tweens.sineInOut(settingsTimer))
+    end
 end
 
 
 return {
     load = load,
+    extraLoad = extraLoad,
     resize = resize,
     mousefocus = mousefocus,
     mousepressed = mousepressed,

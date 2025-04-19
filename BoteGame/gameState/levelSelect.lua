@@ -9,15 +9,19 @@ local levels = {}
 local sine = 0
 
 local function load()
-    DynamicLoading:New("code/gameStateLoading/levelSelectLoading.lua", 
-        {
-            {"image/titleScreen/parallax/1.png", 0},
-            {"image/titleScreen/parallax/2.png", .1},
-            {"image/titleScreen/parallax/3.png", .2},
-        }, true)
+    DynamicLoading:New("code/gameStateLoading/levelSelectLoading.lua", true)
 
-    assets.image.levelSelect.background:setFilter("nearest", "nearest")
 
+
+    --levelSelectScreen:AddTextButton("boatSelect", "Pick your bote :D", "left", fontBlack32, 0, 0, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
+    --levelSelectScreen:GetButtons()["boatSelect"].functions.release = {function() menus["boatSelectMenu"].isOpen = true end}
+
+
+    --levelSelectScreen:AddTextButton("frostedChannel", "Actually Play", "left", fontBlack32, 0, 300, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
+
+end
+
+local function extraLoad()
     uiFade = 0
 
     menus["boatSelectMenu"] = assets.code.menu.boatSelectMenu():New()
@@ -77,25 +81,20 @@ local function load()
         click = false,
     })
 
-
-    levelSelectScreen:AddTextButton("boatSelect", "Pick your bote :D", "left", fontBlack32, 0, 0, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
-    levelSelectScreen:GetButtons()["boatSelect"].functions.release = {function() menus["boatSelectMenu"].isOpen = true end}
-
-
-    --levelSelectScreen:AddTextButton("frostedChannel", "Actually Play", "left", fontBlack32, 0, 300, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
-
 end
 
 local function update(dt)
     sine = sine + dt
-    levelSelectScreen:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+    --levelSelectScreen:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
 
-    menus[selectedMenu]:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+    if menus and menus[selectedMenu] then
+        menus[selectedMenu]:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
 
-    if menus[selectedMenu].isOpen then
-        uiFade = math.min(uiFade + dt*2, 1)
-    else
-        uiFade = math.max(uiFade - dt*2, 0)    
+        if menus[selectedMenu].isOpen then
+            uiFade = math.min(uiFade + dt*2, 1)
+        else
+            uiFade = math.max(uiFade - dt*2, 0)    
+        end
     end
 
     local mx, my = getMouseSoxSoy()
@@ -122,7 +121,7 @@ end
 local function mousepressed(x, y, button)
     local mx, my = getMouseSoxSoy()
 
-    levelSelectScreen:Click(mx, my)
+    --levelSelectScreen:Click(mx, my)
 
     menus[selectedMenu]:Click(mx, my)
 
@@ -140,7 +139,7 @@ end
 local function mousereleased(x, y, button)
     local mx, my = getMouseSoxSoy()
 
-    levelSelectScreen:Release(mx, my)
+    --levelSelectScreen:Release(mx, my)
 
     menus[selectedMenu]:Release(mx, my)
 
@@ -188,7 +187,7 @@ local function draw()
     end
     love.graphics.setColor(1,1,1)
 
-    levelSelectScreen:Draw()
+    --levelSelectScreen:Draw()
 
     if uiFade > 0 then
         local f = tweens.sineInOut(uiFade)
@@ -204,6 +203,7 @@ end
 
 return {
     load = load,
+    extraLoad = extraLoad,
     mousepressed = mousepressed,
     mousereleased = mousereleased,
     keyreleased = keyreleased,

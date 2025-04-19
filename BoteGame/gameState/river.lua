@@ -102,55 +102,13 @@ local function load()
     mouseTimer = 5
     love.mouse.setVisible(false)
 
+    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true)
 
-    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", 
-    {
-        {"image/titleScreen/parallax/1.png", 0},
-        {"image/titleScreen/parallax/2.png", .1},
-        {"image/titleScreen/parallax/3.png", .2},
-    }, true)
+end
 
-
-    riverFileDirectory = assets.code.river.riverData[riverName]
-
-    scrapImages = {}
-    for i = 1, 5 do
-        scrapImages[i] = love.graphics.newImage("image/player/scrap/scrap"..i..".png")
-        scrapImages[i]:setFilter("nearest")
-    end --this has to go here because of how constrained the dynamic loading system is :/
-
-    world = love.physics.newWorld(0, 0, false)
-    world:setCallbacks( beginContact, endContact, preSolve, postSolve )
-
+local function extraLoad()
     pauseMenu = PauseMenu:New()--assets.code.menu.pauseMenu():New()
     gameOverMenu = GameOverMenu:New()
-
-    player = assets.code.player.playerBoat():New()
-    ui = assets.code.player.playerUi()
-    camera = assets.code.camera():New(0, 0, 960, 900)
-
-    resize()
-
-    ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
-
-    river = assets.code.river.river():New()
-    riverGenerator = assets.code.river.generator.riverGenerator():New(riverName)
-
-    obstacles = {}
-    local zoneObsitcalList = {}
-    local riverZones = riverFileDirectory.zone()
-    for key, z in pairs(riverZones) do
-        zoneObsitcalList[z.zone] = assets.code.river.zone[z.zone].obsticals()
-    end
-    obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
-
-    music.load()
-
-    inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
-
-    particles.loadParticles()
-
-
 
     gameSpeed = 0
 end
@@ -545,6 +503,7 @@ end
 
 return {
     load = load,
+    extraLoad = extraLoad,
     focus = focus,
     mousepressed = mousepressed,
     mousereleased = mousereleased,
