@@ -30,7 +30,7 @@ end
 
 function GameOverMenu.RestartGame(self)
     self.isOpen = false
-    game[gameState].unload()
+    --game[gameState].unload()
     previousGameState = "GetWreked"
 end
 

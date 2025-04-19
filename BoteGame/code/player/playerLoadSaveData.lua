@@ -14,6 +14,8 @@ if assets.code.player.unlocks then
     dante.save(assets.code.player.unlocks, "save", "unlocks")
 end
 
+print("loading Unlocks :D")
+
 assets.code.player.unlocks = dante.load("save/unlocks")
 
 

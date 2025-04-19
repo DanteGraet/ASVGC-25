@@ -34,7 +34,7 @@ function PauseMenu.RestartGame(self)
     player.health = 0
     self.isOpen = false
     self.hasOpend = false
-    game[gameState].unload()
+    --game[gameState].unload()
     previousGameState = "GetWreked"
 end
 

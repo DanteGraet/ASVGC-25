@@ -16,13 +16,13 @@ function DynamicLoading:New(toLoad, autoRun) -- data is a table {{image/path, la
     --obj.image = ParallaxImage:New(1920, 1080, parallaxImage)
     --obj.image.hovering = 1
 
-    local chunk, err = love.filesystem.load(toLoad)
+    --[[local chunk, err = love.filesystem.load(toLoad)
     if chunk then
         local success, loadList = pcall(chunk)
         if success then
             obj.loadList = loadList
         end
-    end
+    end]]
 
     obj:Draw(0, 0)
 
@@ -63,7 +63,57 @@ function DynamicLoading:Run()
         end
     end
 
+    
+    if previousGameState ~= "" and previousGameState ~= "GetWreked" then
+        --Unload old "garbage"
+        print("code/gameStateLoading/" .. previousGameState .. "Loading.lua")
+        self.unloadList = love.filesystem.load("code/gameStateLoading/" .. previousGameState .. "Loading.lua")()
+        local i = 1
+        --for i = 1,#self.loadList do
 
+        -- use a while loop so we can expand the load list while we are loading
+        while i <= #self.unloadList do
+            -- Process events, taken from the wiki
+            if love.event then
+                love.event.pump()
+                for name, a,b,c,d,e,f in love.event.poll() do
+                    if name == "quit" then
+                        if not love.quit or not love.quit() then
+                            return "QUIT"
+                        end
+                    end
+                    love.handlers[name](a,b,c,d,e,f)
+                end
+            end
+
+            if type(self.unloadList[i]) == "function" then
+            else
+                local path = {}
+                for match in string.gmatch(self.unloadList[i][1], "[^/]+") do
+                    table.insert(path, match)
+                end
+
+                self:removeItem(path, assets)
+            end
+
+
+            if love.timer then dt = love.timer.step() end
+            self:Update(dt)
+
+            love.graphics.clear()
+            self:Draw()
+
+            i = i + 1
+            if love.timer then love.timer.sleep(0.001) end
+        end
+    end
+
+    if game[previousGameState or gameState] and game[previousGameState or gameState].unload then
+        game[previousGameState or gameState].unload()
+    end
+
+
+    self.loadList = love.filesystem.load("code/gameStateLoading/" .. gameState .. "Loading.lua")()
     local i = 1
     --for i = 1,#self.loadList do
 
@@ -97,7 +147,7 @@ function DynamicLoading:Run()
         self:Update(dt)
 
         love.graphics.clear()
-        love.draw(true)
+        --love.draw(true)
         self:Draw()
 
         i = i + 1
@@ -107,27 +157,6 @@ function DynamicLoading:Run()
     game[gameState].extraLoad()
     game[gameState].update(dt)
 
-   --[[ while true do
-        -- Process events, taken from the wiki
-		if love.event then
-			love.event.pump()
-			for name, a,b,c,d,e,f in love.event.poll() do
-				if name == "quit" then
-					if not love.quit or not love.quit() then
-						return "QUIT"
-					end
-				end
-				love.handlers[name](a,b,c,d,e,f)
-			end
-		end
-
-
-
-        if love.timer then dt = love.timer.step() end
-        self:Update(dt)
-
-        self:Draw()
-    end]]
 
     print("\n============ Loaded Assets ============")
     --dante.printTable(assets)
@@ -153,8 +182,6 @@ function DynamicLoading:Update(dt)
 
     ox = ox % self.image:getWidth()
     oy = oy % self.image:getHeight()
-
-
 end
 
 function DynamicLoading:AddItem(path, current, original)
@@ -211,6 +238,21 @@ function DynamicLoading:AddItem(path, current, original)
         table.remove(path, 1)
 
         self:AddItem(path, nextCurrent, original)
+    end
+end
+
+function DynamicLoading:removeItem(path, current)
+    if #path == 1 then
+        local file = path[#path]
+        current[string.sub(file, 1, #file-4)] = nil        
+    else
+        if not current[path[1]] then
+            current[path[1]] = {}
+        end
+        local nextCurrent = current[path[1]]
+        table.remove(path, 1)
+
+        self:removeItem(path, nextCurrent)
     end
 end
 

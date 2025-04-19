@@ -187,7 +187,7 @@ function updateGamestate()
             previousGameState = gameState
         else
             if game[previousGameState] and game[previousGameState].unload then
-                game[previousGameState].unload()
+                --game[previousGameState].unload()
             end
 
             if game[gameState] and game[gameState].load then

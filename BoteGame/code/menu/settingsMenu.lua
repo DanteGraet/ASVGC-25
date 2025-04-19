@@ -25,6 +25,7 @@ function saveSettings()
         end
     end
 
+    print("saving player settings")
     dante.save(savingSettings, "save", "settings")
 end
 
@@ -50,12 +51,15 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
     settings = love.filesystem.load("code/menu/defaultSettings.lua")()
 
     local savedSettings = dante.load("save/settings")
+    dante.printTable(savedSettings)
     if savedSettings then
+        -- looping through catagories
         for key, value in pairs(settings) do
             if (key ~= "DEV" or DEV) and key ~= "order" then
                 if savedSettings[key] then
                     for setting, data in pairs(value) do
                         if savedSettings[key][setting] then
+                            print(setting .. "  " .. tostring(savedSettings[key][setting]))
                             data.value = savedSettings[key][setting]
                         end
                     end

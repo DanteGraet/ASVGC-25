@@ -25,5 +25,11 @@ return {
     {"image/titleScreen/title.png", "blur"},
 
     -- load the save
-    {"code/player/playerLoadSaveData.lua", "run"}
+    {"code/player/playerLoadSaveData.lua", "run"},
+
+
+    function()
+        love.resize()
+    end
+
 }

@@ -37,6 +37,8 @@ local toLoad = {
     {"image/ui/currentBar.png", "blur"},
     {"image/ui/current.png", "blur"},
     {"image/ui/ouchGlow.png", "blur"},
+
+    {"code/player/playerData.lua", "run"}
 }
 
 
