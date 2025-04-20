@@ -1,8 +1,8 @@
 local width = 700
 local height = 600
 
-local font1 = love.graphics.newFont("font/fontMedium.ttf", 50)
-local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
+local font1 = {"medium", 50}
+local font2 = {"black", 75}
 
 
 GameOverMenu = {}
@@ -109,7 +109,7 @@ function GameOverMenu:Draw(gs)
     love.graphics.rectangle("line", 20, -height/2 + 100, width/2-40, height-195, 25)
 
 
-    love.graphics.setFont(font2)
+    font.setFont(font2)
     if player.health <=0 then
         love.graphics.printf("Game Over", -width/2, -height/2, width, "center")
     else
@@ -118,8 +118,7 @@ function GameOverMenu:Draw(gs)
 
 
     if savedDisplayName then
-        love.graphics.setFont("medium", 50)
-        font.setFont()
+        font.setFont("medium", 50)
         love.graphics.printf("Biome:", -width/2, -height/2 + 240, width/2, "center")
 
         font.setFont("medium", 28)
@@ -127,8 +126,7 @@ function GameOverMenu:Draw(gs)
     end
 
 
-    love.graphics.setFont("medium", 50)
-    font.setFont()
+    font.setFont("medium", 50)
     love.graphics.printf("Score:", -width/2, -height/2 + 100, width/2, "center")
 
     font.setFont("medium", 40)

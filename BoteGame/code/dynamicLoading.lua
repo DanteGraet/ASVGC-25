@@ -66,7 +66,10 @@ function DynamicLoading:Run()
     end
 
     
-    if previousGameState ~= "" and previousGameState ~= "GetWreked" then
+    if previousGameState ~= ""  then
+        if previousGameState == "GetWreked" then
+            previousGameState = gameState
+        end
         --Unload old "garbage"
         print("code/gameStateLoading/" .. previousGameState .. "Loading.lua")
         self.unloadList = love.filesystem.load("code/gameStateLoading/" .. previousGameState .. "Loading.lua")()

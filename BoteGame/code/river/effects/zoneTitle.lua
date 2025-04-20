@@ -30,9 +30,9 @@ end
 function drawZoneTitle()
     if savedDisplayName then
         love.graphics.setColor(1,1,1,displayTitleAlpha)
-        love.graphics.setFont(assets.font.fontBlack64)
+        font.setFont("black", 64)
         love.graphics.printf(savedDisplayName,0,300-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100),1920,"center")
-        love.graphics.setFont(assets.font.fontBlack24)
+        font.setFont("black", 24)
         love.graphics.printf(savedSubtitle,0,290-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100),1920,"center")
         --love.graphics.setColor(1,1,1,displayTitleAlpha/2)
         --love.graphics.setFont(assets.font.fontBlack32)

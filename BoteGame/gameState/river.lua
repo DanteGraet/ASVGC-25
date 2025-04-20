@@ -83,6 +83,10 @@ end
 
 
 local function unload()
+    love.thread.getChannel("background_closeThread"):push(true)
+    while not love.thread.getChannel("background_closeThreadReceived"):pop() do
+        print("waiting")
+    end
     UpdateHighScore()
     if musicTracks then
         for i = 1, #musicTracks do
@@ -91,8 +95,6 @@ local function unload()
     end
 
     musicTracks = nil --this MUST be nil and not empty table!! for now.
-
-    love.thread.getChannel("background_closeThread"):push(true)
 
     pauseMenu = nil
     gameOverMenu = nil

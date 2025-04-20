@@ -241,17 +241,24 @@ function love.draw(pre)
         if game[gameState] and game[gameState].draw then
             game[gameState].draw()
         end
-    elseif game[previousGameState] then
-        if not game[previousGameState].noTransform == true then
-
-            love.graphics.scale(screenScale)
-            if lockedAspectRatio then
-                love.graphics.translate(sox, soy)
-            end
-    
+    else
+        local p = previousGameState
+        if p == "GetWreked" then
+            p = gameState
         end
-        if game[previousGameState] and game[previousGameState].draw then
-            game[previousGameState].draw()
+
+        if game[p] then
+            if not game[p].noTransform == true then
+
+                love.graphics.scale(screenScale)
+                if lockedAspectRatio then
+                    love.graphics.translate(sox, soy)
+                end
+        
+            end
+            if game[p] and game[p].draw then
+                game[p].draw()
+            end
         end
     end
 
