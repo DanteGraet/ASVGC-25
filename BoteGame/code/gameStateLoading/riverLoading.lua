@@ -9,7 +9,11 @@ local toLoad = {
     {"code/player/playerBoat.lua"},
     {"code/player/playerUi.lua"},
 
-    {"save/highscore.lua", "run"},
+    -- in a function so we don't unload it
+    function()
+        if not assets.save then assets.save = {} end
+        assets.save.highscore = love.filesystem.load("save/highscore.lua")()
+    end,
 
 
     -- generation suff

@@ -464,7 +464,7 @@ local function draw()
 end
 
 function UpdateHighScore(newScore)
-
+    print("--- updating high score")
     if assets.save and assets.save.highscore and type(assets.save.highscore) == "table" then
     else
         if assets.save then

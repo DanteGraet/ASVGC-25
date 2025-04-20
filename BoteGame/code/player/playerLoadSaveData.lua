@@ -10,7 +10,7 @@ if not assets.code.player then
     assets.code.player = {}
 end
 
-if assets.code.player.unlocks then
+if assets.code.player.unlocks == {} then
     dante.save(assets.code.player.unlocks, "save", "unlocks")
 end
 

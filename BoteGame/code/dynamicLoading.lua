@@ -179,9 +179,10 @@ function DynamicLoading:Update(dt)
     ox = ox - dt*24 -- dt*(100*math.sin(timer) + 200)/10
 
     --oy = oy - dt*(100*math.cos(timer))/10
-
-    ox = ox % self.image:getWidth()
-    oy = oy % self.image:getHeight()
+    if loadPercentage == 1 then
+        ox = ox % self.image:getWidth()
+        oy = oy % self.image:getHeight()
+    end
 end
 
 function DynamicLoading:AddItem(path, current, original)
