@@ -84,9 +84,9 @@ end
 
 local function unload()
     love.thread.getChannel("background_closeThread"):push(true)
-    while not love.thread.getChannel("background_closeThreadReceived"):pop() do
-        print("waiting")
-    end
+    --while not love.thread.getChannel("background_closeThreadReceived"):pop() do
+      --  print("waiting")
+    --end
     UpdateHighScore()
     if musicTracks then
         for i = 1, #musicTracks do

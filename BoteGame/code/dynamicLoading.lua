@@ -36,6 +36,8 @@ function DynamicLoading:New(toLoad, autoRun, image, colour) -- data is a table {
         end
     end
 
+    timer = 0
+
     return obj
 
 end
@@ -314,6 +316,28 @@ function DynamicLoading:Draw(percentage, current)
     end
 
 
+    love.graphics.origin()
+    love.graphics.scale(screenScale)
+
+    font.setFont("black", 64)
+    local step = 10
+    local dist = 5
+    local suf = ""
+    for i = 1, (timer*10)%4 do
+        suf = suf .. "."
+    end
+    love.graphics.setColor(0,0,0, a)
+    for i = 0,359, step do
+        
+        local angle = math.rad(i)
+        local x = 16 + math.cos(angle)*dist
+        local y = height - 100 + math.sin(angle)*dist
+        love.graphics.print("loading" .. suf, x, y)
+    end
+    love.graphics.setColor(1,1,1, a)
+    love.graphics.print("loading".. suf, 16, height-100)
+
+    love.graphics.setColor(1,1,1, 1)
 
 
     --[[self.image:Draw(love.graphics.getWidth()/screenScale/2 - 960, love.graphics.getHeight()/screenScale/2 - 540, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
