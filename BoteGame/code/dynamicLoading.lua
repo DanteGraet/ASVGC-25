@@ -303,7 +303,7 @@ function DynamicLoading:Draw(percentage, current)
     for x = math.sin(angle)*height -50 - ox , trigWidth + 100, self.image:getWidth() do
         for y = -(math.cos(angle)*width + math.cos(angle)*height) -50 - oy, trigHeight + 100 -oy, self.image:getHeight() do
             if loadPercentage <= 1 then
-                love.graphics.draw(self.image, x + (trigWidth)*tweens.sineOut(loadPercentage) - (trigWidth), y) 
+                love.graphics.draw(self.image, x + (trigWidth + self.image:getWidth()*3)*tweens.sineOut(loadPercentage) - (trigWidth+ self.image:getWidth()*3), y) 
             else
                 love.graphics.draw(self.image, x + (trigWidth + self.image:getWidth()*3)*tweens.sineIn(1-loadPercentage), y) 
             end
