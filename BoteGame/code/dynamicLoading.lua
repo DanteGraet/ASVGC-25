@@ -9,10 +9,10 @@ local oy = 0
 
 local loadPercentage = 0
 
-function DynamicLoading:New(toLoad, autoRun) -- data is a table {{image/path, layer}}
+function DynamicLoading:New(toLoad, autoRun, image, colour) -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, DynamicLoading)
     loadPercentage = 0
-    obj.image = love.graphics.newImage("image/loading.png")
+    obj.image = love.graphics.newImage(image or "image/loading.png")
     --obj.image = ParallaxImage:New(1920, 1080, parallaxImage)
     --obj.image.hovering = 1
 
@@ -23,6 +23,8 @@ function DynamicLoading:New(toLoad, autoRun) -- data is a table {{image/path, la
             obj.loadList = loadList
         end
     end]]
+
+    self.colour = colour or {0,0,0}
 
     obj:Draw(0, 0)
 
@@ -172,6 +174,13 @@ function DynamicLoading:Run()
         self:Draw()
         if love.timer then love.timer.sleep(0.001) end
     end
+
+    if love.timer then dt = love.timer.step() end
+    self:Update(dt)
+
+    love.graphics.clear()
+    love.draw()
+    if love.timer then love.timer.sleep(0.001) end
 end
 
 function DynamicLoading:Update(dt)
@@ -268,9 +277,21 @@ function DynamicLoading:Draw(percentage, current)
     end
 
     love.graphics.scale(screenScale)
-    love.graphics.rotate(angle)
     local width = love.graphics.getWidth()/screenScale
     local height = love.graphics.getHeight()/screenScale
+
+
+    local a = 1
+    if loadPercentage < 0.5 then
+        a = tweens.sineIn(loadPercentage*2)
+    elseif loadPercentage > 1.5 then
+        a = tweens.sineOut((2- loadPercentage)*2)
+    end
+    love.graphics.setColor(self.colour[1], self.colour[2], self.colour[3], a)
+    love.graphics.rectangle("fill", 0, 0, width, height)
+    love.graphics.setColor({1,1,1})
+    love.graphics.rotate(angle)
+
 
 
     local trigWidth = width * math.cos(-angle) - height * math.sin(-angle)--math.cos(angle + startAngle/2)*legnth
