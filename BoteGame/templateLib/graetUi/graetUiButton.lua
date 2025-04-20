@@ -36,13 +36,13 @@ function GraetButton:New(x, y, sx, sy) -- data is a table {{image/path, layer}}
     return obj
 end
 
-function GraetButton:NewText(text, align, font, x, y, limit, colours, colourLerp)
-    local font = font or love.graphics.getFont()
+function GraetButton:NewText(text, align, ofont, x, y, limit, colours, colourLerp)
+    local lfont = font.getFont(ofont[1], ofont[2]) or love.graphics.getFont()
 
-    local textSizeX = font:getWidth(text)
-    local textSizeY = font:getHeight(text)
 
-    local buttonX = x
+    local textSizeX = lfont:getWidth(text)
+    local textSizeY = lfont:getHeight(text)
+    local buttonX = x   
     if align == "center" then
         buttonX = x - textSizeX/2
     elseif align == "right" then
@@ -55,12 +55,12 @@ function GraetButton:NewText(text, align, font, x, y, limit, colours, colourLerp
     local textY = 0
 
     if align == "center" then
-        textX = 0 - limit/2 + font:getWidth(text)/2
+        textX = 0 - limit/2 + lfont:getWidth(text)/2
     elseif align == "right" then
-        textX = 0 - limit + font:getWidth(text)
+        textX = 0 - limit + lfont:getWidth(text)
     end
 
-    obj:AddText(text, align, font, textX, 0, limit)
+    obj:AddText(text, align, ofont, textX, 0, limit)
     if colours then
         obj:SetElementColour(colours[1], colours[2], colours[3], colourLerp)
     end

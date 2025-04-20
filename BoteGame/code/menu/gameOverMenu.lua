@@ -1,9 +1,6 @@
 local width = 700
 local height = 600
 
--- load the fonts that we will need here
-local font4 = love.graphics.newFont("font/fontMedium.ttf", 28)
-local font3 = love.graphics.newFont("font/fontMedium.ttf", 40)
 local font1 = love.graphics.newFont("font/fontMedium.ttf", 50)
 local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
 
@@ -121,18 +118,20 @@ function GameOverMenu:Draw(gs)
 
 
     if savedDisplayName then
-        love.graphics.setFont(font1)
+        love.graphics.setFont("medium", 50)
+        font.setFont()
         love.graphics.printf("Biome:", -width/2, -height/2 + 240, width/2, "center")
 
-        love.graphics.setFont(font4)
+        font.setFont("medium", 28)
         love.graphics.printf(savedDisplayName,-width/2,-height/2 + 300,width/2,"center")
     end
 
 
-    love.graphics.setFont(font1)
+    love.graphics.setFont("medium", 50)
+    font.setFont()
     love.graphics.printf("Score:", -width/2, -height/2 + 100, width/2, "center")
 
-    love.graphics.setFont(font3)
+    font.setFont("medium", 40)
     love.graphics.printf("High Scores:", 20, -height/2 + 115, width/2 - 40, "center")
 
     local displayNum

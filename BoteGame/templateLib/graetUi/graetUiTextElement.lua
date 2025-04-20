@@ -56,7 +56,12 @@ function GraetUiText:Draw(x, y, mouseMode, modeTryangle)
         love.graphics.setColor(1,1,1)
     end
 
-    love.graphics.setFont(self.font)
+    if type(self.font) == "table" then
+        font.setFont(self.font[1], self.font[2])
+    else
+        love.graphics.setFont(self.font)
+
+    end
     love.graphics.printf(self.text, x + self.x, y + self.y, self.limit, self.align)
 end
 

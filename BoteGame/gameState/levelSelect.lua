@@ -21,6 +21,14 @@ local function load()
 
 end
 
+
+local function unload()
+    levels = nil
+    menus = nil
+    levelSelectScreen = nil
+end
+
+
 local function extraLoad()
     uiFade = 0
 
@@ -204,6 +212,8 @@ end
 return {
     load = load,
     extraLoad = extraLoad,
+    unload = unload,
+    
     mousepressed = mousepressed,
     mousereleased = mousereleased,
     keyreleased = keyreleased,

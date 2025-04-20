@@ -2,8 +2,8 @@ local width = 1000
 local height = 660
 local y = 50
 
-local font1 = love.graphics.newFont("font/fontMedium.ttf", 30)
-local font2 = love.graphics.newFont("font/fontBlack.ttf", 35)
+local font1 = {"medium", 30}
+local font2 = {"black", 35}
 
 
 SettingsMenu = {}
@@ -91,7 +91,7 @@ function SettingsMenu:GenerateButtons()
 
         self.Ui:AddButton(c.name, -width/2 + (i-1)*xSize, -height/2, xSize, 100)
         self.Ui:GetButtons()[c.name].functions.release = {SettingsMenu.SetCatagory, {self, i}}
-        self.Ui:GetButtons()[c.name]:AddText(c.displayName, "center", love.graphics.newFont("font/fontBlack.ttf", 40), nil, 15, xSize)
+        self.Ui:GetButtons()[c.name]:AddText(c.displayName, "center", {"black", 40}, nil, 15, xSize)
     end
 
     -- create the close button here
@@ -142,6 +142,8 @@ function SettingsMenu.SetCatagory(data)
     local currentX = -width/2 + 10
     self.Ui:RemoveAll("settings")
 
+    local f = font.getFont(font1)
+
     if settings.order[self.catagories[self.curentCatagroy].name] then
         for i = 1,#settings.order[self.catagories[self.curentCatagroy].name] do
             local name = settings.order[self.catagories[self.curentCatagroy].name][i]
@@ -152,19 +154,19 @@ function SettingsMenu.SetCatagory(data)
                 self.Ui:GetButtons("settings")[name].functions.release = {currentSetting.func}
 
             elseif currentSetting.type == "slider" then
-                self.Ui:AddSlider(name, currentX+font1:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
+                self.Ui:AddSlider(name, currentX+f:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
 
                 self.Ui:GetButtons("settings")[name]:AddImageRail(0, -9, assets.image.ui.settings.indicator)
                 self.Ui:GetButtons("settings")[name]:AddImage(0, -4, assets.image.ui.settings.bar)
                 self.Ui:GetButtons("settings")[name]:SetElementColourRail({.9,.9,.9},{.7,.9,.7},{.6,.6,.6})
 
-                self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -font1:getWidth(currentSetting.displayName) - 10, -20, 1000)
+                self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -f:getWidth(currentSetting.displayName) - 10, -20, 1000)
                 self.Ui:GetButtons("settings")[name].func = {sliderFunction, currentSetting}
 
 
 
             elseif currentSetting.type == "toggle" then
-                self.Ui:AddToggle(name, currentX, currentHeight, font1:getWidth(currentSetting.displayName) + 40, font1:getHeight(), currentSetting.value, "settings")
+                self.Ui:AddToggle(name, currentX, currentHeight, f:getWidth(currentSetting.displayName) + 40, f:getHeight(), currentSetting.value, "settings")
 
                 self.Ui:GetButtons("settings")[name].button1:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
                 self.Ui:GetButtons("settings")[name].button1:AddImage(0, 9, assets.image.ui.settings.check)
@@ -179,12 +181,12 @@ function SettingsMenu.SetCatagory(data)
                 self.Ui:GetButtons("settings")[name].func = {currentSetting.func or toggleFunction, currentSetting}
 
             elseif currentSetting.type == "header" then
-                self.Ui:AddTextButton(name, currentSetting.displayName, nil, font2, currentX, currentHeight + 10, 400, {{1,1,1}}, "settings")
+                self.Ui:AddTextButton(name, currentSetting.displayName, nil, font.getFont(font2), currentX, currentHeight + 10, 400, {{1,1,1}}, "settings")
 
-                currentHeight = currentHeight + font2:getHeight() - font1:getHeight() + 10
+                currentHeight = currentHeight + font.getFont(font2):getHeight() - f:getHeight() + 10
             end
 
-            currentHeight = currentHeight + font1:getHeight()
+            currentHeight = currentHeight + f:getHeight()
         end
     end
 end

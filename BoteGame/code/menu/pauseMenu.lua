@@ -1,8 +1,8 @@
 local width = 500
 local height = 400
 
-local font1 = love.graphics.newFont("font/fontMedium.ttf", 50)
-local font2 = love.graphics.newFont("font/fontBlack.ttf", 75)
+local font1 = {"medium", 50}
+local font2 = {"black", 75}
 
 
 PauseMenu = {}
@@ -116,7 +116,7 @@ function PauseMenu:Draw(gs)
         love.graphics.rectangle("line", -width/2, -height/2, width, height, 25)
 
         
-        love.graphics.setFont(font2)
+        font.setFont(font2)
         love.graphics.printf("Paused", -width/2, -height/2, width, "center")
 
         love.graphics.setColor(1,1,1)

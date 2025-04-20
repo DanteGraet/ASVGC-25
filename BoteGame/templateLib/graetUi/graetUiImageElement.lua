@@ -51,8 +51,9 @@ function GraetUiImage:Draw(x, y, mouseMode, modeTryangle)
         love.graphics.setColor(1,1,1)
     end
 
-    love.graphics.draw(self.image, x + self.x, y + self.y, 0, self.sx, self.sy)
-
+    if self.image then
+        love.graphics.draw(self.image, x + self.x, y + self.y, 0, self.sx, self.sy)
+    end
 end
 
 return GraetUiImage

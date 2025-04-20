@@ -93,6 +93,9 @@ local function unload()
     musicTracks = nil --this MUST be nil and not empty table!! for now.
 
     love.thread.getChannel("background_closeThread"):push(true)
+
+    pauseMenu = nil
+    gameOverMenu = nil
 end
 
 
