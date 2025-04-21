@@ -155,9 +155,9 @@ function RiverGenerator:GetPercentageThrough(y)
     return 1
 end
 
-function RiverGenerator:Update()
+function RiverGenerator:Update(y)
     generatorThread_playerY:clear()
-    generatorThread_playerY:push(-player.y)
+    generatorThread_playerY:push(y or -player.y)
 
     local newPoints = generatorThread_riverSegments:pop()
     if newPoints then

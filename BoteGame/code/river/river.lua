@@ -66,9 +66,9 @@ function River:GetLastPoints()
 end
 
 
-function River:Update()
+function River:Update(y)
     -- local variable so it runs slightly faster
-    local playerY = (player.winY or player.y) + 50
+    local playerY = (y or (player.winY or player.y)) + 50
 
     if self.points and #self.points > 0 then
         for channel = 1,#self.points do
@@ -232,7 +232,7 @@ function River:addBackgorundFromData(imageData)
    
 end
 
-function River:Draw(scale)
+function River:Draw()
     love.graphics.push()
     --love.graphics.scale(1/scale)
 

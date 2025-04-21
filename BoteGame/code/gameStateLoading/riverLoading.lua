@@ -114,7 +114,7 @@ table.insert(toLoad, function()
     end
     obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
 
-    music.load()
+    
 
     inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
 

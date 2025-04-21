@@ -16,10 +16,10 @@ a.sounds = {
     }
 }
 
-function a.update(dt)
+function a.update(dt, y)
     -- set up variables
-    local p = riverGenerator:GetPercentageThrough(player.y)
-    local zoneNames = riverGenerator:GetZone(camera.y, true)
+    local p = riverGenerator:GetPercentageThrough(y or player.y)
+    local zoneNames = riverGenerator:GetZone(y or camera.y, true)
     
     local currentZone
     local transitionZone

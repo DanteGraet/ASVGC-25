@@ -7,6 +7,8 @@ local titleScreenButtons
 
 local settingsTimer = 0
 
+local y = 0
+
 local function resize()
     backgroundScale = love.graphics.getWidth()/1920
 
@@ -16,27 +18,29 @@ local function resize()
 end
 
 local function load()
+    love.physics.setMeter(100)
     resize()
 
     fontBlack32 = love.graphics.newFont("font/fontBlack.ttf",32)
 
     DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true)
+end
 
+local function unload()
+    love.thread.getChannel("background_closeThread"):push(true)
+    --while not love.thread.getChannel("background_closeThreadReceived"):pop() do
+      --  print("waiting")
+    --end
+    if musicTracks then
+        for i = 1, #musicTracks do
+            musicTracks[i].track:stop()
+        end
+    end
+
+    musicTracks = nil --this MUST be nil and not empty table!! for now.
 end
 
 local function extraLoad()
-    
-    
-    background = ParallaxImage:New(1920, 1080, {
-        {assets.image.titleScreen.parallax["1"], .03125},
-        {assets.image.titleScreen.parallax["2"], .0625},
-        {assets.image.titleScreen.parallax["3"], .09375},
-        {assets.image.titleScreen.parallax["4"], .125},
-        {assets.image.titleScreen.parallax["5"], .15625},
-        {assets.image.titleScreen.parallax["6"], .1875},
-        {assets.image.titleScreen.parallax["7"], .21875},
-    })
-    background.hovering = 1
 
     --Create the buttons for the titleScreen
     titleScreenUI = GraetUi:New()
@@ -45,6 +49,8 @@ local function extraLoad()
 
     local tempMenu = assets.code.menu.settingsMenu()
     settingsMenu = SettingsMenu:New()
+
+    music.load()
 end
 
 
@@ -54,14 +60,62 @@ end
 
 
 local function update(dt)
-    if not hasMouseFocus then
-        background:Update(dt, -math.huge, math.huge)
-    else
-        background:Update(dt, love.mouse.getX()/backgroundScale, love.mouse.getY()/backgroundScale, backgroundScale)
-    end
-
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+    y = y-100*dt
+
+    riverGenerator:Update(-y)
+
+    if river:HasPoints() then
+        zones = riverGenerator:GetZone(y, true)
+        local gs = 1
+
+        particles.updateParticles(dt*gs)
+
+        --spawnSnow(dt*gs)
+        ambiance.update(dt*gs, -y)
+
+
+
+        riverBorders.up =    y
+        riverBorders.down =  y + love.graphics.getHeight()/screenScale
+
+        -- update the river after the player so we can generate based on the players position.
+
+        river:Update(-y)
+        obstacleSpawner:Update()
+        world:update(dt*gs)
+
+        local contacts = world:getContacts()
+
+        for _, contact in ipairs(contacts) do
+            if contact:isTouching() then
+                local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
+                local dataA = fixtureA:getUserData()
+                local dataB = fixtureB:getUserData()
+                if dataA.first then
+                    dataA.remove = true
+                    fixtureA:setUserData(dataA)
+                elseif dataB.first then
+                    dataB.remove = true
+                    fixtureB:setUserData(dataB)
+                end    
+            end
+        end
+
+        for i = #obstacles,1, -1 do
+            obstacles[i]:Update(i, dt)
+        end
+
+    else      
+        river:checkNextSegment()
+
+        if river:HasPoints() then
+            player:moveToCenter()
+
+        end
+    end
 
     if settingsMenu.isOpen == false then
         titleScreenUI:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
@@ -75,6 +129,8 @@ local function update(dt)
 
         settingsTimer = math.min(settingsTimer + dt*2, 1)
     end
+
+    if music.manager then music.manager(dt) end
 end
 
 local function mousepressed(x, y, button)
@@ -113,21 +169,57 @@ end
 
 
 local function draw()
-    love.graphics.scale(backgroundScale)
-    
-    local sox = ((love.graphics.getWidth()/backgroundScale) - 1920) /2
-    local soy = ((love.graphics.getHeight()/backgroundScale) - 1080) /2
-
-    if background then
-        background:Draw(sox, soy, love.mouse.getX()/backgroundScale, love.mouse.getY()/backgroundScale)
-    end
-
     love.graphics.reset()
     love.graphics.scale(screenScale)
 
-    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    love.graphics.translate(sox, soy)
+    --love.graphics.translate(sox, soy)
+    local width = love.graphics.getWidth()/screenScale
+    local height = love.graphics.getHeight()/screenScale
+
+    love.graphics.push()
+
+    love.graphics.setColor(1,1,1)
+
+
+    -- Draw River Here
+    local s = (width*0.6 > 1920) and width*0.6 / 1920 or 1
+
+    love.graphics.translate(width*0.7,0)
+
+    love.graphics.scale(s)
+    love.graphics.translate(0, -y)
+
+
+
+    love.graphics.circle("line", 0,height/2, 10)
+    love.graphics.circle("line", 0,height/2, 50)
+    love.graphics.circle("line", 0,height/2, 100)
+    love.graphics.circle("line", 0,height/2, 500)
+    love.graphics.circle("line", 0,height/2, 1000)
+
+
+    if river:HasPoints() then
+
+        river:Draw()
+        for i = 1,#obstacles do
+            obstacles[i]:Draw(i)
+        end
+
+        particles.drawParticles("bottom")
+        particles.drawParticles("top")
+    end
+
+
+
+
+    love.graphics.pop()
+
+    love.graphics.setLineWidth(10)
+    love.graphics.setColor(quindoc.hexcode("743f30"))
+    love.graphics.rectangle("fill", 0, 0, width*0.4, height)
+
+    love.graphics.setColor(0,0,0)
+    love.graphics.line(width*0.4, 0, width*0.4, height)
 
     if titleScreenUI then
         titleScreenUI:Draw()
@@ -136,7 +228,7 @@ local function draw()
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(assets.image.titleScreen.title,50,50,0,0.75,0.75)
     love.graphics.setFont(fontBlack32)
-    love.graphics.print("Alpha Demo 1",350,350)
+    love.graphics.print("Alpha Demo 2???",350,350)
 
     if settingsMenu then
         settingsMenu:Draw(tweens.sineInOut(settingsTimer))
@@ -147,6 +239,7 @@ end
 return {
     load = load,
     extraLoad = extraLoad,
+    unload = unload, 
     resize = resize,
     mousefocus = mousefocus,
     mousepressed = mousepressed,

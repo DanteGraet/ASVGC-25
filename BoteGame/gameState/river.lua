@@ -374,7 +374,7 @@ local function draw()
 
         --Objects which exist within the game world are to be drawn here
 
-        river:Draw(scale)
+        river:Draw()
         for i = 1,#obstacles do
             obstacles[i]:Draw(i)
         end

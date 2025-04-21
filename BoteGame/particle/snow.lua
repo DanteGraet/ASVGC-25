@@ -27,7 +27,7 @@ function snowParticle:Update(dt)
 
    self.size = self.size - 0.1*dt
 
-    if self.x > love.graphics.getWidth()/2/GetRiverScale()[1]+100 then
+    if self.x > love.graphics.getWidth()/2/(GetRiverScale()[1] or screenScale)+100 then
         self.delete = true
     end
 

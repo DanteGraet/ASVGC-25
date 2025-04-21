@@ -262,7 +262,7 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
 
         -- the end x of the segment
         -- this is based in 1920x1080 screen size (default that we scale around)
-        local endX = math.random( -(1900 - endWidth)/2, (1900 - endWidth)/2 )
+        local endX = math.random( -((zone.maxDeviation or 1900) - endWidth)/2, ((zone.maxDeviation or 1900) - endWidth)/2 )
         --where it starts (used for mid thingss um yea)
         local startX = (localLastPoints[i][1].x + localLastPoints[i][2].x)/2
 
@@ -290,11 +290,17 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
         -- adjust the middle sections to reduce the effects of squihsing
             -- imagine the while river is rotated (traveling right) so we flip the x and y axis in atan2
         local angle = math.atan2(startX - endX, -segLegnth)
-            -- trun the angle into a percentage (0-100)
-        local anglePercentage = angle/(math.pi/2)
+            -- trun the angle into a percentage (0-1)
+        local anglePercentage = angle/(math.pi*2)
             -- finally change the y values
-        midLeftY = midLeftY + midWidth*anglePercentage
-        midRightY = midRightY - midWidth*anglePercentage
+
+        local minAmount = math.min(midWidth*anglePercentage, -midWidth*anglePercentage)
+        midLeftY = midLeftY + midWidth*anglePercentage + minAmount
+        midRightY = midRightY - midWidth*anglePercentage + minAmount
+
+        endLeftY = endLeftY  + minAmount*2
+        endRightY = endRightY + minAmount*2
+
 
 
         local leftCurve = love.math.newBezierCurve(

@@ -4,7 +4,7 @@ local snowTime
 local snowCounter
 local function createSnowParticle()
     local randY = love.math.random(riverBorders.down+100,riverBorders.up)
-    particles.spawnParticle("snow",-love.graphics.getWidth()/2/GetRiverScale()[1]-100,randY, nil, nil,"top")
+    particles.spawnParticle("snow",-love.graphics.getWidth()/2/(GetRiverScale()[1] or screenScale)-100,randY, nil, nil,"top")
 
 end
 

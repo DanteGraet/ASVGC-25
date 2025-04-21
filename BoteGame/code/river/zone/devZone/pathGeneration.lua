@@ -4,6 +4,8 @@ local settings = {
 
     segLenMax = 1500,
     segLenMin = 1000,
+
+    maxDeviation = 1900
 }
 
 return settings
