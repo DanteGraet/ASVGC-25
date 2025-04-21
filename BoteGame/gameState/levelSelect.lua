@@ -32,6 +32,8 @@ end
 local function extraLoad()
     uiFade = 0
 
+    levels = {}
+    menus = {}
     menus["boatSelectMenu"] = assets.code.menu.boatSelectMenu():New()
     levelSelectScreen = GraetUi:New()
 

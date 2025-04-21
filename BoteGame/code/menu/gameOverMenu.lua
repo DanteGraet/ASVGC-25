@@ -33,7 +33,7 @@ end
 
 function GameOverMenu.exit(self)
     -- UPDATE THIS LATER
-    gameState = "titleScreen"
+    gameState = "levelSelect"
 end
 
 function GameOverMenu:GenerateButtons()
@@ -48,7 +48,7 @@ function GameOverMenu:GenerateButtons()
     else
         self.Ui:AddTextButton("restart", "Retry", "center", font1, -width/4, height/2 - 75, width, colours)
     end
-    self.Ui:AddTextButton("exit", "Quit", "center", font1, width/4, height/2 - 75, width, colours)
+    self.Ui:AddTextButton("exit", "Exit", "center", font1, width/4, height/2 - 75, width, colours)
 
     self.Ui:GetButtons()["restart"].functions.release = {GameOverMenu.RestartGame, self}
     self.Ui:GetButtons()["exit"].functions.release = {GameOverMenu.exit, self}

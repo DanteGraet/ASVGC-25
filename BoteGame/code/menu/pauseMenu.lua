@@ -57,7 +57,7 @@ function PauseMenu:GenerateButtons()
     self.Ui:AddTextButton("continue", "Continue", "center", font1, 0, -height/2 + 92, width, colours)
     self.Ui:AddTextButton("restart", "Restart", "center", font1, 0, -height/2 + 92 + 75, width, colours)
     self.Ui:AddTextButton("settings", "Settings", "center", font1, 0, -height/2 + 92 + 150, width, colours)
-    self.Ui:AddTextButton("exit", "Main Menu", "center", font1, 0, -height/2 + 92 + 225, width, colours)
+    self.Ui:AddTextButton("exit", "Exit", "center", font1, 0, -height/2 + 92 + 225, width, colours)
 
     self.Ui:GetButtons()["continue"].functions.release = {PauseMenu.Close, self}
     self.Ui:GetButtons()["restart"].functions.release = {PauseMenu.RestartGame, self}
