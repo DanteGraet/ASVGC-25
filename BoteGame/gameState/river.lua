@@ -13,6 +13,8 @@ local settingsTween
 
 local mouseTimer = 0
 
+resizing = -1
+
 
 -- deefault values
 riverBorders = {
@@ -79,6 +81,18 @@ local function resize()
         width = love.graphics.getWidth() / scale,
         height= love.graphics.getHeight() / scale,
     }
+
+    local bgRequest = {
+        maxHeight = -riverBorders.down,
+        minHeight = -riverBorders.up,
+        width = riverBorders.width,
+    }
+    love.thread.getChannel("generatorThread_requestBackground"):push(bgRequest)
+    
+    if river then
+        --river.backgroundImages = {}
+    end
+    resizing = 0
 end
 
 
@@ -144,144 +158,146 @@ local function update(dt)
     end
 
     updateZonesAndRelatedData()
-    
 
-    --don't strike lightning if stepping
-
-    local stormIntensity = 0
-
-    if settings.graphics.lightning.value then
-        --[[if zones and type(zones[1]) == "table" then --if we are in a storm
-
-            local p = riverGenerator:GetPercentageThrough(player.y)
-            stormIntensity = (quindoc.runIfFunc(zones[1].stormIntensity,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].stormIntensity,0) or 0)*zones[3] 
-
-        elseif zones then --just set the storm amount to what it needs to be
-
-            local p = riverGenerator:GetPercentageThrough(player.y)
-            stormIntensity = quindoc.runIfFunc(zones.stormIntensity,p) or 0 --current is a GLOBAL VALUE for a reason btw
-
-        end    ]]
-
-        if not lightningAlpha then lightningAlpha = 0 end
-        --at MAXIMUM storm intensity, lighting will strike on average once per 10 seconds
-        if currentPlayerPos.stormIntensity and currentPlayerPos.stormIntensity > 500 and math.random(1,600/(currentPlayerPos.stormIntensity/1000) * (1/60/dt)) == 1 then
-            local strikeIntensity = math.random(2,6)/10
-            lightningAlpha = strikeIntensity
-            --TODO: Play lightning sound here, based on intensity
-        else
-            lightningAlpha = math.max(lightningAlpha-2*dt,0)
-        end
-    end
     riverGenerator:Update()
+    
+    if resizing < 0 then
+        local stormIntensity = 0
 
+        if settings.graphics.lightning.value then
+            --[[if zones and type(zones[1]) == "table" then --if we are in a storm
 
-    if river:HasPoints() then
+                local p = riverGenerator:GetPercentageThrough(player.y)
+                stormIntensity = (quindoc.runIfFunc(zones[1].stormIntensity,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].stormIntensity,0) or 0)*zones[3] 
 
-        local inputs = inputManager:GetInput()
+            elseif zones then --just set the storm amount to what it needs to be
 
-        local gs = tweens.sineInOut(gameSpeed)
+                local p = riverGenerator:GetPercentageThrough(player.y)
+                stormIntensity = quindoc.runIfFunc(zones.stormIntensity,p) or 0 --current is a GLOBAL VALUE for a reason btw
 
-        particles.updateParticles(dt*gs)
+            end    ]]
 
-        --spawnSnow(dt*gs)
-        ambiance.update(dt*gs)
-
-        -- Update the player first, all other things rely on it basically
-        player:Update(dt*gs, inputs)
-
-
-        ui:Update(dt*gs)
-
-        -- update the camera and similar variables after the player so it doesn't lag behind slightly
-        camera:SetPosition(0, player:GetPosition().y)
-        camera:Update(dt)
-
-        riverBorders.up =    (player.winY or player.y) - camera.oy
-        riverBorders.down =  (player.winY or player.y) - camera.oy + love.graphics.getHeight()/scale
-
-        -- update the river after the player so we can generate based on the players position.
-
-        river:Update()
-
-        obstacleSpawner:Update()
-
-        world:update(dt*gs)
-
-        local contacts = world:getContacts()
-
-        for _, contact in ipairs(contacts) do
-            if contact:isTouching() then
-                local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
-                local dataA = fixtureA:getUserData()
-                local dataB = fixtureB:getUserData()
-                if dataA.first then
-                    dataA.remove = true
-                    fixtureA:setUserData(dataA)
-                elseif dataB.first then
-                    dataB.remove = true
-                    fixtureB:setUserData(dataB)
-                elseif dataA.type == "player" or dataB.type == "player" then
-                    local playerData
-                    local collideData
-
-                    if dataA.type == "player" then
-                        playerData = dataA
-                        collideData = dataB
-                    else
-                        playerData = dataB
-                        collideData = dataA
-                    end
-
-                    if not collideData.hasCollided then
-                        collideData.hasCollided = true
-                        player:TakeDamage(1)
-                    end
-                end    
-            end
-        end
-
-        for i = #obstacles,1, -1 do
-            obstacles[i]:Update(i, dt)
-        end
-
-
-        if (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
-            local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-            local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-
-            gameOverMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-
-        elseif pauseMenu.isOpen then
-            local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-            local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-        
-            pauseMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-
-            gameSpeed = math.max(gameSpeed - dt*2, 0)
-
-            if pauseMenu.settingsTimer > 0 then
-                settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-            end
-        else
-            if not player.wasBeached then
-                gameSpeed = math.min(gameSpeed + dt*2, 1)
+            if not lightningAlpha then lightningAlpha = 0 end
+            --at MAXIMUM storm intensity, lighting will strike on average once per 10 seconds
+            if currentPlayerPos.stormIntensity and currentPlayerPos.stormIntensity > 500 and math.random(1,600/(currentPlayerPos.stormIntensity/1000) * (1/60/dt)) == 1 then
+                local strikeIntensity = math.random(2,6)/10
+                lightningAlpha = strikeIntensity
+                --TODO: Play lightning sound here, based on intensity
             else
-                gameSpeed = math.min(gameSpeed + dt, 1)
-
-                if gameSpeed == 1 then
-                    player.wasBeached = nil
-                end
+                lightningAlpha = math.max(lightningAlpha-2*dt,0)
             end
         end
 
-    else      
-        river:checkNextSegment()
 
         if river:HasPoints() then
-            player:moveToCenter()
 
+            local inputs = inputManager:GetInput()
+
+            local gs = tweens.sineInOut(gameSpeed)
+
+            particles.updateParticles(dt*gs)
+
+            --spawnSnow(dt*gs)
+            ambiance.update(dt*gs)
+
+            -- Update the player first, all other things rely on it basically
+            player:Update(dt*gs, inputs)
+
+
+            ui:Update(dt*gs)
+
+            -- update the camera and similar variables after the player so it doesn't lag behind slightly
+            camera:SetPosition(0, player:GetPosition().y)
+            camera:Update(dt)
+
+            riverBorders.up =    (player.winY or player.y) - camera.oy
+            riverBorders.down =  (player.winY or player.y) - camera.oy + love.graphics.getHeight()/scale
+
+            -- update the river after the player so we can generate based on the players position.
+
+            river:Update()
+
+            obstacleSpawner:Update()
+
+            world:update(dt*gs)
+
+            local contacts = world:getContacts()
+
+            for _, contact in ipairs(contacts) do
+                if contact:isTouching() then
+                    local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
+                    local dataA = fixtureA:getUserData()
+                    local dataB = fixtureB:getUserData()
+                    if dataA.first then
+                        dataA.remove = true
+                        fixtureA:setUserData(dataA)
+                    elseif dataB.first then
+                        dataB.remove = true
+                        fixtureB:setUserData(dataB)
+                    elseif dataA.type == "player" or dataB.type == "player" then
+                        local playerData
+                        local collideData
+
+                        if dataA.type == "player" then
+                            playerData = dataA
+                            collideData = dataB
+                        else
+                            playerData = dataB
+                            collideData = dataA
+                        end
+
+                        if not collideData.hasCollided then
+                            collideData.hasCollided = true
+                            player:TakeDamage(1)
+                        end
+                    end    
+                end
+            end
+
+            for i = #obstacles,1, -1 do
+                obstacles[i]:Update(i, dt)
+            end
+
+
+            if (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
+                local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+                local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+                gameOverMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+
+            elseif pauseMenu.isOpen then
+                local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+                local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+            
+                pauseMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+
+                gameSpeed = math.max(gameSpeed - dt*2, 0)
+
+                if pauseMenu.settingsTimer > 0 then
+                    settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+                end
+            else
+                if not player.wasBeached then
+                    gameSpeed = math.min(gameSpeed + dt*2, 1)
+                else
+                    gameSpeed = math.min(gameSpeed + dt, 1)
+
+                    if gameSpeed == 1 then
+                        player.wasBeached = nil
+                    end
+                end
+            end
+
+        else      
+            river:checkNextSegment()
+
+            if river:HasPoints() then
+                player:moveToCenter()
+
+            end
         end
+    else
+        resizing = resizing + (dt*math.pi)/10
     end
 
 
@@ -463,6 +479,41 @@ local function draw()
 
         love.graphics.scale(screenScale)
         loading.image:Draw(love.graphics.getWidth()/screenScale/2 - 960, love.graphics.getHeight()/screenScale/2 - 540, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+    end
+
+    if resizing >= 0 then
+        local screenScale = love.graphics.getWidth()/1920
+        if love.graphics.getHeight()/1080 > screenScale then
+            screenScale = love.graphics.getHeight()/1080
+        end
+
+        love.graphics.origin()
+        love.graphics.scale(screenScale)
+    
+        local width = love.graphics.getWidth()/screenScale
+        local height = love.graphics.getHeight()/screenScale
+    
+        love.graphics.setColor(0,0,0, 0.5)
+        love.graphics.rectangle("fill", 0, 0, width, height)
+
+    
+        font.setFont("black", 64)
+        local step = 10
+        local dist = 5
+        local suf = ""
+        for i = 1, (resizing*10)%4 do
+            suf = suf .. "."
+        end
+        love.graphics.setColor(0,0,0, 1)
+        for i = 0,359, step do
+            local angle = math.rad(i)
+            local x = 16 + math.cos(angle)*dist
+            local y = height - 100 + math.sin(angle)*dist
+            love.graphics.print("loading" .. suf, x, y)
+        end
+        love.graphics.setColor(1,1,1, 1)
+        love.graphics.print("loading".. suf, 16, height-100)
+
     end
 
     love.graphics.reset()

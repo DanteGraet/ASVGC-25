@@ -211,6 +211,10 @@ end
 
 
 function River:addBackgorundFromData(imageData)
+    if resizing >= 0 then
+        resizing = -1
+        self.backgroundImages = {}
+    end
     local tempImage = love.image.newImageData(imageData.width, imageData.height+1)
 
     for y = 1,#imageData.pixles do
@@ -224,6 +228,8 @@ function River:addBackgorundFromData(imageData)
     finalImage:setFilter("nearest", "nearest")
 
     table.insert(self.backgroundImages, {y = -imageData.y, image = finalImage, x = -(imageData.width/2)*pixlesPerPixle})
+    
+   
 end
 
 function River:Draw(scale)

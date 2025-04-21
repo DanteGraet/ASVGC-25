@@ -30,6 +30,7 @@ local zoneData = {}
 local backgroundY = -180
 
 local tempRiver = {}
+local riverStore = {{{},{}}}
 
 --Load these first
 
@@ -474,6 +475,25 @@ while threadRunning do
     if bgRequest then
         love.thread.getChannel("generatorThread_backgroundImageData"):clear()
         screenWidth = bgRequest.width
+
+        --[[for channel = 1,#riverStore do
+            --loop though each side
+            for side = 1,#riverStore[channel] do
+                for i = 1,#riverStore[channel][side] do
+                    local point = riverStore[channel][side][1]
+    
+                    if point and -point.y < bgRequest.minHeight then
+                        table.insert(tempRiver[channel][side], point)
+                        table.remove(riverStore[channel][side], 1)
+                        print("re-Added Point ", -point.y, bgRequest.minHeight )
+                    else
+                        -- no longer check this side of this channel
+                        break
+                    end
+                end
+            end
+        end]]
+
         love.thread.getChannel("generatorThread_backgroundImageData"):push(generateImageData(math.floor(bgRequest.maxHeight)-3, math.floor((bgRequest.minHeight-bgRequest.maxHeight)/3)+200))
     else        
         if playerY + 1000 > backgroundY then
@@ -488,7 +508,8 @@ while threadRunning do
             for i = 1,#tempRiver[channel][side] do
                 local point = tempRiver[channel][side][2]
 
-                if point and -point.y < backgroundY then
+                if point and -point.y < backgroundY - screenWidth then
+                    table.insert(riverStore[channel][side], 1, tempRiver[channel][side][1])
                     table.remove(tempRiver[channel][side], 1)
                 else
                     -- no longer check this side of this channel
