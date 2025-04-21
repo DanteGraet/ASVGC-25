@@ -5,7 +5,7 @@ return {
         data = {
             bigRock = {
                 -- the base spawnWeight that this obstical has
-                spawnWeight = 3,
+                spawnWeight = 1,
 
                 -- the amount the spawnWeight can change by (+- 1/2)
                 weightChange = 0,
@@ -18,7 +18,7 @@ return {
             } ,
             rock = {
                 -- the base spawnWeight that this obstical has
-                spawnWeight = 1,
+                spawnWeight = 3,
 
                 -- the amount the spawnWeight can change by (+- 1/2)
                 weightChange = 0,

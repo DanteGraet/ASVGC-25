@@ -14,7 +14,7 @@ local hillsTreeObstacle = setmetatable({}, { __index = Obstacle })
 hillsTreeObstacle.__index = hillsTreeObstacle
 
 local hillsTreeAcceptedColours = {
-    0.23,
+    0.33,
     0.42
 }
 

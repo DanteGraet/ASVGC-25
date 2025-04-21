@@ -48,7 +48,7 @@ local function GetColourAt(x, y)
             local snowPatch = 0.9*love.math.noise(2*x/1600.1,2*y/1600.1) + 0.1*love.math.noise(x/100.1,y/100.1)
 
             if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = {0.23,0.7,0.06}
+                colour = {0.33,0.7,0.06}
             else colour = {0.42,0.6,0.18} end
 
 
