@@ -332,10 +332,10 @@ function DynamicLoading:Draw(percentage, current)
         local angle = math.rad(i)
         local x = 16 + math.cos(angle)*dist
         local y = height - 100 + math.sin(angle)*dist
-        love.graphics.print("loading" .. suf, x, y)
+        love.graphics.print("Loading" .. suf, x, y)
     end
     love.graphics.setColor(1,1,1, a)
-    love.graphics.print("loading".. suf, 16, height-100)
+    love.graphics.print("Loading".. suf, 16, height-100)
 
     love.graphics.setColor(1,1,1, 1)
 

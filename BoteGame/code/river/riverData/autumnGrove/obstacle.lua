@@ -1,5 +1,5 @@
-local function iceplainsCurrent(percentage)
-    return 100*quindoc.clamp(percentage,0,1) + 100
+local function coniferousHillsCurrent(percentage)
+    return 200*quindoc.clamp(percentage,0,1) + 300
 end
 
 local function boulderValleyDifficulty(percentage)
@@ -62,9 +62,10 @@ end
 
 
 return {
-    ["Ice Plains"] = {
-        difficultyFunction = 0.01,
-        current = iceplainsCurrent,
+    ["Coniferous Hills"] = {
+        difficultyFunction = 0.02,
+        current = coniferousHillsCurrent,
+        stormIntensity=0
     },
     ["Boulder Valley"] = {
         difficultyFunction = boulderValleyDifficulty,

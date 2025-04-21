@@ -44,13 +44,13 @@ function PlayerBoat:New(skin)
     obj.autoSpeed = 71.3*3
     obj.minSpeed = 0
 
-    obj.turnSpeed = math.pi/3
+    obj.turnSpeed = math.pi/2
     obj.dir = -math.rad(90)
     obj.maxAngle = math.rad(120)
     obj.up = -math.rad(90)
 
     obj.baseTurnSpeed = 1 --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness
-    obj.baseXSpeed = 0 --you wouldn't want that would you? no,because otherwise you will lose the game
+    obj.baseXSpeed = 50 --you wouldn't want that would you? no,because otherwise you will lose the game
 
     
     obj.image = assets.code.player.playerData.data[selectedBoat[1]][selectedBoat[2]].skin
@@ -129,9 +129,15 @@ function PlayerBoat:Update(dt, inputs)
                     , self.autoSpeed)
             end
 
-            self.baseXSpeed = 15*math.sqrt(current or 0)
 
-            self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt * bt
+            riverCurrentSpeed = findRiverCurrent(riverGenerator:GetPercentageThrough(self.y)) or 0
+
+            local currentXSpeed = riverCurrentSpeed/10+math.sqrt(riverCurrentSpeed)
+
+            self.currentXSpeed = (currentXSpeed) 
+
+
+            self.x = self.x + math.cos(self.dir)*(self.speed+self.currentXSpeed+self.baseXSpeed) * dt * bt
             self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
 
 
@@ -195,10 +201,10 @@ function PlayerBoat:Update(dt, inputs)
 
             self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
 
+            riverCurrentSpeed = findRiverCurrent(riverGenerator:GetPercentageThrough(self.y))
+            self.currentXSpeed = math.sqrt(riverCurrentSpeed or 0) 
 
-            self.baseXSpeed = 15*math.sqrt(current or 0)
-
-            self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt * bt
+            self.x = self.x + math.cos(self.dir)*(self.speed+self.baseXSpeed+self.currentXSpeed) * dt * bt
             self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
 
             self.winY = self.winY + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer)) * tweens.sineInOut(1-self.winTimer)

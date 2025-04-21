@@ -1,5 +1,7 @@
 require("requirements")
 
+require("i give up")
+
 gameState = ""
 previousGameState = ""
 game = {}
