@@ -15,6 +15,10 @@ local function resize()
     if love.graphics.getHeight()/1080 > backgroundScale then
         backgroundScale = love.graphics.getHeight()/1080
     end
+
+    if titleScreenUI ~= nil then
+        titleScreenButtons.CreateButtons(titleScreenUI)
+    end
 end
 
 local function load()
@@ -118,7 +122,7 @@ local function update(dt)
     end
 
     if settingsMenu.isOpen == false then
-        titleScreenUI:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+        titleScreenUI:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
 
         settingsTimer = math.max(settingsTimer - dt*2, 0)
     else
@@ -139,7 +143,7 @@ local function mousepressed(x, y, button)
 
     if settingsMenu then
         if settingsMenu.isOpen == false then
-            titleScreenUI:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+            titleScreenUI:Click(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
         else
             settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
         end
@@ -153,7 +157,7 @@ local function mousereleased(x, y, button)
 
     if settingsMenu then
         if settingsMenu.isOpen == false then
-            titleScreenUI:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+            titleScreenUI:Release(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
         else
             settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)        
         end
@@ -189,13 +193,6 @@ local function draw()
     love.graphics.scale(s)
     love.graphics.translate(0, -y)
 
-
-
-    love.graphics.circle("line", 0,height/2, 10)
-    love.graphics.circle("line", 0,height/2, 50)
-    love.graphics.circle("line", 0,height/2, 100)
-    love.graphics.circle("line", 0,height/2, 500)
-    love.graphics.circle("line", 0,height/2, 1000)
 
 
     if river:HasPoints() then

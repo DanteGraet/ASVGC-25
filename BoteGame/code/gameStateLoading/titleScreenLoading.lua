@@ -12,11 +12,11 @@ local toLoad = {
     {"code/titleScreen/titleScreenButtons.lua"},
 
     --settings menu stuff is also here :D
+
+
+
+
     {"code/menu/settingsMenu.lua"},
-    {"image/ui/settings/bar.png", "blur"},
-    {"image/ui/settings/indicator.png", "blur"},
-    {"image/ui/settings/check.png", "blur"},
-    {"image/ui/settings/empty.png", "blur"},
 
     --{"font/fontBlack.ttf",24},
     --{"font/fontBlack.ttf",32},
@@ -69,7 +69,15 @@ for i , value in pairs(riverZones) do
     table.insert(toLoad, {"code/river/zone/" .. riverZones[i].zone .. "/backgroundGeneration.lua", "run", "GetColourAt"})
 end
 
-
+table.insert(toLoad, function()
+    if not assets.image.ui then assets.image.ui = {} end
+    if not assets.image.ui then assets.image.ui = {} end
+    if not assets.image.ui.settings then assets.image.ui.settings = {} end
+    assets.image.ui.settings.bar = love.graphics.newImage("image/ui/settings/bar.png")
+    assets.image.ui.settings.indicator = love.graphics.newImage("image/ui/settings/indicator.png")
+    assets.image.ui.settings.check = love.graphics.newImage("image/ui/settings/check.png")
+    assets.image.ui.settings.empty = love.graphics.newImage("image/ui/settings/empty.png")
+end)
 
 table.insert(toLoad, function()
     riverFileDirectory = assets.code.river.riverData[riverName]

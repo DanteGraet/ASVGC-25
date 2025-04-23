@@ -2,12 +2,13 @@ local tsb = {}
 local fontBlack72 = love.graphics.newFont("font/fontBlack.ttf",100)--get trolled
 
 function tsb.CreateButtons(UI)
+    local width = love.graphics.getWidth()/screenScale
 
-    local f = font.getFont({"black", 72})
+    local f = font.getFont({"black", 100})
     --Font is temporary i hope.
-    UI:AddTextButton("quitButton", "Quit", "left", {"black", 72}, 175, 460 + f:getHeight()*2, 1920, {{1,1,1}, {0.9, 0.8, 0.9}, {0.8, 0.6, 0.6}})
-    UI:AddTextButton("settingsButton", "Settings", "left", {"black", 72}, 175, 460 + f:getHeight(), 960, {{1,1,1}, {0.8, 0.8, 0.9}, {0.6, 0.6, 0.7}})
-    UI:AddTextButton("playButton", "Play", "left", {"black", 72}, 175, 460 + f:getHeight()*0, 960, {{1,1,1}, {0.8, 0.8, 0.9}, {0.6, 0.6, 0.7}})
+    UI:AddTextButton("quitButton", "Quit", "center",            {"black", 100}, width*0.2 - 2.5, 460 + f:getHeight()*2, 1920,   {{1,1,1}, {1, 0.6, 0.6}, {1, 0.4, 0.4}})
+    UI:AddTextButton("settingsButton", "Settings", "center",    {"black", 100}, width*0.2 - 2.5, 460 + f:getHeight(), 960,      {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
+    UI:AddTextButton("playButton", "Play", "center",            {"black", 100}, width*0.2 - 2.5, 460 + f:getHeight()*0, 960,    {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
 
     --Temporary fix for adding functions to buttons :D
     UI:GetButtons()["quitButton"].functions.release =       {tsb.quitButtonRelease}
@@ -23,6 +24,7 @@ function tsb.CreateButtons(UI)
         UI:GetButtons()["devRiverButton"].functions.release =       {tsb.devRiverButtonRelease}
     end
 end
+
 
 function tsb.quitButtonRelease()
     -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
