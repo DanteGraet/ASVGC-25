@@ -22,7 +22,7 @@ function PlayerBoat:New(skin)
     obj.imageOx = obj.image:getWidth()/2
     obj.imageOy = obj.image:getHeight()/2
 
-    obj.x = -1000000
+    obj.x = 0
     obj.y = 0
     obj.score = 0
     obj.runTime = 0
@@ -66,9 +66,9 @@ end
 
 
 function PlayerBoat:Update(dt, inputs)
-    if self.x < -500000 then    -- player spawns out heaps
-        player:moveToCenter()
-    end
+    --if self.x < -500000 then    -- player spawns out heaps
+    --    player:moveToCenter()
+    --end
     
     self.runTime = self.runTime + dt
 
@@ -296,6 +296,7 @@ end
 
 
 function PlayerBoat:moveToCenter()
+    print("\n\nMoving Player \n\n")
     local leftPoint = river:FindHighAndLowPoints(1, 1, self.y)
     local rightPoint = river:FindHighAndLowPoints(1, 2, self.y)
     local midPoint = (leftPoint.x + rightPoint.x)/2
@@ -312,6 +313,7 @@ end
 
 
 function PlayerBoat:TakeDamage(amount, noShake)
+    --error("dmg")
     if self.immunity == 0 then
         self.health = self.health - amount
         self.immunity = 1

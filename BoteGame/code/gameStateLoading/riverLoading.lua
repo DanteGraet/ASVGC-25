@@ -95,6 +95,8 @@ table.insert(toLoad, function()
     world = love.physics.newWorld(0, 0, false)
     world:setCallbacks( beginContact, endContact, preSolve, postSolve )
 
+
+
     player = assets.code.player.playerBoat():New()
     ui = assets.code.player.playerUi()
     camera = assets.code.camera():New(0, 0, 960, 900)

@@ -130,6 +130,8 @@ local function extraLoad()
     gameOverMenu = GameOverMenu:New()
 
     gameSpeed = 0
+
+    player:moveToCenter()
 end
 
 function GetRiverScale()

@@ -113,6 +113,8 @@ function River:IsInBounds(x, y)
                 return true
             end
         end
+    else
+        return true
     end
 
     return false
@@ -143,9 +145,10 @@ function River:FindHighAndLowPoints(channel, side, yPos)
     end
 
     --just guess at this point
-    print("guessing :D")
     local h = self.points[channel][side][1]
     local l = self.points[channel][side][2]
+    print("guessing :D \np1:" ..  dante.dataToString(h) .. "\nl:" .. dante.dataToString(l))
+    --error("bad, no point at " .. channel .. " " .. side .. " " .. yPos)
     return h, l or h
 end
 
@@ -185,7 +188,11 @@ function River:GetCurrent(yPos, xPos) -- returns the average direction angle of 
 
     end    
 
-    speed = currentPlayerPos.current
+    if currentPlayerPos then
+        speed = currentPlayerPos.current or 0
+    else
+        speed = 0
+    end
 
     if self.points and #self.points > 0 then
         for channel = 1,#self.points do
