@@ -1,7 +1,7 @@
 return {
     icePlains = {
-        zone = "icePlains",
-        displayName = "Ice Plains",
+        zone = "titleZone",
+        displayName = "Title Zone",
         distanceTitle = "-- hmm --",
         subtitle = "River's Source",
 
