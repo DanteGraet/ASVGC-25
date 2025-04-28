@@ -121,6 +121,8 @@ table.insert(toLoad, function()
     inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
 
     particles.loadParticles()
+
+    music.load()
 end)
 
 return toLoad

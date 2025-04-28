@@ -33,7 +33,7 @@ function a.update(dt, y)
     end
     
 
-    if transitionZone  then --if we are in a transition
+    if transitionZone and currentZone.windSpeed then --if we are in a transition
         a.windSpeed = quindoc.runIfFunc(currentZone.windSpeed,p)*(1-transitionPercent) + quindoc.runIfFunc(transitionZone.windSpeed,0)*transitionPercent
     elseif currentZone.windSpeed then --just set the snow amount to what it needs to be
         a.windSpeed = quindoc.runIfFunc(currentZone.windSpeed,p) or 100

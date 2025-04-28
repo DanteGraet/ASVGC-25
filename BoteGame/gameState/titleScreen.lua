@@ -35,14 +35,8 @@ local function unload()
     --while not love.thread.getChannel("background_closeThreadReceived"):pop() do
       --  print("waiting")
     --end
-    if musicTracks then
-        for i = 1, #musicTracks do
-            musicTracks[i].track:stop()
-        end
+    music.unload()
     end
-
-    musicTracks = nil --this MUST be nil and not empty table!! for now.
-end
 
 local function extraLoad()
 

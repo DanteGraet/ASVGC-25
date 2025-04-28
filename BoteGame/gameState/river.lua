@@ -102,13 +102,7 @@ local function unload()
       --  print("waiting")
     --end
     UpdateHighScore()
-    if musicTracks then
-        for i = 1, #musicTracks do
-            musicTracks[i].track:stop()
-        end
-    end
-
-    musicTracks = nil --this MUST be nil and not empty table!! for now.
+    music.unload()
 
     pauseMenu = nil
     gameOverMenu = nil

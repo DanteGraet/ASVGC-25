@@ -5,8 +5,20 @@ local musicTracks
 local zoneMusicTarget
 local lastZone = ""
 
+function music.unload()
+    if musicTracks then
+        for i = 1, #musicTracks do
+            musicTracks[i].track:stop()
+        end
+    end
+
+    musicTracks = nil --this MUST be nil and not empty table!! for now.
+end
+
 function music.load()
     local data = love.filesystem.load("code/river/riverData/" .. riverName .. "/music.lua")()
+
+    dante.printTable(data)
   
     crossFadeSpeed = data.data.crossFadeSpeed
     if musicTracks == nil then
@@ -25,7 +37,7 @@ function music.manager(dt)
             --play all tracks at once to avoid desync
             for i = 1, #musicTracks do
                 musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume,0.001,1)
-                musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5)
+                musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5*settings.audio.masterVolume.value)
                 musicTracks[i].track:play()
             end
 
@@ -34,7 +46,7 @@ function music.manager(dt)
             --music.lastBar = 0
             --music.firstFrameInBar = true   
 
-        elseif musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value <= 0 then
+        elseif musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value <= 0 and settings.audio.masterVolume.value <= 0  then
             for i = 1, #musicTracks do
                 musicTracks[i].track:stop()
             end
@@ -50,9 +62,13 @@ function music.manager(dt)
         if currentZoneName ~= lastZone then
             if zoneMusicTarget[currentZoneName] then
                 local targets = quindoc.runIfFunc(zoneMusicTarget[currentZoneName])
+                if targets then
+                    for i = 1,#targets do
+                        if musicTracks[i] then
 
-                for i = 1,#targets do
-                    musicTracks[i].targetVolume = targets[i] or musicTracks[i].targetVolume
+                            musicTracks[i].targetVolume = targets[i] --or musicTracks[i].targetVolume
+                        end
+                    end
                 end
             end
             lastZone = currentZoneName

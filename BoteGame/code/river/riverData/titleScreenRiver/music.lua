@@ -7,5 +7,6 @@ return {
         },
     },
     zones = {
+        ["Title Zone"] = {1,1}
     }
 }

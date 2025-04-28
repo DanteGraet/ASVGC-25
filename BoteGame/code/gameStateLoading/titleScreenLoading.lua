@@ -99,7 +99,7 @@ table.insert(toLoad, function()
     end
     obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
 
-    music.load()
+    --music.load()
 
     particles.loadParticles()
 end)
