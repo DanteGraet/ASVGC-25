@@ -46,14 +46,18 @@ local toLoad = {
 
 }
 
-riverName = "titleScreenRiver"
+table.insert(toLoad, function()
+    riverName = "titleScreenRiver"
+end)
 
-local riverZones = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.lua")()
+local rn = "titleScreenRiver"
+
+local riverZones = love.filesystem.load("code/river/riverData/" .. rn .. "/zone.lua")()
 -- load this file in a more permenant position.
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/zone.lua"})
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/music.lua", "run"})
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/ambiance.lua", "run"})
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/obstacle.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. rn .. "/zone.lua"})
+table.insert(toLoad, {"code/river/riverData/" .. rn .. "/music.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. rn .. "/ambiance.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. rn .. "/obstacle.lua", "run"})
 
 for i , value in pairs(riverZones) do
     -- add a falg to tell the code to add the obsticals to the loaded list later :/
@@ -80,7 +84,7 @@ table.insert(toLoad, function()
 end)
 
 table.insert(toLoad, function()
-    riverFileDirectory = assets.code.river.riverData[riverName]
+    riverFileDirectory = assets.code.river.riverData[rn]
     world = love.physics.newWorld(0, 0, false)
     world:setCallbacks( beginContact, endContact, preSolve, postSolve )
     --camera = assets.code.camera():New(0, 0, 960, 900)
@@ -89,7 +93,7 @@ table.insert(toLoad, function()
     ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
 
     river = assets.code.river.river():New()
-    riverGenerator = assets.code.river.generator.riverGenerator():New(riverName)
+    riverGenerator = assets.code.river.generator.riverGenerator():New(rn)
 
     obstacles = {}
     local zoneObsitcalList = {}

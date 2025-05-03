@@ -47,6 +47,7 @@ end
 function tsb.devRiverButtonRelease()
     riverName = "devRiver"
     gameState = "river"
+    print("--set dev river")
 end
 
 
