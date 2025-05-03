@@ -12,7 +12,11 @@ local toLoad = {
     -- in a function so we don't unload it
     function()
         if not assets.save then assets.save = {} end
-        assets.save.highscore = love.filesystem.load("save/highscore.lua")()
+        if love.filesystem.getInfo("save/highscore.lua") then
+            assets.save.highscore = love.filesystem.load("save/highscore.lua")()
+        else
+            assets.save.highscore = {}
+        end
     end,
 
 

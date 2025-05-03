@@ -193,7 +193,6 @@ local function draw()
         --love.graphics.draw(img, l.x, l.y - (math.sin(l.sine)+1)*l.sineEffect, 0, 0.375, 0.375, img:getWidth()/2, img:getHeight()/2)
         love.graphics.draw(img, l.x, l.y - (math.sin(l.sine)+1)*l.sineEffect, 0, 0.375, 0.375, img:getWidth()/2, img:getHeight() - 96/2)
 
-
     end
     love.graphics.setColor(1,1,1)
 
@@ -205,9 +204,6 @@ local function draw()
             menus["boatSelectMenu"]:Draw(f)
         end
     end
-
-
- 
 end
 
 
