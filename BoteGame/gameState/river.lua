@@ -305,7 +305,7 @@ local function mousepressed(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
+    if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and (pauseMenu and not pauseMenu.isOpen) then
         gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
     end
 
