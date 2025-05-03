@@ -1,7 +1,7 @@
 return {
     ["Title Zone"] = {
         difficultyFunction = 0.01,
-        current = iceplainsCurrent,
+        current = 300,
     },
 }
 

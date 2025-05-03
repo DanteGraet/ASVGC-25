@@ -65,12 +65,10 @@ return {
     ["Coniferous Hills"] = {
         difficultyFunction = 0.02,
         current = coniferousHillsCurrent,
-        stormIntensity=0
     },
-    ["Boulder Valley"] = {
-        difficultyFunction = boulderValleyDifficulty,
-        current = boulderValleyCurrent,
-        chainLengthCoefficient = boulderValleyChainLengthCoefficient,
+    ["Autumn Grove"] = {
+        difficultyFunction = 0.01,
+        current = 0,
     },
     ["Storm Valley"] = {
         stormIntensity = boulderValleyStormIntensity_STORM,

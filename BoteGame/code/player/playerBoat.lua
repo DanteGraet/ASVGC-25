@@ -46,7 +46,7 @@ function PlayerBoat:New(skin)
 
     obj.turnSpeed = math.pi/2
     obj.dir = -math.rad(90)
-    obj.maxAngle = math.rad(120)
+    obj.maxAngle = math.rad(150)
     obj.up = -math.rad(90)
 
     obj.baseTurnSpeed = 1 --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness

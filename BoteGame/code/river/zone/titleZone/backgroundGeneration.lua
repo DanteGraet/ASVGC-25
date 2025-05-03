@@ -8,6 +8,7 @@ local function GetColourAt(x, y)
         distToEdge = river:getDistToEdge(x, y)
     end
 
+
     if distToEdge < 0 then
 
         local noiseA = love.math.noise(y/300.01)/100
@@ -26,32 +27,42 @@ local function GetColourAt(x, y)
         
         --if p > 0.9 then p = 0 end
 
-        if zones and zones.zone == "mvpForest" then
-            p = quindoc.clamp(globals.GetPercentageThrough(y)-0.2,0,1)
+        if zones and zones.zone == "coniferousMountainside" then
+            p = quindoc.clamp(riverGenerator:GetPercentageThrough(y)-0.2,0,1)
         end
 
-        elevation = distToEdge/(500+500*p)
+        local elevation = distToEdge/(500+500*p)
 
         local noiseA = love.math.noise(y/1500.01) / 10
         local noiseB = love.math.noise(y/300.01) / 10
         local noiseC = love.math.noise(y/50.01) / 50
 
         if elevation < 0.05 then --riverbank
-            colour = {0.41,0.43,0.42}
+            colour = {0.85,0.9,0.25}
         elseif elevation < 0.10 +noiseA/10 then --near riverbank
-            colour = {0.76,0.83,0.8}
-        else 
+
+            colour = {0.59,0.82,0.28}
+
+        elseif elevation < 0.97*(3*p+1) + noiseB - noiseA then --main gtass
             
-            if love.math.noise(x/1000.1,y/1000.1) < 0.5 then
-                colour = {0.89,0.95,0.95}
-            else colour = {0.821,0.94,0.94} end
+            --local snowPatch = 0.9*love.math.noise(2*x/1600.1,2*y/1600.1) + 0.1*love.math.noise(x/100.1,y/100.1)
+
+            if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
+                colour = {0.4,0.63,0.18}
+            else colour = {0.4,0.66,0.14} end
 
 
+        elseif elevation < 1*(3*p+1) + noiseB - noiseA then --uppergrass
+            colour = {0.36,0.63,0.07}
+        else 
+            if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
+                colour = {0.45,0.69,0.2}
+            else colour = {0.45,0.72,0.14} end
         end
 
         return colour
 
     end    
 end
-
-return GetColourAt
+    
+return GetColourAt  
