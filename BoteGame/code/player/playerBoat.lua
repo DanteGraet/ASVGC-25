@@ -256,7 +256,6 @@ end
 
 
 function PlayerBoat:moveToCenter()
-    print("\n\nMoving Player \n\n")
     local leftPoint = river:FindHighAndLowPoints(1, 1, self.y)
     local rightPoint = river:FindHighAndLowPoints(1, 2, self.y)
     local midPoint = (leftPoint.x + rightPoint.x)/2
@@ -273,7 +272,6 @@ end
 
 
 function PlayerBoat:TakeDamage(amount, noShake)
-    --error("dmg")
     if self.immunity == 0 then
         self.health = self.health - amount
         self.immunity = 1
