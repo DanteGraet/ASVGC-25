@@ -142,6 +142,13 @@ function GameOverMenu:Draw(gs)
     
     -- white is there so if the player gets the same score (unlikely like very unlikey) then there will only on white score
     local white = false
+    if assets.save.highscore then
+        if not assets.save.highscore[riverName] then
+            assets.save.highscore[riverName] = {}
+        end
+    else
+        assets.save.highscore = {riverName = {}}
+    end
     for i = 1,#assets.save.highscore[riverName] do
         local pref = ""
         local suf = ""
