@@ -190,7 +190,6 @@ local function draw()
 
 
     if river:HasPoints() then
-
         river:Draw()
         for i = 1,#obstacles do
             obstacles[i]:Draw(i)
@@ -209,7 +208,7 @@ local function draw()
     love.graphics.setColor(quindoc.hexcode("743f30"))
     love.graphics.rectangle("fill", 0, 0, width*0.4, height)
 
-    love.graphics.setColor(0,0,0)
+    love.graphics.setColor(quindoc.hexcode("33201a"))
     love.graphics.line(width*0.4, 0, width*0.4, height)
 
     if titleScreenUI then

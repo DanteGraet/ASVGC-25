@@ -5,7 +5,7 @@ return {
         distanceTitle = "-- hmm --",
         subtitle = "River's Source",
 
-        distance = {min = 3000, max = 10000},
+        distance = {min = 3000, max = 3000},
         transition = 300,
 
         nextZone = {"icePlains"},

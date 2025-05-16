@@ -12,7 +12,7 @@ end
 local function updateSpawn(dt, p, windSpeed, currentZone, transitionZone, transitionPercent)
 
 
-    if transitionZone then --if we are in a transition
+    if transitionZone and currentZone.snowAmount then --if we are in a transition
         snowAmount = quindoc.runIfFunc(currentZone.snowAmount,p)*(1-transitionPercent) + quindoc.runIfFunc(transitionZone.snowAmount,0)*transitionPercent
 
     elseif currentZone.snowAmount then --just set the snow amount to what it needs to be
