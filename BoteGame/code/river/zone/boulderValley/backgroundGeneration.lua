@@ -10,6 +10,7 @@ local function GetColourAt(x, y)
 
 
     if distToEdge < 0 then
+        -- water
         local noiseA = love.math.noise(y/300.01)/100
         local noiseB = love.math.noise(y/2000.01)/30
         local noiseC = love.math.noise(y/10000.01)/20

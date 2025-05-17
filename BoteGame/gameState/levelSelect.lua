@@ -10,15 +10,6 @@ local sine = 0
 
 local function load()
     DynamicLoading:New("code/gameStateLoading/levelSelectLoading.lua", true)
-
-
-
-    --levelSelectScreen:AddTextButton("boatSelect", "Pick your bote :D", "left", fontBlack32, 0, 0, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
-    --levelSelectScreen:GetButtons()["boatSelect"].functions.release = {function() menus["boatSelectMenu"].isOpen = true end}
-
-
-    --levelSelectScreen:AddTextButton("frostedChannel", "Actually Play", "left", fontBlack32, 0, 300, 1000, {{1,1,1}, {.8,1,1}, {.4,1,1}})
-
 end
 
 

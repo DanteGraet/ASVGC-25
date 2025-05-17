@@ -355,6 +355,11 @@ local function keyreleased(key)
             end
         end
     end
+
+    if key == "-" then
+        love.graphics.captureScreenshot("BoteGameScreenShot" .. os.time() .. ".png")
+        print("screnshot")
+    end
 end
 
 

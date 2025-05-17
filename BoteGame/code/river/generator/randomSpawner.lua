@@ -28,38 +28,39 @@ function RandomSpawner:Update(val)
         --assets.code.river.riverData[riverName].ambiance[zoneNames[1].displayName]
         local zone = riverGenerator:GetZone(y)
         local obsVars = riverFileDirectory.obstacle[zone.displayName]
+        if obsVars then
+            local chance = quindoc.runIfFunc(obsVars.difficultyFunction,(riverGenerator:GetPercentageThrough(y)))
 
-        local chance = quindoc.runIfFunc(obsVars.difficultyFunction,(riverGenerator:GetPercentageThrough(y)))
+            if chance >= math.random(0, 1000)/1000 then
+                local obsticalIndexList = {}
 
-        if chance >= math.random(0, 1000)/1000 then
-            local obsticalIndexList = {}
+                -- calculate the weight of each obstical
+                local totalWeight = 0
+                for key, value in pairs(self.obsticals) do
+                    local noise = (love.math.noise(y/value.noiseDiv, value.noise/value.noiseDiv, love.math.getRandomSeed())-0.5)*2 * value.weightChange
+                    totalWeight = totalWeight + value.spawnWeight + noise
 
-            -- calculate the weight of each obstical
-            local totalWeight = 0
-            for key, value in pairs(self.obsticals) do
-                local noise = (love.math.noise(y/value.noiseDiv, value.noise/value.noiseDiv, love.math.getRandomSeed())-0.5)*2 * value.weightChange
-                totalWeight = totalWeight + value.spawnWeight + noise
+                    table.insert(obsticalIndexList, {
+                        name = key,
+                        weight = value.spawnWeight + noise,
+                    })
+                end
 
-                table.insert(obsticalIndexList, {
-                    name = key,
-                    weight = value.spawnWeight + noise,
-                })
-            end
+                local obsticalNumber = math.random(0, totalWeight)
 
-            local obsticalNumber = math.random(0, totalWeight)
+                for i = 1,#obsticalIndexList do
+                    if obsticalNumber < obsticalIndexList[i].weight then
 
-            for i = 1,#obsticalIndexList do
-                if obsticalNumber < obsticalIndexList[i].weight then
+                        if assets.obstacle[obsticalIndexList[i].name].xFunc then
+                            table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(assets.obstacle[obsticalIndexList[i].name].xFunc(), y))
+                        else
+                            table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(math.random(-960, 960), y))
+                        end
 
-                    if assets.obstacle[obsticalIndexList[i].name].xFunc then
-                        table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(assets.obstacle[obsticalIndexList[i].name].xFunc(), y))
+                        break
                     else
-                        table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(math.random(-960, 960), y))
+                        obsticalNumber = obsticalNumber - obsticalIndexList[i].weight
                     end
-
-                    break
-                else
-                    obsticalNumber = obsticalNumber - obsticalIndexList[i].weight
                 end
             end
         end

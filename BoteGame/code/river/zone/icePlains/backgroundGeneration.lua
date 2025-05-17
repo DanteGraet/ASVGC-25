@@ -9,7 +9,7 @@ local function GetColourAt(x, y)
     end
 
     if distToEdge < 0 then
-
+        -- water
         local noiseA = love.math.noise(y/300.01)/100
         local noiseB = love.math.noise(y/2000.01)/30
         local noiseC = love.math.noise(y/10000.01)/20
@@ -19,7 +19,6 @@ local function GetColourAt(x, y)
 
         colour = quindoc.clamp(mega,0.815,1)
         return {53*colour/255,81*colour/255,147*colour/255}
-        
     else
 
         local p = 0
@@ -27,10 +26,10 @@ local function GetColourAt(x, y)
         --if p > 0.9 then p = 0 end
 
         if zones and zones.zone == "mvpForest" then
-            p = quindoc.clamp(globals.GetPercentageThrough(y)-0.2,0,1)
+            p = quindoc.clamp(GetPercentageThrough(y)-0.2,0,1)
         end
 
-        elevation = distToEdge/(500+500*p)
+        local elevation = distToEdge/(500+500*p)
 
         local noiseA = love.math.noise(y/1500.01) / 10
         local noiseB = love.math.noise(y/300.01) / 10
@@ -41,12 +40,9 @@ local function GetColourAt(x, y)
         elseif elevation < 0.10 +noiseA/10 then --near riverbank
             colour = {0.76,0.83,0.8}
         else 
-            
             if love.math.noise(x/1000.1,y/1000.1) < 0.5 then
                 colour = {0.89,0.95,0.95}
             else colour = {0.821,0.94,0.94} end
-
-
         end
 
         return colour

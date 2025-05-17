@@ -71,7 +71,7 @@ end
 
 function GetPercentageThrough(y)
     local distRemaining = math.abs(y)
-    for i = 1,zones do
+    for i = 1,#zones do
         local zone = zones[i]
 
         if distRemaining <= zone.distance + zone.transition then
