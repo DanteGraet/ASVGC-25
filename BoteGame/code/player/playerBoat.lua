@@ -111,7 +111,6 @@ end
 
 function PlayerBoat:Update(dt, inputs)
     self.runTime = self.runTime + dt
-
     self.x, self.y = self.body:getPosition()
 
     if self.immunity > 0 then
@@ -131,15 +130,11 @@ function PlayerBoat:Update(dt, inputs)
         if -self.y >= riverGenerator:GetLegnth() then
             -- player has won, override inputs
             inputs = self:UpdateAuto(dt)
-
-
             if not self.winY then
                 self.winY = self.y
                 self:UpdateScore()
-
                 love.filesystem.load("code/player/checkUnlocks.lua")()
             end
-
             self.winTimer = math.min(self.winTimer + dt, 1)
         end
 
@@ -151,11 +146,9 @@ function PlayerBoat:Update(dt, inputs)
         end
         if inputs.accelerate then
             self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
-            
         elseif inputs.decelerate then
             self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
         elseif self.speed > self.autoSpeed then
-
             self.speed = math.max(
                 self.speed - math.min( (( 2 * math.abs(self.speed - self.autoSpeed) + 0.01*self.acceleration)) ,self.acceleration)*dt 
                 , self.autoSpeed)
@@ -266,13 +259,10 @@ function PlayerBoat:moveToCenter()
     local newAngle = river:GetCurrent(self.y)
     self.x = midPoint
     self.body:setPosition(self.x, self.y)
-
     self.dir = newAngle
-
+    self.visualDir = newAngle
     self.wasBeached = true
 end
-
-
 
 function PlayerBoat:TakeDamage(amount, noShake)
     if self.immunity == 0 then

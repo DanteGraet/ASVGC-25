@@ -10,7 +10,7 @@ function River:New()
 
     obj.backgroundImages = {}
 
-    obj.movedPlayer = false
+    --obj.movedPlayer = false
 
 
     return obj
