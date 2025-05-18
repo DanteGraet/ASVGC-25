@@ -46,6 +46,7 @@ function PlayerBoat:New(skin)
 
     obj.turnSpeed = math.pi/2
     obj.dir = -math.rad(90)
+    obj.visualDir = obj.dir
     obj.maxAngle = math.rad(150)
     obj.up = -math.rad(90)
 
@@ -205,6 +206,8 @@ function PlayerBoat:Update(dt, inputs)
             self.current = currentAngle
         end
     end
+
+    self.visualDir = self.visualDir + (self.dir-self.visualDir)*math.min(10*dt, 1)
 end
 
 function PlayerBoat:Draw()
@@ -221,7 +224,7 @@ function PlayerBoat:Draw()
             love.graphics.setColor(1,1,1,alpha)
         end
 
-        love.graphics.draw(self.image, self.x, self.y, self.dir, 3, 3, self.imageOx, self.imageOy)
+        love.graphics.draw(self.image, self.x, self.y, self.visualDir, 3, 3, self.imageOx, self.imageOy)
     end
 end
 
