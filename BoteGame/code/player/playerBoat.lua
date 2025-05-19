@@ -158,10 +158,8 @@ function PlayerBoat:Update(dt, inputs)
         riverCurrentSpeed = currentPlayerPos.current--river:GetCurrent(-self.y)--findRiverCurrent(riverGenerator:GetPercentageThrough(self.y)) or 0
         local currentXSpeed = riverCurrentSpeed/10+math.sqrt(riverCurrentSpeed)
 
-        self.currentXSpeed = (currentXSpeed) 
 
-
-        self.x = self.x + math.cos(self.dir)*(self.speed+self.currentXSpeed+self.baseXSpeed) * dt * bt
+        self.x = self.x + math.cos(self.dir)*(self.speed+currentXSpeed+self.baseXSpeed) * dt * bt
         self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
 
 
