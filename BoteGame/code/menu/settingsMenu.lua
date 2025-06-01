@@ -44,7 +44,6 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
     end
 
 
-
     obj.isOpen = false
     obj.scroll = 0
 

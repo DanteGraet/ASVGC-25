@@ -180,9 +180,9 @@ local function draw()
 
 
     -- Draw River Here
-    local s = (width*0.6 > 1920) and width*0.6 / 1920 or 1
+    local s = width/1920--(width*0.6 > 1920) and width*0.6 / 1920 or 1
 
-    love.graphics.translate(width*0.7,0)
+    love.graphics.translate(width*0.5,0)
 
     love.graphics.scale(s)
     love.graphics.translate(0, -y)
@@ -206,10 +206,10 @@ local function draw()
 
     love.graphics.setLineWidth(10)
     love.graphics.setColor(quindoc.hexcode("743f30"))
-    love.graphics.rectangle("fill", 0, 0, width*0.4, height)
+    --love.graphics.rectangle("fill", 0, 0, width*0.4, height)
 
     love.graphics.setColor(quindoc.hexcode("33201a"))
-    love.graphics.line(width*0.4, 0, width*0.4, height)
+    --love.graphics.line(width*0.4, 0, width*0.4, height)
 
     if titleScreenUI then
         titleScreenUI:Draw()

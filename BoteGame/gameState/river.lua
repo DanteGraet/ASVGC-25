@@ -166,17 +166,6 @@ local function update(dt)
         local stormIntensity = 0
 
         if settings.graphics.lightning.value then
-            --[[if zones and type(zones[1]) == "table" then --if we are in a storm
-
-                local p = riverGenerator:GetPercentageThrough(player.y)
-                stormIntensity = (quindoc.runIfFunc(zones[1].stormIntensity,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].stormIntensity,0) or 0)*zones[3] 
-
-            elseif zones then --just set the storm amount to what it needs to be
-
-                local p = riverGenerator:GetPercentageThrough(player.y)
-                stormIntensity = quindoc.runIfFunc(zones.stormIntensity,p) or 0 --current is a GLOBAL VALUE for a reason btw
-
-            end    ]]
 
             if not lightningAlpha then lightningAlpha = 0 end
             --at MAXIMUM storm intensity, lighting will strike on average once per 10 seconds

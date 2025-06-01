@@ -267,17 +267,17 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
         local startX = (localLastPoints[i][1].x + localLastPoints[i][2].x)/2
 
         -- save the last positions so i can acsess then quickly
-        local lastLeftX = localLastPoints[i][1].x
+        local lastLeftX = localLastPoints[i][1].x --+ (zone.offsetX or 0)
         local lastLeftY = localLastPoints[i][1].y
 
-        local lastRightX = localLastPoints[i][2].x
+        local lastRightX = localLastPoints[i][2].x --+ (zone.offsetX or 0)
         local lastRightY = localLastPoints[i][2].y
 
         -- generate the end positions for each leftCurve
-        local endLeftX = endX - endWidth/2
+        local endLeftX = endX - endWidth/2  + (zone.offsetX or 0)
         local endLeftY = lastLeftY + segLegnth
 
-        local endRightX = endX + endWidth/2
+        local endRightX = endX + endWidth/2  + (zone.offsetX or 0)
         local endRightY = endLeftY          -- the final y positions are the same so cant' ever get desynced like at all
 
         -- generate the mid points of each curve
