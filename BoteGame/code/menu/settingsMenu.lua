@@ -51,18 +51,26 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
     settings = love.filesystem.load("code/menu/defaultSettings.lua")()
 
     local savedSettings = dante.load("save/settings")
-    --dante.printTable(savedSettings)
+
     if savedSettings then
         -- looping through catagories
-        for key, value in pairs(settings) do
-            if (key ~= "DEV" or DEV) and key ~= "order" then
-                if savedSettings[key] then
-                    for setting, data in pairs(value) do
-                        if savedSettings[key][setting] then
-                            --print(setting .. "  " .. tostring(savedSettings[key][setting]))
-                            data.value = savedSettings[key][setting]
+        for catagory, settingList in pairs(settings) do
+            if (catagory ~= "DEV" or DEV) and catagory ~= "order" then
+                if savedSettings[catagory] then
+                    -- looking though all saved setting with the current SetCatagory
+                    for key, value in pairs(savedSettings[catagory]) do
+                        if settings[catagory][key] then
+                            settings[catagory][key].value = savedSettings[catagory][key]
+                            print(catagory, key)
                         end
                     end
+                    
+                    --[[for setting, data in pairs(value) do
+                        if savedSettings[key][setting] then
+                            --print(setting .. "  " .. tostring(savedSettings[key][setting]))
+                            settings[key].value = savedSettings[key][setting]
+                        end
+                    end]]
                 end
             end
         end

@@ -104,6 +104,11 @@ local function unload()
     UpdateHighScore()
     music.unload()
 
+    -- stop the player sunds permenantly
+    audioPlayer.RemoveLoopingSound("motor3")
+    audioPlayer.RemoveLoopingSound("motor2")
+    audioPlayer.RemoveLoopingSound("motor1")
+
     pauseMenu = nil
     gameOverMenu = nil
 end
@@ -141,7 +146,7 @@ local function focus(focus)
     end
 end
 
-local lightningAlpha
+local lightningAlpha = 0
 
 
 
@@ -197,7 +202,7 @@ local function update(dt)
             ambiance.update(dt*gs)
 
             -- Update the player first, all other things rely on it basically
-            player:Update(dt*gs, inputs)
+            player:Update(dt*gs, inputs, gameSpeed)
 
 
             ui:Update(dt*gs)

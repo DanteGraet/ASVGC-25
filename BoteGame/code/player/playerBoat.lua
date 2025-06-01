@@ -60,9 +60,9 @@ function PlayerBoat:New(skin)
     obj.image:setFilter("nearest", "nearest")
 
 
-    audioPlayer.NewLoopingSound("motor1", assets.audio.player["Motor-Motor"], "player", 0.4)
-    audioPlayer.NewLoopingSound("motor2", assets.audio.player["Motor-Noise"], "player", 0.5)
-    audioPlayer.NewLoopingSound("motor3", assets.audio.player["Motor-Quindoc"], "player", 0.5)
+    audioPlayer.NewLoopingSound("motor1", assets.audio.player["Motor-Motor"], "player", 0)
+    audioPlayer.NewLoopingSound("motor2", assets.audio.player["Motor-Noise"], "player", 0)
+    audioPlayer.NewLoopingSound("motor3", assets.audio.player["Motor-Quindoc"], "player", 0)
 
 
     return obj
@@ -112,7 +112,7 @@ function PlayerBoat:UpdateAuto(dt)
     return {}
 end
 
-function PlayerBoat:Update(dt, inputs)
+function PlayerBoat:Update(dt, inputs, gameSpeed)
     self.runTime = self.runTime + dt
     self.x, self.y = self.body:getPosition()
 
@@ -183,6 +183,11 @@ function PlayerBoat:Update(dt, inputs)
 
         self.body:setPosition(self.x, self.y)
 
+        audioPlayer.ModifyLoopingSound("motor3", {volume = ((self.speed/self.maxSpeed)/4 + 0.2) * gameSpeed*self.beachTimer*0.2, pitch = 1+ self.speed/self.maxSpeed/4 })
+        audioPlayer.ModifyLoopingSound("motor2", {volume = 0.4*gameSpeed*self.beachTimer*0.2 })
+        audioPlayer.ModifyLoopingSound("motor1", {volume = (1- (self.speed/self.maxSpeed)/4 + 0.2)*gameSpeed*self.beachTimer*0.2, pitch = self.speed/self.maxSpeed/2 + .5})
+
+
     else
         self.deathTime = self.deathTime + dt
 
@@ -199,10 +204,13 @@ function PlayerBoat:Update(dt, inputs)
 
             self.current = currentAngle
         end
+
+        audioPlayer.RemoveLoopingSound("motor3")
+        audioPlayer.RemoveLoopingSound("motor2")
+        audioPlayer.RemoveLoopingSound("motor1")
+
     end
 
-    audioPlayer.ModifyLoopingSound("motor3", {volume = (self.speed/self.maxSpeed)/4 + 0.2, pitch = 1+ self.speed/self.maxSpeed/4 })
-    audioPlayer.ModifyLoopingSound("motor1", {volume = 1- (self.speed/self.maxSpeed)/4 + 0.2, pitch = self.speed/self.maxSpeed/2 + .5})
 
 
     self.visualDir = self.visualDir + (self.dir-self.visualDir)*math.min(10*dt, 1)

@@ -59,6 +59,9 @@ local function NewLoopingSound(name, sound, catagory, volume)
 end
 
 local function ModifyLoopingSound(name, data)
+    if not loopingSounds[name] then
+        return
+    end
     for key, value in pairs(data) do
         loopingSounds[name][key] = value
 
@@ -82,7 +85,7 @@ local function ModifyLoopingSound(name, data)
     end
 end
 local function RemoveLoopingSound(name)
-    if loopingSounds[name].sound then 
+    if loopingSounds[name] and loopingSounds[name].sound then 
         loopingSounds[name].sound:stop()
         loopingSounds[name] = nil
     end
