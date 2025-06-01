@@ -215,7 +215,9 @@ function DynamicLoading:AddItem(path, current, original)
             end
 
         elseif file:match("%.mp3$") then
-            current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
+            --current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
+            current[string.sub(file, 1, #file-4)] = love.audio.newSource(original[1], original[2])
+
             print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
         elseif file:match("%.lua$") then

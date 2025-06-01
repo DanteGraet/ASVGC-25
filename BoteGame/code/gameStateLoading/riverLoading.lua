@@ -46,7 +46,13 @@ local toLoad = {
     {"image/ui/current.png", "blur"},
     {"image/ui/ouchGlow.png", "blur"},
 
-    {"code/player/playerData.lua", "run"}
+    {"code/player/playerData.lua", "run"},
+
+    -- audio
+    {"audio/player/Motor-Motor.mp3", "stream"},
+    {"audio/player/Motor-Noise.mp3", "static"},
+    {"audio/player/Motor-Quindoc.mp3", "static"},
+
 }
 
 

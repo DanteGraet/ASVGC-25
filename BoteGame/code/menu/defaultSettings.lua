@@ -67,7 +67,7 @@ return {
         h_music = {type = "header", displayName = "Music"},
         musicVolume = {type = "slider", displayName = "Music Volume", value = 0.8},
         ambient = {type = "slider", displayName = "Ambiance Volume", value = 0.8},
-
+        player = {type = "slider", displayName = "Player Volume", value = 0.8},
 
     },
     keybinds = {
@@ -114,6 +114,7 @@ return {
             "masterVolume",
 
             "musicVolume",
+            "player",
             "ambient",
     
         },

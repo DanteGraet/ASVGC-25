@@ -60,7 +60,10 @@ function PlayerBoat:New(skin)
     obj.image:setFilter("nearest", "nearest")
 
 
-    
+    audioPlayer.NewLoopingSound("motor1", assets.audio.player["Motor-Motor"], "player", 0.4)
+    audioPlayer.NewLoopingSound("motor2", assets.audio.player["Motor-Noise"], "player", 0.5)
+    audioPlayer.NewLoopingSound("motor3", assets.audio.player["Motor-Quindoc"], "player", 0.5)
+
 
     return obj
 end
@@ -197,6 +200,10 @@ function PlayerBoat:Update(dt, inputs)
             self.current = currentAngle
         end
     end
+
+    audioPlayer.ModifyLoopingSound("motor3", {volume = (self.speed/self.maxSpeed)/4 + 0.2, pitch = 1+ self.speed/self.maxSpeed/4 })
+    audioPlayer.ModifyLoopingSound("motor1", {volume = 1- (self.speed/self.maxSpeed)/4 + 0.2, pitch = self.speed/self.maxSpeed/2 + .5})
+
 
     self.visualDir = self.visualDir + (self.dir-self.visualDir)*math.min(10*dt, 1)
 end

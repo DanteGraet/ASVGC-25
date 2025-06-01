@@ -34,41 +34,50 @@ end
 
 local loopingSounds = {}
 local function NewLoopingSound(name, sound, catagory, volume)
-    local tempSound = {}
+    loopingSounds[name] = {}
 
     --create the sound from either a table (pick random) or sound
     if type(sound) == "table" then
-        tempSound.sound = sound[math.random(1,#sound)]:clone()
+        loopingSounds[name].sound = sound[math.random(1,#sound)]:clone()
     else
-        tempSound.sound = sound:clone()
+        loopingSounds[name].sound = sound:clone()
     end
 
     -- modify volume
     local subVolume = volume or 1
     if catagory and settings.audio[catagory] then
         subVolume = subVolume * settings.audio[catagory].value
+        loopingSounds[name].catagory = catagory
     end
     local volume = settings.audio.masterVolume.value * subVolume
-    tempSound.volume = volume
+    loopingSounds[name].volume = volume
 
-    tempSound.sound:setVolume(volume)
-    tempSound.sound:setLooping(true)
-    tempSound.sound:play()
+    loopingSounds[name].sound:setVolume(volume)
+    loopingSounds[name].sound:setLooping(true)
+    loopingSounds[name].sound:play()
+
 end
 
 local function ModifyLoopingSound(name, data)
     for key, value in pairs(data) do
-        loopingSounds[key] = value
+        loopingSounds[name][key] = value
 
         if key == "volume" or key == "catagory" then
-            local subVolume = loopingSounds[key].volume or 1
-            if value.catagory and settings.audio[value.catagory] then
-                subVolume = settings.audio[value.catagory].value
+            local subVolume = value or 1
+            if loopingSounds[name].catagory and settings.audio[loopingSounds[name].catagory] then
+                subVolume = subVolume*settings.audio[loopingSounds[name].catagory].value
             end
             local volume = settings.audio.masterVolume.value * subVolume
-            value.volume = volume
+            loopingSounds[name].volume = volume
+            loopingSounds[name].sound:setVolume(volume)
 
-
+            --print(name, volume, value)
+        elseif key == "pitch" then
+            local subVolume = value or 1
+            loopingSounds[name].sound:setPitch(subVolume)
+        elseif key == "speed" then
+            local subVolume = value or 1
+            loopingSounds[name].sound:set(subVolume)
         end
     end
 end
