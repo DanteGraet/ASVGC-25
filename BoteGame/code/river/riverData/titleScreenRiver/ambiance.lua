@@ -1,6 +1,6 @@
 return {
     ["Title Zone"] = {
-        snowAmount = 1,
+        snowAmount = 0,
         windSpeed = 1,
     },
 }

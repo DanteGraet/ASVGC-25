@@ -25,7 +25,6 @@ local function load()
     love.physics.setMeter(100)
     resize()
 
-    fontBlack32 = love.graphics.newFont("font/fontBlack.ttf",32)
 
     DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true)
 end
@@ -217,7 +216,7 @@ local function draw()
 
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(assets.image.titleScreen.title,50,50,0,0.75,0.75)
-    love.graphics.setFont(fontBlack32)
+    font.setFont("black", 32)
     love.graphics.print("Alpha Demo 2???",350,350)
 
     if settingsMenu then

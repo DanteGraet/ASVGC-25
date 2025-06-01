@@ -5,7 +5,6 @@ local math = math
 local PlayerBoat = {}
 PlayerBoat.__index = PlayerBoat
 
-
 function PlayerBoat:New(skin)
     local obj = setmetatable({}, PlayerBoat)
 
@@ -13,53 +12,52 @@ function PlayerBoat:New(skin)
     obj.body = love.physics.newBody(world, obj.x, obj.y, "dynamic")
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
     obj.fixture:setUserData({type = "player"})
-
     if settings.dev.ab_playerCollision.value then
         obj.fixture:setSensor(true)
     end
 
     obj.image = skin or assets.image.player.default
+    obj.image:setFilter("nearest", "nearest")
     obj.imageOx = obj.image:getWidth()/2
     obj.imageOy = obj.image:getHeight()/2
 
-    obj.x = 0
-    obj.y = 0
+    -- gameOver related
     obj.score = 0
     obj.runTime = 0
-
     obj.winTimer = 0
 
-    obj.immunity = 1
-    obj.beachTimer = 1  -- 0 means the player has been beached
-    obj.shameTimer = 1
-    obj.takenBeachDamage = false
-
+    -- health
     obj.maxHealth = 5--00
     obj.health = obj.maxHealth
     obj.deathTime = 0
 
+    -- beaching data
+    obj.immunity = 1
+    obj.beachTimer = 1  -- 0 means the player has been beached
+    obj.shameTimer = 1
+
+    -- acceleration/deecleration
     obj.speed = 150
     obj.acceleration = 150
     obj.maxSpeed = 300
     obj.autoSpeed = 71.3*3
     obj.minSpeed = 0
 
-    obj.turnSpeed = math.pi/2
+    -- position
+    obj.x = 0
+    obj.y = 0
     obj.dir = -math.rad(90)
+
+    -- Turning
+    obj.turnSpeed = math.pi/2
     obj.visualDir = obj.dir
     obj.maxAngle = math.rad(150)
     obj.up = -math.rad(90)
 
-    obj.baseTurnSpeed = 1 --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness
-    obj.baseXSpeed = 50 --you wouldn't want that would you? no,because otherwise you will lose the game
+    obj.baseTurnSpeed = 1   --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness
+    obj.baseXSpeed = 50     --              you wouldn't want that would you? no,because otherwise you will lose the game
 
-    
-    obj.image = assets.code.player.playerData.data[selectedBoat[1]][selectedBoat[2]].skin
-    assets.code.player.playerData.modifyBoat[selectedBoat[1]](obj)
-
-    obj.image:setFilter("nearest", "nearest")
-
-
+    -- audio tracks
     audioPlayer.NewLoopingSound("motor1", assets.audio.player["Motor-Motor"], "player", 0)
     audioPlayer.NewLoopingSound("motor2", assets.audio.player["Motor-Noise"], "player", 0)
     audioPlayer.NewLoopingSound("motor3", assets.audio.player["Motor-Quindoc"], "player", 0)
@@ -69,26 +67,27 @@ function PlayerBoat:New(skin)
 end
 
 function PlayerBoat:UpdateBeached(dt)
-    if self.takenBeachDamage == false then
-        self.immunity = 0 --no immunity hahaahahaha
+    -- check if it is the first frame the player is beached
+    if self.beachTimer == 1 then
+        -- forces the ability to take damage from beaching
+        self.immunity = 0
         self:TakeDamage(2, false)
-        self.takenBeachDamage = true
     end
 
+    -- update related timers
     self.beachTimer = math.max(self.beachTimer - 2*dt, 0)
-
     self.shameTimer = self.shameTimer - 0.5*dt
 
+    -- cheeck if thee player is no-longer moving
     if self.beachTimer == 0 and self.shameTimer < 0 and self.health > 0 then
         -- the player is beached
         self:moveToCenter()
         self.beachTimer = 1
         self.immunity = 2
-        --SetGameSpeed(0)
     end
 end
 
-function PlayerBoat:UpdateAuto(dt)
+function PlayerBoat:UpdateAuto()
     local center = river:getCenter(self.y - 100)
     local dir = nil
     
@@ -112,106 +111,104 @@ function PlayerBoat:UpdateAuto(dt)
     return {}
 end
 
+function PlayerBoat:UpdateDead(dt)
+    -- slow down the scrolling for a smooth finnish
+    self.deathTime = self.deathTime + dt
+
+    local speedEase = tweens.sineInOut(math.max(1-(self.deathTime/2.5), 0))
+
+    self.x = self.x + (math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt)*speedEase * bt
+    self.y = self.y + (math.sin(self.dir)*self.speed * dt) * speedEase * bt
+
+    -- current
+    local currentAngle, currentSpeed = river:GetCurrent(self.y)
+    if currentAngle then
+        self.x = self.x + (math.cos(currentAngle)*currentSpeed * dt) * speedEase * bt
+        self.y = self.y + (math.sin(currentAngle)*currentSpeed * dt) * speedEase * bt
+
+        self.current = currentAngle
+    end
+end
+
+function PlayerBoat:ManageInputs(dt, inputs, bt)
+    if -self.y >= riverGenerator:GetLegnth() then
+        -- player has won, override inputs
+        inputs = self:UpdateAuto(dt)
+        if not self.winY then
+            self.winY = self.y
+            self:UpdateScore()
+            love.filesystem.load("code/player/checkUnlocks.lua")()
+        end
+        self.winTimer = math.min(self.winTimer + dt, 1)
+    end
+
+    if inputs.left and not inputs.right then
+        self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up - self.maxAngle/2)
+    end
+    if inputs.right and not inputs.left then
+        self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up + self.maxAngle/2 )
+    end
+    
+    if inputs.accelerate then
+        self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
+    elseif inputs.decelerate then
+        self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
+    elseif self.speed > self.autoSpeed then
+        self.speed = math.max(
+            self.speed - math.min( (( 2 * math.abs(self.speed - self.autoSpeed) + 0.01*self.acceleration)) ,self.acceleration)*dt 
+            , self.autoSpeed)
+    end
+end
+
+function PlayerBoat:MoveWithCurrent(dt, bt)
+    local currentXSpeed = currentPlayerPos.current/10+math.sqrt(currentPlayerPos.current)
+
+    self.x = self.x + math.cos(self.dir)*(self.speed+currentXSpeed+self.baseXSpeed) * dt * bt
+    self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
+
+    -- current
+    local currentAngle, currentSpeed = river:GetCurrent(self.y)
+    if currentAngle then
+        self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
+        self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
+
+        self.current = currentAngle
+    end
+end
+
 function PlayerBoat:Update(dt, inputs, gameSpeed)
     self.runTime = self.runTime + dt
     self.x, self.y = self.body:getPosition()
 
-    if self.immunity > 0 then
-        self.immunity = math.max(self.immunity - dt, 0)
-    end
+    -- immunity
+    if self.immunity > 0 then self.immunity = math.max(self.immunity - dt, 0) end
 
-    if river:IsInBounds(self.x, self.y) then
-        self.beachTimer = 1
-        self.shameTimer = 1
-        self.takenBeachDamage = false
-    else
-        self:UpdateBeached(dt)
-    end
-
+    --Beaching
+    if river:IsInBounds(self.x, self.y) then self.beachTimer = 1; self.shameTimer = 1
+    else self:UpdateBeached(dt) end
     local bt = tweens.sineInOut(self.beachTimer)
+
+    
     if self.health > 0 and self.y > riverBorders.up - 100 then
-        if -self.y >= riverGenerator:GetLegnth() then
-            -- player has won, override inputs
-            inputs = self:UpdateAuto(dt)
-            if not self.winY then
-                self.winY = self.y
-                self:UpdateScore()
-                love.filesystem.load("code/player/checkUnlocks.lua")()
-            end
-            self.winTimer = math.min(self.winTimer + dt, 1)
-        end
+        self:ManageInputs(dt, inputs, bt)
 
-        if inputs.left and not inputs.right then
-            self.dir = math.max(self.dir - self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up - self.maxAngle/2)
-        end
-        if inputs.right and not inputs.left then
-            self.dir = math.min(self.dir + self.turnSpeed*dt * (self.speed/self.maxSpeed+self.baseTurnSpeed) * bt, self.up + self.maxAngle/2 )
-        end
-        if inputs.accelerate then
-            self.speed = math.min(self.speed + self.acceleration*dt, self.maxSpeed)
-        elseif inputs.decelerate then
-            self.speed = math.max(self.speed - self.acceleration*dt, self.minSpeed)
-        elseif self.speed > self.autoSpeed then
-            self.speed = math.max(
-                self.speed - math.min( (( 2 * math.abs(self.speed - self.autoSpeed) + 0.01*self.acceleration)) ,self.acceleration)*dt 
-                , self.autoSpeed)
-        end
-
-
-        riverCurrentSpeed = currentPlayerPos.current--river:GetCurrent(-self.y)--findRiverCurrent(riverGenerator:GetPercentageThrough(self.y)) or 0
-        local currentXSpeed = riverCurrentSpeed/10+math.sqrt(riverCurrentSpeed)
-
-
-        self.x = self.x + math.cos(self.dir)*(self.speed+currentXSpeed+self.baseXSpeed) * dt * bt
-        self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
-
-
-        -- current
-        local currentAngle, currentSpeed = river:GetCurrent(self.y)
-        if currentAngle then
-            self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
-            self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
-
-            self.current = currentAngle
-        end
+        self:MoveWithCurrent(dt, bt)
 
         spawnTrail(dt) --spawning damage smoke is in here also
 
         if not uiSineCounter then uiSineCounter = 0 end
         uiSineCounter = uiSineCounter + dt
-        if uiSineCounter > 2*math.pi then uiSineCounter = 0 end
+        if uiSineCounter > 2*math.pi then uiSineCounter = uiSineCounter - (2*math.pi) end
 
         self.body:setPosition(self.x, self.y)
 
-        audioPlayer.ModifyLoopingSound("motor3", {volume = ((self.speed/self.maxSpeed)/4 + 0.2) * gameSpeed*self.beachTimer*0.2, pitch = 1+ self.speed/self.maxSpeed/4 })
-        audioPlayer.ModifyLoopingSound("motor2", {volume = 0.4*gameSpeed*self.beachTimer*0.2 })
-        audioPlayer.ModifyLoopingSound("motor1", {volume = (1- (self.speed/self.maxSpeed)/4 + 0.2)*gameSpeed*self.beachTimer*0.2, pitch = self.speed/self.maxSpeed/2 + .5})
-
-
+        -- Update the audio
+        audioPlayer.ModifyLoopingSound("motor3", {volume = ((self.speed/self.maxSpeed)/4 + 0.2) * gameSpeed*self.beachTimer*0.4, pitch = 1+ self.speed/self.maxSpeed/4 })
+        audioPlayer.ModifyLoopingSound("motor2", {volume = 0.4*gameSpeed*self.beachTimer*0.4 })
+        audioPlayer.ModifyLoopingSound("motor1", {volume = (1- (self.speed/self.maxSpeed)/4 + 0.2)*gameSpeed*self.beachTimer*0.4, pitch = self.speed/self.maxSpeed/2 + .5})
     else
-        self.deathTime = self.deathTime + dt
-
-        local speedEase = tweens.sineInOut(math.max(1-(self.deathTime/2.5), 0))
-
-        self.x = self.x + (math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt)*speedEase * bt
-        self.y = self.y + (math.sin(self.dir)*self.speed * dt) * speedEase * bt
-
-        -- current
-        local currentAngle, currentSpeed = river:GetCurrent(self.y)
-        if currentAngle then
-            self.x = self.x + (math.cos(currentAngle)*currentSpeed * dt) * speedEase * bt
-            self.y = self.y + (math.sin(currentAngle)*currentSpeed * dt) * speedEase * bt
-
-            self.current = currentAngle
-        end
-
-        audioPlayer.RemoveLoopingSound("motor3")
-        audioPlayer.RemoveLoopingSound("motor2")
-        audioPlayer.RemoveLoopingSound("motor1")
-
+        self:UpdateDead(dt)
     end
-
-
 
     self.visualDir = self.visualDir + (self.dir-self.visualDir)*math.min(10*dt, 1)
 end
@@ -239,7 +236,6 @@ function PlayerBoat:UpdateScore()
     UpdateHighScore(self.score)
 end
 
-
 function PlayerBoat:DrawHitbox()
     love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
 
@@ -262,8 +258,6 @@ function PlayerBoat:GetPosition()
     end
 end
 
-
-
 function PlayerBoat:moveToCenter()
     local leftPoint = river:FindHighAndLowPoints(1, 1, self.y)
     local rightPoint = river:FindHighAndLowPoints(1, 2, self.y)
@@ -272,9 +266,10 @@ function PlayerBoat:moveToCenter()
     local newAngle = river:GetCurrent(self.y)
     self.x = midPoint
     self.body:setPosition(self.x, self.y)
+
     self.dir = newAngle
     self.visualDir = newAngle
-    self.wasBeached = true
+    --self.wasBeached = true
 end
 
 function PlayerBoat:TakeDamage(amount, noShake)
@@ -297,6 +292,10 @@ function PlayerBoat:TakeDamage(amount, noShake)
                 particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
             end
 
+            -- stop playing sounds
+            audioPlayer.RemoveLoopingSound("motor3")
+            audioPlayer.RemoveLoopingSound("motor2")
+            audioPlayer.RemoveLoopingSound("motor1")
         end
     end
 end

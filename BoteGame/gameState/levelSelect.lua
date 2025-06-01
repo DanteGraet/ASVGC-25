@@ -124,7 +124,9 @@ local function mousepressed(x, y, button)
 
     --levelSelectScreen:Click(mx, my)
 
-    menus[selectedMenu]:Click(mx, my)
+    if menus[selectedMenu] then
+        menus[selectedMenu]:Click(mx, my)
+    end
 
     for i = 1,#levels do
         local l = levels[i]
@@ -141,8 +143,9 @@ local function mousereleased(x, y, button)
     local mx, my = getMouseSoxSoy()
 
     --levelSelectScreen:Release(mx, my)
-
-    menus[selectedMenu]:Release(mx, my)
+    if menus[selectedMenu] then
+        menus[selectedMenu]:Release(mx, my)
+    end
 
     for i = 1,#levels do
         local l = levels[i]
