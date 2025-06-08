@@ -111,7 +111,7 @@ function PlayerBoat:UpdateAuto()
     return {}
 end
 
-function PlayerBoat:UpdateDead(dt)
+function PlayerBoat:UpdateDead(dt, bt)
     -- slow down the scrolling for a smooth finnish
     self.deathTime = self.deathTime + dt
 
@@ -207,7 +207,7 @@ function PlayerBoat:Update(dt, inputs, gameSpeed)
         audioPlayer.ModifyLoopingSound("motor2", {volume = 0.4*gameSpeed*self.beachTimer*0.4 })
         audioPlayer.ModifyLoopingSound("motor1", {volume = (1- (self.speed/self.maxSpeed)/4 + 0.2)*gameSpeed*self.beachTimer*0.4, pitch = self.speed/self.maxSpeed/2 + .5})
     else
-        self:UpdateDead(dt)
+        self:UpdateDead(dt, bt)
     end
 
     self.visualDir = self.visualDir + (self.dir-self.visualDir)*math.min(10*dt, 1)
