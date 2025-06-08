@@ -4,17 +4,14 @@ local height = 600
 local font1 = {"medium", 50}
 local font2 = {"black", 75}
 
-
 GameOverMenu = {}
 GameOverMenu.__index = GameOverMenu
-
 
 function GameOverMenu:New() -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, GameOverMenu)
 
     obj.isOpen = false
     obj.scroll = 0
-
     obj.settingsTimer = 0
 
 
@@ -48,6 +45,7 @@ function GameOverMenu:GenerateButtons()
     else
         self.Ui:AddTextButton("restart", "Retry", "center", font1, -width/4, height/2 - 75, width, colours)
     end
+
     self.Ui:AddTextButton("exit", "Exit", "center", font1, width/4, height/2 - 75, width, colours)
 
     self.Ui:GetButtons()["restart"].functions.release = {GameOverMenu.RestartGame, self}
@@ -56,11 +54,8 @@ end
 
 
 function GameOverMenu:KeyRelased(key)
-    if key == "escape" then
-        self.isOpen = false 
-    end
+    if key == "escape" then self.isOpen = false end
 end
-
 
 function GameOverMenu:Click(x, y)
     self.Ui:Click(x - 960, y - 540)
@@ -74,13 +69,8 @@ end
 function GameOverMenu:Update(dt, x, y)
     self.Ui:Update(dt, x - 960, y - 540)
 
-    if settingsMenu.isOpen then
-
-        self.settingsTimer = math.min(self.settingsTimer + dt*2, 1)
-    else 
-
-        self.settingsTimer = math.max(self.settingsTimer - dt*2, 0)
-    end
+    if settingsMenu.isOpen then self.settingsTimer = math.min(self.settingsTimer + dt*2, 1)
+    else self.settingsTimer = math.max(self.settingsTimer - dt*2, 0) end
 end
 
 

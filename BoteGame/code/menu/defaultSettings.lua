@@ -71,7 +71,34 @@ return {
 
     },
     keybinds = {
-
+        --[[
+                left = {
+        keyboard = {"left", "a"},
+        touch = {touchLeft}
+    },
+    right = {
+        keyboard = {"right", "d"},
+        touch = {touchRight}
+    },    
+    accelerate = {
+        keyboard = {"up", "w"},
+        touch = {touchAccelerate}
+    },
+    decelerate = {
+        keyboard = {"down", "s"},
+        touch = {touchDecelerate}
+    },
+    pause = {
+        keyboard = {"escape", "p"},
+        touch = {touchPause}
+    }
+        
+        ]]
+        accelerate = {type = "keybindButton", displayName = "Accelerate", value = {"w", "up"}},
+        decelerate = {type = "keybindButton", displayName = "Decelerate", value = {"s", "down"}},
+        left = {type = "keybindButton", displayName = "Turn Left", value = {"a", "left"}},
+        right = {type = "keybindButton", displayName = "Turn Right", value = {"d", "right"}},
+        pause = {type = "keybindButton", displayName = "Pause", value = {"escape", "p"}},
     },
 
     -- the player should NEVER have acsess to these :D
@@ -119,7 +146,11 @@ return {
     
         },
         keybinds = {
-    
+            "accelerate",
+            "decelerate",
+            "left",
+            "right",
+            "pause",
         },
         dev = {
             "removeSave",

@@ -9,7 +9,6 @@ function difficultyIndependentSpawner:New(obsticals,chance)
     obj.chance = chance
     obj.lastY = riverBorders.up - 250
 
-
     return obj
 end
 

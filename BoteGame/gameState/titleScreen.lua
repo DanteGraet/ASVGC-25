@@ -31,11 +31,8 @@ end
 
 local function unload()
     love.thread.getChannel("background_closeThread"):push(true)
-    --while not love.thread.getChannel("background_closeThreadReceived"):pop() do
-      --  print("waiting")
-    --end
     music.unload()
-    end
+end
 
 local function extraLoad()
 
@@ -66,26 +63,19 @@ local function update(dt)
 
     if river:HasPoints() then
         zones = riverGenerator:GetZone(y, true)
-        local gs = 1
 
-        particles.updateParticles(dt*gs)
-
-        --spawnSnow(dt*gs)
-        ambiance.update(dt*gs, -y)
-
-
+        particles.updateParticles(dt)
+        ambiance.update(dt, -y)
 
         riverBorders.up =    y
         riverBorders.down =  y + love.graphics.getHeight()/screenScale
 
-        -- update the river after the player so we can generate based on the players position.
-
         river:Update(-y)
         obstacleSpawner:Update()
-        world:update(dt*gs)
+        world:update(dt)
 
+        -- remove colliding rocks
         local contacts = world:getContacts()
-
         for _, contact in ipairs(contacts) do
             if contact:isTouching() then
                 local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
@@ -104,7 +94,6 @@ local function update(dt)
         for i = #obstacles,1, -1 do
             obstacles[i]:Update(i, dt)
         end
-
     else      
         river:checkNextSegment()
 
@@ -116,14 +105,11 @@ local function update(dt)
 
     if settingsMenu.isOpen == false then
         titleScreenUI:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
-
         settingsTimer = math.max(settingsTimer - dt*2, 0)
     else
         -- Use math.huge so it will never be hovering over a button right?
         titleScreenUI:Update(dt, math.huge, math.huge)
-
         settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-
         settingsTimer = math.min(settingsTimer + dt*2, 1)
     end
 
@@ -147,7 +133,6 @@ local function mousereleased(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-
     if settingsMenu then
         if settingsMenu.isOpen == false then
             titleScreenUI:Release(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
@@ -169,25 +154,19 @@ local function draw()
     love.graphics.reset()
     love.graphics.scale(screenScale)
 
-    --love.graphics.translate(sox, soy)
     local width = love.graphics.getWidth()/screenScale
     local height = love.graphics.getHeight()/screenScale
 
     love.graphics.push()
 
-    love.graphics.setColor(1,1,1)
-
-
     -- Draw River Here
     local s = width/1920--(width*0.6 > 1920) and width*0.6 / 1920 or 1
-
     love.graphics.translate(width*0.5,0)
-
     love.graphics.scale(s)
     love.graphics.translate(0, -y)
 
 
-
+    love.graphics.setColor(1,1,1)
     if river:HasPoints() then
         river:Draw()
         for i = 1,#obstacles do
@@ -199,16 +178,7 @@ local function draw()
     end
 
 
-
-
     love.graphics.pop()
-
-    love.graphics.setLineWidth(10)
-    love.graphics.setColor(quindoc.hexcode("743f30"))
-    --love.graphics.rectangle("fill", 0, 0, width*0.4, height)
-
-    love.graphics.setColor(quindoc.hexcode("33201a"))
-    --love.graphics.line(width*0.4, 0, width*0.4, height)
 
     if titleScreenUI then
         titleScreenUI:Draw()

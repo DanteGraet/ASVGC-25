@@ -5,6 +5,15 @@ local y = 50
 local font1 = {"medium", 30}
 local font2 = {"black", 35}
 
+local changingKeybind = {false}
+
+local function clickKeybind(data)
+    --[[data = {
+    type, num, 
+    }]]
+    changingKeybind = {true, data[1], data[2]}
+    
+end
 
 SettingsMenu = {}
 SettingsMenu.__index = SettingsMenu
@@ -155,10 +164,23 @@ function SettingsMenu.SetCatagory(data)
         for i = 1,#settings.order[self.catagories[self.curentCatagroy].name] do
             local name = settings.order[self.catagories[self.curentCatagroy].name][i]
             local currentSetting = settings[self.catagories[self.curentCatagroy].name][name]
-            
+
             if currentSetting.type == "button" then
                 self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, colours, "settings")
                 self.Ui:GetButtons("settings")[name].functions.release = {currentSetting.func}
+
+            elseif currentSetting.type == "keybindButton" then
+                self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, nil, "settings")
+                for i = 1,2 do
+                    local h = f:getHeight()
+                    --name, x, y, sx, sy, layer
+                    self.Ui:AddButton(name .. i, -500 + i*200, currentHeight, 200, h, "settings")
+                    self.Ui:GetButtons("settings")[name .. i].functions.release = {clickKeybind, {name, i}}
+                    self.Ui:GetButtons("settings")[name .. i]:AddText("[" .. currentSetting.value[i] .. "]", "center", font1, 0, 0, 200)
+                    self.Ui:GetButtons("settings")[name .. i]:SetElementColour(colours[1], colours[2], colours[1+2])
+
+                end
+            
 
             elseif currentSetting.type == "slider" then
                 self.Ui:AddSlider(name, currentX+f:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
@@ -203,15 +225,30 @@ function SettingsMenu.Close(self)
 end
 
 function SettingsMenu:KeyRelased(key)
-    if key == "escape" then
+    if key == "escape" and not changingKeybind[1]  then
+
         self.isOpen = false 
+
+    else
+        settings.keybinds[changingKeybind[2]].value[changingKeybind[3]] = key
+        self.Ui:GetButtons("settings")[changingKeybind[2] .. changingKeybind[3]].graphics[1].text = "[" .. key .. "]"
+
+        if key == "\\" then
+            settings.keybinds[changingKeybind[2]].value[changingKeybind[3]] = "\\\\"
+            self.Ui:GetButtons("settings")[changingKeybind[2] .. changingKeybind[3]].graphics[1].text = "[\\]s"
+        end
+
+        changingKeybind[1] = false
     end
 end
 
 function SettingsMenu:Click(x, y)
-    self.Ui:Click(x - 960, y - 540)
-    self.Ui:Click(x - 960, y - 540, "settings")
-
+    if not changingKeybind[1] then
+        self.Ui:Click(x - 960, y - 540)
+        self.Ui:Click(x - 960, y - 540, "settings")
+    else
+        changingKeybind[1] = false
+    end
 end
 
 function SettingsMenu:Release(x, y)
@@ -221,9 +258,10 @@ function SettingsMenu:Release(x, y)
 end
 
 function SettingsMenu:Update(dt, x, y)
-    self.Ui:Update(dt, x - 960, y - 540)
-    self.Ui:Update(dt, x - 960, y - 540, "settings")
-
+    if not changingKeybind[1] then
+        self.Ui:Update(dt, x - 960, y - 540)
+        self.Ui:Update(dt, x - 960, y - 540, "settings")
+    end
 end
 
 

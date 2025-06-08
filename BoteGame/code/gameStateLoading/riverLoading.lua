@@ -127,8 +127,14 @@ table.insert(toLoad, function()
     obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
 
     
+    local keybinds = assets.code.menu.keybinds()
+    for key, value in pairs(keybinds) do
+        if settings.keybinds[key] then
+            keybinds[key].keyboard = settings.keybinds[key].value
+        end
+    end
 
-    inputManager = assets.code.inputManager():New( assets.code.menu.keybinds() )
+    inputManager = assets.code.inputManager():New( keybinds )
 
     particles.loadParticles()
 
