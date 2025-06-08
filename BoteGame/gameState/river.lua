@@ -331,6 +331,11 @@ local function keyreleased(key)
     if inputManager then
         input = inputManager:Send("keyboard", key)
     end
+    if settingsMenu.isOpen then
+        if SettingsMenu:KeyRelased(key) then
+            return
+        end
+    end
 
     if input == "pause" then
         if settingsMenu.isOpen then 

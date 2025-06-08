@@ -228,7 +228,7 @@ function SettingsMenu:KeyRelased(key)
     if key == "escape" and not changingKeybind[1]  then
 
         self.isOpen = false 
-
+        return true
     else
         settings.keybinds[changingKeybind[2]].value[changingKeybind[3]] = key
         self.Ui:GetButtons("settings")[changingKeybind[2] .. changingKeybind[3]].graphics[1].text = "[" .. key .. "]"
@@ -239,6 +239,8 @@ function SettingsMenu:KeyRelased(key)
         end
 
         changingKeybind[1] = false
+
+        return true
     end
 end
 
