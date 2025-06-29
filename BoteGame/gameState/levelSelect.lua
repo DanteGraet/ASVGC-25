@@ -1,5 +1,5 @@
 local uiFade = 0
-local selectedMenu = "boatSelectMenu"
+local selectedMenu = ""
 
 local menus = {}
 local levelSelectScreen
@@ -26,6 +26,7 @@ local function extraLoad()
     levels = {}
     menus = {}
     menus["boatSelectMenu"] = assets.code.menu.boatSelectMenu():New()
+    menus["levelMenu"] = assets.code.menu.levelMenu():New()
     levelSelectScreen = GraetUi:New()
 
     if assets.code.player.unlocks.levels.frostedChannel then
@@ -110,19 +111,17 @@ end
 local function mousepressed(x, y, button)
     local mx, my = getMouseSoxSoy()
 
-    --levelSelectScreen:Click(mx, my)
-
-    if menus[selectedMenu] then
+    if menus[selectedMenu] and menus[selectedMenu].isOpen then
         menus[selectedMenu]:Click(mx, my)
-    end
+    else
+        for i = 1,#levels do
+            local l = levels[i]
 
-    for i = 1,#levels do
-        local l = levels[i]
+            local dist = quindoc.dist(mx, my, l.x, l.y)
 
-        local dist = quindoc.dist(mx, my, l.x, l.y)
-
-        if dist < 100 then
-            l.click = true
+            if dist < 100 then
+                l.click = true
+            end
         end
     end
 end
@@ -131,20 +130,27 @@ local function mousereleased(x, y, button)
     local mx, my = getMouseSoxSoy()
 
     --levelSelectScreen:Release(mx, my)
-    if menus[selectedMenu] then
+    if menus[selectedMenu] and menus[selectedMenu].isOpen then
+
         menus[selectedMenu]:Release(mx, my)
-    end
+    else
+        for i = 1,#levels do
+            local l = levels[i]
+            local dist = quindoc.dist(mx, my, l.x, l.y)
 
-    for i = 1,#levels do
-        local l = levels[i]
-        local dist = quindoc.dist(mx, my, l.x, l.y)
+            if dist < 100 and l.click then
+                riverName = l.name
+                print(l.name)
+                
+                --open sign
+                selectedMenu = "levelMenu"
+                menus[selectedMenu].type = riverName
+                menus[selectedMenu].isOpen = true
 
-        if dist < 100 and l.click then
-            riverName = l.name
-            print(l.name)
-            gameState = "river"
+                --gameState = "river"
+            end
+            l.click = false
         end
-        l.click = false
     end
 end
 
@@ -180,11 +186,9 @@ local function draw()
 
     --levelSelectScreen:Draw()
 
-    if uiFade > 0 then
+    if uiFade > 0 and menus[selectedMenu] then
         local f = tweens.sineInOut(uiFade)
-        if selectedMenu == "boatSelectMenu" then
-            menus["boatSelectMenu"]:Draw(f)
-        end
+        menus[selectedMenu]:Draw(f)
     end
 end
 
