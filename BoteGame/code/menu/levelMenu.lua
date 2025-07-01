@@ -104,6 +104,16 @@ function levelMenu:Draw(gs)
     font.setFont("black", 128)
     love.graphics.printf(typeData[self.type].displayName, 0, 350, 1920, "center")
 
+    -- Highscore
+    local displayNum
+    if settings.graphics.shortNumbers.value then
+        displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][1])), 2)
+    else
+        displayNum = math.floor(math.abs(assets.save.highscore[riverName][1]))
+    end
+    font.setFont("black", 64)
+        --👑 is temporary, trust me
+    love.graphics.printf("👑" .. displayNum, 1920/2, 1080/2 + 50, 128*5, "center")
 
     self.Ui:Draw()
     --Ok back to normal
