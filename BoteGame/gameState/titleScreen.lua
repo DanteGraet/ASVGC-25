@@ -87,12 +87,17 @@ local function update(dt)
                 elseif dataB.first then
                     dataB.remove = true
                     fixtureB:setUserData(dataB)
+                else
+                    -- remove B by deefault, one of them has to go
+                    dataB.first = false
+                    dataB.remove = true
+                    fixtureB:setUserData(dataB)
                 end    
             end
         end
 
         for i = #obstacles,1, -1 do
-            obstacles[i]:Update(i, dt)
+            obstacles[i]:Update(i, 0)
         end
     else      
         river:checkNextSegment()

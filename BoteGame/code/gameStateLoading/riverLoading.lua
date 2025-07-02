@@ -116,7 +116,36 @@ table.insert(toLoad, function()
     for key, z in pairs(riverZones) do
         zoneObsitcalList[z.zone] = assets.code.river.zone[z.zone].obsticals()
     end
-    obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
+    obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList, 1000)
+    obstacleSpawner:Update()
+
+    world:update(0)
+
+        -- remove colliding rocks
+    local contacts = world:getContacts()
+    for _, contact in ipairs(contacts) do
+        if contact:isTouching() then
+            local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
+            local dataA = fixtureA:getUserData()
+            local dataB = fixtureB:getUserData()
+            if dataA.first then
+                dataA.remove = true
+                fixtureA:setUserData(dataA)
+            elseif dataB.first then
+                dataB.remove = true
+                fixtureB:setUserData(dataB)
+            else
+                -- remove B by deefault, one of them has to go
+                dataB.first = false
+                dataB.remove = true
+                fixtureB:setUserData(dataB)
+            end    
+        end
+    end
+
+    for i = #obstacles,1, -1 do
+        obstacles[i]:Update(i, 0)
+    end
 
     
     local keybinds = assets.code.menu.keybinds()

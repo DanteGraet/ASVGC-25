@@ -4,34 +4,20 @@ local toLoad = {
     {"code/titleScreen/titleScreenButtons.lua"},
 
     --settings menu stuff is also here :D
-
-
-
-
     {"code/menu/settingsMenu.lua"},
 
-    --{"font/fontBlack.ttf",24},
-    --{"font/fontBlack.ttf",32},
-    --{"font/fontBlack.ttf",64},
 
     {"image/titleScreen/title.png", "blur"},
 
     -- load the save
     {"code/player/playerLoadSaveData.lua", "run"},
 
-
-
     -- generation suff
     {"code/river/river.lua"},
     {"code/river/generator/riverGenerator.lua"},
     {"code/river/generator/obstacleSpawner.lua"},
 
-
     {"obstacle/obstacle.lua", "run"},
-
-
-
-
 
 
     -- in a function so we don't unload it
@@ -99,15 +85,51 @@ table.insert(toLoad, function()
     river = assets.code.river.river():New()
     riverGenerator = assets.code.river.generator.riverGenerator():New(rn)
 
+end)
+
+table.insert(toLoad, function()
+
+
     obstacles = {}
     local zoneObsitcalList = {}
     local riverZones = riverFileDirectory.zone()
     for key, z in pairs(riverZones) do
         zoneObsitcalList[z.zone] = assets.code.river.zone[z.zone].obsticals()
     end
-    obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList)
+    obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList, 1000)
+
+    zones = riverGenerator:GetZone(0, true)
+    obstacleSpawner:Update()
+
+    world:update(0)
 
     --music.load()
+
+    -- remove colliding rocks
+    local contacts = world:getContacts()
+    for _, contact in ipairs(contacts) do
+        if contact:isTouching() then
+            local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
+            local dataA = fixtureA:getUserData()
+            local dataB = fixtureB:getUserData()
+            if dataA.first then
+                dataA.remove = true
+                fixtureA:setUserData(dataA)
+            elseif dataB.first then
+                dataB.remove = true
+                fixtureB:setUserData(dataB)
+            else
+                -- remove B by deefault, one of them has to go
+                dataB.first = false
+                dataB.remove = true
+                fixtureB:setUserData(dataB)
+            end    
+        end
+    end
+
+    for i = #obstacles,1, -1 do
+        obstacles[i]:Update(i, 0)
+    end
 
     particles.loadParticles()
 end)

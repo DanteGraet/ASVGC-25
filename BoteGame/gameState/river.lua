@@ -15,7 +15,6 @@ local mouseTimer = 0
 
 resizing = -1
 
-
 -- deefault values
 riverBorders = {
     left = -960,
@@ -151,6 +150,7 @@ local lightningAlpha = 0
 
 
 local function update(dt)
+    -- hide mouse if not moved
     if mouseTimer < 1 and player.health > 0 then
         mouseTimer = mouseTimer + dt*gameSpeed
         if mouseTimer >= 1 then
@@ -218,13 +218,8 @@ local function update(dt)
                     local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
                     local dataA = fixtureA:getUserData()
                     local dataB = fixtureB:getUserData()
-                    if dataA.first then
-                        dataA.remove = true
-                        fixtureA:setUserData(dataA)
-                    elseif dataB.first then
-                        dataB.remove = true
-                        fixtureB:setUserData(dataB)
-                    elseif dataA.type == "player" or dataB.type == "player" then
+                    --check if the collision is with the player
+                    if dataA.type == "player" or dataB.type == "player" then
                         local playerData
                         local collideData
 
@@ -240,6 +235,17 @@ local function update(dt)
                             collideData.hasCollided = true
                             player:TakeDamage(1)
                         end
+                    -- it has to be two rocks/obstacles
+                    elseif dataA.first then
+                        dataA.remove = true
+                        fixtureA:setUserData(dataA)
+                    elseif dataB.first then
+                        dataB.remove = true
+                        fixtureB:setUserData(dataB)
+                    else
+                        dataB.first = false
+                        dataB.remove = true
+                        fixtureB:setUserData(dataB)
                     end    
                 end
             end

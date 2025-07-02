@@ -2,11 +2,11 @@ local RandomSpawner = {}
 RandomSpawner.__index = RandomSpawner
 
 
-function RandomSpawner:New(obsticals)
+function RandomSpawner:New(obsticals, lastY)
     local obj = setmetatable({}, RandomSpawner)
 
     obj.obsticals = obsticals
-    obj.lastY = riverBorders.up - 250
+    obj.lastY = lastY or riverBorders.up - 250
 
 
 

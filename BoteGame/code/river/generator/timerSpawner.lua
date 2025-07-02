@@ -2,11 +2,11 @@ local timerSpawner = {}
 timerSpawner.__index = timerSpawner
 
 
-function timerSpawner:New(obsticals, min, max)
+function timerSpawner:New(obsticals, min, max, lastY)
     local obj = setmetatable({}, timerSpawner)
 
     obj.obsticals = obsticals
-    obj.lastY = riverBorders.up - 250
+    obj.lastY = lastY or riverBorders.up - 250
 
     obj.min = min
     obj.max = max

@@ -2,12 +2,12 @@ local difficultyIndependentSpawner = {}
 difficultyIndependentSpawner.__index = difficultyIndependentSpawner
 
 
-function difficultyIndependentSpawner:New(obsticals,chance)
+function difficultyIndependentSpawner:New(obsticals,chance, lastY)
     local obj = setmetatable({}, difficultyIndependentSpawner)
 
     obj.obsticals = obsticals
     obj.chance = chance
-    obj.lastY = riverBorders.up - 250
+    obj.lastY = lastY or riverBorders.up - 250
 
     return obj
 end
