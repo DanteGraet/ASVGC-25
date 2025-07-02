@@ -8,28 +8,32 @@ local typeData = {
         stage = 1,
         yfunc = function(gs)
             return 1500*(1-gs)
-        end
+        end,
+        extDir = 1,
     },
     autumnGrove = {
         displayName = "Autumn Grove",
         stage = 2,
         yfunc = function(gs)
             return 1500*(gs - 1)
-        end
+        end,
+        extDir = 2,
     },
     derelictDam = {
         displayName = "Derilect Dam",
         stage = 3,
         yfunc = function(gs)
             return 1500*(1-gs)
-        end
+        end,
+        extDir = 1,
     },
     endless = {
         displayName = "Endless",
         stage = 0,       --?
         yfunc = function(gs)
             return 1500*(1-gs)
-        end
+        end,
+        extDir = 1,
     },
 }
 
@@ -107,7 +111,7 @@ function levelMenu:Draw(gs)
     -- Highscore
     local displayNum
     if settings.graphics.shortNumbers.value then
-        displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][1])), 2)
+        displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][1] or 0)), 2)
     else
         displayNum = math.floor(math.abs(assets.save.highscore[riverName][1]))
     end
@@ -134,8 +138,19 @@ function levelMenu:Draw(gs)
 
     love.graphics.setColor(1,1,1, gs*5)
     love.graphics.draw(self.canvas, -1920/2, -1080/2)
-        -- Draw extentions for poles/beams of qhatever later tm
     
+    -- Draw extentions for poles/beams of qhatever later tm
+    local image = assets.image.levelSelect.sign[self.type .. "Ext"]
+
+    local extraHeight = math.ceil((soy-540)/(image:getHeight() - 10))
+    for i = 1, extraHeight do
+        local h = image:getHeight() - 10
+        if typeData[self.type].extDir == 1 then
+            love.graphics.draw(image, -1920/2, 1080/2 + (i-1)*h )
+        elseif typeData[self.type].extDir == 2 then
+            love.graphics.draw(image, -1920/2, -1080/2 - (i)*h + 10)
+        end
+    end
 
 end
 
