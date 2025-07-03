@@ -162,4 +162,8 @@ table.insert(toLoad, function()
     music.load()
 end)
 
+table.insert(toLoad, function()
+    -- empty function to scam bote game into reseting dt 
+end)
+
 return toLoad
