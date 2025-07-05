@@ -246,7 +246,7 @@ local function update(dt)
                         --we actually don't want this
                         --dataB.first = false
                         --dataB.remove = true
-                        fixtureB:setUserData(dataB)
+                        --fixtureB:setUserData(dataB)
                     end    
                 end
             end
