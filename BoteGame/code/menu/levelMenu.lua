@@ -109,7 +109,7 @@ function levelMenu:Draw(gs)
     love.graphics.printf(typeData[self.type].displayName, 0, 350, 1920, "center")
 
     -- Highscore
-    local displayNum = nil
+    local displayNum = 0
     if assets.save.highscore[riverName] then
         if settings.graphics.shortNumbers.value then
             displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][1] or 0)), 2)
