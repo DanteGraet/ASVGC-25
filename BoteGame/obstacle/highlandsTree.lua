@@ -34,7 +34,7 @@ function highlandsTreeObstacle:New(x, y)
 
     for i = 1, #highlandsTreeAcceptedColours do
         if assets.code.river.zone[zones.zone].GetColourAt(x,y)[1] == highlandsTreeAcceptedColours[i] then 
-            obj = Obstacle:New(x, y, highlandsTreeShape)
+            obj = Obstacle:New(x, y, highlandsTreeShape, obj.OnCollideWithPlayer)
             setmetatable(obj, self)
             obj.image = highlandsTreeImages[math.random(1, #highlandsTreeImages)]   
             obj.dir = math.rad(math.random(1,360))   
@@ -45,6 +45,13 @@ function highlandsTreeObstacle:New(x, y)
 
     return obj
 end
+
+function highlandsTreeObstacle:OnCollideWithPlayer(collideData)
+    if not collideData.hasCollided then
+        collideData.hasCollided = true
+    end
+end
+
 
 function highlandsTreeObstacle:Update(no, dt)
     if self.body then

@@ -2,7 +2,8 @@ Obstacle = {}
 Obstacle.__index = Obstacle
 
 
-function Obstacle:New(x, y, shape)
+
+function Obstacle:New(x, y, shape, colisionFunction)
     local obj = setmetatable({}, Obstacle)
 
     obj.x = math.floor(x/3)*3 or 0
@@ -15,10 +16,19 @@ function Obstacle:New(x, y, shape)
     -- DONT CHNAGE THIS AGAIN. IT HAS TO BE DYNAMIC BY DEFAULT
     obj.body = love.physics.newBody(world, obj.x, obj.y, "dynamic")
     obj.fixture = love.physics.newFixture(obj.body, obj.shape)
-    obj.fixture:setUserData({type = "obstacle", first = true, remove = false})
+    obj.fixture:setUserData({type = "obstacle", first = true, remove = false, OnCollideWithPlayer = colisionFunction or obj.OnCollideWithPlayer})
+
 
     return obj
 end
+
+function Obstacle:OnCollideWithPlayer(collideData)
+    if not collideData.hasCollided then
+        collideData.hasCollided = true
+        player:TakeDamage(1)
+    end
+end
+
 
 function Obstacle:Update(no, dt)
 

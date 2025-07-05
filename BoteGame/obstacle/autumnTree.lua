@@ -35,7 +35,7 @@ function autumnTreeObstacle:New(x, y)
 
     for i = 1, #autumnTreeAcceptedColours do
         if assets.code.river.zone[zones.zone].GetColourAt(x,y)[1] == autumnTreeAcceptedColours[i] then 
-            obj = Obstacle:New(x, y, autumnTreeShape)
+            obj = Obstacle:New(x, y, autumnTreeShape, obj.OnCollideWithPlayer)
             setmetatable(obj, self)
             obj.image = autumnTreeImages[math.random(1, #autumnTreeImages)]   
             obj.dir = math.rad(math.random(1,360))   
@@ -45,6 +45,12 @@ function autumnTreeObstacle:New(x, y)
 
 
     return obj
+end
+
+function autumnTreeObstacle:OnCollideWithPlayer(collideData)
+    if not collideData.hasCollided then
+        collideData.hasCollided = true
+    end
 end
 
 function autumnTreeObstacle:Update(no, dt)

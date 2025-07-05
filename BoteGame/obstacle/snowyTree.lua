@@ -35,7 +35,7 @@ function snowyTreeObstacle:New(x, y)
 
     for i = 1, #snowyTreeAcceptedColours do
         if assets.code.river.zone[zones.zone].GetColourAt(x,y)[1] == snowyTreeAcceptedColours[i] then 
-            obj = Obstacle:New(x, y, snowyTreeShape)
+            obj = Obstacle:New(x, y, snowyTreeShape, snowyTreeObstacle.OnCollideWithPlayer)
             setmetatable(obj, self)
             obj.image = snowyTreeImages[math.random(1, #snowyTreeImages)]  
             obj.dir = math.rad(math.random(1,360))    
@@ -45,6 +45,12 @@ function snowyTreeObstacle:New(x, y)
 
 
     return obj
+end
+
+function snowyTreeObstacle:OnCollideWithPlayer(collideData)
+    if not collideData.hasCollided then
+        collideData.hasCollided = true
+    end
 end
 
 function snowyTreeObstacle:Update(no, dt)

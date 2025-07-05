@@ -226,15 +226,14 @@ local function update(dt)
                         if dataA.type == "player" then
                             playerData = dataA
                             collideData = dataB
+                            dataB:OnCollideWithPlayer(collideData)
                         else
                             playerData = dataB
                             collideData = dataA
+                            dataA:OnCollideWithPlayer(collideData)
                         end
 
-                        if not collideData.hasCollided then
-                            collideData.hasCollided = true
-                            player:TakeDamage(1)
-                        end
+
                     -- it has to be two rocks/obstacles
                     elseif dataA.first then
                         dataA.remove = true
@@ -251,7 +250,7 @@ local function update(dt)
             end
 
             for i = #obstacles,1, -1 do
-                obstacles[i]:Update(i, dt)
+                obstacles[i]:Update(i, dt*gs)
             end
 
 
