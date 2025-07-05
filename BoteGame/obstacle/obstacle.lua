@@ -22,7 +22,7 @@ function Obstacle:New(x, y, shape, colisionFunction)
     return obj
 end
 
-function Obstacle:OnCollideWithPlayer(collideData)
+function Obstacle:OnCollideWithPlayer(self, collideData)
     if not collideData.hasCollided then
         collideData.hasCollided = true
         player:TakeDamage(1)

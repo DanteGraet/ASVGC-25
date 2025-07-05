@@ -47,7 +47,7 @@ function snowyTreeObstacle:New(x, y)
     return obj
 end
 
-function snowyTreeObstacle:OnCollideWithPlayer(collideData)
+function snowyTreeObstacle:OnCollideWithPlayer(self, collideData)
     if not collideData.hasCollided then
         collideData.hasCollided = true
     end

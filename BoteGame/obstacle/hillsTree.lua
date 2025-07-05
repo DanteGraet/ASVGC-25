@@ -36,7 +36,7 @@ function hillsTreeObstacle:New(x, y)
 
     for i = 1, #hillsTreeAcceptedColours do
         if assets.code.river.zone[zones.zone].GetColourAt(x,y)[1] == hillsTreeAcceptedColours[i] then 
-            obj = Obstacle:New(x, y, hillsTreeShape)
+            obj = Obstacle:New(x, y, hillsTreeShape, obj.OnCollideWithPlayer)
             setmetatable(obj, self)
             obj.image = hillsTreeImages[math.random(1, #hillsTreeImages)]   
             obj.dir = math.rad(math.random(1,360))   
@@ -46,6 +46,12 @@ function hillsTreeObstacle:New(x, y)
 
 
     return obj
+end
+
+function hillsTreeObstacle:OnCollideWithPlayer(self, collideData)
+    if not collideData.hasCollided then
+        collideData.hasCollided = true
+    end
 end
 
 function hillsTreeObstacle:Update(no, dt)

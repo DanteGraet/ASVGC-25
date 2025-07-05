@@ -180,22 +180,14 @@ local function update(dt)
 
 
         if river:HasPoints() then
-
             local inputs = inputManager:GetInput()
-
             local gs = tweens.sineInOut(gameSpeed)
 
             particles.updateParticles(dt*gs)
-
-            --spawnSnow(dt*gs)
             ambiance.update(dt*gs)
-
             -- Update the player first, all other things rely on it basically
             player:Update(dt*gs, inputs, gameSpeed)
-
-
             ui:Update(dt*gs)
-
             -- update the camera and similar variables after the player so it doesn't lag behind slightly
             camera:SetPosition(0, player:GetPosition().y)
             camera:Update(dt)
@@ -204,11 +196,9 @@ local function update(dt)
             riverBorders.down =  (player.winY or player.y) - camera.oy + love.graphics.getHeight()/scale
 
             -- update the river after the player so we can generate based on the players position.
-
             river:Update()
 
             obstacleSpawner:Update()
-
             world:update(dt*gs)
 
             local contacts = world:getContacts()
@@ -226,11 +216,11 @@ local function update(dt)
                         if dataA.type == "player" then
                             playerData = dataA
                             collideData = dataB
-                            dataB:OnCollideWithPlayer(collideData)
+                            dataB:OnCollideWithPlayer(fixtureB, collideData)
                         else
                             playerData = dataB
                             collideData = dataA
-                            dataA:OnCollideWithPlayer(collideData)
+                            dataA:OnCollideWithPlayer(fixtureA, collideData)
                         end
 
 

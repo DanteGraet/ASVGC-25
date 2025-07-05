@@ -46,7 +46,7 @@ function highlandsTreeObstacle:New(x, y)
     return obj
 end
 
-function highlandsTreeObstacle:OnCollideWithPlayer(collideData)
+function highlandsTreeObstacle:OnCollideWithPlayer(self, collideData)
     if not collideData.hasCollided then
         collideData.hasCollided = true
     end
