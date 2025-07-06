@@ -11,7 +11,7 @@ end
 local subordinateCogObstacle = setmetatable({}, { __index = Obstacle }) 
 subordinateCogObstacle.__index = subordinateCogObstacle
 
-function subordinateCogObstacle:New(x, y)
+function subordinateCogObstacle:New(x, y, globalCogPhase, globalCogRadius, globalCogInCharge)
     local obj = Obstacle:New(x, y, subordinateCogShape)
     setmetatable(obj, self)
     obj.image = subordinateCogImages[math.random(1, #subordinateCogImages)]

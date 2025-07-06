@@ -223,7 +223,16 @@ local function update(dt)
                             dataA:OnCollideWithPlayer(fixtureA, collideData)
                         end
 
-
+                        -- the nuclear option
+                   --[[ elseif dataA.type == "remBox" or dataB.type == "remBox" then
+                        if dataA.type ~= "remBox" then
+                            dataA.remove = true
+                            fixtureA:setUserData(dataA)
+                        elseif dataB.type ~= "remBox" then
+                            dataB.remove = true
+                            fixtureB:setUserData(dataB)
+                        end]]
+                    
                     -- it has to be two rocks/obstacles
                     elseif dataA.first then
                         dataA.remove = true

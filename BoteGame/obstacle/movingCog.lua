@@ -12,6 +12,7 @@ local movingCogObstacle = setmetatable({}, { __index = Obstacle })
 movingCogObstacle.__index = movingCogObstacle
 
 function movingCogObstacle:New(x, y)
+    local y = y - 100
     local obj = Obstacle:New(x, y, movingCogShape)
     setmetatable(obj, self)
     obj.image = movingCogImages[math.random(1, #movingCogImages)]
@@ -28,6 +29,10 @@ function movingCogObstacle:New(x, y)
     obj.phase = love.math.random(0,62)/10
     obj.phaseSpeed = love.math.random(7,16)/10
     obj.spinDirection = (math.random(1, 2) == 1 and 1) or -1
+    obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
+
+
+    table.insert(obstacles, assets.obstacle.noSpawnRect:New(obj.centreX - obj.displacement, y - 50, obj.displacement*2, 100))
     
     return obj
 end

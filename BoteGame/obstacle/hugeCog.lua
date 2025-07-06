@@ -32,26 +32,28 @@ function hugeCogObstacle:New(x, y)
 
     local yay = y-800--trust the process
 
-    globalCogPhase = 0
-    globalCogRadius = 400
+    local globalCogPhase = 0
+    local globalCogRadius = 400
 
 
     for i = 1,8 do
-        if i == 1 then globalCogInCharge = true else globalCogInCharge = false end
+        --if i == 1 then globalCogInCharge = true else globalCogInCharge = false end
         globalCogPhase = (math.pi*i)/4
-        table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay))
+        table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay, globalCogPhase, globalCogRadius, i == 1))
     end
 
     globalCogRadius = 650
 
     for i = 1,12 do
         globalCogPhase = (math.pi*i)/6
-        table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay))
+        table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay, globalCogPhase, globalCogRadius))
     end
     
     globalCogPhase = nil
     globalCogRadius = nil
-    globalCogInCharge = nil
+    --globalCogInCharge = nil
+
+    table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y - 1000, 750))
     
     return obj
 end
