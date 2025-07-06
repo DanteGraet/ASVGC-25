@@ -232,9 +232,10 @@ local function update(dt)
                         dataB.remove = true
                         fixtureB:setUserData(dataB)
                     else
-                        dataB.first = false
-                        dataB.remove = true
-                        fixtureB:setUserData(dataB)
+                        --we actually don't want this
+                        --dataB.first = false
+                        --dataB.remove = true
+                        --fixtureB:setUserData(dataB)
                     end    
                 end
             end

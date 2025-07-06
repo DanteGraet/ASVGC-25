@@ -326,8 +326,8 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
 
         table.insert(newPoints, 
             {
-                leftCurve:render(4),
-                rightCurve:render(4),
+                leftCurve:render(zone.chunky or 4),
+                rightCurve:render(zone.chunky or 4),
             }
         )
     end
