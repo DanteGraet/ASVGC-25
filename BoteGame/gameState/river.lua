@@ -252,7 +252,7 @@ local function update(dt)
             end
 
             for i = #obstacles,1, -1 do
-                obstacles[i]:Update(i, dt)
+                obstacles[i]:Update(i, dt*gs)
             end
 
 
