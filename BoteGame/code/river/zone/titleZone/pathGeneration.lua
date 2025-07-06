@@ -5,7 +5,7 @@ local settings = {
     segLenMax = 300,
     segLenMin = 500,
 
-    maxDeviation = 400,
+    maxDeviation = 200,
 
     offsetX = 1920/2 -600,
 }
