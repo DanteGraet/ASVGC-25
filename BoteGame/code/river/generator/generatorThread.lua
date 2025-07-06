@@ -262,7 +262,8 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
 
         -- the end x of the segment
         -- this is based in 1920x1080 screen size (default that we scale around)
-        local endX = math.random( -(zone.maxDeviation or 1900)/2, (zone.maxDeviation or 1900)/2)
+        local random = quindoc.clamp((zone.maxDeviation or 1900)/2, -950 + zone.maxWidth/2, 950 - zone.maxWidth/2)
+        local endX = math.random( -random, random) 
         --where it starts (used for mid thingss um yea)
         local startX = (localLastPoints[i][1].x + localLastPoints[i][2].x)/2
 
