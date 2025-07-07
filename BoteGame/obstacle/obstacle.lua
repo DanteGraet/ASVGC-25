@@ -29,7 +29,7 @@ function Obstacle:OnCollideWithPlayer(self, collideData)
 end
 
 
-function Obstacle:Update(no, dt, first)
+function Obstacle:Update(no, dt, front)
     if not self.fixture:isDestroyed() then
         if self.fixture:getUserData().first then
             local data = self.fixture:getUserData()
@@ -38,17 +38,24 @@ function Obstacle:Update(no, dt, first)
             self.body:setType("static")
 
             self.fixture:setUserData(data)
-        elseif self.fixture:getUserData().remove then
+        elseif self.fixture:getUserData().remove or self.y > riverBorders.down + 500 then
             self.body:destroy()
-            table.remove(not first and obstacles or frontObstacles, no)
-            return
-        elseif self.y > riverBorders.down + 500 then
-            self.body:destroy()
-            table.remove(not first and obstacles or frontObstacles, no)
+            if front == true then
+                table.remove(frontObstacles, no)
+            else
+                table.remove(obstacles, no)
+            end
+            
             return
         end
 
         self.x, self.y = self.body:getPosition()
+    else
+        if not front == true then
+            table.remove(obstacles, no)
+        else
+            table.remove(frontObstacles, no)
+        end
     end
 
 end
@@ -73,10 +80,5 @@ function Obstacle:DrawHitbox()
         if self.fixture:getUserData().hasCollided then
             love.graphics.setColor(1,1,1)
         end
-    else
-        love.graphics.setColor(1,0,0)
-        love.graphics.circle("line", self.x, self.y, 10)
-        love.graphics.circle("line", self.x, self.y, 100)
-        love.graphics.circle("line", self.x, self.y, 1000)
     end
 end

@@ -23,7 +23,7 @@ function noSpawnCircle:New(x, y, w, h)
 end
 
 function noSpawnCircle:OnCollideWithPlayer(self, collideData)
-    print(self.x, self.y)
+
 end
 
 function noSpawnCircle:Draw()

@@ -51,12 +51,12 @@ function highlandsTreeObstacle:OnCollideWithPlayer(self, collideData)
 end
 
 
-function highlandsTreeObstacle:Update(no, dt)
+function highlandsTreeObstacle:Update(no, dt, front)
     if self.body then
 
         --CODE FOR UPDATING OBSTACLE GOES HERE
 
-        Obstacle.Update(self, no, dt)
+        Obstacle.Update(self, no, dt, front)
     end
 end
 

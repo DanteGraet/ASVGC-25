@@ -52,12 +52,12 @@ function autumnTreeObstacle:OnCollideWithPlayer(self, collideData)
     end
 end
 
-function autumnTreeObstacle:Update(no, dt)
+function autumnTreeObstacle:Update(no, dt, front)
     if self.body then
 
         --CODE FOR UPDATING OBSTACLE GOES HERE
 
-        Obstacle.Update(self, no, dt)
+        Obstacle.Update(self, no, dt, front)
     end
 end
 

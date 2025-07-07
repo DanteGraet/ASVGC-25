@@ -52,12 +52,12 @@ function hillsTreeObstacle:OnCollideWithPlayer(self, collideData)
     end
 end
 
-function hillsTreeObstacle:Update(no, dt)
+function hillsTreeObstacle:Update(no, dt, front)
     if self.body then
 
         --CODE FOR UPDATING OBSTACLE GOES HERE
 
-        Obstacle.Update(self, no, dt)
+        Obstacle.Update(self, no, dt, front)
     end
 end
 

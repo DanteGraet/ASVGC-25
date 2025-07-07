@@ -33,12 +33,16 @@ return function(obsticals, y, front)
             if obj then
                 local data = obj.fixture:getUserData()
 
-                data.type = (front and "obstacle") or "frontObstacle"
+                if front == true then
+                    data.type = "frontObstacle"
+                else
+                    data.type = "obstacle" 
+                end
 
                 obj.fixture:setUserData(data)
             end
 
-            if front then
+            if front == true then
                 table.insert(frontObstacles, obj)
             else
                 table.insert(obstacles, obj)

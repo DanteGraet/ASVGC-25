@@ -22,12 +22,12 @@ function templateObstacle:New(x, y)
     return obj
 end
 
-function templateObstacle:Update(no, dt)
+function templateObstacle:Update(no, dt, front)
     if self.body then
 
         --CODE FOR UPDATING OBSTACLE GOES HERE
 
-        Obstacle.Update(self, no, dt)
+        Obstacle.Update(self, no, dt, front)
     end
 end
 

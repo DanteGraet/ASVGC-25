@@ -394,6 +394,7 @@ local function draw()
 
         player:Draw()
 
+        love.graphics.setColor(1,1,1)
         for i = 1,#frontObstacles do
             frontObstacles[i]:Draw(i)
         end
