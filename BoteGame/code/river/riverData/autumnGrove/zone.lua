@@ -1,10 +1,25 @@
 return {
-
-        {
+    {
+        zone = "coniferousHills",
+        displayName = "Wooded Hills",
+        subtitle = "Pine-Forested Foothills",
+        distance = 5000,
+        transition = 0,
+        currentIcons = 2,
+    },
+    {
         zone = "autumnGrove",
         displayName = "Autumn Grove",
         subtitle = "Woodland of eternal Fall",
-        distance = 10000,
+        distance = 20000,
+        transition = 0,
+        currentIcons = 3,
+    },
+    {
+        zone = "clockworkRuins",
+        displayName = "Clockwork Ruins",
+        subtitle = "Ancient site of geared locomotion",
+        distance = 15000,
         transition = 0,
         currentIcons = 3,
     },
@@ -17,30 +32,12 @@ return {
         currentIcons = 3,
     },
     {
-        zone = "coniferousHills",
-        displayName = "Coniferous Hills",
-        subtitle = "Pine-Forested Foothills",
-        distance = 40000,
-        transition = 1000,
-        currentIcons = 2,
-    },
-    --[[
-    {
-        zone = "boulderValley", 
-        displayName = "Storm Valley",
-        subtitle = "Blizzard Approaching",
-        distance = 49500,
-        transition = 500,
-        currentIcons = 4,
-    },
-    {
-        zone = "coniferousMountainside",
-        subtitle = "-- Almost There! --",
-        displayName = "Coniferous Highlands",
+        zone = "autumnRapids",
+        displayName = "Autumn Rapids",
+        subtitle = "Fast-flowing stream",
         distance = 10000,
         transition = 0,
-        currentIcons = 2,
-    },]]
-
+        currentIcons = 3,
+    },
 
 }
