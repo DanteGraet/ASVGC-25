@@ -5,7 +5,7 @@ local settings = {
     segLenMax = 1000,
     segLenMin = 1200,
 
-    maxDeviation = 200,
+    maxDeviation = 400,
 
     chunky = 1
 }

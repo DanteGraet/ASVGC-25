@@ -1,11 +1,11 @@
 local settings = {
     minWidth = 500,
-    maxWidth = 600,
+    maxWidth = 800,
 
     segLenMax = 500,
-    segLenMin = 400,
+    segLenMin = 800,
 
-    maxDeviation = 600
+    maxDeviation = 900
 }
 
 return settings

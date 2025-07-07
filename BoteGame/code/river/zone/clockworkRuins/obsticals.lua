@@ -3,6 +3,19 @@ return {
     {
         type = "random",     
         data = {
+            bigRock = {
+                -- the base spawnWeight that this obstical has
+                spawnWeight = 2,
+
+                -- the amount the spawnWeight can change by (+- 1/2)
+                weightChange = 0,
+
+                -- the noise value that will controll the spawnWeight, if you want things to have the same spawnWeight, use the same noise values :/
+                noise = 2,
+
+                -- divider for the noise.
+                noiseDiv = 10
+            } ,
             subordinateCog = {
                 -- the base spawnWeight that this obstical has
                 spawnWeight = 1,
@@ -39,17 +52,16 @@ return {
 
 
         },
-        minTime = 200,
-        maxTime = 300,
+        minTime = 300,
+        maxTime = 400,
     },
     {
-        type = "timer",    
-        maxTime = 2000,
-        minTime = 1500,
+        type = "difficultyIndependent",    
+        chance = 0.1,
         data = {
-                hugeCog = {
+            autumnTree = {
                 -- the base spawnWeight that this obstical has
-                spawnWeight = 30,
+                spawnWeight = 1,
 
                 -- the amount the spawnWeight can change by (+- 1/2)
                 weightChange = 0,
@@ -58,8 +70,7 @@ return {
                 noise = 2,
 
                 -- divider for the noise.
-                noiseDiv = 1
-            
+                noiseDiv = 10
             } ,
         }
     },
@@ -70,6 +81,27 @@ return {
                 noSpawnSphere = {} ,
         }
     }
+  --[[  {
+        type = "timer",    
+        maxTime = 2000,
+        minTime = 1500,
+        data = {
+                hugeCog = {
+                -- the base spawnWeight that this obstical has
+                spawnWeight = 1,
+
+                -- the amount the spawnWeight can change by (+- 1/2)
+                weightChange = 0,
+
+                -- the noise value that will controll the spawnWeight, if you want things to have the same spawnWeight, use the same noise values :/
+                noise = 2,
+
+                -- divider for the noise.
+                noiseDiv = 10
+            
+            } ,
+        }
+    }]]
 
 
 
