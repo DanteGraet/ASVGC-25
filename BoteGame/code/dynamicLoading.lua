@@ -173,7 +173,12 @@ function DynamicLoading:Run()
         if love.timer then dt = love.timer.step() end
         self:Update(dt)
         loadPercentage = math.min(loadPercentage + dt, 2)
-        
+
+        -- bandaid fix but time is running out so deal with it
+        if gameState == "titleScreen" then
+            game[gameState].update(dt)    
+        end
+
         love.graphics.clear()
         love.draw()
         self:Draw()
