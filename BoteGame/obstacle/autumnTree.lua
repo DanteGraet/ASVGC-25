@@ -25,7 +25,6 @@ end
 function autumnTreeObstacle:New(x, y)
 
     local obj = {}
-    obj.spawnFail = true
 
     if zones[1] and type(zones[1]) == "table" then
         zones = zones[1]
@@ -40,11 +39,11 @@ function autumnTreeObstacle:New(x, y)
             obj.image = autumnTreeImages[math.random(1, #autumnTreeImages)]   
             obj.dir = math.rad(math.random(1,360))   
             --obj.fixture:setSensor(true)
+
+            return obj
+
         end
     end
-
-
-    return obj
 end
 
 function autumnTreeObstacle:OnCollideWithPlayer(self, collideData)

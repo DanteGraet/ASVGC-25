@@ -2,16 +2,18 @@ local RandomSpawner = {}
 RandomSpawner.__index = RandomSpawner
 
 
-function RandomSpawner:New(obsticals, lastY)
+function RandomSpawner:New(obsticals, lastY, front)
     local obj = setmetatable({}, RandomSpawner)
 
     obj.obsticals = obsticals
     obj.lastY = lastY or riverBorders.up - 250
 
-
+    obj.inFront = front or false
 
     return obj
 end
+
+RandomSpawner.spawnObstacle = love.filesystem.load("code/river/generator/spawnObstacleFunc.lua")()
 
 function RandomSpawner:Update(val)
     
@@ -32,36 +34,7 @@ function RandomSpawner:Update(val)
             local chance = quindoc.runIfFunc(obsVars.difficultyFunction,(riverGenerator:GetPercentageThrough(y)))
 
             if chance >= math.random(0, 1000)/1000 then
-                local obsticalIndexList = {}
-
-                -- calculate the weight of each obstical
-                local totalWeight = 0
-                for key, value in pairs(self.obsticals) do
-                    local noise = (love.math.noise(y/value.noiseDiv, value.noise/value.noiseDiv, love.math.getRandomSeed())-0.5)*2 * value.weightChange
-                    totalWeight = totalWeight + value.spawnWeight + noise
-
-                    table.insert(obsticalIndexList, {
-                        name = key,
-                        weight = value.spawnWeight + noise,
-                    })
-                end
-
-                local obsticalNumber = math.random(0, totalWeight)
-
-                for i = 1,#obsticalIndexList do
-                    if obsticalNumber < obsticalIndexList[i].weight then
-
-                        if assets.obstacle[obsticalIndexList[i].name].xFunc then
-                            table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(assets.obstacle[obsticalIndexList[i].name].xFunc(), y))
-                        else
-                            table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(math.random(-960, 960), y))
-                        end
-
-                        break
-                    else
-                        obsticalNumber = obsticalNumber - obsticalIndexList[i].weight
-                    end
-                end
+                self.spawnObstacle(self.obsticals, y)
             end
         end
 

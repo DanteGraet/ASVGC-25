@@ -24,7 +24,6 @@ end
 function highlandsTreeObstacle:New(x, y)
 
     local obj = {}
-    obj.spawnFail = true
 
     if zones[1] and type(zones[1]) == "table" then
         zones = zones[1]
@@ -39,11 +38,10 @@ function highlandsTreeObstacle:New(x, y)
             obj.image = highlandsTreeImages[math.random(1, #highlandsTreeImages)]   
             obj.dir = math.rad(math.random(1,360))   
             --obj.fixture:setSensor(true)
+
+            return obj
         end
     end
-
-
-    return obj
 end
 
 function highlandsTreeObstacle:OnCollideWithPlayer(self, collideData)

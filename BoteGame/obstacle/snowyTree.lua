@@ -25,7 +25,6 @@ end
 function snowyTreeObstacle:New(x, y)
 
     local obj = {}
-    obj.spawnFail = true
     
     if zones[1] and type(zones[1]) == "table" then
         zones = zones[1]
@@ -40,11 +39,11 @@ function snowyTreeObstacle:New(x, y)
             obj.image = snowyTreeImages[math.random(1, #snowyTreeImages)]  
             obj.dir = math.rad(math.random(1,360))    
             --obj.fixture:setSensor(true)   
+
+            return obj
+
         end
     end
-
-
-    return obj
 end
 
 function snowyTreeObstacle:OnCollideWithPlayer(self, collideData)

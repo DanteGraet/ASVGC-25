@@ -2,7 +2,7 @@ local timerSpawner = {}
 timerSpawner.__index = timerSpawner
 
 
-function timerSpawner:New(obsticals, min, max, lastY)
+function timerSpawner:New(obsticals, min, max, lastY, front)
     local obj = setmetatable({}, timerSpawner)
 
     obj.obsticals = obsticals
@@ -12,8 +12,13 @@ function timerSpawner:New(obsticals, min, max, lastY)
     obj.max = max
     obj.time = math.random(min, max)*math.random(0, 100)/100
 
+    obj.inFront = front or false
+
     return obj
 end
+
+timerSpawner.spawnObstacle = love.filesystem.load("code/river/generator/spawnObstacleFunc.lua")()
+
 
 function timerSpawner:Update(val)
     if val then
@@ -25,36 +30,7 @@ function timerSpawner:Update(val)
     local y = self.lastY - self.time
     -- check if we are going to spawn an obtical here
 
-    local obsticalIndexList = {}
-
-    -- calculate the weight of each obstical
-    local totalWeight = 0
-    for key, value in pairs(self.obsticals) do
-        local noise = (love.math.noise(riverBorders.up/value.noiseDiv, value.noise/value.noiseDiv, love.math.getRandomSeed())-0.5)*2 * value.weightChange
-        totalWeight = totalWeight + value.spawnWeight + noise
-
-        table.insert(obsticalIndexList, {
-            name = key,
-            weight = value.spawnWeight + noise,
-        })
-    end
-
-    local obsticalNumber = math.random(0, totalWeight)
-
-    for i = 1,#obsticalIndexList do
-        if obsticalNumber < obsticalIndexList[i].weight then
-
-            if assets.obstacle[obsticalIndexList[i].name].xFunc then
-                table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(assets.obstacle[obsticalIndexList[i].name].xFunc(), y))
-            else
-                table.insert(obstacles, assets.obstacle[obsticalIndexList[i].name]:New(math.random(-960, 960), y))
-            end
-
-            break
-        else
-            obsticalNumber = obsticalNumber - obsticalIndexList[i].weight
-        end
-    end
+    self.spawnObstacle(self.obsticals, y)
 
 
     self.lastY = math.ceil((riverBorders.up - 250)/3)*3

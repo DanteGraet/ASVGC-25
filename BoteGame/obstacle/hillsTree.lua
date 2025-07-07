@@ -26,7 +26,6 @@ end
 function hillsTreeObstacle:New(x, y)
 
     local obj = {}
-    obj.spawnFail = true
 
     if zones[1] and type(zones[1]) == "table" then
         zones = zones[1]
@@ -41,11 +40,10 @@ function hillsTreeObstacle:New(x, y)
             obj.image = hillsTreeImages[math.random(1, #hillsTreeImages)]   
             obj.dir = math.rad(math.random(1,360))   
             --obj.fixture:setSensor(true)
+
+            return obj
         end
     end
-
-
-    return obj
 end
 
 function hillsTreeObstacle:OnCollideWithPlayer(self, collideData)

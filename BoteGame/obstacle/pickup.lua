@@ -11,7 +11,6 @@ pickupObstacle.__index = pickupObstacle
 function pickupObstacle:New(x, y)
 
     local obj = {}
-    obj.spawnFail = true
     
     obj = Obstacle:New(x, y, pickupShape, pickupObstacle.OnCollideWithPlayer)
     setmetatable(obj, self)
