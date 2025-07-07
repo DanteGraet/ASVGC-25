@@ -34,7 +34,7 @@ function RandomSpawner:Update(val)
             local chance = quindoc.runIfFunc(obsVars.difficultyFunction,(riverGenerator:GetPercentageThrough(y)))
 
             if chance >= math.random(0, 1000)/1000 then
-                self.spawnObstacle(self.obsticals, y)
+                self.spawnObstacle(self.obsticals, y, self.inFront)
             end
         end
 

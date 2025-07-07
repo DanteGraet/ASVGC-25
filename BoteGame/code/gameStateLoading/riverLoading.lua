@@ -111,6 +111,8 @@ table.insert(toLoad, function()
     riverGenerator = assets.code.river.generator.riverGenerator():New(riverName)
 
     obstacles = {}
+    frontObstacles = {}
+    
     local zoneObsitcalList = {}
     local riverZones = riverFileDirectory.zone()
     for key, z in pairs(riverZones) do
@@ -145,6 +147,10 @@ table.insert(toLoad, function()
 
     for i = #obstacles,1, -1 do
         obstacles[i]:Update(i, 0)
+    end
+
+    for i = #frontObstacles,1, -1 do
+        frontObstacles[i]:Update(i, 0)
     end
 
     

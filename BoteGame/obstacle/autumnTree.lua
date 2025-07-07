@@ -38,7 +38,7 @@ function autumnTreeObstacle:New(x, y)
             setmetatable(obj, self)
             obj.image = autumnTreeImages[math.random(1, #autumnTreeImages)]   
             obj.dir = math.rad(math.random(1,360))   
-            --obj.fixture:setSensor(true)
+            obj.fixture:setSensor(true)
 
             return obj
 

@@ -34,6 +34,7 @@ return {
     {
         type = "difficultyIndependent",    
         chance = 0.4,
+        isFront = true,
         data = {
             highlandsTree = {
                 -- the base spawnWeight that this obstical has

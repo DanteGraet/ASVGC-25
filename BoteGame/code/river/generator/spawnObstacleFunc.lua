@@ -1,6 +1,6 @@
 
 
-return function(obsticals, y)
+return function(obsticals, y, front)
     local obsticalIndexList = {}
 
     -- calculate the weight of each obstical
@@ -23,12 +23,26 @@ return function(obsticals, y)
             local obj
 
             if assets.obstacle[obsticalIndexList[i].name].xFunc then
-                obj = assets.obstacle[obsticalIndexList[i].name]:New(assets.obstacle[obsticalIndexList[i].name].xFunc(), y)
+                obj = assets.obstacle[obsticalIndexList[i].name]:New(assets.obstacle[obsticalIndexList[i].name].xFunc(), y, front)
             else
-                obj = assets.obstacle[obsticalIndexList[i].name]:New(math.random(-960, 960), y)
+                obj = assets.obstacle[obsticalIndexList[i].name]:New(math.random(-960, 960), y, front)
             end 
 
-            table.insert(obstacles, obj)
+
+            -- slower than doing it in the actual obstacle spawn but much better to look at in one place instead of all of them
+            if obj then
+                local data = obj.fixture:getUserData()
+
+                data.type = (front and "obstacle") or "frontObstacle"
+
+                obj.fixture:setUserData(data)
+            end
+
+            if front then
+                table.insert(frontObstacles, obj)
+            else
+                table.insert(obstacles, obj)
+            end
 
             break
         else

@@ -16,12 +16,14 @@ function ObstacleSpawner:New(obsticals, lastY)
     for key, value in pairs(obsticals) do 
         obj.spawners[key] = {}
         for i = 1,#obsticals[key] do
-            if obsticals[key][i].type == "random" then
-                table.insert(obj.spawners[key], randomSpawner:New(obsticals[key][i].data, lastY))
-            elseif obsticals[key][i].type == "timer" then
-                table.insert(obj.spawners[key], timerSpawner:New(obsticals[key][i].data, obsticals[key][i].minTime, obsticals[key][i].maxTime, lastY))
-            elseif obsticals[key][i].type == "difficultyIndependent" then
-                table.insert(obj.spawners[key], difficultyIndependentSpawner:New(obsticals[key][i].data, obsticals[key][i].chance, lastY))
+            local obs = obsticals[key][i]
+
+            if obs.type == "random" then
+                table.insert(obj.spawners[key], randomSpawner:New(obs.data, lastY, obs.isFront))
+            elseif obs.type == "timer" then
+                table.insert(obj.spawners[key], timerSpawner:New(obs.data, obs.minTime, obs.maxTime, lastY, obs.isFront))
+            elseif obs.type == "difficultyIndependent" then
+                table.insert(obj.spawners[key], difficultyIndependentSpawner:New(obs.data, obs.chance, lastY, obs.isFront))
             end
         end
     end

@@ -234,23 +234,29 @@ local function update(dt)
                         end]]
                     
                     -- it has to be two rocks/obstacles
-                    elseif dataA.first then
-                        dataA.remove = true
-                        fixtureA:setUserData(dataA)
-                    elseif dataB.first then
-                        dataB.remove = true
-                        fixtureB:setUserData(dataB)
-                    else
-                        --we actually don't want this
-                        --dataB.first = false
-                        --dataB.remove = true
-                        --fixtureB:setUserData(dataB)
+                    -- currently only changes between layers so this is fine but might change later
+                    elseif dataA.type == dataB.type then
+                        if dataA.first then
+                            dataA.remove = true
+                            fixtureA:setUserData(dataA)
+                        elseif dataB.first then
+                            dataB.remove = true
+                            fixtureB:setUserData(dataB)
+                        else
+                            --we actually don't want this
+                            --dataB.first = false
+                            --dataB.remove = true
+                            --fixtureB:setUserData(dataB)
+                        end
                     end    
                 end
             end
 
             for i = #obstacles,1, -1 do
                 obstacles[i]:Update(i, dt*gs)
+            end
+            for i = #frontObstacles,1, -1 do
+                frontObstacles[i]:Update(i, dt*gs, true)
             end
 
 
@@ -387,7 +393,10 @@ local function draw()
         particles.drawParticles("bottom")
 
         player:Draw()
-      --  
+
+        for i = 1,#frontObstacles do
+            frontObstacles[i]:Draw(i)
+        end
 
         particles.drawParticles("top")
 
@@ -426,6 +435,10 @@ local function draw()
             end
             
             player:DrawHitbox()
+
+            for i = 1,#frontObstacles do
+                frontObstacles[i]:DrawHitbox() --
+            end
         end
 
         love.graphics.pop()

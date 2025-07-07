@@ -30,7 +30,7 @@ function timerSpawner:Update(val)
     local y = self.lastY - self.time
     -- check if we are going to spawn an obtical here
 
-    self.spawnObstacle(self.obsticals, y)
+    self.spawnObstacle(self.obsticals, y, self.inFront)
 
 
     self.lastY = math.ceil((riverBorders.up - 250)/3)*3

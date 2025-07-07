@@ -34,7 +34,7 @@ function difficultyIndependentSpawner:Update(val)
         if chance >= math.random(0, 1000)/1000 then
             -- spawwn the obtical
 
-            self.spawnObstacle(self.obsticals, y)
+            self.spawnObstacle(self.obsticals, y, self.inFront)
             
         end
 

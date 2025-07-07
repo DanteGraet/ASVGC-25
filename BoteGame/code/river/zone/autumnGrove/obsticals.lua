@@ -58,6 +58,7 @@ return {
     {
         type = "difficultyIndependent",    
         chance = 0.3,
+        isFront = true,
         data = {
             autumnTree = {
                 -- the base spawnWeight that this obstical has

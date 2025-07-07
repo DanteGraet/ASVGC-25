@@ -2,7 +2,6 @@ Obstacle = {}
 Obstacle.__index = Obstacle
 
 
-
 function Obstacle:New(x, y, shape, colisionFunction)
     local obj = setmetatable({}, Obstacle)
 
@@ -30,32 +29,33 @@ function Obstacle:OnCollideWithPlayer(self, collideData)
 end
 
 
-function Obstacle:Update(no, dt)
+function Obstacle:Update(no, dt, first)
+    if not self.fixture:isDestroyed() then
+        if self.fixture:getUserData().first then
+            local data = self.fixture:getUserData()
+            data.first = false
 
-    if self.fixture:getUserData().first then
-        local data = self.fixture:getUserData()
-        data.first = false
+            self.body:setType("static")
 
-        self.body:setType("static")
+            self.fixture:setUserData(data)
+        elseif self.fixture:getUserData().remove then
+            self.body:destroy()
+            table.remove(not first and obstacles or frontObstacles, no)
+            return
+        elseif self.y > riverBorders.down + 500 then
+            self.body:destroy()
+            table.remove(not first and obstacles or frontObstacles, no)
+            return
+        end
 
-        self.fixture:setUserData(data)
-    elseif self.fixture:getUserData().remove then
-        self.body:destroy()
-        table.remove(obstacles, no)
-        return
-    elseif self.y > riverBorders.down + 500 then
-        self.body:destroy()
-        table.remove(obstacles, no)
-        return
+        self.x, self.y = self.body:getPosition()
     end
-
-    self.x, self.y = self.body:getPosition()
 
 end
 
 
 function Obstacle:Draw()
-    if self.image and not self.fixture:getUserData().first then
+    if self.image then
         local img = self.image
         love.graphics.draw(img, self.x, self.y, self.dir, 3, 3, img:getWidth()/2, img:getHeight()/2)
     end
@@ -63,13 +63,20 @@ end
 
 
 function Obstacle:DrawHitbox()
-    if self.fixture:getUserData().hasCollided then
+    if not self.fixture:isDestroyed() then
+        if self.fixture:getUserData().hasCollided then
+            love.graphics.setColor(1,0,0)
+        end
+
+        love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
+
+        if self.fixture:getUserData().hasCollided then
+            love.graphics.setColor(1,1,1)
+        end
+    else
         love.graphics.setColor(1,0,0)
-    end
-
-    love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
-
-    if self.fixture:getUserData().hasCollided then
-        love.graphics.setColor(1,1,1)
+        love.graphics.circle("line", self.x, self.y, 10)
+        love.graphics.circle("line", self.x, self.y, 100)
+        love.graphics.circle("line", self.x, self.y, 1000)
     end
 end

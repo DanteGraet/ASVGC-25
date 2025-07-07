@@ -34,6 +34,7 @@ return {
     {
         type = "difficultyIndependent",    
         chance = 0.2,
+        isFront = true,
         data = {
             snowyTree = {
                 -- the base spawnWeight that this obstical has

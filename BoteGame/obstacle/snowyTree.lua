@@ -38,7 +38,7 @@ function snowyTreeObstacle:New(x, y)
             setmetatable(obj, self)
             obj.image = snowyTreeImages[math.random(1, #snowyTreeImages)]  
             obj.dir = math.rad(math.random(1,360))    
-            --obj.fixture:setSensor(true)   
+            obj.fixture:setSensor(true)   
 
             return obj
 
@@ -52,13 +52,5 @@ function snowyTreeObstacle:OnCollideWithPlayer(self, collideData)
     end
 end
 
-function snowyTreeObstacle:Update(no, dt)
-    if self.body then
-
-        --CODE FOR UPDATING OBSTACLE GOES HERE
-
-        Obstacle.Update(self, no, dt)
-    end
-end
 
 return snowyTreeObstacle
