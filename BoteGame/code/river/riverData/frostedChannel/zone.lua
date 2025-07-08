@@ -47,7 +47,7 @@ return {
     {
         zone = "coniferousMountainside",
         subtitle = "-- Almost There! --",
-        displayName = "Coniferous Highlands",
+        displayName = "Wooded Hills",
         distanceTitle = "-- Almost There! --",
         distance = 9000,
         transition = 0,

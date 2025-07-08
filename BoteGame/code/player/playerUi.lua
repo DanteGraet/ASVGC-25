@@ -69,12 +69,12 @@ function UI.Draw()
 
 
     local healthColour = {.9,.1,.2}
-    -- ok look, I think this is too distracting
-    --[[if player.health == 1 and math.sin(uiSineCounter*30) > 0 then
+    -- heck you, i like it, also it gives another point of inspiration for GDD
+    if player.health == 1 and math.sin(uiSineCounter*30) > 0 then
         healthColour = {1,0.6,0.6}
     elseif tweendHealth and tweendHealth > player.health and math.sin(uiSineCounter*30) > 0 then
         healthColour = {1,0.6,0.6}
-    end]]
+    end
     if player.immunity ~= 0 --[[and math.sin(uiSineCounter*30) > 0]] then
         local sine = math.pow((math.sin(uiSineCounter*30) + 1) /2, 3)
         local percentage = sine * (1 - (player.health-1)/(player.maxHealth-1))
