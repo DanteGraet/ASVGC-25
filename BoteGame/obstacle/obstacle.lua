@@ -22,10 +22,10 @@ function Obstacle:New(x, y, shape, colisionFunction)
 end
 
 function Obstacle:OnCollideWithPlayer(self, collideData)
-    if not collideData.hasCollided then
-        collideData.hasCollided = true
+    --if not collideData.hasCollided then
+        --collideData.hasCollided = true
         player:TakeDamage(1)
-    end
+    --end
 end
 
 

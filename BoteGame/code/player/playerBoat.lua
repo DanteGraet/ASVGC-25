@@ -71,7 +71,7 @@ function PlayerBoat:UpdateBeached(dt)
     if self.beachTimer == 1 then
         -- forces the ability to take damage from beaching
         self.immunity = 0
-        self:TakeDamage(2, false)
+        self:TakeDamage(2, false, 2)
     end
 
     -- update related timers
@@ -272,10 +272,10 @@ function PlayerBoat:moveToCenter()
     --self.wasBeached = true
 end
 
-function PlayerBoat:TakeDamage(amount, noShake)
-    if self.immunity == 0 then
+function PlayerBoat:TakeDamage(amount, noShake, immunity)
+    if self.immunity == 0 and self.health > 0 then
         self.health = self.health - amount
-        self.immunity = 1
+        self.immunity = immunity or 1
 
         for i = 1, 7*settings.graphics.particles.value do
             particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
