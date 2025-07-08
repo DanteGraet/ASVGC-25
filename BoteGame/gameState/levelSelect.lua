@@ -144,7 +144,6 @@ local function mousereleased(x, y, button)
 
             if dist < 100 and l.click then
                 riverName = l.name
-                print(l.name)
                 
                 --open sign
                 selectedMenu = "levelMenu"

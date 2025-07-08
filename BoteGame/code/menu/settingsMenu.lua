@@ -69,7 +69,6 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
                     for key, value in pairs(savedSettings[catagory]) do
                         if settings[catagory][key] then
                             settings[catagory][key].value = savedSettings[catagory][key]
-                            print(catagory, key)
                         end
                     end
                     

@@ -73,7 +73,7 @@ function DynamicLoading:Run()
             previousGameState = gameState
         end
         --Unload old "garbage"
-        print("code/gameStateLoading/" .. previousGameState .. "Loading.lua")
+        --print("code/gameStateLoading/" .. previousGameState .. "Loading.lua")
         self.unloadList = love.filesystem.load("code/gameStateLoading/" .. previousGameState .. "Loading.lua")()
         local i = 1
         --for i = 1,#self.loadList do
@@ -165,7 +165,7 @@ function DynamicLoading:Run()
     game[gameState].update(dt)
 
 
-    print("\n============ Loaded Assets ============")
+    --print("\n============ Loaded Assets ============")
     --dante.printTable(assets)
 
     --fade out of the transition
@@ -210,7 +210,7 @@ function DynamicLoading:AddItem(path, current, original)
 
         if file:match("%.png$") then
             current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
-            print("Loaded Image " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
+            --print("Loaded Image " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
             if original[2] == "blur" then
                 current[string.sub(file, 1, #file-4)]:setFilter("linear", "linear")
@@ -223,7 +223,7 @@ function DynamicLoading:AddItem(path, current, original)
             --current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
             current[string.sub(file, 1, #file-4)] = love.audio.newSource(original[1], original[2])
 
-            print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
+            --print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
 
         elseif file:match("%.lua$") then
             if original[2] == "run" then

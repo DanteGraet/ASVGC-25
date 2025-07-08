@@ -54,7 +54,6 @@ function levelMenu:New() -- data is a table {{image/path, layer}}
 end
 
 function levelMenu.Close(self)
-    print("ahhh")
     self.isOpen = false 
 end
 

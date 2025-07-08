@@ -442,7 +442,6 @@ else
     data = RD
     zones = {}
     addNextZones(10000)
-    print("infinite river")
 end
 love.thread.getChannel("generatorThread_minZones"):clear()
 love.thread.getChannel("generatorThread_minZones"):push(zones)

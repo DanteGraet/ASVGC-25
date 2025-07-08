@@ -128,8 +128,6 @@ table.insert(toLoad, function()
     end
 
     for i = #obstacles,1, -1 do
-        print("----" .. i .. "----")
-        dante.printTable(obstacles[i])
         obstacles[i]:Update(i, 0)
     end
 

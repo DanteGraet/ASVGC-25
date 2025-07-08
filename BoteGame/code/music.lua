@@ -17,8 +17,6 @@ end
 
 function music.load()
     local data = love.filesystem.load("code/river/riverData/" .. riverName .. "/music.lua")()
-
-    dante.printTable(data)
   
     crossFadeSpeed = data.data.crossFadeSpeed
     if musicTracks == nil then

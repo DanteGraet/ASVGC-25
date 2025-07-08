@@ -67,7 +67,6 @@ function RiverGenerator:New(name)
     repeat
         local startingPoints = generatorThread_riverSegments:demand()
         river:MergePoints(startingPoints)
-        print(river:GetLastPoints()[1][1].y)
     until river:GetLastPoints()[1][1].y < riverBorders.up
 
     local bgData = generatorThread_backgroundImageData:demand()

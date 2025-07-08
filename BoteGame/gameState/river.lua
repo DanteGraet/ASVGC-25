@@ -98,7 +98,7 @@ end
 local function unload()
     love.thread.getChannel("background_closeThread"):push(true)
     --while not love.thread.getChannel("background_closeThreadReceived"):pop() do
-      --  print("waiting")
+      --  --print("waiting")
     --end
     UpdateHighScore()
     music.unload()
@@ -368,7 +368,7 @@ local function keyreleased(key)
 
     if key == "-" then
         love.graphics.captureScreenshot("BoteGameScreenShot" .. os.time() .. ".png")
-        print("screnshot")
+        --print("screnshot")
     end
 end
 
@@ -539,7 +539,7 @@ local function draw()
 end
 
 function UpdateHighScore(newScore)
-    print("--- updating high score")
+    --print("--- updating high score")
     if assets.save and assets.save.highscore and type(assets.save.highscore) == "table" then
     else
         if assets.save then
