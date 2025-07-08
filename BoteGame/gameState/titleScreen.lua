@@ -26,7 +26,7 @@ local function load()
     resize()
 
 
-    DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true)
+    DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true, "image/loading/title.png")
 end
 
 local function unload()

@@ -9,7 +9,11 @@ local levels = {}
 local sine = 0
 
 local function load()
-    DynamicLoading:New("code/gameStateLoading/levelSelectLoading.lua", true)
+    local img = "image/loading/" .. riverName .. ".png"
+    if previousGameState == "titleScreen" then
+        img = "image/loading/title.png"
+    end
+    DynamicLoading:New("code/gameStateLoading/levelSelectLoading.lua", true, img)
 end
 
 

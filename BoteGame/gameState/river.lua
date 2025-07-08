@@ -119,7 +119,7 @@ local function load()
     mouseTimer = 5
     love.mouse.setVisible(false)
 
-    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true)
+    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true, "image/loading/" .. riverName .. ".png")
 
 end
 
