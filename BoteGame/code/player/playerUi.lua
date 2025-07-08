@@ -17,7 +17,7 @@ local currentColours = {
 function UI:Update(dt)
     if storedHealth > player.health then
         --storedHealth = math.max(storedHealth - dt*3, player.health)
-        storedHealth = quindoc.clamp(storedHealth + (player.health - storedHealth)*dt*5, 0, player.maxHealth)
+        storedHealth = quindoc.clamp(storedHealth + (math.max(player.health, 0) - storedHealth)*dt*5, 0, player.maxHealth)
     end
     updateZoneTitles(dt)
 end
@@ -57,7 +57,7 @@ function UI.Draw()
         y = 1070
     end
 
-    if player.health < 3 and player.health ~= 0 and uiSineCounter then 
+    if player.health < 3 and uiSineCounter then 
         love.graphics.setColor(1,1,1,0.5*math.sin(uiSineCounter*3)/player.health)
         love.graphics.draw(assets.image.ui.ouchGlow, x+12.5, y+12.5, 0, scale, scale, assets.image.ui.ouchGlow:getWidth()*side, assets.image.ui.ouchGlow:getHeight()) 
         love.graphics.setColor(1,1,1,1)
@@ -106,7 +106,7 @@ function UI.Draw()
         end
     end
 
-    love.graphics.setColor(healthColour)
+    love.graphics.setColor(healthColour[1]*0.8, healthColour[2]*0.8, healthColour[3]*0.8)
 
     local angle1 = math.rad(35 - ((215 + 35)*(1-math.max(tweendHealth/player.maxHealth,0))))
     local angle2 = -math.rad(215)
@@ -118,9 +118,9 @@ function UI.Draw()
     love.graphics.arc("fill", x - 480*scale + 960*(1-side)*scale, y - 320*scale, 480*scale, angle1, angle2)
     love.graphics.setColor(1,1,1)
     
-    if player.health < 2 then
+    if storedHealth < 2 then
         love.graphics.draw(assets.image.ui.speedometerFrontVeryDamage, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
-    elseif player.health < 3 then
+    elseif storedHealth < 3 then
         love.graphics.draw(assets.image.ui.speedometerFrontDamage, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
     else love.graphics.draw(assets.image.ui.speedometerFront, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight()) end
 

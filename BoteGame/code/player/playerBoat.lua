@@ -128,6 +128,11 @@ function PlayerBoat:UpdateDead(dt, bt)
 
         self.current = currentAngle
     end
+
+    -- drop the speed-0-meter needle
+    self.speed = math.max(self.speed + (self.minSpeed - self.speed)*dt*5, self.minSpeed)
+    --math.max(self.speed - self.acceleration*dt, self.minSpeed)
+
 end
 
 function PlayerBoat:ManageInputs(dt, inputs, bt)
