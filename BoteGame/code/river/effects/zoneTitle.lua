@@ -29,11 +29,20 @@ end
 
 function drawZoneTitle()
     if savedDisplayName then
+        love.graphics.setColor(0,0,0,displayTitleAlpha)
+
+        font.setFont("black", 80)
+        love.graphics.printf(savedDisplayName,6,300-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100)+6,1920,"center")
+        font.setFont("black", 32)
+        love.graphics.printf(savedSubtitle,4,280-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100)+4,1920,"center")
+
         love.graphics.setColor(1,1,1,displayTitleAlpha)
-        font.setFont("black", 64)
+
+
+        font.setFont("black", 80)
         love.graphics.printf(savedDisplayName,0,300-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100),1920,"center")
-        font.setFont("black", 24)
-        love.graphics.printf(savedSubtitle,0,290-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100),1920,"center")
+        font.setFont("black", 32)
+        love.graphics.printf(savedSubtitle,0,280-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100),1920,"center")
         --love.graphics.setColor(1,1,1,displayTitleAlpha/2)
         --love.graphics.setFont(assets.font.fontBlack32)
         --love.graphics.printf(savedDistance,0,380-tweens.cubicOut(math.min(displayTitleCounter/2,1),0,100),1920,"center")
