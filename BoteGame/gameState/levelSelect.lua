@@ -164,7 +164,6 @@ end
 
 
 local function draw()
-    love.graphics.setBackgroundColor(.5,.5,.5)
     love.graphics.draw(assets.image.levelSelect.background, 0, 0, 0, 1920/5120, 1080/2880)
 
     for i = 1,#levels do
@@ -193,6 +192,9 @@ local function draw()
         local f = tweens.sineInOut(uiFade)
         menus[selectedMenu]:Draw(f)
     end
+
+    --last so graphics.reset() dont change it
+    love.graphics.setBackgroundColor(.5,.5,.5)
 end
 
 
