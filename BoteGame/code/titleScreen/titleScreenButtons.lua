@@ -17,13 +17,46 @@ function tsb.CreateButtons(UI)
     UI:GetButtons()["playButton"].functions.release =       {tsb.playButtonRelease}
 
     UI:GetButtons()["quitButton"]:AddText("Quit", "center", {"black", 100}, 12 - 870, 6, 1920, 1)
-    UI:GetButtons()["quitButton"]:SetElementColour({0.1,0.1,0.1}, {0.2,0.1,0.1}, {0.4,0.1,0.1}, 1)
+    UI:GetButtons()["quitButton"]:AddImage(-100- 45/2, 45/2, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1)
+    UI:GetButtons()["quitButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1, 1)
+
+    UI:GetButtons()["quitButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 1)
+    UI:GetButtons()["quitButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 2)
+    UI:GetButtons()["quitButton"]:SetElementColour({1,1,1}, {1, 0.6, 0.6}, {1, 0.4, 0.4})
+
 
     UI:GetButtons()["settingsButton"]:AddText("Settings", "center", {"black", 100}, 12 - 780, 6, 1920, 1)
-    UI:GetButtons()["settingsButton"]:SetElementColour({0.1,0.1,0.1}, {0.2,0.2,0.2}, {0.2,0.2,0.3}, 1)
+    UI:GetButtons()["settingsButton"]:AddImage(-100- 45/2, 45/2, love.graphics.newImage("image/titleScreen/titleIco2.png"), 1, 1)
+    UI:GetButtons()["settingsButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6, love.graphics.newImage("image/titleScreen/titleIco2.png"), 1, 1, 1)
+
+    UI:GetButtons()["settingsButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 1)
+    UI:GetButtons()["settingsButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 2)
+    UI:GetButtons()["settingsButton"]:SetElementColour({1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45})
+
 
     UI:GetButtons()["playButton"]:AddText("Play", "center", {"black", 100}, 12 - 870, 6, 1920, 1)
-    UI:GetButtons()["playButton"]:SetElementColour({0.1,0.1,0.1}, {0.2,0.2,0.2}, {0.2,0.2,0.3}, 1)
+    UI:GetButtons()["playButton"]:AddImage(-100 - 45/2, 45/2, love.graphics.newImage("image/titleScreen/titleIco1.png"), 1, 1)
+    UI:GetButtons()["playButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6, love.graphics.newImage("image/titleScreen/titleIco1.png"), 1, 1, 1)
+
+    UI:GetButtons()["playButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 1)
+    UI:GetButtons()["playButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 2)
+    UI:GetButtons()["playButton"]:SetElementColour({1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45})
+
+    --boot leg fix
+    local function fixButton(name)
+        local b = UI:GetButtons()[name]
+        local diff = 100 + 45/2
+        b.x = b.x - diff
+        b.sx = b.sx + diff
+
+        for i = 1,#b.graphics do
+            b.graphics[i].x = b.graphics[i].x + diff
+        end
+    end
+
+    fixButton("quitButton")
+    fixButton("settingsButton")
+    fixButton("playButton")
 
 
     -- these buttons can't be acsessed by normal players.
