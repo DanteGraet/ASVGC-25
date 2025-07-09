@@ -48,12 +48,14 @@ end
 
 
 function DynamicLoading:Run()
+    music.beQuite()
     local loadedList = {}
 
     -- fade transition in the thing
     if previousGameState == "" then
         loadPercentage = 1
         if love.timer then dt = love.timer.step() end
+        -- hope and pray target volume is never more than 1
         self:Update(dt)
         love.graphics.clear()
         self:Draw()
@@ -62,6 +64,7 @@ function DynamicLoading:Run()
         while loadPercentage < 1 do
             if love.timer then dt = love.timer.step() end
             self:Update(dt)
+            music.manager(dt, 1)
             loadPercentage = math.min(loadPercentage + dt, 1)
     
             love.graphics.clear()

@@ -28,9 +28,17 @@ function music.load()
     music.manager(0)
 end
 
-function music.manager(dt)
+function music.beQuite(dt)
+    if musicTracks then
+        for i = 1, #musicTracks do
+            musicTracks[i].targetVolume = 0
+        end
+    end
+end
+
+function music.manager(dt, fadeOut)
     --play the actual music
-    if settings then
+    if settings and musicTracks ~= nil then
         if not musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value > 0 and settings.audio.masterVolume.value > 0 then
             --play all tracks at once to avoid desync
             for i = 1, #musicTracks do
@@ -76,7 +84,7 @@ function music.manager(dt)
         for i = 1, #musicTracks do
     --        if musicTracks[i].drumTrack == nil then
             if musicTracks[i].volume ~= musicTracks[i].targetVolume then
-                musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+(crossFadeSpeed*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1)
+                musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+((fadeOut or crossFadeSpeed)*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1)
             end
         
             musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5*settings.audio.masterVolume.value)
