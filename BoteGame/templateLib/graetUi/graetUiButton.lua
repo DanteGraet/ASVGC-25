@@ -91,13 +91,18 @@ function GraetButton:Update(dt, mx, my)
             self.mouseMode = "hover"
             if #self.functions.hover > 0 then
                 for i = 1,#self.functions.hover do
-                    self.functions.hover[1](self.functions.hover[2])
+                    self.functions.hover[1](dt, self.functions.hover[2])
                 end
             end
-
+        elseif self.mouseMode == "hover" and self.functions.hovering then
+            self.functions.hovering[1](dt, self.functions.hovering[2])
         end
     elseif self.mouseMode == "hover" then
         self.mouseMode = "none"
+    end
+
+    if self.functions.update then
+        self.functions.update[1](dt, self.functions.update[2])
     end
 
     --colour Lerping :D     Could b a function, 

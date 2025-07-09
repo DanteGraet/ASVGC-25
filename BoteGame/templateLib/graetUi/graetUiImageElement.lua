@@ -52,7 +52,7 @@ function GraetUiImage:Draw(x, y, mouseMode, modeTryangle)
     end
 
     if self.image then
-        love.graphics.draw(self.image, x + self.x, y + self.y, 0, self.sx, self.sy)
+        love.graphics.draw(self.image, x + self.x, y + self.y, self.r or 0, self.sx, self.sy, self.ox, self.oy)
     end
 end
 

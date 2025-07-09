@@ -17,30 +17,172 @@ function tsb.CreateButtons(UI)
     UI:GetButtons()["playButton"].functions.release =       {tsb.playButtonRelease}
 
     UI:GetButtons()["quitButton"]:AddText("Quit", "center", {"black", 100}, 12 - 870, 6, 1920, 1)
-    UI:GetButtons()["quitButton"]:AddImage(-100- 45/2, 45/2 + 10, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1)
-    UI:GetButtons()["quitButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6 + 10, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1, 1)
+    UI:GetButtons()["quitButton"]:AddImage(-100- 45/2, 45/2 + 5, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1)
+    UI:GetButtons()["quitButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6 + 5, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1, 1)
 
     UI:GetButtons()["quitButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 1)
     UI:GetButtons()["quitButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 2)
-    --UI:GetButtons()["quitButton"]:SetElementColour({1,1,1}, {1, 0.6, 0.6}, {1, 0.4, 0.4})
+    UI:GetButtons()["quitButton"]:SetElementColour({1,1,1}, nil, nil, 4)
+    
+    UI:GetButtons()["quitButton"].functions.hover = {
+        function(dt, self)
+            if not self.graphics[1].timer then
+                self.graphics[1].timer = 0
+                --25, 25
+                self.graphics[1].ox = 25
+                self.graphics[1].oy = 25
+
+                self.graphics[4].ox = 25
+                self.graphics[4].oy = 25
+
+                self.graphics[1].x = self.graphics[1].x + 25
+                self.graphics[1].xStore = self.graphics[1].x
+                self.graphics[1].y = self.graphics[1].y + 25
+                self.graphics[1].yStore = self.graphics[1].y
+
+                self.graphics[4].x = self.graphics[4].x + 25
+                self.graphics[4].y = self.graphics[4].y + 25
+
+                self.graphics[1].r = 0
+                self.graphics[4].r = 0
+
+            end
+        end,
+        UI:GetButtons()["quitButton"]
+    }
+    UI:GetButtons()["quitButton"].functions.update = {
+        function(dt, self)
+            if self.graphics[1].timer then
+                if self.mouseMode ~= "none" and self.graphics[1].timer >= 0 then
+                    self.graphics[1].timer = self.graphics[1].timer + dt
+                    
+                    self.graphics[1].r = 0 + (math.pi*(0.40)*math.sin(self.graphics[1].timer*5))
+                    self.graphics[4].r = 0 + (math.pi*(0.40)*math.sin(self.graphics[1].timer*5))
+
+                    self.graphics[1].y = self.graphics[1].yStore + 98*math.pow(math.max(self.graphics[1].timer*5 - 1, 0), 2)
+                    self.graphics[4].y = self.graphics[1].yStore + 98*math.pow(math.max(self.graphics[1].timer*5 - 1, 0), 2) - 6
+
+                else
+                    -- reset anchor
+                    self.graphics[1].r = 0
+                    self.graphics[4].r = 0
+
+                    self.graphics[1].y = self.graphics[1].yStore + 6
+                    self.graphics[4].y = self.graphics[1].yStore
+
+                    if self.graphics[1].timer <= 0 then
+                        self.graphics[1].timer = math.min(self.graphics[1].timer + dt*2, 0)
+                    else
+                        self.graphics[1].timer = -1
+                    end
+
+                    self.graphics[4].colour1[4] = (self.graphics[1].timer + 1)*2
+                    self.graphics[4].colour2[4] = (self.graphics[1].timer + 1)*2
+                    self.graphics[4].colour3[4] = (self.graphics[1].timer + 1)*2
+
+                    self.graphics[1].colour1[4] = (self.graphics[1].timer + 0.5)
+                    self.graphics[1].colour2[4] = (self.graphics[1].timer + 0.5)
+                    self.graphics[1].colour3[4] = (self.graphics[1].timer + 0.5)
+
+
+
+                end
+
+            end
+        end,
+
+        UI:GetButtons()["quitButton"]
+    }
+
+
 
 
     UI:GetButtons()["settingsButton"]:AddText("Settings", "center", {"black", 100}, 12 - 780, 6, 1920, 1)
-    UI:GetButtons()["settingsButton"]:AddImage(-100- 45/2, 45/2 + 10, love.graphics.newImage("image/titleScreen/titleIco2.png"), 1, 1)
-    UI:GetButtons()["settingsButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6+ 10, love.graphics.newImage("image/titleScreen/titleIco2.png"), 1, 1, 1)
+    UI:GetButtons()["settingsButton"]:AddImage(-100- 45/2, 45/2 + 5, love.graphics.newImage("image/titleScreen/titleIco2.png"), 1, 1)
+    UI:GetButtons()["settingsButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6+ 5, love.graphics.newImage("image/titleScreen/titleIco2.png"), 1, 1, 1)
 
     UI:GetButtons()["settingsButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 1)
     UI:GetButtons()["settingsButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 2)
+    -- Big sad code here, no peeking 
+    UI:GetButtons()["settingsButton"].functions.hover = {
+        function(dt, self)
+            if not self.graphics[1].r then
+                -- first time
+                self.graphics[1].ox = 50
+                self.graphics[4].ox = 50
+
+                self.graphics[1].oy = 50
+                self.graphics[4].oy = 50
+
+                self.graphics[1].x = self.graphics[1].x + 50
+                self.graphics[4].x = self.graphics[4].x + 50
+
+                self.graphics[1].y = self.graphics[1].y + 50
+                self.graphics[4].y = self.graphics[4].y + 50
+                
+                self.graphics[1].speed = 0
+
+                self.graphics[1].r = 0
+                self.graphics[4].r = 0
+            end
+        end,
+        UI:GetButtons()["settingsButton"]
+    }
+    UI:GetButtons()["settingsButton"].functions.update = {
+        function(dt, self)
+            if self.graphics[1].speed then
+                local speed = tweens.sineInOut(self.graphics[1].speed)
+                if self.mouseMode ~= "none" then
+                    self.graphics[1].speed = math.min(self.graphics[1].speed + dt, 1)
+                else
+                    self.graphics[1].speed = math.max(self.graphics[1].speed - dt, 0)
+                end
+
+                self.graphics[1].r = (self.graphics[1].r or 0) + dt*speed*1.5
+                self.graphics[4].r = (self.graphics[1].r or 0 ) + dt*speed*1.5
+            end
+        end,
+
+        UI:GetButtons()["settingsButton"]
+    }
     --UI:GetButtons()["settingsButton"]:SetElementColour({1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45})
 
 
     UI:GetButtons()["playButton"]:AddText("Play", "center", {"black", 100}, 12 - 870, 6, 1920, 1)
-    UI:GetButtons()["playButton"]:AddImage(-100 - 45/2, 45/2 + 10, love.graphics.newImage("image/titleScreen/titleIco1.png"), 1, 1)
-    UI:GetButtons()["playButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6 + 10, love.graphics.newImage("image/titleScreen/titleIco1.png"), 1, 1, 1)
+    UI:GetButtons()["playButton"]:AddImage(-100 - 45/2, 45/2 + 5, love.graphics.newImage("image/titleScreen/titleIco1.png"), 1, 1)
+    UI:GetButtons()["playButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6 + 5, love.graphics.newImage("image/titleScreen/titleIco1.png"), 1, 1, 1)
 
     UI:GetButtons()["playButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 1)
     UI:GetButtons()["playButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 2)
     --UI:GetButtons()["playButton"]:SetElementColour({1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45})
+
+    UI:GetButtons()["playButton"].functions.hover = {
+        function(dt, self)
+            if not self.graphics[1].sin then
+                self.graphics[1].sin = 0
+            end
+        end,
+        UI:GetButtons()["playButton"]
+    }
+    UI:GetButtons()["playButton"].functions.update = {
+        function(dt, self)
+            if self.graphics[1].sin then
+
+                if self.mouseMode ~= "none" then
+                    self.graphics[1].sin = self.graphics[1].sin + dt*math.pi
+                else
+                    self.graphics[1].sin = math.min(self.graphics[1].sin + dt*math.pi, math.ceil(self.graphics[1].sin/math.pi)*math.pi)
+                end
+
+                self.graphics[1].y = 45/2 + 5 + math.sin(self.graphics[1].sin)*10 + 6
+                self.graphics[4].y = 45/2 + 5 + math.sin(self.graphics[1].sin)*10
+
+                --self.graphics[4].r = (self.graphics[1].r or 0 ) + dt*speed*1.5
+            end
+        end,
+
+        UI:GetButtons()["playButton"]
+    }
 
     --bootleg fix
     local function fixButton(name)
