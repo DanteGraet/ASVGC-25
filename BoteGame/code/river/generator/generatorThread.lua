@@ -462,7 +462,11 @@ while threadRunning do
 
     -- Generate river segments
     if not lastPoints or lastPoints[1][#lastPoints[1]].y > -(playerY+50 + 5000) then
+        local i = 0
+
         while not lastPoints or lastPoints[1][#lastPoints[1]].y > -(playerY+50 + 5000) do
+            print(i .. "Segcountround")
+            i = i + 1
             local p
             if lastPoints then
                 p = nextSegment(GetZone(lastPoints[1][#lastPoints[1]].y))

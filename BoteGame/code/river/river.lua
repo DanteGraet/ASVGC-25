@@ -145,8 +145,8 @@ function River:FindHighAndLowPoints(channel, side, yPos)
     end
 
     --just guess at this point
-    local h = self.points[channel][side][1]
-    local l = self.points[channel][side][2]
+    local h = self.points[channel][side][#self.points[channel][side]]
+    local l = self.points[channel][side][#self.points[channel][side]]
     print("guessing :D \np1:" ..  dante.dataToString(h) .. "\nl:" .. dante.dataToString(l))
     --error("bad, no point at " .. channel .. " " .. side .. " " .. yPos)
     return h, l or h

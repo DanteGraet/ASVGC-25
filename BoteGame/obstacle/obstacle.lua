@@ -35,6 +35,10 @@ function Obstacle:Update(no, dt, front)
             local data = self.fixture:getUserData()
             data.first = false
 
+            if self.firstFunction then
+                self:firstFunction()
+            end
+
             self.body:setType("static")
 
             self.fixture:setUserData(data)
