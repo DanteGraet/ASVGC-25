@@ -3,7 +3,7 @@
 --end
 
 local function autumnRapidsCurrent(percentage)
-    return 200*quindoc.clamp(percentage,0,1) + 300
+    return 200*quindoc.clamp(percentage,0,1) + 200 + 100*quindoc.clamp(percentage*10,0,1)
 end
 
 

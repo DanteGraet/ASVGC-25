@@ -31,9 +31,13 @@ function DynamicLoading:New(toLoad, autoRun, image, colour) -- data is a table {
     ---collectgarbage("collect")
 
     if autoRun then
+        local currentMouse = love.mouse.isVisible()
+        love.mouse.setVisible(false)
         if obj:Run() == "QUIT" then
             love.event.quit()
         end
+        love.mouse.setVisible(currentMouse)
+
     end
 
     timer = 0
