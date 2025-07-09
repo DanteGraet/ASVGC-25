@@ -83,7 +83,6 @@ function UI.Draw()
         local g = 0.1 + 0.5*percentage
         local b = 0.2 + 0.4*percentage
         healthColour = {r, g, b}
-        
     end
 
     love.graphics.draw(assets.image.ui.currentBar, x, y, 0, scale, scale, assets.image.ui.currentBar:getWidth()*side + 520 - 1040*(1-side), assets.image.ui.currentBar:getHeight())
