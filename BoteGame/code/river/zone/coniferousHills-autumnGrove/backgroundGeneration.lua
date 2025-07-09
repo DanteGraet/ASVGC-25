@@ -45,7 +45,7 @@ local function GetColourAt(x, y)
         local noiseC = love.math.noise(y/50.01) / 50
 
         local transitionNoise1 = love.math.noise(y/50.01, x/50.01)/2 + 0.5
-        local transitionNoise = love.math.noise(y/500.01, x/500.01)*p*transitionNoise1 + 1*p
+        local transitionNoise = quindoc.clamp(love.math.noise(y/750.01, x/750.01)*(p*2)*transitionNoise1, 0, 1) + 1*p
         local groveColour = transitionNoise >= 0.5
 
 

@@ -34,7 +34,7 @@ function hillsTreeObstacle:New(x, y)
     --dante.printTable(assets.code.river.zone[zones.zone].GetColourAt(x,y))
 
     for i = 1, #hillsTreeAcceptedColours do
-        if assets.code.river.zone[zones.zone or zones[1].zone].GetColourAt(x,y)[1] == hillsTreeAcceptedColours[i] then 
+        if assets.code.river.zone[riverGenerator:GetZone(y).zone].GetColourAt(x,y)[1] == hillsTreeAcceptedColours[i] then 
             obj = Obstacle:New(x, y, hillsTreeShape, obj.OnCollideWithPlayer)
             setmetatable(obj, self)
             obj.image = hillsTreeImages[math.random(1, #hillsTreeImages)]   

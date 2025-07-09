@@ -33,7 +33,7 @@ function autumnTreeObstacle:New(x, y)
     --dante.printTable(assets.code.river.zone[zones.zone].GetColourAt(x,y))
 
     for i = 1, #autumnTreeAcceptedColours do
-        if assets.code.river.zone[zones.zone or zones[1].zone].GetColourAt(x,y)[1] == autumnTreeAcceptedColours[i] then 
+        if assets.code.river.zone[riverGenerator:GetZone(y).zone].GetColourAt(x,y)[1] == autumnTreeAcceptedColours[i] then 
             obj = Obstacle:New(x, y, autumnTreeShape, obj.OnCollideWithPlayer)
             setmetatable(obj, self)
             obj.image = autumnTreeImages[math.random(1, #autumnTreeImages)]   
