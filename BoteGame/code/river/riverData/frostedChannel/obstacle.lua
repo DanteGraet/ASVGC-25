@@ -77,7 +77,7 @@ return {
         current = boulderValleyCurrent_STORM,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM,
     },
-    ["Coniferous Highlands"] = {
+    ["Wooded Hills"] = {
         difficultyFunction = coniferousMountainsideDifficulty,
         current = 100,
     },

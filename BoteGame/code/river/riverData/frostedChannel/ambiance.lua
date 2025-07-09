@@ -47,7 +47,7 @@ return {
         snowAmount = boulderValleySnow_STORM,
         windSpeed = boulderValleyWind_STORM,
     },
-    ["Coniferous Highlands"] = {
+    ["Wooded Hills"] = {
         snowAmount = 3,
         windSpeed = 300,
     },

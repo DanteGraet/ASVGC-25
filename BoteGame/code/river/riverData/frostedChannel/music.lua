@@ -44,6 +44,6 @@ return {
         ["Ice Plains"] =        {1,1,0,0,0,0},
         ["Boulder Valley"] =    {0,1,1,1,0,0},
         ["Storm Valley"] =      stormValleyMusicManager,
-        ["Coniferous Highlands"] = {1,0,0,0,0,0}
+        ["Wooded Hills"] = {1,0,0,0,0,0}
     }
 }
