@@ -185,6 +185,8 @@ function PlayerBoat:Update(dt, inputs, gameSpeed)
     self.runTime = self.runTime + dt
     self.x, self.y = self.body:getPosition()
 
+    self.percentageThroughZoneDebug = riverGenerator:GetPercentageThrough(player.y)
+
     -- immunity
     if self.immunity > 0 then self.immunity = math.max(self.immunity - dt, 0) end
 

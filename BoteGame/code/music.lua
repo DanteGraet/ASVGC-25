@@ -65,8 +65,8 @@ function music.manager(dt, fadeOut)
         elseif zones then
             currentZoneName = zones.displayName
         end
-        if currentZoneName ~= lastZone then
-            if zoneMusicTarget[currentZoneName] then
+        --if currentZoneName ~= lastZone then
+        --    if zoneMusicTarget[currentZoneName] then
                 local targets = quindoc.runIfFunc(zoneMusicTarget[currentZoneName])
                 if targets then
                     for i = 1,#targets do
@@ -76,9 +76,9 @@ function music.manager(dt, fadeOut)
                         end
                     end
                 end
-            end
-            lastZone = currentZoneName
-        end
+        --    end
+        --    lastZone = currentZoneName
+        --end
 
 
         for i = 1, #musicTracks do

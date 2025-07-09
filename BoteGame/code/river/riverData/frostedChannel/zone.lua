@@ -3,8 +3,8 @@ return {
         zone = "icePlains",
         displayName = "Ice Plains",
         distanceTitle = "Starting Point",
-        subtitle = "River's Source",
-        distance = 23000,
+        subtitle = "Frosty Highlands",
+        distance = 13000,
         transition = 0,
         currentIcons = 2,
     },
@@ -21,13 +21,13 @@ return {
         zone = "boulderValley",
         displayName = "Boulder Valley",
         distanceTitle = "-- 1.5KM --",
-        subtitle = "Rock-Chain Gully",
+        subtitle = "Gully of Rock-Chains",
         distance = 15000,
         transition = 0,
         currentIcons = 3,
     },
     {
-        zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
+        zone = "stormValley", --yes i know there is a file for the storm version. not using it yet
         displayName = "Storm Valley",
         subtitle = "Blizzard Approaching",
         distanceTitle = "-- 5KM --",

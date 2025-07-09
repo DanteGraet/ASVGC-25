@@ -16,12 +16,12 @@ local function boulderValleyChainLengthCoefficient(percentage)
 end
 
 
-local function boulderValleyDifficulty_STORM(percentage)
-    return 0.005
+local function stormValleyDifficulty(percentage)
+    return 0.005+percentage*0.005
 end
 
 
-local function boulderValleyCurrent_STORM(percentage)
+local function stormValleyCurrent(percentage)
     local idk = percentage
 
     if percentage < 0.8 then
@@ -32,15 +32,15 @@ local function boulderValleyCurrent_STORM(percentage)
     return 300 + 200*quindoc.clamp(idk,-0.5,1) 
 end
 
-local function boulderValleyChainLengthCoefficient_STORM(percentage)
+local function stormValleyChainLengthCoefficient(percentage)
     return 1.15 - 0.05*quindoc.clamp(percentage,0,1)
 end
 
-local function boulderValleyStormIntensity_STORM(percentage)
+local function stormValleyStormIntensity(percentage)
     local idk = percentage
 
-    if percentage < 0.6 then
-        idk = percentage*1.66
+    if percentage < 0.4 then
+        idk = percentage*2.5
     elseif percentage < 0.8 then
         idk = 1
     else
@@ -72,10 +72,10 @@ return {
         chainLengthCoefficient = boulderValleyChainLengthCoefficient,
     },
     ["Storm Valley"] = {
-        stormIntensity = boulderValleyStormIntensity_STORM,
-        difficultyFunction = boulderValleyDifficulty_STORM,
-        current = boulderValleyCurrent_STORM,
-        chainLengthCoefficient = boulderValleyChainLengthCoefficient_STORM,
+        stormIntensity = stormValleyStormIntensity,
+        difficultyFunction = stormValleyDifficulty,
+        current = stormValleyCurrent,
+        chainLengthCoefficient = stormValleyChainLengthCoefficient,
     },
     ["Wooded Hills"] = {
         difficultyFunction = coniferousMountainsideDifficulty,

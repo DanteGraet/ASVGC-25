@@ -7,7 +7,7 @@ local function boulderValleySnow(percentage)
 end
 
 
-local function boulderValleyWind_STORM(percentage)
+local function stormValleyWind(percentage)
     local idk = percentage
 
     if percentage < 0.8 then
@@ -16,10 +16,10 @@ local function boulderValleyWind_STORM(percentage)
         idk = 1 - 2*((percentage - 0.8) * 5)
     end
 
-    return 400 + 600*quindoc.clamp(idk,-0.2,1)
+    return 400 + 900*quindoc.clamp(idk,-0.2,1)
 end
 
-local function boulderValleySnow_STORM(percentage)
+local function stormValleySnow(percentage)
     local idk = percentage
 
     if percentage < 0.8 then
@@ -28,7 +28,7 @@ local function boulderValleySnow_STORM(percentage)
         idk = 1 - 2*((percentage - 0.8) * 5)
     end
 
-    return 23 + 20*quindoc.clamp(idk,-1,1)
+    return 23 + 30*quindoc.clamp(idk,-1,1)
 end
 
 return {
@@ -44,8 +44,8 @@ return {
         windSpeed = boulderValleyWind,
     },
     ["Storm Valley"] = {
-        snowAmount = boulderValleySnow_STORM,
-        windSpeed = boulderValleyWind_STORM,
+        snowAmount = stormValleySnow,
+        windSpeed = stormValleyWind,
     },
     ["Wooded Hills"] = {
         snowAmount = 3,

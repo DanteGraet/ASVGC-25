@@ -403,25 +403,13 @@ local function draw()
 
         ---TEMPORARY (TM) placeholder (r) storm mode effect
 
-        local stormIntensity = 0
-
-        if zones and type(zones[1]) == "table" then --if we are in a storm
-
-            local p = riverGenerator:GetPercentageThrough(player.y)
-            stormIntensity = (quindoc.runIfFunc(zones[1].stormIntensity,p) or 0)*(1-zones[3]) + (quindoc.runIfFunc(zones[2].stormIntensity,0) or 0)*zones[3] 
-    
-        elseif zones then --just set the storm amount to what it needs to be
-    
-            local p = riverGenerator:GetPercentageThrough(player.y)
-            stormIntensity = quindoc.runIfFunc(zones.stormIntensity,p) or 0 --current is a GLOBAL VALUE for a reason btw
-    
-        end    
+        local stormIntensity = currentPlayerPos.stormIntensity or 0
 
         if stormIntensity then love.graphics.setColor(1,1,1,stormIntensity/1000) end
         love.graphics.draw(assets.image.ui.viginette, -riverBorders.width/2-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, 0, riverBorders.width/1920, riverBorders.height/1080)
 
-        if stormIntensity then love.graphics.setColor(1,1,1,stormIntensity/2000) end --and yeah draw it again at half alpha because it isn't strong enough and lazy :/
-        love.graphics.draw(assets.image.ui.viginette, -riverBorders.width/2-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, 0, riverBorders.width/1920, riverBorders.height/1080)
+     --   if stormIntensity then love.graphics.setColor(1,1,1,stormIntensity/2000) end --and yeah draw it again at half alpha because it isn't strong enough and lazy :/
+     --   love.graphics.draw(assets.image.ui.viginette, -riverBorders.width/2-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, 0, riverBorders.width/1920, riverBorders.height/1080)
 
         love.graphics.setColor(1,1,1,lightningAlpha)
         love.graphics.rectangle("fill",riverBorders.left-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, riverBorders.width+100*riverBorders.width/1920,riverBorders.height+100*riverBorders.height/1080)
