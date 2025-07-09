@@ -343,7 +343,7 @@ local function keyreleased(key)
         input = inputManager:Send("keyboard", key)
     end
     if settingsMenu.isOpen then
-        if SettingsMenu:KeyRelased(key) then
+        if settingsMenu:KeyRelased(key) then
             return
         end
     end

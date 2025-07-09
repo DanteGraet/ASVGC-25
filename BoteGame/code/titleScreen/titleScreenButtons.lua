@@ -54,7 +54,7 @@ function tsb.CreateButtons(UI)
         function(dt, self)
             if self.graphics[1].timer then
                 if self.mouseMode ~= "none" and self.graphics[1].timer >= 0 then
-                    self.graphics[1].timer = self.graphics[1].timer + dt
+                    self.graphics[1].timer = self.graphics[1].timer + dt/3
                     
                     self.graphics[1].r = 0 + (math.pi*(0.40)*math.sin(self.graphics[1].timer*5))
                     self.graphics[4].r = 0 + (math.pi*(0.40)*math.sin(self.graphics[1].timer*5))
@@ -67,8 +67,8 @@ function tsb.CreateButtons(UI)
                     self.graphics[1].r = 0
                     self.graphics[4].r = 0
 
-                    self.graphics[1].y = self.graphics[1].yStore + 6
-                    self.graphics[4].y = self.graphics[1].yStore
+                    self.graphics[1].y = self.graphics[1].yStore
+                    self.graphics[4].y = self.graphics[1].yStore - 6
 
                     if self.graphics[1].timer <= 0 then
                         self.graphics[1].timer = math.min(self.graphics[1].timer + dt*2, 0)
