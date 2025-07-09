@@ -228,7 +228,7 @@ function SettingsMenu:KeyRelased(key)
 
         self.isOpen = false 
         return true
-    else
+    elseif changingKeybind[1] == true then
         settings.keybinds[changingKeybind[2]].value[changingKeybind[3]] = key
         self.Ui:GetButtons("settings")[changingKeybind[2] .. changingKeybind[3]].graphics[1].text = "[" .. key .. "]"
 
@@ -247,7 +247,7 @@ function SettingsMenu:Click(x, y)
     if not changingKeybind[1] then
         self.Ui:Click(x - 960, y - 540)
         self.Ui:Click(x - 960, y - 540, "settings")
-    else
+    elseif changingKeybind[1] == true then  
         changingKeybind[1] = false
     end
 end
