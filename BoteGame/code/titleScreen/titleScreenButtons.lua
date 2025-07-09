@@ -5,15 +5,26 @@ function tsb.CreateButtons(UI)
     local width = love.graphics.getWidth()/screenScale
 
     local f = font.getFont({"black", 100})
+    print(f:getHeight())
     --Font is temporary i hope.
-    UI:AddTextButton("quitButton", "Quit", "center",            {"black", 100}, width*0.2 - 2.5, 460 + f:getHeight()*2, 1920,   {{1,1,1}, {1, 0.6, 0.6}, {1, 0.4, 0.4}})
-    UI:AddTextButton("settingsButton", "Settings", "center",    {"black", 100}, width*0.2 - 2.5, 460 + f:getHeight(), 960,      {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
-    UI:AddTextButton("playButton", "Play", "center",            {"black", 100}, width*0.2 - 2.5, 460 + f:getHeight()*0, 960,    {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
+    UI:AddTextButton("quitButton",      "Quit",     "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight()*2, 1920,   {{1,1,1}, {1, 0.6, 0.6}, {1, 0.4, 0.4}})
+    UI:AddTextButton("settingsButton",  "Settings", "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight(),   1920,   {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
+    UI:AddTextButton("playButton",      "Play",     "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight()*0, 1920,   {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
 
     --Temporary fix for adding functions to buttons :D
     UI:GetButtons()["quitButton"].functions.release =       {tsb.quitButtonRelease}
     UI:GetButtons()["settingsButton"].functions.release =   {tsb.settingsButtonRelease}
     UI:GetButtons()["playButton"].functions.release =       {tsb.playButtonRelease}
+
+    UI:GetButtons()["quitButton"]:AddText("Quit", "center", {"black", 100}, 12 - 870, 6, 1920, 1)
+    UI:GetButtons()["quitButton"]:SetElementColour({0.1,0.1,0.1}, {0.2,0.1,0.1}, {0.4,0.1,0.1}, 1)
+
+    UI:GetButtons()["settingsButton"]:AddText("Settings", "center", {"black", 100}, 12 - 780, 6, 1920, 1)
+    UI:GetButtons()["settingsButton"]:SetElementColour({0.1,0.1,0.1}, {0.2,0.2,0.2}, {0.2,0.2,0.3}, 1)
+
+    UI:GetButtons()["playButton"]:AddText("Play", "center", {"black", 100}, 12 - 870, 6, 1920, 1)
+    UI:GetButtons()["playButton"]:SetElementColour({0.1,0.1,0.1}, {0.2,0.2,0.2}, {0.2,0.2,0.3}, 1)
+
 
     -- these buttons can't be acsessed by normal players.
     if DEV then
