@@ -40,6 +40,11 @@ function subordinateCogObstacle:New(x, y, globalCogPhase, globalCogRadius, globa
             obj.drawResponsibility = true
         end
 
+    elseif love.math.random(1,7) == 7 then
+
+        obj.chosen = true
+        obj.selfSpinSpeed = (love.math.random(0,1)*2-1)*love.math.random(70,80)/100
+
     end
 
     return obj
@@ -63,6 +68,10 @@ function subordinateCogObstacle:Update(no, dt)
             
             self.body:setPosition(self.centreX+math.cos(self.phase)*self.radius,self.centreY+math.sin(self.phase)*self.radius)
 
+        end
+
+        if self.chosen then
+            self.dir = self.dir + self.selfSpinSpeed*dt 
         end
 
         Obstacle.Update(self, no, dt)

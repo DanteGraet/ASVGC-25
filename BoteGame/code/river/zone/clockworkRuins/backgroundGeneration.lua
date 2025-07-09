@@ -56,6 +56,10 @@ local function GetColourAt(x, y)
             else colour = {0.72,0.37,0.18} end
         end
 
+        if love.math.noise(x/1600.1,y/1600.1) > 0.45 and love.math.noise(x/1600.1,y/1600.1) < 0.55 and elevation > 0.06+noiseA/10 then
+            colour = {0.7,0.4,0.1}
+        end
+
         return colour
 
     end    

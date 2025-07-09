@@ -67,8 +67,8 @@ local function GetColourAt(x, y)
             --local snowPatch = 0.9*love.math.noise(2*x/1600.1,2*y/1600.1) + 0.1*love.math.noise(x/100.1,y/100.1)
 
             if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = (groveColour and {0.87,0.44,0.14} ) or {0.4,0.63,0.18}
-            else colour = (groveColour and {0.87,0.5,0.21}) or {0.4,0.66,0.14} end
+                colour = (groveColour and {0.87,0.44,0.14} ) or {0.45,0.69,0.2}
+            else colour = (groveColour and {0.87,0.5,0.21}) or {0.45,0.72,0.14} end
 
 
         elseif totalElevation < (1 + 0.4*p)*(1) + noiseB - noiseA then --uppergrass
@@ -77,8 +77,8 @@ local function GetColourAt(x, y)
 
         else 
             if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = (groveColour and {0.72,0.4,0.22} ) or {0.45,0.69,0.2}
-            else colour = (groveColour and {0.72,0.37,0.18} ) or {0.45,0.72,0.14} end
+                colour = (groveColour and {0.72,0.4,0.22} ) or {0.4,0.63,0.18}
+            else colour = (groveColour and {0.72,0.37,0.18} ) or {0.4,0.66,0.14} end
 
         end
 

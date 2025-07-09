@@ -4,7 +4,7 @@ levelMenu.__index = levelMenu
 
 local typeData = {
     frostedChannel = {
-        displayName = "Frosted Channel",
+        displayName = "Great Valley",
         stage = 1,
         yfunc = function(gs)
             return 1500*(1-gs)
@@ -20,7 +20,7 @@ local typeData = {
         extDir = 2,
     },
     derelictDam = {
-        displayName = "Derilect Dam",
+        displayName = "The Dam",
         stage = 3,
         yfunc = function(gs)
             return 1500*(1-gs)
@@ -29,7 +29,7 @@ local typeData = {
     },
     endless = {
         displayName = "Endless",
-        stage = 0,       --?
+        stage = "Infinity",       --?
         yfunc = function(gs)
             return 1500*(1-gs)
         end,

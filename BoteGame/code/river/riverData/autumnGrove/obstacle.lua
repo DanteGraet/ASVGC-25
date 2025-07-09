@@ -9,11 +9,11 @@ end
 
 return {
     ["Wooded Hills"] = {
-        difficultyFunction = 0.005,
+        difficultyFunction = 0.008,
         current = 150,
     },
     ["Autumn Grove"] = {
-        difficultyFunction = 0.01,
+        difficultyFunction = 0.005,
         current = 200,
     },
     ["Clockwork Ruins"] = {

@@ -5,7 +5,7 @@ local settings = {
     segLenMax = 700,
     segLenMin = 600,
 
-    maxDeviation = 1400
+    maxDeviation = 1000
 }
 
 return settings
