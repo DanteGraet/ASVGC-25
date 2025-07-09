@@ -166,6 +166,8 @@ table.insert(toLoad, function()
     particles.loadParticles()
 
     music.load()
+
+    savedDisplayName = nil
 end)
 
 table.insert(toLoad, function()

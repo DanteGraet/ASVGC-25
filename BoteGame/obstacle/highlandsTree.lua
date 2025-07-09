@@ -25,14 +25,14 @@ function highlandsTreeObstacle:New(x, y)
 
     local obj = {}
 
-    if zones[1] and type(zones[1]) == "table" then
+    --[[if zones[1] and type(zones[1]) == "table" then
         zones = zones[1]
-    end
+    end]]
 
     --dante.printTable(assets.code.river.zone[zones.zone].GetColourAt(x,y))
 
     for i = 1, #highlandsTreeAcceptedColours do
-        if assets.code.river.zone[zones.zone].GetColourAt(x,y)[1] == highlandsTreeAcceptedColours[i] then 
+        if assets.code.river.zone[zones.zone or zones[1].zone].GetColourAt(x,y)[1] == highlandsTreeAcceptedColours[i] then 
             obj = Obstacle:New(x, y, highlandsTreeShape, obj.OnCollideWithPlayer)
             setmetatable(obj, self)
             obj.image = highlandsTreeImages[math.random(1, #highlandsTreeImages)]   

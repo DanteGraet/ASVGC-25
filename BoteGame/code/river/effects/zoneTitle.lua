@@ -10,7 +10,7 @@ function updateZoneTitles(dt)
         savedDisplayName = zones.displayName or ""
         savedSubtitle = zones.subtitle or ""
         savedDistance = zones.distanceTitle or ""
-        displayTitleCounter = -1
+        displayTitleCounter = 0---1
     end
 
     if not displayTitleCounter then displayTitleCounter = -1 end

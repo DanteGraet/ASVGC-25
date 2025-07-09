@@ -74,7 +74,7 @@ function GetPercentageThrough(y)
     for i = 1,#zones do
         local zone = zones[i]
 
-        if distRemaining <= zone.distance + zone.transition then
+        if distRemaining < zone.distance + zone.transition then
             return distRemaining / (zone.distance + zone.transition)
         end
 
