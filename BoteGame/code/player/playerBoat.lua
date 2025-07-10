@@ -37,7 +37,7 @@ function PlayerBoat:New(skin)
     obj.shameTimer = 1
 
     -- acceleration/deecleration
-    obj.speed = 150
+    obj.speed = 0--150
     obj.acceleration = 150
     obj.maxSpeed = 300
     obj.autoSpeed = 71.3*3

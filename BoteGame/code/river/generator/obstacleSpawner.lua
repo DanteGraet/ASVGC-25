@@ -28,7 +28,7 @@ function ObstacleSpawner:New(obsticals, lastY)
         end
     end
 
-    obj.lastY = lastY or -250
+    obj.lastY = lastY or -500
     obj.lastZone = riverGenerator:GetZone(obj.lastY).zone
 
     --obj:Update()
@@ -37,7 +37,7 @@ function ObstacleSpawner:New(obsticals, lastY)
 end
 
 function ObstacleSpawner:Update()
-    local zone = riverGenerator:GetZone(riverBorders.up - 250).zone
+    local zone = riverGenerator:GetZone(riverBorders.up - 500).zone
     if self.spawners[zone] then
         for i = 1,#self.spawners[zone] do
 

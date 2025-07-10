@@ -6,7 +6,7 @@ function RandomSpawner:New(obsticals, lastY, front)
     local obj = setmetatable({}, RandomSpawner)
 
     obj.obsticals = obsticals
-    obj.lastY = lastY or riverBorders.up - 250
+    obj.lastY = lastY or riverBorders.up - 500
 
     obj.inFront = front or false
 
@@ -19,12 +19,12 @@ function RandomSpawner:Update(val)
     
 
     if val then
-        self.lastY = riverBorders.up - 250
+        self.lastY = riverBorders.up - 500
         return
     end
 
-    if self.lastY == math.ceil((riverBorders.up - 250)/3)*3 then return end
-    for y = math.ceil(self.lastY/3)*3, math.ceil((riverBorders.up - 250)/3)*3, -3 do
+    if self.lastY == math.ceil((riverBorders.up - 500)/3)*3 then return end
+    for y = math.ceil(self.lastY/3)*3, math.ceil((riverBorders.up - 500)/3)*3, -3 do
        
         -- check if we are going to spawn an obtical here
         --assets.code.river.riverData[riverName].ambiance[zoneNames[1].displayName]
@@ -39,7 +39,7 @@ function RandomSpawner:Update(val)
         end
 
     end
-    self.lastY = math.ceil((riverBorders.up - 250)/3)*3
+    self.lastY = math.ceil((riverBorders.up - 500)/3)*3
 
 end
 
