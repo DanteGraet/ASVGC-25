@@ -60,8 +60,8 @@ local function GetColourAt(x, y)
             elseif snowPatch  > 0.8 then
                 colour = {0.79,0.85,0.98}
             elseif love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = {0.12,0.6,0.33}
-            else colour = {0.12,0.58,0.35} end
+                colour = {0.121,0.6,0.33}
+            else colour = {0.121,0.58,0.35} end
 
 
         elseif elevation < 0.80*(3*p+1) + noiseB - noiseA then --stone's edge
