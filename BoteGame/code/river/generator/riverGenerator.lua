@@ -16,6 +16,17 @@ local generatorThread_screenWidth = love.thread.getChannel("generatorThread_scre
 
 
 function RiverGenerator:New(name)
+    -- clear all channels
+    generatorThread_playerY:clear()
+    generatorThread_riverData:clear()
+    generatorThread_scale:clear()
+    generatorThread_backgroundImageData:clear()
+    generatorThread_requestBackground:clear()
+    generatorThread_riverSegments:clear()
+    generatorThread_minZones:clear()
+    generatorThread_screenWidth:clear()
+
+
     local obj = setmetatable({}, RiverGenerator)
 
     local RD = assets.code.river.riverData[name].zone()
@@ -37,16 +48,6 @@ function RiverGenerator:New(name)
 
     obj.generatingSegment = false
 
-    -- clear all channels
-    generatorThread_playerY:clear()
-    generatorThread_riverData:clear()
-    generatorThread_scale:clear()
-    generatorThread_backgroundImageData:clear()
-    generatorThread_requestBackground:clear()
-    generatorThread_riverSegments:clear()
-    generatorThread_minZones:clear()
-    generatorThread_screenWidth:clear()
-
 
     obj.generatorThread = love.thread.newThread("code/river/generator/generatorThread.lua")
     generatorThread_screenWidth:push((riverBorders.right + 15)*2)
@@ -67,7 +68,7 @@ function RiverGenerator:New(name)
     repeat
         local startingPoints = generatorThread_riverSegments:demand()
         river:MergePoints(startingPoints)
-    until river:GetLastPoints()[1][1].y < riverBorders.up
+    until river:GetLastPoints()[1][1].y < riverBorders.up - 1500
 
     local bgData = generatorThread_backgroundImageData:demand()
 
