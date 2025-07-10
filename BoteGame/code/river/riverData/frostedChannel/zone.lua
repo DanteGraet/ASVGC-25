@@ -37,7 +37,7 @@ return {
     },
         {
         zone = "boulderValley-coniferousMountainside", --yes i know there is a file for the storm version. not using it yet
-        displayName = "Storm Valley",
+        displayName = "_Storm Valley",
         subtitle = "",
         distanceTitle = "",
         distance = 2000,

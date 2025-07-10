@@ -77,6 +77,12 @@ return {
         current = stormValleyCurrent,
         chainLengthCoefficient = stormValleyChainLengthCoefficient,
     },
+    ["_Storm Valley"] = {
+        stormIntensity = 0,
+        difficultyFunction = 0.005+0.005,
+        current = 100,
+        chainLengthCoefficient = 1.1,
+    },
     ["Wooded Hills"] = {
         difficultyFunction = coniferousMountainsideDifficulty,
         current = 100,

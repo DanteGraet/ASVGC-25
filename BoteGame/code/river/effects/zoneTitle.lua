@@ -1,19 +1,19 @@
 local displayTitleCounter
 local displayTitleAlpha
-savedDisplayName = nil --this needs to be global for various reasons
+savedDisplayName = nil --this needs to be global for game over menu (it actually does not, we can get the display namee but okie)
 local savedSubtitle
 local savedDistance
 
 function updateZoneTitles(dt)
 
-    if zones.displayName and zones.displayName ~= savedDisplayName then
+    if zones.displayName and  zones.displayName ~= savedDisplayName and zones.displayName ~= "_" .. (savedDisplayName or "") then
         savedDisplayName = zones.displayName or ""
         savedSubtitle = zones.subtitle or ""
         savedDistance = zones.distanceTitle or ""
         displayTitleCounter = 0---1
     end
 
-    if not displayTitleCounter then displayTitleCounter = -1 end
+    if not displayTitleCounter then displayTitleCounter = 0 end
 
     displayTitleCounter = math.min(displayTitleCounter+dt,5)
 

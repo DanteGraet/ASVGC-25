@@ -465,7 +465,6 @@ while threadRunning do
         local i = 0
 
         while not lastPoints or lastPoints[1][#lastPoints[1]].y > -(playerY+50 + 5000) do
-            print(i .. "Segcountround")
             i = i + 1
             local p
             if lastPoints then

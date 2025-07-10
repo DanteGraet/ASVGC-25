@@ -47,6 +47,10 @@ return {
         snowAmount = stormValleySnow,
         windSpeed = stormValleyWind,
     },
+    ["_Storm Valley"] = {
+        snowAmount = 3,
+        windSpeed = 300,
+    },
     ["Wooded Hills"] = {
         snowAmount = 3,
         windSpeed = 300,
