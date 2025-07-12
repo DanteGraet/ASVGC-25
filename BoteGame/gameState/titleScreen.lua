@@ -22,11 +22,13 @@ local function resize()
 end
 
 local function load()
+
+    print("AEEE")
     love.physics.setMeter(100)
     resize()
 
 
-    DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true, "image/loading/title.png")
+    DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true, (previousGameState == "splash" and "image/loading/clear.png") or "image/loading/title.png")
 end
 
 local function unload()
@@ -58,67 +60,68 @@ local function update(dt)
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
     y = y-100*dt
+    if riverGenerator then
+        riverGenerator:Update(-y)
 
-    riverGenerator:Update(-y)
+        if river:HasPoints() then
+            zones = riverGenerator:GetZone(y, true)
 
-    if river:HasPoints() then
-        zones = riverGenerator:GetZone(y, true)
+            particles.updateParticles(dt)
+            ambiance.update(dt, -y)
 
-        particles.updateParticles(dt)
-        ambiance.update(dt, -y)
+            riverBorders.up =    y
+            riverBorders.down =  y + love.graphics.getHeight()/screenScale
 
-        riverBorders.up =    y
-        riverBorders.down =  y + love.graphics.getHeight()/screenScale
+            river:Update(-y)
+            obstacleSpawner:Update()
+            world:update(dt)
 
-        river:Update(-y)
-        obstacleSpawner:Update()
-        world:update(dt)
+            -- remove colliding rocks
+            local contacts = world:getContacts()
+            for _, contact in ipairs(contacts) do
+                if contact:isTouching() then
+                    local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
+                    local dataA = fixtureA:getUserData()
+                    local dataB = fixtureB:getUserData()
+                    if dataA.first then
+                        dataA.remove = true
+                        fixtureA:setUserData(dataA)
+                    elseif dataB.first then
+                        dataB.remove = true
+                        fixtureB:setUserData(dataB)
+                    else
+                        -- remove B by deefault, one of them has to go
+                        dataB.first = false
+                        dataB.remove = true
+                        fixtureB:setUserData(dataB)
+                    end    
+                end
+            end
 
-        -- remove colliding rocks
-        local contacts = world:getContacts()
-        for _, contact in ipairs(contacts) do
-            if contact:isTouching() then
-                local fixtureA, fixtureB = contact:getFixtures()  -- Get the two fixtures involved
-                local dataA = fixtureA:getUserData()
-                local dataB = fixtureB:getUserData()
-                if dataA.first then
-                    dataA.remove = true
-                    fixtureA:setUserData(dataA)
-                elseif dataB.first then
-                    dataB.remove = true
-                    fixtureB:setUserData(dataB)
-                else
-                    -- remove B by deefault, one of them has to go
-                    dataB.first = false
-                    dataB.remove = true
-                    fixtureB:setUserData(dataB)
-                end    
+            for i = #obstacles,1, -1 do
+                obstacles[i]:Update(i, 0)
+            end
+        else      
+            river:checkNextSegment()
+
+            if river:HasPoints() then
+                player:moveToCenter()
+
             end
         end
 
-        for i = #obstacles,1, -1 do
-            obstacles[i]:Update(i, 0)
+        if settingsMenu.isOpen == false then
+            titleScreenUI:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+            settingsTimer = math.max(settingsTimer - dt*2, 0)
+        else
+            -- Use math.huge so it will never be hovering over a button right?
+            titleScreenUI:Update(dt, math.huge, math.huge)
+            settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+            settingsTimer = math.min(settingsTimer + dt*2, 1)
         end
-    else      
-        river:checkNextSegment()
 
-        if river:HasPoints() then
-            player:moveToCenter()
-
-        end
+        if music.manager then music.manager(dt) end
     end
-
-    if settingsMenu.isOpen == false then
-        titleScreenUI:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
-        settingsTimer = math.max(settingsTimer - dt*2, 0)
-    else
-        -- Use math.huge so it will never be hovering over a button right?
-        titleScreenUI:Update(dt, math.huge, math.huge)
-        settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-        settingsTimer = math.min(settingsTimer + dt*2, 1)
-    end
-
-    if music.manager then music.manager(dt) end
 end
 
 local function mousepressed(x, y, button)
@@ -172,14 +175,16 @@ local function draw()
 
 
     love.graphics.setColor(1,1,1)
-    if river:HasPoints() then
-        river:Draw()
-        for i = 1,#obstacles do
-            obstacles[i]:Draw(i)
-        end
+    if river then
+        if river:HasPoints() then
+            river:Draw()
+            for i = 1,#obstacles do
+                obstacles[i]:Draw(i)
+            end
 
-        particles.drawParticles("bottom")
-        particles.drawParticles("top")
+            particles.drawParticles("bottom")
+            particles.drawParticles("top")
+        end
     end
 
 
@@ -189,10 +194,12 @@ local function draw()
         titleScreenUI:Draw()
     end
 
-    love.graphics.setColor(1,1,1,1)
-    love.graphics.draw(assets.image.titleScreen.title,50,50,0,0.75,0.75)
-    font.setFont("black", 32)
-    love.graphics.print("Alpha Demo 2???",350,350)
+    if assets.image then 
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.draw(assets.image.titleScreen.title,50,50,0,0.75,0.75)
+        font.setFont("black", 32)
+        love.graphics.print("Alpha Demo 2???",350,350)
+    end
 
     if settingsMenu then
         settingsMenu:Draw(tweens.sineInOut(settingsTimer))
@@ -212,6 +219,6 @@ return {
     update = update,
     draw = draw,
 
-    isFirst = true,
+    --isFirst = true,
     noTransform = true,
 }

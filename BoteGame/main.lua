@@ -163,7 +163,9 @@ function love.quit()
         game[gameState].unload()
     end
 
-    dante.save(assets.code.player.unlocks, "save", "unlocks")
+    if assets.code then
+        dante.save(assets.code.player.unlocks, "save", "unlocks")
+    end
 end
 
 function love.mousepressed(mx, my, button)
