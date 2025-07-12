@@ -1,5 +1,5 @@
 local textList = {
-    string.upper("Jaraph Studios"),
+    string.upper("Jaraph"),
 }
 local image
 local font 
@@ -10,6 +10,7 @@ local width = love.graphics.getWidth()
 local height = love.graphics.getHeight()
 
 local function load()
+    love.mouse.setVisible(false)
     timer = 0
     image = love.graphics.newImage("splash/jaraph.png")
     font = love.graphics.newFont("font/fontBlack.ttf", 512)
