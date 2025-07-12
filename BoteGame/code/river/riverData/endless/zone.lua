@@ -1,135 +1,455 @@
-local function iceplainsCurrent(percentage)
-    return 100*quindoc.clamp(percentage,0,1) + 100
-end
+local zone          = 1
 
-local function boulderValleyDifficulty(percentage)
-    return 0.0015 + 0.0035*quindoc.clamp(percentage,0,1)
-end
+local areaHard      = 4
+local areaNormal    = 4
+local areaRest      = 2.7
 
-
-local function boulderValleyCurrent(percentage)
-    return 200*quindoc.clamp(percentage,0,1) + 100
-end
-
-local function boulderValleyChainLengthCoefficient(percentage)
-    return 1.35 - 0.2*quindoc.clamp(percentage,0,1)
-end
-
-
-
-
-local function boulderValleyDifficulty_STORM(percentage)
-    return 0.005
-end
-
-
-
-local function boulderValleyCurrent_STORM(percentage)
-
-    local idk = percentage
-
-    if percentage < 0.8 then
-
-        idk = percentage*1.25
-
-    else
-
-        idk = 1 - 2*((percentage - 0.8) * 5)
-
-    end
-
-    return 300 + 200*quindoc.clamp(idk,-0.5,1) 
-    
-end
-
-local function boulderValleyChainLengthCoefficient_STORM(percentage)
-    return 1.15 - 0.05*quindoc.clamp(percentage,0,1)
-end
-
-local function boulderValleyStormIntensity_STORM(percentage)
-
-    local idk = percentage
-
-    if percentage < 0.6 then
-
-        idk = percentage*1.66
-
-    elseif percentage < 0.8 then
-
-        idk = 1
-
-    else
-
-        idk = 1 - 2*((percentage - 0.8) * 5)
-
-    end
-
-    return 1000*quindoc.clamp(idk,0,1)
-end
-
-local function coniferousMountainsideDifficulty(percentage)
-
-    if percentage > 0.9 then
-        return 0
-    else
-        return 0.01
-    end
-
-end
-
+local rest          = 0.7
+local normal        = 0.7
+local hard          = 0.5
 
 return {
-    icePlains = {
+    start = {
         zone = "icePlains",
         displayName = "Ice Plains",
-        distanceTitle = "-- hmm --",
-        subtitle = "River's Source",
+        subtitle = "",
 
-        distance = {min = 3000, max = 10000},
+        distance = {min = 5000, max = 7500},
         transition = 300,
 
-        nextZone = {"boulderValley", "coniferousMountainside"},
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = zone},      -- rest
+            {name = "boulderValley",    weight = areaNormal},      -- normal
+            {name = "stormValley",      weight = areaHard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
         currentIcons = 2,
 
         isFirst = true
     },
+
+    icePlains = {
+        zone = "icePlains",
+        displayName = "Ice Plains",
+        subtitle = "",
+
+        distance = {min = 7500, max = 12500},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = zone},      -- rest
+            {name = "boulderValley",    weight = areaNormal},      -- normal
+            {name = "stormValley",      weight = areaHard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
+        currentIcons = 2,
+    },
     boulderValley = {
         zone = "boulderValley",
         displayName = "Boulder Valley",
-        distanceTitle = "-- okie? --",
-        subtitle = "Rock-Chain Gully",
-        distance = {min = 5000, max = 25000},
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
         transition = 300,
 
-        nextZone = {"boulderValley2", "coniferousMountainside", "icePlains"},
-        currentIcons = 3,
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = areaRest},      -- rest
+            {name = "boulderValley",    weight = zone},      -- normal
+            {name = "stormValley",      weight = areaHard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
+        currentIcons = 2,
     },
-    boulderValley2 = {
-        zone = "boulderValley", --yes i know there is a file for the storm version. not using it yet
+    stormValley = {
+        zone = "stormValley",
         displayName = "Storm Valley",
-        subtitle = "Blizzard Approaching",
-        distanceTitle = "-- nope --",
+        subtitle = "",
 
-        distance = {min = 5000, max = 25000},
+        distance = {min = 10000, max = 15000},
         transition = 300,
 
-        nextZone = {"boulderValley", "coniferousMountainside"},
-        currentIcons = 4,
-    },
-    coniferousMountainside = {
-        zone = "coniferousMountainside",
-        subtitle = "-- haha --",
-        displayName = "Coniferous Highlands",
-        distanceTitle = "-- huh> --",
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = areaRest},      -- rest
+            {name = "boulderValley",    weight = areaNormal},      -- normal
+            {name = "stormValley",      weight = zone},      -- hard
 
-        distance = {min = 5000, max = 20000},
-        transition = 300,
-
-        nextZone = {"boulderValley", "icePlains"},
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
         currentIcons = 2,
     },
 
 
+    coniferousHills = {
+        zone = "coniferousHills",
+        displayName = "Wooded Hills",
+        subtitle = "",
+
+        distance = {min = 7500, max = 12500},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = zone},      -- rest
+            {name = "autumnGrove",      weight = areaNormal},      -- normal
+            {name = "clockworkRuins",   weight = areaNormal},      -- normal
+            {name = "clockworkCore",    weight = areaHard},      -- hard
+            {name = "autumnRapids",     weight = areaNormal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
+        currentIcons = 2,
+    },
+    autumnGrove = {
+        zone = "autumnGrove",
+        displayName = "Autumn Grove",
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = areaRest},      -- rest
+            {name = "autumnGrove",      weight = zone},      -- normal
+            {name = "clockworkRuins",   weight = areaNormal},      -- normal
+            {name = "clockworkCore",    weight = areaHard},      -- hard
+            {name = "autumnRapids",     weight = areaNormal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
+        currentIcons = 2,
+    },
+    clockworkRuins = {
+        zone = "clockworkRuins",
+        displayName = "Clockwork Ruins",
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = areaRest},      -- rest
+            {name = "autumnGrove",      weight = areaNormal},      -- normal
+            {name = "clockworkRuins",   weight = zone},      -- normal
+            {name = "clockworkCore",    weight = areaNormal},      -- hard
+            {name = "autumnRapids",     weight = areaNormal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
+        currentIcons = 2,
+    },
+    clockworkCore = {
+        zone = "clockworkCore",
+        displayName = "Clockwork's Core",
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = areaRest},      -- rest
+            {name = "autumnGrove",      weight = areaNormal},      -- normal
+            {name = "clockworkRuins",   weight = areaNormal},      -- normal
+            {name = "clockworkCore",    weight = zone},      -- hard
+            {name = "autumnRapids",     weight = areaNormal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
+        currentIcons = 2,
+    },
+    autumnRapids = {
+        zone = "autumnRapids",
+        displayName = "Autumn Rapids",
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = areaRest},      -- rest
+            {name = "autumnGrove",      weight = areaNormal},      -- normal
+            {name = "clockworkRuins",   weight = areaNormal},      -- normal
+            {name = "clockworkCore",    weight = areaHard},      -- hard
+            {name = "autumnRapids",     weight = zone},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = rest},      -- rest
+            {name = "upperDam",         weight = normal},      -- normal
+            {name = "theInlet",         weight = hard},      -- hard
+            {name = "electricalComplex",weight = hard},      -- hard
+            {name = "lowerDam",         weight = hard},      -- hard
+            },
+        currentIcons = 2,
+    },
+
+
+    gravellyPlains = {
+        zone = "gravellyPlains",
+        displayName = "Gravelly Plains",
+        subtitle = "",
+
+        distance = {min = 7500, max = 12500},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = zone},      -- rest
+            {name = "upperDam",         weight = areaNormal},      -- normal
+            {name = "theInlet",         weight = areaHard},      -- hard
+            {name = "electricalComplex",weight = areaHard},      -- hard
+            {name = "lowerDam",         weight = areaHard},      -- hard
+            },
+        currentIcons = 2,
+    },
+    upperDam = {
+        zone = "upperDam",
+        displayName = "Upper Dam",
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = areaRest},      -- rest
+            {name = "upperDam",         weight = zone},      -- normal
+            {name = "theInlet",         weight = areaHard},      -- hard
+            {name = "electricalComplex",weight = areaHard},      -- hard
+            {name = "lowerDam",         weight = areaHard},      -- hard
+            },
+        currentIcons = 2,
+    },
+    electricalComplex = {
+        zone = "electricalComplex",
+        displayName = "Electrical Powerhouse",
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = areaRest},      -- rest
+            {name = "upperDam",         weight = areaNormal},      -- normal
+            {name = "theInlet",         weight = areaHard},      -- hard
+            {name = "electricalComplex",weight = zone},      -- hard
+            {name = "lowerDam",         weight = areaHard},      -- hard
+            },
+        currentIcons = 2,
+    },
+    theInlet = {
+        zone = "theInlet",
+        displayName = "The Inlet",
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = areaRest},      -- rest
+            {name = "upperDam",         weight = areaNormal},      -- normal
+            {name = "theInlet",         weight = zone},      -- hard
+            {name = "electricalComplex",weight = areaHard},      -- hard
+            {name = "lowerDam",         weight = areaHard},      -- hard
+            },
+        currentIcons = 2,
+    },
+    lowerDam = {
+        zone = "lowerDam",
+        displayName = "Lower Dam",
+        subtitle = "",
+
+        distance = {min = 10000, max = 15000},
+        transition = 300,
+
+        nextZone = {
+            --Forsted Channel
+            {name = "icePlains",        weight = rest},      -- rest
+            {name = "boulderValley",    weight = normal},      -- normal
+            {name = "stormValley",      weight = hard},      -- hard
+
+            --Autumn Grove
+            {name = "coniferousHills",  weight = rest},      -- rest
+            {name = "autumnGrove",      weight = normal},      -- normal
+            {name = "clockworkRuins",   weight = normal},      -- normal
+            {name = "clockworkCore",    weight = hard},      -- hard
+            {name = "autumnRapids",     weight = normal},      -- normal
+                
+            --The Dam
+                -- Other Zone
+            {name = "gravellyPlains",   weight = areaRest},      -- rest
+            {name = "upperDam",         weight = areaNormal},      -- normal
+            {name = "theInlet",         weight = areaHard},      -- hard
+            {name = "electricalComplex",weight = areaHard},      -- hard
+            {name = "lowerDam",         weight = zone},      -- hard
+            },
+        currentIcons = 2,
+    },
 }
 
 

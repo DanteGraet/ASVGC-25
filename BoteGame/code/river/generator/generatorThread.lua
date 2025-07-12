@@ -9,7 +9,7 @@ local string = require("string")
 require("templateLib/quindoc")
 require("templateLib/dante")
 
-math.randomseed(os.time())
+math.randomseed(os.time(), love.thread.getChannel("generator_seed"):pop() or 0)
 
 
 local threadRunning = true
@@ -151,8 +151,11 @@ local function getLegnth()
     return l
 end
 
+local zoneCount = 0
+
 local function GenerateZoneData(zone)
     local tempZone = {}
+    zoneCount = zoneCount + 1 
 
     for key, value in pairs(zone) do
         if type(value) == "table" then
@@ -167,13 +170,20 @@ local function GenerateZoneData(zone)
             else
                 tempZone[key] = value
             end
+
+            
         else
             tempZone[key] = value
+
+            
         end
     end
 
+    tempZone.subtitle = "-- Zone: " .. zoneCount .. " --"
+    print("generated zone " .. tempZone.displayName)
     return tempZone
 end
+
 
 local function addNextZones(y)
     while y > getLegnth() do
@@ -199,24 +209,17 @@ local function addNextZones(y)
             end
 
 
-            local no = math.random(1, weight)
-
+            local no = math.random(0, weight*100)/100
             for i = 1,#validOptions do
-                if type(validOptions[i]) == "string" then
-                    no = no -1
+                local w = validOptions[i].weight or 1
 
-                    if no < 1 then
-                        table.insert(zones, GenerateZoneData(data[validOptions[i]]))
-                        break
-                    end
-                else
-                    no = no - validOptions[i].weight or 1
-
-                    if no < validOptions[i].weight or 1 then
-                        table.insert(zones, GenerateZoneData(data[validOptions[i]].name))
-                        break
-                    end
+                if no <= w then
+                    local name = validOptions[i].name or validOptions[i]
+                    table.insert(zones, GenerateZoneData(data[name]))
+                    break
                 end
+                
+                no = no - w
             end
             
         else

@@ -113,7 +113,7 @@ function levelMenu:Draw(gs)
         if settings.graphics.shortNumbers.value then
             displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][1] or 0)), 2)
         else
-            displayNum = math.floor(math.abs(assets.save.highscore[riverName][1]))
+            displayNum = math.floor(math.abs(assets.save.highscore[riverName][1] or 0))
         end
     end
     font.setFont("black", 64)

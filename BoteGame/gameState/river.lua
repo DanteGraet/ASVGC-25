@@ -140,7 +140,7 @@ function GetRiverScale()
 end
 
 local function focus(focus)
-    if not (player.health <= 0 or player.deathTime >= 1) then
+    if player and not (player.health <= 0 or player.deathTime >= 1) then
 
         pauseMenu.isOpen = true
         pauseMenu.hasOpend = true
