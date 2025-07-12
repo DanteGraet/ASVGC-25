@@ -41,7 +41,11 @@ local function draw()
 
 
     love.graphics.setFont(font)
-    love.graphics.setColor(0/255, 183/255, 239/255)
+    --love.graphics.setColor(104/255, 171/255, 197/255)
+
+    love.graphics.setColor(((104+0)/2)/255, ((171+183)/2)/255, ((197+239)/2)/255)
+
+   --love.graphics.setColor(0/255, 183/255, 239/255)
 
     local cps = 10
     local legnth = timer*cps
@@ -55,6 +59,11 @@ local function draw()
         local ox = font:getWidth(text)*math.min(textScaleX, scaleAlleY)
         love.graphics.print(text, math.max(width/2 - ox, -width/2), -50*scaleAlleY, 0, math.min(textScaleX, scaleAlleY), scaleAlleY, 0, font:getHeight(text)/2)
     end
+
+    if legnth > #textList[1] + cps then 
+        legnth = legnth - 5
+    end
+    
     if legnth > #textList[1] + cps and legnth < #textList[1] + cps*2 then
         local r = math.pow((legnth  - (#textList[1] + cps)), 3)
         love.graphics.circle("fill", 0, 0, r)
