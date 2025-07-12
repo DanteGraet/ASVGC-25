@@ -1,5 +1,5 @@
 local textList = {
-    string.upper("Jaraph Studios"),
+    string.upper("Jaraph"),
 }
 local image
 local font 
@@ -40,7 +40,7 @@ local function draw()
 
 
     love.graphics.setFont(font)
-    love.graphics.setColor(104/255, 171/255, 197/255)
+    love.graphics.setColor(0/255, 183/255, 239/255)
 
     local cps = 10
     local legnth = timer*cps

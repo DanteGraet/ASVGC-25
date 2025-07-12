@@ -39,17 +39,36 @@ local function GetColourAt(x, y)
 
             colour = {0.5,0.5,0.55}
 
-        elseif elevation < 1.37 then --main concrete
+        elseif elevation < 1.17 then --main concrete
 
-            colour = {0.7,0.7,0.7}
+            if love.math.noise(x/1600.1,y/1600.1) > 0.35 and love.math.noise(x/1600.1,y/1600.1) < 0.65 then --"path" pattern
+                colour = {0.67,0.67,0.67} 
+            else      
 
-        elseif elevation < 1.4 then
+                local u = (x + y) / math.sqrt(2)
+                local b = u % 100    
+
+                if b < 50 then
+                    colour = {0.685,0.685,0.685} --stripes
+                else
+                    colour = {0.7,0.7,0.7}
+                end
+            end
+
+        elseif elevation < 1.2 then
 
             colour = {0.5,0.5,0.55}
 
         else
 
-            colour = {0.6,0.6,0.6}
+            local u = (x - y) / math.sqrt(2)
+            local b = u % 200    
+
+            if b < 50 then
+                colour = {0.585,0.585,0.585} --stripes
+            else
+                colour = {0.6,0.6,0.6}
+            end
 
         end
 

@@ -34,30 +34,55 @@ local function GetColourAt(x, y)
         local noiseC = love.math.noise(y/50.01) / 50
 
         if elevation < 0.03 then --riverbank
-            colour = {0.4,0.22,0.19}
+            colour = {0.41,0.4,0.45}
         elseif elevation < 0.06 +noiseA/10 then --near riverbank
 
-            colour = {0.68,0.34,0.1}
+            colour = {0.51,0.5,0.55}
 
-        elseif elevation < 1.37*(3*p+1) + noiseB - noiseA then --main gtass
-            
-            --local snowPatch = 0.9*love.math.noise(2*x/1600.1,2*y/1600.1) + 0.1*love.math.noise(x/100.1,y/100.1)
+        elseif elevation < 0.77 then --main concrete
 
-            if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = {0.87,0.44,0.14}
-            else colour = {0.87,0.5,0.21} end
+            if love.math.noise(x/1600.1,y/1600.1) > 0.35 and love.math.noise(x/1600.1,y/1600.1) < 0.65 then --"path" pattern
+                colour = {0.67,0.67,0.67} 
+            else      
 
+                local u = (x + y) / math.sqrt(2)
+                local b = u % 100    
 
-        elseif elevation < 1.4*(3*p+1) + noiseB - noiseA then --uppergrass
-            colour = {0.8,0.4,0.16}
-        else 
-            if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = {0.72,0.4,0.22}
-            else colour = {0.72,0.37,0.18} end
-        end
+                if b < 50 then
+                    colour = {0.685,0.685,0.685} --stripes
+                else
+                    colour = {0.7,0.7,0.7}
+                end
+            end
 
-        if love.math.noise(x/1600.1,y/1600.1) > 0.45 and love.math.noise(x/1600.1,y/1600.1) < 0.55 and elevation > 0.06+noiseA/10 then
-            colour = {0.7,0.4,0.1}
+        elseif elevation < 0.8 then
+
+            colour = {0.5,0.5,0.55}
+
+        elseif elevation < 1.24 then
+
+            local b = y % 100    --horizontal stripes
+
+            if b < 50 then
+                colour = {0.585,0.585,0.585} --stripes
+            else
+                colour = {0.6,0.6,0.6}
+            end
+
+        elseif elevation < 1.3 then
+
+            colour = {0.3,0.3,0.3}
+
+        elseif elevation < 1.305 + 0.5*noiseB+0.5*noiseA then
+
+            colour = {0.26,0.53,0.07}
+
+        else
+
+            if love.math.noise(x/700.1,y/700.1) < 0.4 then
+                colour = {0.4,0.63,0.18}
+            else colour = {0.4,0.67,0.14} end
+
         end
 
         return colour
