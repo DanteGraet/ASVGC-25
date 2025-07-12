@@ -33,7 +33,7 @@ function timerSpawner:Update(val)
     self.spawnObstacle(self.obsticals, y, self.inFront)
 
 
-    self.lastY = math.ceil((riverBorders.up - 500)/3)*3
+    self.lastY = self.lastY - self.time
     self.time = math.random(self.min, self.max)
 
 end
