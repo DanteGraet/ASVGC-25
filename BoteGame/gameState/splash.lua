@@ -9,17 +9,26 @@ local timer
 local width = love.graphics.getWidth()
 local height = love.graphics.getHeight()
 
-local function load()
-    love.mouse.setVisible(false)
-    timer = 0
-    image = love.graphics.newImage("splash/jaraph.png")
-    font = love.graphics.newFont("font/fontBlack.ttf", 512)
-end
-
 local function resize()
     width = love.graphics.getWidth()
     height = love.graphics.getHeight()
 end
+
+
+local function load()
+    love.mouse.setVisible(false)
+    
+    local savedSettings = dante.load("save/settings")
+    if savedSettings.graphics and savedSettings.graphics.fullscreen then
+        love.window.setFullscreen(savedSettings.graphics.fullscreen)
+        resize()
+    end
+
+    timer = 0
+    image = love.graphics.newImage("splash/jaraph.png")
+    font = love.graphics.newFont("font/fontBlack.ttf", 512 + 256)
+end
+
 
 local function unload()
     
@@ -57,11 +66,11 @@ local function draw()
     local textScaleY = 1--height/(font:getHeight(text))
     if legnth < 100 then
         local ox = font:getWidth(text)*math.min(textScaleX, scaleAlleY)
-        love.graphics.print(text, math.max(width/2 - ox, -width/2), -50*scaleAlleY, 0, math.min(textScaleX, scaleAlleY), scaleAlleY, 0, font:getHeight(text)/2)
+        love.graphics.print(text, math.max(width/2 - ox, -width/2), -75*scaleAlleY, 0, math.min(textScaleX, scaleAlleY), scaleAlleY, 0, font:getHeight(text)/2)
     end
 
     if legnth > #textList[1] + cps then 
-        legnth = legnth - 5
+        legnth = legnth - 10
     end
     
     if legnth > #textList[1] + cps and legnth < #textList[1] + cps*2 then
