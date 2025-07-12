@@ -37,10 +37,7 @@ return {
     ["The Inlet"] = {
         
     },
-    ["Electrical Powerhouse"] = {
+    ["Electrical Complex"] = {
        
-    },
-    ["Lower Dam"] = {
-
     },
 }

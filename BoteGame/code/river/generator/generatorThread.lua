@@ -24,7 +24,9 @@ local lastLegnth = 10000
 local riverName = love.thread.getChannel("generator_riverData"):pop()
 local screenWidth = love.thread.getChannel("generatorThread_screenWidthlove"):pop()
 local RD = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.lua")()
-local infinite, data = nil, nil
+local infinite = nil
+-- has to be global so zones can acsess for weight garbage
+data = nil
 local zoneData = {}
 
 local backgroundY = -180
@@ -180,7 +182,6 @@ local function GenerateZoneData(zone)
     end
 
     tempZone.subtitle = "-- Zone: " .. zoneCount .. " --"
-    print("generated zone " .. tempZone.displayName)
     return tempZone
 end
 
@@ -188,8 +189,8 @@ end
 local function addNextZones(y)
     while y > getLegnth() do
         if zones and #zones > 0 then
-            local allOptions = zones[#zones].nextZone
-
+            local allOptions = quindoc.runIfFunc(zones[#zones].nextZone, {zones[#zones], zoneCount})
+            
             local validOptions = {}
             local weight = 0
 
@@ -215,7 +216,11 @@ local function addNextZones(y)
 
                 if no <= w then
                     local name = validOptions[i].name or validOptions[i]
-                    table.insert(zones, GenerateZoneData(data[name]))
+                    local zone =  GenerateZoneData(data[name])
+                    if type(zone.nextZone) == "function" then
+                        zone.nextZone = zone.nextZone({zone, zoneCount}) 
+                    end
+                    table.insert(zones, zone)
                     break
                 end
                 
@@ -228,7 +233,11 @@ local function addNextZones(y)
             -- add the first zone
             for key, value in pairs(data) do
                 if value.isFirst then
-                    table.insert(zones, GenerateZoneData(value))
+                    local zone = GenerateZoneData(value)
+                    if type(zone.nextZone) == "function" then
+                        zone.nextZone = zone.nextZone({zone, zoneCount}) 
+                    end
+                    table.insert(zones, zone)
                     foundFirst = true
                     break
                 end
@@ -444,7 +453,7 @@ else
     infinite = true
     data = RD
     zones = {}
-    addNextZones(10000)
+    addNextZones(1000000)
 end
 love.thread.getChannel("generatorThread_minZones"):clear()
 love.thread.getChannel("generatorThread_minZones"):push(zones)

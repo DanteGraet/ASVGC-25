@@ -121,11 +121,8 @@ return {
         difficultyFunction = 0.01,
         current = 500,
     },
-    ["Electrical Powerhouse"] = {
-        difficultyFunction = 0.01,
-        current = 100,
-    },
-        ["Lower Dam"] = {
+
+    ["Electrical Complex"] = {
         difficultyFunction = 0.01,
         current = 100,
     },
