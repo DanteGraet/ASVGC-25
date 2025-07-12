@@ -1,11 +1,11 @@
 -- you change the size later
-local centerShape = love.physics.newCircleShape(10)
+local centerShape = love.physics.newCircleShape(25)
 -- you can make this a tryangle later, I dont care.
 local bladePoints = {
-    {0, 5},
-    {100, 5},
-    {100, -5},
-    {0, -5},
+    {0, 10},
+    {170, 10},
+    {180, -10},
+    {0, -10},
 }
 
 -- genrate blade shapes
@@ -85,7 +85,16 @@ end
 function spinnerObstacle:Draw(no)
     if self.body then
         -- look, you're gonna have to draw the things here
+        local img = self.image
+        love.graphics.draw(img, self.x, self.y, self.angle, 3, 3, img:getWidth()/2, img:getHeight()/2)
 
+        local img = self.bladeImage
+        for i = 1,bladeCount do
+            -- full rev * percentage --> i/max
+            local angle = math.pi*2*(i/bladeCount)
+
+            love.graphics.draw(img, self.x, self.y, self.angle + angle - math.pi/6, 3, 3, img:getWidth()/2, img:getHeight())
+        end
     end
 end
 
