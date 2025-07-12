@@ -22,6 +22,8 @@ function ObstacleSpawner:New(obsticals, lastY)
                 table.insert(obj.spawners[key], randomSpawner:New(obs.data, lastY, obs.isFront))
             elseif obs.type == "timer" then
                 table.insert(obj.spawners[key], timerSpawner:New(obs.data, obs.minTime, obs.maxTime, lastY, obs.isFront))
+            elseif obs.type == "fixedTimer" then
+                table.insert(obj.spawners[key], timerSpawner:New(obs.data, obs.minTime, obs.maxTime, lastY, obs.isFront))
             elseif obs.type == "difficultyIndependent" then
                 table.insert(obj.spawners[key], difficultyIndependentSpawner:New(obs.data, obs.chance, lastY, obs.isFront))
             end
