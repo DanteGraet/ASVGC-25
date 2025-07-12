@@ -14,6 +14,7 @@ local generatorThread_minZones = love.thread.getChannel("generatorThread_minZone
 
 local generatorThread_screenWidth = love.thread.getChannel("generatorThread_screenWidthlove")
 
+local generatorThread_seed = love.thread.getChannel("generator_seed")
 
 function RiverGenerator:New(name)
     -- clear all channels
@@ -25,6 +26,7 @@ function RiverGenerator:New(name)
     generatorThread_riverSegments:clear()
     generatorThread_minZones:clear()
     generatorThread_screenWidth:clear()
+    generatorThread_seed:clear()
 
 
     local obj = setmetatable({}, RiverGenerator)
@@ -61,6 +63,7 @@ function RiverGenerator:New(name)
     generatorThread_playerY:push(0)
     generatorThread_riverData:push(name)
     generatorThread_scale:push(screenScale)
+    generatorThread_seed:push(love.timer.getTime())
 
     obj.generatorThread:start()
 
