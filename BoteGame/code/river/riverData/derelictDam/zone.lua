@@ -15,8 +15,8 @@ return {
         zone = "upperDam",
         displayName = "Upper Dam",
         distanceTitle = "-- 1.5KM --",
-        subtitle = "Concrete Reservoir",
-        distance = 1000,
+        subtitle = "Rocky Reservoir",
+        distance = 15000,
 
         transition = 0,
 
@@ -37,10 +37,10 @@ return {
     },
     {
         zone = "lowerDam",
-        subtitle = "High-voltage Facilities",
-        displayName = "Electrical Powerhouse",
+        subtitle = "High-voltage Powerhouse",
+        displayName = "Electrical Complex",
         distanceTitle = "",
-        distance = 10000,
+        distance = 20000,
 
         transition = 0,
 

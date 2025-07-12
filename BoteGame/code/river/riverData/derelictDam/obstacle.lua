@@ -1,3 +1,24 @@
+local function upperDamDifficulty(percentage)
+    return 0.02 + 0.01*quindoc.clamp(percentage,0,1)
+end
+
+local function theInletCurrent(percentage)
+
+    if percentage < 0.1 then
+        local t = percentage*10
+        local a = 150 + t * (500 - 150) --simple tween between both values
+        return a
+
+    elseif percentage > 0.9 then
+        local t = (percentage-0.9)*10
+        local a = 500 + t * (50 - 500)
+        return a
+
+    else
+        return 500
+    end
+
+end
 
 return {
     ["Gravelly Plains"] = {
@@ -5,16 +26,16 @@ return {
         current = 200,
     },
     ["Upper Dam"] = {
-        difficultyFunction = 0.01,
+        difficultyFunction = upperDamDifficulty,
         current = 150,
     },
     ["The Inlet"] = {
         difficultyFunction = 0.01,
-        current = 500,
+        current = theInletCurrent,
     },
-    ["Electrical Powerhouse"] = {
+    ["Electrical Complex"] = {
         difficultyFunction = 0.01,
-        current = 100,
+        current = 50,
     },
 }
 

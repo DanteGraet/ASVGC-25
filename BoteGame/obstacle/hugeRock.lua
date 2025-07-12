@@ -23,8 +23,6 @@ function hugeRockObstacle:New(x, y)
 
     obj.dir = math.rad(math.random(1,360))    
     
-    --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
-    
     return obj
 end
 

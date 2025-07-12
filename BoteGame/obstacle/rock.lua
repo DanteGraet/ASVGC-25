@@ -24,9 +24,11 @@ function rockObstacle:New(x, y)
 
     obj.dir = math.rad(math.random(1,360))    
 
-    --CODE FOR DOING AN ACTION ON OBSTACLE SPAWN GOES HERE
-    
-    return obj
+    if zones.displayName and zones.displayName == "Upper Dam" and river:IsInBounds(x,y) == false then
+        return nil --don't spawn
+    else
+        return obj
+    end
 end
 
 function rockObstacle:Update(no, dt)

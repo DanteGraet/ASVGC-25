@@ -22,8 +22,7 @@ local function GetColourAt(x, y)
         return {53*colour/255,81*colour/255,147*colour/255}
         
     else
-
-        local p = 0
+    local p = 0
         
         --if p > 0.9 then p = 0 end
 
@@ -34,30 +33,35 @@ local function GetColourAt(x, y)
         local noiseC = love.math.noise(y/50.01) / 50
 
         if elevation < 0.03 then --riverbank
-            colour = {0.4,0.22,0.19}
+            colour = {0.3,0.3,0.35}
         elseif elevation < 0.06 +noiseA/10 then --near riverbank
 
-            colour = {0.68,0.34,0.1}
+            colour = {0.4,0.4,0.45}
 
-        elseif elevation < 1.37*(3*p+1) + noiseB - noiseA then --main gtass
-            
-            --local snowPatch = 0.9*love.math.noise(2*x/1600.1,2*y/1600.1) + 0.1*love.math.noise(x/100.1,y/100.1)
-
-            if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = {0.87,0.44,0.14}
-            else colour = {0.87,0.5,0.21} end
+        else --main concrete
 
 
-        elseif elevation < 1.4*(3*p+1) + noiseB - noiseA then --uppergrass
-            colour = {0.8,0.4,0.16}
-        else 
-            if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = {0.72,0.4,0.22}
-            else colour = {0.72,0.37,0.18} end
-        end
 
-        if love.math.noise(x/1600.1,y/1600.1) > 0.45 and love.math.noise(x/1600.1,y/1600.1) < 0.55 and elevation > 0.06+noiseA/10 then
-            colour = {0.7,0.4,0.1}
+            local u = (x + y) / math.sqrt(2)
+            local b = u % 100    
+
+            local u2 = (x - y) / math.sqrt(2)
+            local b2 = u2 % 100    
+
+
+            if b < 50 or b2 < 50 then
+                colour = {0.465,0.465,0.465} --crosshatch
+            else
+                colour = {0.5,0.5,0.5}
+            end
+
+            local u3 = (2*x-y) / math.sqrt(2)
+            local b3 = u3 % 600    
+
+            if b3 < 25 then
+                colour = {0.42,0.42,0.5}
+            end
+        
         end
 
         return colour

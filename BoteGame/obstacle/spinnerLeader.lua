@@ -33,33 +33,33 @@ for i = 1,bladeCount do
 end
 
 
-local spinnerImages = {
+local spinnerLeaderLineImages = {
     love.graphics.newImage("image/obstacle/spinner/centre.png"),
     love.graphics.newImage("image/obstacle/spinner/blade.png"),
 }
 
-for i = 1,#spinnerImages do
-    spinnerImages[i]:setFilter("nearest", "nearest")
+for i = 1,#spinnerLeaderLineImages do
+    spinnerLeaderLineImages[i]:setFilter("nearest", "nearest")
 end
 
 
-local spinnerObstacle = setmetatable({}, { __index = Obstacle }) 
-spinnerObstacle.__index = spinnerObstacle
+local spinnerLeaderLineObstacle = setmetatable({}, { __index = Obstacle }) 
+spinnerLeaderLineObstacle.__index = spinnerLeaderLineObstacle
 
-function spinnerObstacle:New(x, y, givDir,givenSpeed,givenAngle)
-    --local y = y - 500
+function spinnerLeaderLineObstacle:New(x, y, givDir)
+    local x = riverBorders.left+100
+    local y = y - 300
     local obj = Obstacle:New(x, y, centerShape)
+    local var = math.random(1,3)
     
     setmetatable(obj, self)
-    obj.image = spinnerImages[1]
-    obj.bladeImage = spinnerImages[2]
-    
+    obj.image = spinnerLeaderLineImages[1]
+    obj.bladeImage = spinnerLeaderLineImages[2]
 
     obj.body:setPosition(obj.x,y)
     obj.body:setType("kinematic")
     obj.angle = 0
 
-    --obj.spinDirection = (math.random(1, 2) == 1 and 1) or -1
     obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
     obj.bladeFixtures = {}
 
@@ -69,32 +69,34 @@ function spinnerObstacle:New(x, y, givDir,givenSpeed,givenAngle)
         obj.bladeFixtures[i]:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
     end
 
-    local LR = (math.random(0,1)*2-1)
+    obj.spinSpeed = 0.5
 
-    if givDir then obj.spinDir = givDir
-    else obj.spinDir = LR end
+    obj.spinDir = (math.random(0,1)*2)-1
 
-    local ex = x
+    for i = 1, 5 do
 
+        local direction = 1
 
-    if zones.displayName and zones.displayName == "The Inlet" then
-        ex = river:getCenter(y) + 210*LR
-        obj.body:setPosition(ex,y)
-        obj.spinSpeed = 4
-    elseif not givenSpeed then
-        obj.spinSpeed = 1.5
-    else
-        obj.spinSpeed = givenSpeed
+        if var < 3 and i % 2 == 0 then
+            direction = -1
+        end
+
+        local ag = 0
+
+        if var > 1 and direction == -1 then
+            ag = 1 
+        end
+
+        table.insert(obstacles, assets.obstacle.spinner:New(x+400*i, y, direction*obj.spinDir*-1,0.5,ag))
+
     end
 
-    if givenAngle then obj.angle = givenAngle end
-
-    table.insert(obstacles, assets.obstacle.noSpawnSphere:New(ex, y, 500))
+    table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y, 500))
 
     return obj
 end
 
-function spinnerObstacle:Update(no, dt)
+function spinnerLeaderLineObstacle:Update(no, dt)
     if self.body then
 
         self.angle = self.angle + dt*self.spinDir*self.spinSpeed  -- mult by a speed
@@ -108,7 +110,7 @@ local function drawBodyFixtures(body)
     
 end
 
-function spinnerObstacle:Draw(no)
+function spinnerLeaderLineObstacle:Draw(no)
     if self.body then
         -- look, you're gonna have to draw the things here
         local img = self.bladeImage
@@ -124,4 +126,4 @@ function spinnerObstacle:Draw(no)
     end
 end
 
-return spinnerObstacle
+return spinnerLeaderLineObstacle
