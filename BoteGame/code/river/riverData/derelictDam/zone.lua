@@ -5,7 +5,7 @@ return {
         displayName = "Gravelly Plains",
         distanceTitle = "Starting Point",
         subtitle = "Rocky Lowlands",
-        distance = 500,
+        distance = 5000,
 
         transition = 0,
 

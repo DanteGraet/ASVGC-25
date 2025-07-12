@@ -20,6 +20,12 @@ local function theInletCurrent(percentage)
 
 end
 
+local function electricalComplexCurrent(percentage)
+
+    return 50 + 100*quindoc.clamp(percentage,0,1)
+
+end
+
 return {
     ["Gravelly Plains"] = {
         difficultyFunction = 0.01,
@@ -34,8 +40,8 @@ return {
         current = theInletCurrent,
     },
     ["Electrical Complex"] = {
-        difficultyFunction = 0.01,
-        current = 50,
+        difficultyFunction = 0.015,
+        current = electricalComplexCurrent,
     },
 }
 

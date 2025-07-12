@@ -31,6 +31,7 @@ return {
             } ,
         }
     },
+
     {
         type = "difficultyIndependent",    
         chance = 0.4,

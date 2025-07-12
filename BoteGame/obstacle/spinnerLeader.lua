@@ -47,8 +47,9 @@ local spinnerLeaderLineObstacle = setmetatable({}, { __index = Obstacle })
 spinnerLeaderLineObstacle.__index = spinnerLeaderLineObstacle
 
 function spinnerLeaderLineObstacle:New(x, y, givDir)
-    local x = riverBorders.left+100
-    local y = y - 300
+
+    local x = riverBorders.left-440
+    local y = y - 500
     local obj = Obstacle:New(x, y, centerShape)
     local var = math.random(1,3)
     
@@ -73,12 +74,14 @@ function spinnerLeaderLineObstacle:New(x, y, givDir)
 
     obj.spinDir = (math.random(0,1)*2)-1
 
-    for i = 1, 5 do
+    for i = 1, 7 do
 
         local direction = 1
+        local idk = 1
 
         if var < 3 and i % 2 == 0 then
-            direction = -1
+            direction = 1
+            idk = -1
         end
 
         local ag = 0
@@ -87,11 +90,11 @@ function spinnerLeaderLineObstacle:New(x, y, givDir)
             ag = 1 
         end
 
-        table.insert(obstacles, assets.obstacle.spinner:New(x+400*i, y, direction*obj.spinDir*-1,0.5,ag))
+        table.insert(obstacles, assets.obstacle.spinner:New(x+400*i, y, direction*idk*obj.spinDir,0.5,ag))
 
     end
 
-    table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y, 500))
+    table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y, 300))
 
     return obj
 end

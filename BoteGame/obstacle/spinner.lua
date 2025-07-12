@@ -89,7 +89,7 @@ function spinnerObstacle:New(x, y, givDir,givenSpeed,givenAngle)
 
     if givenAngle then obj.angle = givenAngle end
 
-    table.insert(obstacles, assets.obstacle.noSpawnSphere:New(ex, y, 500))
+    table.insert(obstacles, assets.obstacle.noSpawnSphere:New(ex, y, 300))
 
     return obj
 end

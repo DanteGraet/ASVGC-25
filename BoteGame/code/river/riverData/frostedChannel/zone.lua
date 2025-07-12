@@ -31,7 +31,7 @@ return {
         displayName = "Storm Valley",
         subtitle = "Blizzard Approaching",
         distanceTitle = "-- 5KM --",
-        distance = 49000,
+        distance = 19000,
         transition = 0,
         currentIcons = 4,
     },
