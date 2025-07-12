@@ -1,5 +1,5 @@
 return {
-    ["Ice Plains"] = {
+    ["Autumn Grove"] = {
         difficultyFunction = 0.01,
         current = 100,
     },

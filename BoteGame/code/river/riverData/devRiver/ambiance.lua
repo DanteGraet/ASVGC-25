@@ -1,5 +1,5 @@
 return {
-    ["Ice Plains"] = {
+    ["Autumn Grove"] = {
         snowAmount = 5,
         windSpeed = 200,
         audio = {

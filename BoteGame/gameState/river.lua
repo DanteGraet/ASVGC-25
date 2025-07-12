@@ -108,6 +108,9 @@ local function unload()
     audioPlayer.RemoveLoopingSound("motor2")
     audioPlayer.RemoveLoopingSound("motor1")
 
+    player = nil
+    river = nil
+
     pauseMenu = nil
     gameOverMenu = nil
 end

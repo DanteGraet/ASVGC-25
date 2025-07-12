@@ -1,9 +1,9 @@
 return {
     {
-        zone = "autumnGrove",
+        zone = "devZone",
         displayName = "Autumn Grove",
         subtitle = "Woodland of eternal Fall",
-        distance = 15000,
+        distance = 1500000,
         transition = 0,
         currentIcons = 3,
     },

@@ -74,15 +74,20 @@ end
 
 
 function Obstacle:DrawHitbox()
-    if not self.fixture:isDestroyed() then
-        if self.fixture:getUserData().hasCollided then
-            love.graphics.setColor(1,0,0)
-        end
+    if self.body then
+        for _, fixture in pairs(self.body:getFixtures()) do
+            local shape = fixture:getShape()
+            local shapeType = shape:getType()
 
-        love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
+            if shapeType == "polygon" then      -- also counts rectangle
+                local points = {self.body:getWorldPoints(shape:getPoints())}
+                love.graphics.polygon("line", points)
 
-        if self.fixture:getUserData().hasCollided then
-            love.graphics.setColor(1,1,1)
+            elseif shapeType == "circle" then
+                local x, y = self.body:getWorldPoint(shape:getPoint())
+                local radius = shape:getRadius()
+                love.graphics.circle("line", x, y, radius)
+            end
         end
     end
 end

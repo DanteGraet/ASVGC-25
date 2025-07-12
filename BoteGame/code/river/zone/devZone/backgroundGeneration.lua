@@ -1,9 +1,9 @@
 local function GetColourAt(x, y)
     local colour = {0,1,1}
 
-    --[[if river:IsInBounds(x, y) then
+    if getDistToEdge and getDistToEdge(x, y)/100 > 0 then
         return {0,0,1}
-    end]]
+    end
 
     return colour
 end

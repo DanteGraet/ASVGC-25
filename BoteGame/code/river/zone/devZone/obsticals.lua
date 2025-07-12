@@ -5,7 +5,7 @@ return {
         minTime = 100,
         maxTime = 250,
         data = {
-            rock = {
+            spinner = {
                 -- the base spawnWeight that this obstical has
                 spawnWeight = 1,
 

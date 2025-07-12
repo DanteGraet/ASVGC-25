@@ -41,6 +41,6 @@ return {
         },
     },
     zones = {
-        ["Ice Plains"] =        {1,1,0,0,0,0},
+        ["Autumn Grove"] =        {1,1,0,0,0,0},
     }
 }
