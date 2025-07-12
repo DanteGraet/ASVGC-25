@@ -116,6 +116,6 @@ return {
     update = update,
     draw = draw,
 
-    isFirst = true,
+    isFirst = not DEV,
     noTransform = true,
 }
