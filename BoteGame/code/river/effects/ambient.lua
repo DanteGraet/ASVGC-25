@@ -1,6 +1,8 @@
 local a = {}
 
 a.snowUpdate = love.filesystem.load("code/river/effects/spawnSnow.lua")()
+a.rainUpdate = love.filesystem.load("code/river/effects/spawnRain.lua")()
+
 
 a.windSpeed = 0
 
@@ -44,9 +46,10 @@ function a.update(dt, y)
 
     -- update particle spawners
     a.snowUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
+    a.rainUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
+
 
     -- sounds
-
     for name, data in pairs(a.sounds) do
         if currentZone and currentZone.audio then 
             if transitionZone then --if we are in a transition
