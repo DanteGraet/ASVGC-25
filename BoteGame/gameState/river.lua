@@ -122,7 +122,12 @@ local function load()
     mouseTimer = 5
     love.mouse.setVisible(false)
 
-    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true, "image/loading/" .. riverName .. ".png")
+    local image
+    -- bootleg fix
+    if string.sub(riverName, #riverName - 4, #riverName) == "Storm" then
+        image = "storm"
+    end
+    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true, "image/loading/" .. (image or riverName) .. ".png")
 
 end
 

@@ -38,6 +38,24 @@ local function devCheatyBoat(value, toggle)
     end
 end
 
+function unlockAllLevels()
+    print("unlockAllLevels (ing)")
+    if not assets then assets = {} end
+    if not assets.code then assets.code = {} end
+    if not assets.code.player then assets.code.player = {} end
+    if not assets.code.player.unlocks then assets.code.player.unlocks = {} end
+
+    assets.code.player.unlocks.levels = {
+        frostedChannel = true,
+        autumnGrove = true,
+        derelictDam = true,
+        autumnGroveStorm = true,
+        derelictDamStorm = true,
+        frostedChannelStorm = true,
+        endless = true,
+    }
+end
+
 -- load each setting as catagories with special order table
 return {
     graphics = {
@@ -71,29 +89,6 @@ return {
 
     },
     keybinds = {
-        --[[
-                left = {
-        keyboard = {"left", "a"},
-        touch = {touchLeft}
-    },
-    right = {
-        keyboard = {"right", "d"},
-        touch = {touchRight}
-    },    
-    accelerate = {
-        keyboard = {"up", "w"},
-        touch = {touchAccelerate}
-    },
-    decelerate = {
-        keyboard = {"down", "s"},
-        touch = {touchDecelerate}
-    },
-    pause = {
-        keyboard = {"escape", "p"},
-        touch = {touchPause}
-    }
-        
-        ]]
         accelerate = {type = "keybindButton", displayName = "Accelerate", value = {"w", "up"}},
         decelerate = {type = "keybindButton", displayName = "Decelerate", value = {"s", "down"}},
         left = {type = "keybindButton", displayName = "Turn Left", value = {"a", "left"}},
@@ -104,7 +99,7 @@ return {
     -- the player should NEVER have acsess to these :D
     dev = {
         removeSave = {type = "button", displayName = "Delete Save"},
-        unlockAll = {type = "button", displayName = "Unlock All"},
+        unlockAll = {type = "button", displayName = "Unlock All", func = unlockAllLevels},
         openSaveFolder = {type = "button", displayName = "open Save Folder", func = OpenSaveFolder},
         reloadGamestate = {type = "button", displayName = "Reload Gamestate", func = ReloadGameState},
         printAssetTree = {type = "button", displayName = "Print Asset Tree", func = PrintAssetTree},

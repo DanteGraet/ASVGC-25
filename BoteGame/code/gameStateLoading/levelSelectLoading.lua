@@ -19,7 +19,13 @@ return {
     {"image/levelSelect/sign/frostedChannelExt.png"},
 
     -- surely quindoc will make more buttons right?
-    {"image/levelSelect/sign/button1.png"},
+    {"image/levelSelect/sign/play.png"},
+    {"image/levelSelect/sign/storm.png"},
+    {"image/levelSelect/sign/lock.png"},
+    {"image/levelSelect/sign/back.png"},
+
+
+
 
 
 

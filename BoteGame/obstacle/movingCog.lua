@@ -32,7 +32,7 @@ function movingCogObstacle:New(x, y)
     obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
 
 
-    table.insert(obstacles, assets.obstacle.noSpawnRect:New(obj.centreX - obj.displacement, y - 50, obj.displacement*2, 100))
+    table.insert(obstacles, assets.obstacle.noSpawnRect:New(obj.centreX, y - 50/3, obj.displacement, 150/3))
     
     return obj
 end

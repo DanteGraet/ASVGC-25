@@ -5,14 +5,14 @@ function rainParticle:New(spawnX,spawnY,spawnAngle,spawnData)
     local obj = Particle:New(spawnX,spawnY,spawnAngle,spawnData)
     setmetatable(obj, self)
 
-    obj.vel = math.random(7500, 12500)
+    obj.vel = math.random(5000, 7500)
     obj.targetHeight = math.random(riverBorders.up - 100, riverBorders.down) 
     obj.plop = -1
 
     obj.lx = spawnX
     obj.ly = spawnY
 
-    obj.legnth = math.random(50, 150)/10000
+    obj.legnth = math.random(10, 150)/10000
 
     obj.angle = math.atan2(obj.vel, obj.data)
 
@@ -27,8 +27,6 @@ function rainParticle:Update(dt)
     self.ly = self.y - self.vel*math.sin(self.angle or math.pi/2)*self.legnth
 
     if self.plop < 0 then
-
-
 
         if self.y > self.targetHeight then
             self.plop = 0

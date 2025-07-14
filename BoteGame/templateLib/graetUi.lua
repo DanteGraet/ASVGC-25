@@ -29,9 +29,9 @@ end
 
 function GraetUi:RemoveAll(layer)
     if layer then
-        self.layers[layer] = nil
+        self.layers[layer] = {}
     else
-        self.layers[self.currentLayer] = nil
+        self.layers[self.currentLayer] = {}
 
     end
 end

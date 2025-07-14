@@ -10,9 +10,14 @@ local sine = 0
 
 local function load()
     local img = "image/loading/" .. riverName .. ".png"
+    -- bootleg fix
+    if string.sub(riverName, #riverName - 4, #riverName) == "Storm" then
+        img = "image/loading/" .. "storm" .. ".png"
+    end
     if previousGameState == "titleScreen" then
         img = "image/loading/title.png"
     end
+
     DynamicLoading:New("code/gameStateLoading/levelSelectLoading.lua", true, img)
 end
 
@@ -66,14 +71,16 @@ local function extraLoad()
         })
     end
 
-    table.insert(levels, {
-        x = 600,
-        y = 265,
-        name = "endless",
-        colour = false,
-        sine = 0, sineEffect = 0,
-        click = false,
-    })
+    if assets.code.player.unlocks.levels.endless then
+        table.insert(levels, {
+            x = 600,
+            y = 265,
+            name = "endless",
+            colour = false,
+            sine = 0, sineEffect = 0,
+            click = false,
+        })
+    end
 
 end
 
@@ -149,6 +156,7 @@ local function mousereleased(x, y, button)
                 selectedMenu = "levelMenu"
                 menus[selectedMenu].type = riverName
                 menus[selectedMenu].isOpen = true
+                menus[selectedMenu]:GenerateButtons()
 
                 --gameState = "river"
             end

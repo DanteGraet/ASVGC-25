@@ -66,75 +66,65 @@ function PlayerBoat:New(skin)
     return obj
 end
 
-function PlayerBoat:UpdateBeached(dt)
-    -- check if it is the first frame the player is beached
-    if self.beachTimer == 1 then
-        -- forces the ability to take damage from beaching
-        self.immunity = 0
-        self:TakeDamage(2, false, 2)
-    end
 
-    -- update related timers
-    self.beachTimer = math.max(self.beachTimer - 2*dt, 0)
-    self.shameTimer = self.shameTimer - 0.5*dt
-
-    -- cheeck if thee player is no-longer moving
-    if self.beachTimer == 0 and self.shameTimer < 0 and self.health > 0 then
-        -- the player is beached
-        self:moveToCenter()
-        self.beachTimer = 1
-        self.immunity = 2
-    end
-end
-
-function PlayerBoat:UpdateAuto()
-    local center = river:getCenter(self.y - 100)
-    local dir = nil
-    
-    if math.abs(center - self.x) > 100 then
-        if center - self.x > 0 then
-            return {right = true}
-        else
-            return {left = true}
-        end
+-- General, Helper
+function PlayerBoat:GetPosition()
+    if self.winTimer == 0 then
+        return {x = self.x, y = self.y, dir = self.dir}
     else
-        local angle = math.atan2(self.y - 100, self.x-center)
-        if math.abs(angle - self.dir) > self.winTimer/2 then
-            if angle - self.dir > 0 then
-                return {right = true}
-            else
-                return {left = true}
+        return {x = self.x, y = (self.winY or self.y), dir = self.dir}
+    end
+end
+
+function PlayerBoat:moveToCenter()
+    local leftPoint = river:FindHighAndLowPoints(1, 1, self.y)
+    local rightPoint = river:FindHighAndLowPoints(1, 2, self.y)
+    local midPoint = (leftPoint.x + rightPoint.x)/2
+
+    local newAngle = river:GetCurrent(self.y)
+    self.x = midPoint
+    self.body:setPosition(self.x, self.y)
+
+    self.dir = newAngle
+    self.visualDir = newAngle
+    --self.wasBeached = true
+end
+
+function PlayerBoat:UpdateScore()
+    self.score = math.abs(self.y/10) - self.runTime + self.health*1000
+    UpdateHighScore(self.score)
+end
+
+function PlayerBoat:TakeDamage(amount, noShake, immunity)
+    if self.immunity == 0 and self.health > 0 and self.y > riverBorders.up - 100 then
+        self.health = self.health - amount
+        self.immunity = immunity or 1
+
+        for i = 1, 7*settings.graphics.particles.value do
+            particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
+        end
+
+        if not noShake then
+            camera:AddScreenShake(30)
+        end
+
+        if self.health <= 0 then
+            self:UpdateScore()
+
+            for i = 1, 5*settings.graphics.particles.value do
+                particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
             end
+
+            -- stop playing sounds
+            audioPlayer.RemoveLoopingSound("motor3")
+            audioPlayer.RemoveLoopingSound("motor2")
+            audioPlayer.RemoveLoopingSound("motor1")
         end
     end
-
-    return {}
 end
 
-function PlayerBoat:UpdateDead(dt, bt)
-    -- slow down the scrolling for a smooth finnish
-    self.deathTime = self.deathTime + dt
 
-    local speedEase = tweens.sineInOut(math.max(1-(self.deathTime/2.5), 0))
-
-    self.x = self.x + (math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt)*speedEase * bt
-    self.y = self.y + (math.sin(self.dir)*self.speed * dt) * speedEase * bt
-
-    -- current
-    local currentAngle, currentSpeed = river:GetCurrent(self.y)
-    if currentAngle then
-        self.x = self.x + (math.cos(currentAngle)*currentSpeed * dt) * speedEase * bt
-        self.y = self.y + (math.sin(currentAngle)*currentSpeed * dt) * speedEase * bt
-
-        self.current = currentAngle
-    end
-
-    -- drop the speed-0-meter needle
-    self.speed = math.max(self.speed + (self.minSpeed - self.speed)*dt*5, self.minSpeed)
-    --math.max(self.speed - self.acceleration*dt, self.minSpeed)
-
-end
-
+-- Input
 function PlayerBoat:ManageInputs(dt, inputs, bt)
     if -self.y >= riverGenerator:GetLegnth() then
         -- player has won, override inputs
@@ -165,21 +155,32 @@ function PlayerBoat:ManageInputs(dt, inputs, bt)
     end
 end
 
-function PlayerBoat:MoveWithCurrent(dt, bt)
-    local currentXSpeed = currentPlayerPos.current/10+math.sqrt(currentPlayerPos.current)
-
-    self.x = self.x + math.cos(self.dir)*(self.speed+currentXSpeed+self.baseXSpeed) * dt * bt
-    self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
-
-    -- current
-    local currentAngle, currentSpeed = river:GetCurrent(self.y)
-    if currentAngle then
-        self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
-        self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
-
-        self.current = currentAngle
+function PlayerBoat:UpdateAuto()
+    local center = river:getCenter(self.y - 100)
+    local dir = nil
+    
+    if math.abs(center - self.x) > 100 then
+        if center - self.x > 0 then
+            return {right = true}
+        else
+            return {left = true}
+        end
+    else
+        local angle = math.atan2(self.y - 100, self.x-center)
+        if math.abs(angle - self.dir) > self.winTimer/2 then
+            if angle - self.dir > 0 then
+                return {right = true}
+            else
+                return {left = true}
+            end
+        end
     end
+
+    return {}
 end
+
+
+-- Update
 
 function PlayerBoat:Update(dt, inputs, gameSpeed)
     self.runTime = self.runTime + dt
@@ -220,6 +221,69 @@ function PlayerBoat:Update(dt, inputs, gameSpeed)
     self.visualDir = self.visualDir + (self.dir-self.visualDir)*math.min(10*dt, 1)
 end
 
+function PlayerBoat:UpdateBeached(dt)
+    -- check if it is the first frame the player is beached
+    if self.beachTimer == 1 then
+        -- forces the ability to take damage from beaching
+        self.immunity = 0
+        self:TakeDamage(2, false, 2)
+    end
+
+    -- update related timers
+    self.beachTimer = math.max(self.beachTimer - 2*dt, 0)
+    self.shameTimer = self.shameTimer - 0.5*dt
+
+    -- cheeck if thee player is no-longer moving
+    if self.beachTimer == 0 and self.shameTimer < 0 and self.health > 0 then
+        -- the player is beached
+        self:moveToCenter()
+        self.beachTimer = 1
+        self.immunity = 2
+    end
+end
+
+function PlayerBoat:MoveWithCurrent(dt, bt)
+    local currentXSpeed = currentPlayerPos.current/10+math.sqrt(currentPlayerPos.current)
+
+    self.x = self.x + math.cos(self.dir)*(self.speed+currentXSpeed+self.baseXSpeed) * dt * bt
+    self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
+
+    -- current
+    local currentAngle, currentSpeed = river:GetCurrent(self.y)
+    if currentAngle then
+        self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
+        self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
+
+        self.current = currentAngle
+    end
+end
+
+function PlayerBoat:UpdateDead(dt, bt)
+    -- slow down the scrolling for a smooth finnish
+    self.deathTime = self.deathTime + dt
+
+    local speedEase = tweens.sineInOut(math.max(1-(self.deathTime/2.5), 0))
+
+    self.x = self.x + (math.cos(self.dir)*(self.speed+self.baseXSpeed) * dt)*speedEase * bt
+    self.y = self.y + (math.sin(self.dir)*self.speed * dt) * speedEase * bt
+
+    -- current
+    local currentAngle, currentSpeed = river:GetCurrent(self.y)
+    if currentAngle then
+        self.x = self.x + (math.cos(currentAngle)*currentSpeed * dt) * speedEase * bt
+        self.y = self.y + (math.sin(currentAngle)*currentSpeed * dt) * speedEase * bt
+
+        self.current = currentAngle
+    end
+
+    -- drop the speed-0-meter needle
+    self.speed = math.max(self.speed + (self.minSpeed - self.speed)*dt*5, self.minSpeed)
+    --math.max(self.speed - self.acceleration*dt, self.minSpeed)
+
+end
+
+
+-- Drawing Functions
 function PlayerBoat:Draw()
     if self.health > 0 then
         local alpha = 1
@@ -238,11 +302,6 @@ function PlayerBoat:Draw()
     end
 end
 
-function PlayerBoat:UpdateScore()
-    self.score = math.abs(self.y/10) - self.runTime + self.health*1000
-    UpdateHighScore(self.score)
-end
-
 function PlayerBoat:DrawHitbox()
     love.graphics.circle("line", self.body:getX(), self.body:getY(), self.shape:getRadius())
 
@@ -254,56 +313,6 @@ function PlayerBoat:DrawHitbox()
 
     if self.current then   
         love.graphics.line(self.x, self.y, self.x+math.cos(self.current)*100, self.y+math.sin(self.current)*100)
-    end
-end
-
-function PlayerBoat:GetPosition()
-    if self.winTimer == 0 then
-        return {x = self.x, y = self.y, dir = self.dir}
-    else
-        return {x = self.x, y = (self.winY or self.y), dir = self.dir}
-    end
-end
-
-function PlayerBoat:moveToCenter()
-    local leftPoint = river:FindHighAndLowPoints(1, 1, self.y)
-    local rightPoint = river:FindHighAndLowPoints(1, 2, self.y)
-    local midPoint = (leftPoint.x + rightPoint.x)/2
-
-    local newAngle = river:GetCurrent(self.y)
-    self.x = midPoint
-    self.body:setPosition(self.x, self.y)
-
-    self.dir = newAngle
-    self.visualDir = newAngle
-    --self.wasBeached = true
-end
-
-function PlayerBoat:TakeDamage(amount, noShake, immunity)
-    if self.immunity == 0 and self.health > 0 then
-        self.health = self.health - amount
-        self.immunity = immunity or 1
-
-        for i = 1, 7*settings.graphics.particles.value do
-            particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
-        end
-
-        if not noShake then
-            camera:AddScreenShake(30)
-        end
-
-        if self.health <= 0 then
-            self:UpdateScore()
-
-            for i = 1, 5*settings.graphics.particles.value do
-                particles.spawnParticle("scrap",player.x+math.random(-8,8),player.y+math.random(-8,8),math.rad(math.random(1,360)), nil, "top")
-            end
-
-            -- stop playing sounds
-            audioPlayer.RemoveLoopingSound("motor3")
-            audioPlayer.RemoveLoopingSound("motor2")
-            audioPlayer.RemoveLoopingSound("motor1")
-        end
     end
 end
 

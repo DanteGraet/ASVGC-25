@@ -59,15 +59,36 @@ end
 
 
 function levelMenu:GenerateButtons()
+    self.Ui:RemoveAll()
     -- play button
-    self.Ui:AddButton("play", 1920/2 - 128, 1080/2, 256, 256)
-    self.Ui:GetButtons()["play"]:AddImage(0, 0, assets.image.levelSelect.sign.button1)
-    self.Ui:GetButtons()["play"].functions.release = {function() gameState = "river" end}
+    if self.type ~= "endless" then
+        print(riverName)
+        self.Ui:AddButton("play", 1920/2 - 128, 1080/2 + 32, 256, 256)
+        self.Ui:GetButtons()["play"]:AddImage(0, 0, assets.image.levelSelect.sign.play)
+        self.Ui:GetButtons()["play"].functions.release = {function() gameState = "river" end}
 
-    -- back button
-    self.Ui:AddButton("back", 1920/2 - 128*3.5, 1080/2, 256, 256)
-    self.Ui:GetButtons()["back"]:AddImage(0, 0, assets.image.levelSelect.sign.button1)
-    self.Ui:GetButtons()["back"].functions.release = {levelMenu.Close, self}
+        self.Ui:AddButton("playStorm", 1920/2 + 128*1.5, 1080/2 + 32, 256, 256)
+        if assets.code.player.unlocks.levels[riverName .. "Storm"] then
+            self.Ui:GetButtons()["playStorm"]:AddImage(0, 0, assets.image.levelSelect.sign.storm)
+            self.Ui:GetButtons()["playStorm"].functions.release = {function() riverName = riverName .. "Storm"; gameState = "river" end}
+        else
+            self.Ui:GetButtons()["playStorm"]:AddImage(0, 0, assets.image.levelSelect.sign.lock)
+        end
+
+        -- back button
+        self.Ui:AddButton("back", 1920/2 - 128*3.5, 1080/2  + 32, 256, 256)
+        self.Ui:GetButtons()["back"]:AddImage(0, 0, assets.image.levelSelect.sign.back)
+        self.Ui:GetButtons()["back"].functions.release = {levelMenu.Close, self}
+    else
+        self.Ui:AddButton("play", 1920/2 + 128*0.75, 1080/2 + 32, 256, 256)
+        self.Ui:GetButtons()["play"]:AddImage(0, 0, assets.image.levelSelect.sign.play)
+        self.Ui:GetButtons()["play"].functions.release = {function() gameState = "river" end}
+
+        -- back button
+        self.Ui:AddButton("back", 1920/2 - 128*2.75, 1080/2  + 32, 256, 256)
+        self.Ui:GetButtons()["back"]:AddImage(0, 0, assets.image.levelSelect.sign.back)
+        self.Ui:GetButtons()["back"].functions.release = {levelMenu.Close, self}
+    end
 end
 
 function levelMenu:KeyRelased(key)
@@ -102,23 +123,38 @@ function levelMenu:Draw(gs)
             -- prehapse chaneg form pure balck later
     love.graphics.setColor(0.1,0.1,0.2, 0.9)
     font.setFont("black", 32)
-    love.graphics.printf("Stage: " .. typeData[self.type].stage, 0, 350, 1920, "center")
+    love.graphics.printf("Stage: " .. typeData[self.type].stage, 0, 350 - 64, 1920, "center")
 
     font.setFont("black", 128)
-    love.graphics.printf(typeData[self.type].displayName, 0, 350, 1920, "center")
+    love.graphics.printf(typeData[self.type].displayName, 0, 350 - 64, 1920, "center")
 
     -- Highscore
+    font.setFont("black", 64)
     local displayNum = 0
-    if assets.save.highscore[riverName] then
+    if assets.save.highscore[riverName] and assets.save.highscore[riverName][1] then
         if settings.graphics.shortNumbers.value then
             displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][1] or 0)), 2)
         else
             displayNum = math.floor(math.abs(assets.save.highscore[riverName][1] or 0))
         end
+        love.graphics.printf("" .. displayNum, 1920/2 - 128*2, 350+128, 128*4, "center")
     end
-    font.setFont("black", 64)
+
         --👑 is temporary, trust me
-    love.graphics.printf("👑" .. displayNum, 1920/2, 1080/2 + 50, 128*5, "center")
+    --love.graphics.printf("👑" .. displayNum, 1920/2, 1080/2 + 50, 128*5, "center")
+    
+
+    if assets.save.highscore[riverName .. "Storm"] and assets.save.highscore[riverName .. "Storm"][1] then
+        if settings.graphics.shortNumbers.value then
+            displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName .. "Storm"][1] or 0)), 2)
+        else
+            displayNum = math.floor(math.abs(assets.save.highscore[riverName .. "Storm"][1] or 0))
+        end
+
+        love.graphics.printf("" .. displayNum, 1920/2, 350+128, 128*5, "center")
+    end
+    
+
 
     self.Ui:Draw()
     --Ok back to normal
