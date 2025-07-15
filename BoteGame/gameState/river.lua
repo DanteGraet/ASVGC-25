@@ -72,6 +72,12 @@ local function resize()
 
     sox = ((love.graphics.getWidth()/scale) - 1920) /2
 
+    if not player then
+        player = {
+            x = 0,
+            y = 0,
+        }
+    end
     riverBorders = {
         left = -love.graphics.getWidth()/2 / scale,
         right = love.graphics.getWidth()/2 / scale,

@@ -1,15 +1,24 @@
+--general
+local function currentMult()
+    return -0.5/(math.abs(player.y)/1000000 + 1) + 1.5
+end
+
+local function difficultyMult()
+    return math.abs(player.y/50000000000) + 1
+end
+
 -- frosted channel functionss
     local function iceplainsCurrent(percentage)
-        return 100*quindoc.clamp(percentage,0,1) + 100
+        return (100*quindoc.clamp(percentage,0,1) + 100) *currentMult()
     end
 
     local function boulderValleyDifficulty(percentage)
-        return 0.0015 + 0.0035*quindoc.clamp(percentage,0,1)
+        return (0.0015 + 0.0035*quindoc.clamp(percentage,0,1))*difficultyMult()
     end
 
 
     local function boulderValleyCurrent(percentage)
-        return 200*quindoc.clamp(percentage,0,1) + 100
+        return (200*quindoc.clamp(percentage,0,1) + 100)*currentMult()
     end
 
     local function boulderValleyChainLengthCoefficient(percentage)
@@ -18,7 +27,7 @@
 
 
     local function stormValleyDifficulty(percentage)
-        return 0.005+percentage*0.005
+        return (0.005+percentage*0.005)*difficultyMult()
     end
 
 
@@ -30,7 +39,7 @@
         else
             idk = 1 - 2*((percentage - 0.8) * 5)
         end
-        return 300 + 200*quindoc.clamp(idk,-0.5,1) 
+        return (300 + 200*quindoc.clamp(idk,-0.5,1)) *currentMult()
     end
 
     local function stormValleyChainLengthCoefficient(percentage)
@@ -56,22 +65,25 @@
         if percentage > 0.9 then
             return 0
         else
-            return 0.01
+            return 0.01*difficultyMult()
         end
 
     end
 
 --Autumn Grove Functions
     local function autumnRapidsCurrent(percentage)
-        return 200*quindoc.clamp(percentage,0,1) + 200 + 100*quindoc.clamp(percentage*10,0,1)
+        return (200*quindoc.clamp(percentage,0,1) + 200 + 100*quindoc.clamp(percentage*10,0,1))*currentMult()
     end
 
 -- Dam Functions 
     --Nothing here D:
+
+
+
 --return
 return {
     ["Ice Plains"] = {
-        difficultyFunction = 0.01,
+        difficultyFunction = function() return 0.01 * difficultyMult() end,
         current = iceplainsCurrent,
     },
     ["Boulder Valley"] = {
@@ -87,44 +99,48 @@ return {
     },
     ["Wooded Hills"] = {
         difficultyFunction = coniferousMountainsideDifficulty,
-        current = 100,
+        current = function()
+            return 100 * currentMult()
+        end,
     },
 
 
     ["Autumn Grove"] = {
-        difficultyFunction = 0.005,
-        current = 200,
+        difficultyFunction = function() return 0.005 * difficultyMult() end,
+        current = function()
+            return 200 * currentMult()
+        end
     },
     ["Clockwork Ruins"] = {
-        difficultyFunction = 0.02,
+        difficultyFunction = function() return 0.02 * difficultyMult() end,
         current = 200,
     },
     ["Clockwork's Core"] = {
-        difficultyFunction = 0.1,
-        current = 100,
+        difficultyFunction = function() return 0.01 * difficultyMult() end,
+        current = function() return 100 * currentMult() end,
     },
     ["Autumn Rapids"] = {
-        difficultyFunction = 0.01,
+        difficultyFunction = function() return 0.01 * difficultyMult() end,
         current = autumnRapidsCurrent,
     },
 
 
     ["Gravelly Plains"] = {
-        difficultyFunction = 0.01,
-        current = 200,
+        difficultyFunction = function() return 0.01 * difficultyMult() end,
+        current = function() return 200 * currentMult() end,
     },
     ["Upper Dam"] = {
-        difficultyFunction = 0.01,
-        current = 150,
+        difficultyFunction = function() return 0.12 * difficultyMult() end,
+        current = function() return 150 * currentMult() end,
     },
     ["The Inlet"] = {
-        difficultyFunction = 0.01,
-        current = 500,
+        difficultyFunction = function() return 0.01 * difficultyMult() end,
+        current = function() return 500 * currentMult() end,
     },
 
     ["Electrical Complex"] = {
-        difficultyFunction = 0.01,
-        current = 100,
+        difficultyFunction = function() return 0.01 * difficultyMult() end,
+        current = function() return 100 * currentMult() end,
     },
 }
 
