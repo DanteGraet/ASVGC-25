@@ -19,7 +19,7 @@ return {
         zone = "autumnGrove",
         displayName = "Autumn Grove",
         subtitle = "Woodland of eternal Fall",
-        distance = 19500,
+        distance = 9500,
         transition = 0,
         currentIcons = 3,
     },

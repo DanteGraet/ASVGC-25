@@ -48,7 +48,7 @@ spinnerLeaderLineObstacle.__index = spinnerLeaderLineObstacle
 
 function spinnerLeaderLineObstacle:New(x, y, givDir)
 
-    local x = riverBorders.left-440
+    local x = riverBorders.left-math.random(420,460)
     local y = y - 500
     local obj = Obstacle:New(x, y, centerShape)
     local var = math.random(1,3)
@@ -90,7 +90,7 @@ function spinnerLeaderLineObstacle:New(x, y, givDir)
             ag = 1 
         end
 
-        table.insert(obstacles, assets.obstacle.spinner:New(x+400*i, y, direction*idk*obj.spinDir,0.5,ag))
+        table.insert(obstacles, assets.obstacle.spinner:New(x+430*i, y, direction*idk*obj.spinDir,0.5,ag))
 
     end
 

@@ -4,7 +4,7 @@ return {
         displayName = "Ice Plains",
         distanceTitle = "Starting Point",
         subtitle = "Frosty Highlands",
-        distance = 13000,
+        distance = 9000,
         transition = 0,
         currentIcons = 2,
     },

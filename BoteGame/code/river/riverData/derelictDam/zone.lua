@@ -5,7 +5,7 @@ return {
         displayName = "Gravelly Plains",
         distanceTitle = "Starting Point",
         subtitle = "Rocky Lowlands",
-        distance = 5000,
+        distance = 5000,--should be 4500 after
 
         transition = 0,
 
@@ -40,7 +40,7 @@ return {
         subtitle = "High-voltage Powerhouse",
         displayName = "Electrical Complex",
         distanceTitle = "",
-        distance = 20000,
+        distance = 10000,
 
         transition = 0,
 

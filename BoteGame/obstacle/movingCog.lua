@@ -27,7 +27,7 @@ function movingCogObstacle:New(x, y)
     obj.centreX = obj.x
     obj.displacement = -1*river:getDistToEdge(obj.x,y)+20
     obj.phase = love.math.random(0,62)/10
-    obj.phaseSpeed = love.math.random(7,16)/10
+    obj.phaseSpeed = love.math.random(3,8)/10
     obj.spinDirection = (math.random(1, 2) == 1 and 1) or -1
     obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
 
@@ -45,7 +45,7 @@ function movingCogObstacle:Update(no, dt)
 
         self.body:setPosition(self.centreX + math.cos(self.phase)*self.displacement,self.y)
 
-        self.dir = self.dir + math.sin(self.phase)*dt*5*self.spinDirection --self.phase
+        self.dir = self.dir + math.sin(self.phase)*dt*5*self.spinDirection*(self.phaseSpeed) --self.phase
 
         Obstacle.Update(self, no, dt)
     end

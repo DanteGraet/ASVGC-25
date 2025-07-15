@@ -3,7 +3,7 @@
 --end
 
 local function autumnRapidsCurrent(percentage)
-    return 200*quindoc.clamp(percentage,0,1) + 200 + 100*quindoc.clamp(percentage*10,0,1)
+    return 200*quindoc.clamp(percentage,0,1) + 100 + 100*quindoc.clamp(percentage*10,0,1)
 end
 
 
@@ -13,15 +13,15 @@ return {
         current = 150,
     },
     ["Autumn Grove"] = {
-        difficultyFunction = 0.005,
-        current = 200,
+        difficultyFunction = 0.004,
+        current = 250,
     },
     ["Clockwork Ruins"] = {
-        difficultyFunction = 0.02,
+        difficultyFunction = 0.015,
         current = 200,
     },
     ["Clockwork's Core"] = {
-        difficultyFunction = 0.1,
+        difficultyFunction = 0.05,
         current = 100,
     },
     ["Autumn Rapids"] = {

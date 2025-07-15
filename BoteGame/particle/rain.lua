@@ -44,16 +44,16 @@ function rainParticle:Update(dt)
 end
 
 function rainParticle:Draw()
-    love.graphics.setLineWidth(2)
+    love.graphics.setLineWidth(3)
     if self.plop < 0 then 
-        love.graphics.setColor(.4,.4,.8,  0.5)
+        love.graphics.setColor(.4,.6,.9,  0.5)
         love.graphics.line(self.lx, self.ly, self.x, self.y)
     else
-        love.graphics.setColor(.4,.4,.8, tweens.sineInOut(1-self.plop))
+        love.graphics.setColor(.4,.6,.9, tweens.sineInOut(1-self.plop))
         if self.ly < self.ey then
             love.graphics.line(self.lx, self.ly, self.ex, self.ey)
         end
-        love.graphics.circle("line", self.ex, self.ey, tweens.sineInOut(self.plop)*10)
+        love.graphics.circle("line", self.ex, self.ey, tweens.sineInOut(self.plop)*15)
     end
 end
 

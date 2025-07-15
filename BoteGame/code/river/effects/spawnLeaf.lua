@@ -3,8 +3,8 @@ local leafAmount
 local leafTime
 local leafCounter
 local function createLeafParticle(windSpeed, leafTimer)
-    local x = math.random(-1920, 1920)
-    local y = math.random(riverBorders.up - 250, riverBorders.up- 200)
+    local x = riverBorders.left-100
+    local y = math.random(riverBorders.up,riverBorders.down)
     particles.spawnParticle("leaf",x, y, leafTimer, windSpeed,"top")
 
 end

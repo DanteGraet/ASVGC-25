@@ -26,7 +26,7 @@ function teslaObstacle:New(x, y)
     obj.orbAngle = 0
     
     obj.fireCounter = 0.1
-    obj.fireTime = 0.5
+    obj.fireTime = 0.7
 
     table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y, 400))
     

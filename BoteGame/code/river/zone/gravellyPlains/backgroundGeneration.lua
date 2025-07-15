@@ -38,22 +38,45 @@ local function GetColourAt(x, y)
         local noiseC = love.math.noise(y/50.01) / 50
 
         if elevation < 0.05 then --riverbank
-            colour = {0.85,0.9,0.25}
+            if love.math.noise(x/2000.1,y/2000.1) < 0.5 then --gray gravel
+                colour = {0.28,0.28,0.2}
+            else --red gravel
+                colour = {0.35,0.23,0.2}
+            end
         elseif elevation < 0.10 +noiseA/10 then --near riverbank
 
-            colour = {0.59,0.82,0.28}
+            if love.math.noise(x/2000.1,y/2000.1) < 0.5 then --gray gravel
+                colour = {0.38,0.38,0.3}
+            else --red gravel
+                colour = {0.50,0.33,0.3}
+            end
 
-        elseif elevation < 0.97*(3*p+1) + noiseB - noiseA then --main gtass
+        elseif elevation < 0.97*(3*p+1) + noiseB - noiseA then --main grass
             
-            --local snowPatch = 0.9*love.math.noise(2*x/1600.1,2*y/1600.1) + 0.1*love.math.noise(x/100.1,y/100.1)
+            if love.math.noise(x/2000.1,y/2000.1) < 0.48 then --gray gravel
 
-            if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
-                colour = {0.45,0.69,0.2}
-            else colour = {0.45,0.72,0.14} end
+                if love.math.noise(x/400.1,y/400.1) < 0.3 then
+                    colour = {0.5,0.5,0.38}
+                else
+                    colour = {0.53,0.53,0.4}
+                end
 
+            elseif love.math.noise(x/2000.1,y/2000.1) < 0.5 then --transition between gray and red, gray side
+                colour = {0.47,0.47,0.35}
+            elseif love.math.noise(x/2000.1,y/2000.1) < 0.52 then --transition between gray and red, red side
+                colour = {0.63,0.39,0.35}
+            else
 
-        elseif elevation < 1*(3*p+1) + noiseB - noiseA then --uppergrass
-            colour = {0.36,0.63,0.07}
+                if love.math.noise(x/400.1,y/400.1) < 0.3 then
+                    colour = {0.67,0.40,0.37}
+                else
+                    colour = {0.70,0.43,0.4}
+                end
+
+            end
+
+        elseif elevation < 1*(3*p+1) + noiseB - noiseA+0.03 then --uppergrass
+            colour = {0.26,0.53,0.07}
         else 
             if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
                 colour = {0.4,0.63,0.18}
