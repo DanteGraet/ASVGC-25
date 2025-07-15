@@ -5,14 +5,14 @@ function rainParticle:New(spawnX,spawnY,spawnAngle,spawnData)
     local obj = Particle:New(spawnX,spawnY,spawnAngle,spawnData)
     setmetatable(obj, self)
 
-    obj.vel = math.random(5000, 7500)
+    obj.vel = math.random(500, 600)
     obj.targetHeight = math.random(riverBorders.up - 100, riverBorders.down) 
     obj.plop = -1
 
     obj.lx = spawnX
     obj.ly = spawnY
 
-    obj.legnth = math.random(10, 150)/10000
+    obj.legnth = math.random(1000, 1500)/15000
 
     obj.angle = math.atan2(obj.vel, obj.data)
 
@@ -35,7 +35,7 @@ function rainParticle:Update(dt)
             self.ey = self.y
         end
     else
-        self.plop = self.plop + dt*3
+        self.plop = self.plop + dt
 
         if self.plop >= 1 then
             self.delete = true
@@ -46,7 +46,7 @@ end
 function rainParticle:Draw()
     love.graphics.setLineWidth(2)
     if self.plop < 0 then 
-        love.graphics.setColor(.4,.4,.8,  1)
+        love.graphics.setColor(.4,.4,.8,  0.5)
         love.graphics.line(self.lx, self.ly, self.x, self.y)
     else
         love.graphics.setColor(.4,.4,.8, tweens.sineInOut(1-self.plop))

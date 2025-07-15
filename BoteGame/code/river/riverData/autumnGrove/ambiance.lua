@@ -1,7 +1,7 @@
 return {
     ["Wooded Hills"] = {
-        rainAmount = 1000,
-        windSpeed = 10,
+        rainAmount = 500,
+        windSpeed = 300,
     },
     ["Autumn Grove"] = {
         rainAmount = 1000,
