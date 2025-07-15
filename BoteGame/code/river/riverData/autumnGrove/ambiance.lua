@@ -1,22 +1,22 @@
 return {
     ["Wooded Hills"] = {
-        rainAmount = 500,
+        leafAmount = 50,
         windSpeed = 300,
     },
     ["Autumn Grove"] = {
-        rainAmount = 1000,
-        windSpeed = 10,
+        leafAmount = 100,
+        windSpeed = 100,
     },
     ["Clockwork Ruins"] = {
-        rainAmount = 1000,
-        windSpeed = 10,
+        leafAmount = 100,
+        windSpeed = 100,
     },
     ["Clockwork's Core"] = {
-        rainAmount = 1000,
-        windSpeed = 10,
+        leafAmount = 100,
+        windSpeed = 100,
     },
     ["Autumn Rapids"] = {
-        rainAmount = 1000,
-        windSpeed = 10,
+        leafAmount = 100,
+        windSpeed = 100,
     },
 }

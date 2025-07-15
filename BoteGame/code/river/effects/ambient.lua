@@ -2,6 +2,8 @@ local a = {}
 
 a.snowUpdate = love.filesystem.load("code/river/effects/spawnSnow.lua")()
 a.rainUpdate = love.filesystem.load("code/river/effects/spawnRain.lua")()
+a.leafUpdate = love.filesystem.load("code/river/effects/spawnLeaf.lua")()
+
 
 
 a.windSpeed = 0
@@ -46,6 +48,7 @@ function a.update(dt, y)
 
     -- update particle spawners
     a.snowUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
+    a.leafUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
     a.rainUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
 
 
