@@ -8,8 +8,8 @@ function snowParticle:New(spawnX,spawnY,spawnAngle,spawnData)
     local obj = Particle:New(spawnX,spawnY,spawnAngle,spawnData)
     setmetatable(obj, self)
 
-    obj.time = math.random(0, 100)/100
-    obj.timeSpeed = math.random(150, 200)/100
+    obj.time = spawnAngle --+ math.random(-10, 10)/100
+    obj.timeSpeed = math.random(150, 160)/100
 
     obj.speed = love.math.random(75,125)/100
     obj.yVel = love.math.random(100,200)/1000
@@ -26,7 +26,7 @@ function snowParticle:Update(dt)
         self.savedWindSpeed = ambiance.windSpeed
     end
 
-   self.time = self.time + dt*self.timeSpeed
+   --self.time = self.time + dt*self.timeSpeed
 
     self.x = self.x + self.speed*self.savedWindSpeed*dt
     self.y = self.y + self.yVel*self.savedWindSpeed*dt 
@@ -46,13 +46,14 @@ end
 function snowParticle:Draw()
     love.graphics.setColor(1,1,1,0.8)
     local oy 
-    if self.time%2 > 1 then
-        oy = math.cos((self.time%2)*math.pi/2) + 1
+    local t = love.math.noise(self.x/500, self.y/500)*math.pi*2 + ambiance.globalLeafTimer
+    if t%2 > 1 then
+        oy = math.cos((t%2)*math.pi/2) + 1
     else
-        oy = -math.cos((self.time%2)*math.pi)/2 + 0.5
+        oy = -math.cos((t%2)*math.pi)/2 + 0.5
     end
 
-    local ox = (math.sin(self.time/2 * math.pi))
+    local ox = (math.sin(t/2 * math.pi))
     --love.graphics.circle("fill", , 10)
 
     love.graphics.draw(image, self.x + ox*self.savedWindSpeed/2 ,self.y - oy*self.savedWindSpeed/5, self.r, 3, 3)

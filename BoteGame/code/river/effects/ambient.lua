@@ -7,6 +7,7 @@ a.leafUpdate = love.filesystem.load("code/river/effects/spawnLeaf.lua")()
 
 
 a.windSpeed = 0
+a.globalLeafTimer = 0
 
 a.sounds = {
     bird = {
@@ -45,10 +46,12 @@ function a.update(dt, y)
         a.windSpeed = 0
     end
 
+    a.globalLeafTimer = a.globalLeafTimer + dt
+
 
     -- update particle spawners
     a.snowUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
-    a.leafUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
+    a.leafUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent, a.globalLeafTimer)
     a.rainUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
 
 

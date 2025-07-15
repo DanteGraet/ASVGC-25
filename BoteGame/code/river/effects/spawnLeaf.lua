@@ -2,15 +2,15 @@
 local leafAmount
 local leafTime
 local leafCounter
-local function createLeafParticle(windSpeed)
+local function createLeafParticle(windSpeed, leafTimer)
     local x = math.random(-1920, 1920)
     local y = math.random(riverBorders.up - 250, riverBorders.up- 200)
-    particles.spawnParticle("leaf",x, y, nil, windSpeed,"top")
+    particles.spawnParticle("leaf",x, y, leafTimer, windSpeed,"top")
 
 end
 
 
-local function updateSpawn(dt, p, windSpeed, currentZone, transitionZone, transitionPercent)
+local function updateSpawn(dt, p, windSpeed, currentZone, transitionZone, transitionPercent, leafTimer)
     local leafAmount
 
     if transitionZone and currentZone.leafAmount then --if we are in a transition
@@ -30,7 +30,7 @@ local function updateSpawn(dt, p, windSpeed, currentZone, transitionZone, transi
             leafCounter = leafCounter + dt*settings.graphics.particles.value
         else
             while leafCounter > leafTime do
-                createLeafParticle(windSpeed)
+                createLeafParticle(windSpeed, leafTimer)
                 leafCounter = leafCounter - leafTime
             end
         end
