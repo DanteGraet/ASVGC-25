@@ -8,8 +8,6 @@ function snowParticle:New(spawnX,spawnY,spawnAngle,spawnData)
     local obj = Particle:New(spawnX,spawnY,spawnAngle,spawnData)
     setmetatable(obj, self)
 
-    obj.time = spawnAngle --+ math.random(-10, 10)/100
-    obj.timeSpeed = math.random(150, 160)/100
 
     obj.speed = love.math.random(75,125)/100
     obj.yVel = love.math.random(100,200)/1000
@@ -46,7 +44,7 @@ end
 function snowParticle:Draw()
     love.graphics.setColor(1,1,1,0.8)
     local oy 
-    local t = love.math.noise(self.x/500, self.y/500)*math.pi*2 + ambiance.globalLeafTimer
+    local t = love.math.noise(self.x/1500, self.y/1500)*math.pi + ambiance.globalLeafTimer
     if t%2 > 1 then
         oy = math.cos((t%2)*math.pi/2) + 1
     else
