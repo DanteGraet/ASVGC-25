@@ -123,7 +123,7 @@ function GameOverMenu:Draw(gs)
         local percentageThru = math.floor(p*-100)
 
         font.setFont("medium", 40)
-        love.graphics.printf(percentageThru.."%",-width/2,-height/2 + 295,width/2,"center")
+        love.graphics.printf(quindoc.clamp(percentageThru,0,100).."%",-width/2,-height/2 + 295,width/2,"center")
     end
 
 
