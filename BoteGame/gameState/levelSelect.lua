@@ -30,6 +30,8 @@ end
 
 
 local function extraLoad()
+    isStorm = false
+
     uiFade = 0
 
     levels = {}

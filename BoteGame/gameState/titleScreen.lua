@@ -22,7 +22,6 @@ local function resize()
 end
 
 local function load()
-
     print("AEEE")
     love.physics.setMeter(100)
     resize()

@@ -70,7 +70,7 @@ function levelMenu:GenerateButtons()
         self.Ui:AddButton("playStorm", 1920/2 + 128*1.5, 1080/2 + 32, 256, 256)
         if assets.code.player.unlocks.levels[riverName .. "Storm"] then
             self.Ui:GetButtons()["playStorm"]:AddImage(0, 0, assets.image.levelSelect.sign.storm)
-            self.Ui:GetButtons()["playStorm"].functions.release = {function() riverName = riverName .. "Storm"; gameState = "river" end}
+            self.Ui:GetButtons()["playStorm"].functions.release = {function() isStorm = true; gameState = "river" end}
         else
             self.Ui:GetButtons()["playStorm"]:AddImage(0, 0, assets.image.levelSelect.sign.lock)
         end

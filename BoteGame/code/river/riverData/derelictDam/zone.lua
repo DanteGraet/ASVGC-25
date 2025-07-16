@@ -5,7 +5,18 @@ return {
         displayName = "Gravelly Plains",
         distanceTitle = "Starting Point",
         subtitle = "Rocky Lowlands",
-        distance = 5000,--should be 4500 after
+        distance = 4500,--should be 4500 after
+
+        transition = 0,
+
+        currentIcons = 2,
+    },
+    {
+        zone = "gravellyPlains-upperDam",
+        displayName = "Gravelly Plains",
+        distanceTitle = "Starting Point",
+        subtitle = "Rocky Lowlands",
+        distance = 1000,--should be 4500 after
 
         transition = 0,
 
@@ -16,7 +27,7 @@ return {
         displayName = "Upper Dam",
         distanceTitle = "-- 1.5KM --",
         subtitle = "Rocky Reservoir",
-        distance = 15000,
+        distance = 15400,
 
         transition = 0,
 

@@ -130,7 +130,7 @@ local function load()
 
     local image
     -- bootleg fix
-    if string.sub(riverName, #riverName - 4, #riverName) == "Storm" then
+    if isStorm then
         image = "storm"
     end
     loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true, "image/loading/" .. (image or riverName) .. ".png")

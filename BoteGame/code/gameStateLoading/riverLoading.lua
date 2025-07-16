@@ -1,5 +1,5 @@
 -- load this locally, to b removed later :D
-local riverZones = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.lua")()
+local riverZones = love.filesystem.load("code/river/riverData/" .. riverName .. ((isStorm == true and "Storm") or "") .. "/zone.lua")()
 
 local toLoad = {
     -- player skins
