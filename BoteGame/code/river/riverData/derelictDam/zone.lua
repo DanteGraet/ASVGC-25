@@ -58,6 +58,18 @@ return {
         currentIcons = 4,
 
     },
+        {
+        zone = "theInlet-lowerDam",
+        displayName = "The Inlet",
+        subtitle = "Passing the Floodgates",
+        distanceTitle = "-- 5KM --",
+        distance = 1000,
+
+        transition = 0,
+
+        currentIcons = 4,
+
+    },
     {
         zone = "lowerDam",
         subtitle = "High-voltage Powerhouse",
