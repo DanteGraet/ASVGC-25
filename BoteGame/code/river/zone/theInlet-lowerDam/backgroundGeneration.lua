@@ -131,7 +131,7 @@ local function GetColourAt(x, y)
         
     else
 
-        local elevation = distToEdge/(500+500*(1-p))
+        local elevation = distToEdge/(500)
 
 
         if p < 0.75 - math.abs(x)/1000 then

@@ -57,6 +57,10 @@ function PlayerBoat:New(skin)
     obj.baseTurnSpeed = 1   --WARNING: Deleting or commenting this line or the next will result in immediate loss of spaghettiness
     obj.baseXSpeed = 50     --              you wouldn't want that would you? no,because otherwise you will lose the game
 
+
+    obj.currentDir = -math.rad(90)
+    obj.currentSpeed = 0
+
     -- audio tracks
     audioPlayer.NewLoopingSound("motor1", assets.audio.player["Motor-Motor"], "player", 0)
     audioPlayer.NewLoopingSound("motor2", assets.audio.player["Motor-Noise"], "player", 0)
@@ -245,14 +249,19 @@ end
 function PlayerBoat:MoveWithCurrent(dt, bt)
     local currentXSpeed = currentPlayerPos.current/10+math.sqrt(currentPlayerPos.current)
 
+
+
     self.x = self.x + math.cos(self.dir)*(self.speed+currentXSpeed+self.baseXSpeed) * dt * bt
     self.y = self.y + math.sin(self.dir)*self.speed * dt * (math.sqrt(self.beachTimer))
 
     -- current
     local currentAngle, currentSpeed = river:GetCurrent(self.y)
+    self.currentDir = self.currentDir + quindoc.clamp((currentAngle-self.currentDir)*dt*5, -math.abs(currentAngle-self.currentDir), math.abs(currentAngle-self.currentDir))
+    self.currentSpeed = self.currentSpeed + quindoc.clamp((currentSpeed-self.currentSpeed)*dt*5, -math.abs(currentSpeed-self.currentSpeed), math.abs(currentSpeed-self.currentSpeed))
+
     if currentAngle then
-        self.x = self.x + math.cos(currentAngle)*currentSpeed * dt  * bt
-        self.y = self.y + math.sin(currentAngle)*currentSpeed * dt  * bt
+        self.x = self.x + math.cos(self.currentDir)*self.currentSpeed * dt  * bt
+        self.y = self.y + math.sin(self.currentDir)*self.currentSpeed * dt  * bt
 
         self.current = currentAngle
     end

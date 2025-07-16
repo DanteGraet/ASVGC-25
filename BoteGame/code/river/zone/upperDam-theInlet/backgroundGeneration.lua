@@ -24,7 +24,7 @@ local function GetColourAt(x, y)
     else
         local p = (GetPercentageThrough and GetPercentageThrough(y)) or riverGenerator:GetPercentageThrough(y)
 
-        local elevation = distToEdge/(500 + 500*p)
+        local elevation = distToEdge/(500)
 
         local noiseA = love.math.noise(y/1500.01) / 10
         local noiseB = love.math.noise(y/300.01) / 10
@@ -36,7 +36,7 @@ local function GetColourAt(x, y)
 
             colour = {0.5,0.5,0.55}
 
-        elseif elevation < 1.17 - 0.4*p/2 then --main concrete
+        elseif elevation < 1.17 - 0.4*p then --main concrete
 
             if love.math.noise(x/1600.1,y/1600.1) > 0.35 and love.math.noise(x/1600.1,y/1600.1) < 0.65 then --"path" pattern
                 colour = {0.67,0.67,0.67} 
@@ -52,11 +52,11 @@ local function GetColourAt(x, y)
                 end
             end
 
-        elseif elevation < 1.2 - 0.4*p/2 then
+        elseif elevation < 1.2 - 0.4*p then
 
             colour = {0.5,0.5,0.55}
 
-        elseif elevation < 1.24 *p/2 then
+        elseif elevation < 1.24 *p then
 
             local b = y % 100    --horizontal stripes
 
@@ -66,15 +66,15 @@ local function GetColourAt(x, y)
                 colour = {0.6,0.6,0.6}
             end
 
-        elseif elevation < 1.3*p/2 then
+        elseif elevation < 1.3*p then
 
             colour = {0.3,0.3,0.3}
 
-        elseif elevation < 1.305 + 0.5*noiseB+0.5*noiseA*p/2 then
+        elseif elevation < 1.305 + 0.5*noiseB+0.5*noiseA*p then
 
             colour = {0.26,0.53,0.07}
 
-        elseif p < math.abs(x)/1900  then 
+        elseif p > math.abs(x)/1900  then 
             if love.math.noise(x/700.1,y/700.1) < 0.4 then
                 colour = {0.4,0.63,0.18}
             else colour = {0.4,0.67,0.14} end

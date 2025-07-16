@@ -58,7 +58,7 @@ return {
         currentIcons = 4,
 
     },
-        {
+    {
         zone = "theInlet-lowerDam",
         displayName = "The Inlet",
         subtitle = "Passing the Floodgates",
@@ -76,6 +76,17 @@ return {
         displayName = "Electrical Complex",
         distanceTitle = "",
         distance = 12000,
+
+        transition = 0,
+
+        currentIcons = 1,
+    },
+    {
+        zone = "lowerDam-riverMouth",
+        subtitle = "High-voltage Powerhouse",
+        displayName = "Electrical Complex",
+        distanceTitle = "",
+        distance = 1000,
 
         transition = 0,
 
