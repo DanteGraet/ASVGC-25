@@ -1,6 +1,6 @@
 require("requirements")
 
-require("i give up")
+--require("i give up")
 
 gameState = ""
 previousGameState = ""

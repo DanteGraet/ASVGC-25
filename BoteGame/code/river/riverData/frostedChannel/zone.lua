@@ -1,10 +1,10 @@
 return {
     {
-        zone = "icePlains",
-        displayName = "Ice Plains",
+        zone = "icePlains", --ice plains
+        displayName = "Ice Plains", --Ice Plains
         distanceTitle = "Starting Point",
         subtitle = "Frosty Highlands",
-        distance = 9000,
+        distance = 2000, --9000
         transition = 0,
         currentIcons = 2,
     },
@@ -13,7 +13,7 @@ return {
         displayName = "Ice Plains",
         distanceTitle = "",
         subtitle = "",
-        distance = 2000,
+        distance = 0,---2000
         transition = 0,
         currentIcons = 2,
     },

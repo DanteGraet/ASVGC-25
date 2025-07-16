@@ -15,5 +15,6 @@ return {
         ["Upper Dam"] =    {0,1,1,1,0,0},
         ["The Inlet"] =      {0,0,1,0.7,0,0.3},
         ["Electrical Complex"] = {0,0,0,0,1,1},
+        ["River Mouth"] = {1,0,0,0,0,0},
     }
 }

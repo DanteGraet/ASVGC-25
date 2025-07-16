@@ -122,7 +122,9 @@ local function generateLastPoints(zoneName)
     local zone = zoneData[zoneName].path 
     local lastPoints = {}
 
-    local size = math.random(quindoc.runIfFunc(zone.minWidth), quindoc.runIfFunc(zone.maxWidth))
+    local size = math.random(zone.minWidth,zone.maxWidth)
+
+    local a = 0   
 
     local scale = love.thread.getChannel("generatorThread_scale"):peek()
 
@@ -252,7 +254,40 @@ local function addNextZones(y)
     lastLegnth = getLegnth()
 end
 
-local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
+local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}\
+
+    --logic for river mouth. This has to be done at the start of the function, before we run zone = zonedata[zone.zone].path
+    local rM = 0
+    local v = 1
+
+    if zone.displayName == "River Mouth" and lastPoints ~= nil then
+
+        local distRemaining = math.abs(lastPoints[1][1].y)
+        
+        for i = 1,#zones do
+            local z1 = zones[i]
+
+            if distRemaining < z1.distance + z1.transition then
+                distRemaining = z1.distance - distRemaining
+                --distRemaining = distRemaining-500
+                goto next
+            end
+
+            distRemaining = distRemaining - z1.distance - z1.transition
+        end
+
+        ::next::
+
+        if distRemaining < 500 then
+            --local percentage = (500-distRemaining)/500
+            --v = 10000*percentage 
+            rM = 3000
+            v = 0
+        end
+
+    end
+
+
     local zone = zoneData[zone.zone].path
     local localLastPoints = lastPoints or generateLastPoints(GetZone(playerY).zone)
     
@@ -266,8 +301,8 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
         local segLegnth = -math.random(zone.segLenMax, zone.segLenMin)
 
         -- How wide the river is at certain points point
-        local midWidth = math.random(quindoc.runIfFunc(zone.minWidth), quindoc.runIfFunc(zone.maxWidth))      -- dont knoww if im gonna use this value yet
-        local endWidth = math.random(quindoc.runIfFunc(zone.minWidth), quindoc.runIfFunc(zone.maxWidth))
+        local midWidth = math.random(quindoc.runIfFunc(zone.minWidth), quindoc.runIfFunc(zone.maxWidth))*v+rM     -- dont knoww if im gonna use this value yet
+        local endWidth = math.random(quindoc.runIfFunc(zone.minWidth), quindoc.runIfFunc(zone.maxWidth))*v+rM
 
         -- how far throught the curve the actual mid point should be (height as percentge)
         local curveMidYPercentage = math.random(30, 70)/100

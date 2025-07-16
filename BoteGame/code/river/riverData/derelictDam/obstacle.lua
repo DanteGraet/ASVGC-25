@@ -47,6 +47,11 @@ return {
         difficultyFunction = 0.015,
         current = electricalComplexCurrent,
     },
+    ["River Mouth"] = {
+        stormIntensity = 0,
+        difficultyFunction = 0.015,
+        current = 350,
+    },
 }
 
 

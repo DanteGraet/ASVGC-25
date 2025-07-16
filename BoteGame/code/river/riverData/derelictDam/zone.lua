@@ -63,7 +63,18 @@ return {
         subtitle = "High-voltage Powerhouse",
         displayName = "Electrical Complex",
         distanceTitle = "",
-        distance = 10000,
+        distance = 12000,
+
+        transition = 0,
+
+        currentIcons = 1,
+    },
+    {
+        zone = "riverMouth",
+        subtitle = "Final Stretch!",
+        displayName = "River Mouth",
+        distanceTitle = "",
+        distance = 5000,
 
         transition = 0,
 
