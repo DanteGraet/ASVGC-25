@@ -16,7 +16,7 @@ local threadRunning = true
 local playerY = love.thread.getChannel("generator_playerY"):pop() or 0
 
 
-local lastPoints = nil
+lastPoints = nil
 
 local lastLegnth = 10000
 
@@ -122,7 +122,7 @@ local function generateLastPoints(zoneName)
     local zone = zoneData[zoneName].path 
     local lastPoints = {}
 
-    local size = math.random(zone.minWidth, zone.maxWidth)
+    local size = math.random(quindoc.runIfFunc(zone.minWidth), quindoc.runIfFunc(zone.maxWidth))
 
     local scale = love.thread.getChannel("generatorThread_scale"):peek()
 
@@ -266,8 +266,8 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}
         local segLegnth = -math.random(zone.segLenMax, zone.segLenMin)
 
         -- How wide the river is at certain points point
-        local midWidth = math.random(zone.minWidth, zone.maxWidth)      -- dont knoww if im gonna use this value yet
-        local endWidth = math.random(zone.minWidth, zone.maxWidth)
+        local midWidth = math.random(quindoc.runIfFunc(zone.minWidth), quindoc.runIfFunc(zone.maxWidth))      -- dont knoww if im gonna use this value yet
+        local endWidth = math.random(quindoc.runIfFunc(zone.minWidth), quindoc.runIfFunc(zone.maxWidth))
 
         -- how far throught the curve the actual mid point should be (height as percentge)
         local curveMidYPercentage = math.random(30, 70)/100
