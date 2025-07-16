@@ -75,8 +75,8 @@ end
 function GraetButton:AddRect(x, y, sx, sy, fill, curve, pos)
     table.insert(self.graphics, pos or #self.graphics+1, Rect:New(x, y, sx or self.sx, sy or self.sy, fill or "fill", curve or 0))
 end
-function GraetButton:AddImage(x, y, image, sx, sy, pos)
-    table.insert(self.graphics, pos or #self.graphics+1, Image:New(x, y, image, sx, sy))
+function GraetButton:AddImage(x, y, image, sx, sy, pos, ox, oy)
+    table.insert(self.graphics, pos or #self.graphics+1, Image:New(x, y, image, sx, sy, ox, oy))
 end
 
 function GraetButton:SetElementColour(c1, c2, c3, elementNo)

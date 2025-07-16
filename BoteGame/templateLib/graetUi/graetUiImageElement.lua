@@ -1,7 +1,7 @@
 local GraetUiImage = {}
 GraetUiImage.__index = GraetUiImage
 
-function GraetUiImage:New(x, y, image, sx, sy) -- data is a table {{image/path, layer}}
+function GraetUiImage:New(x, y, image, sx, sy, ox, oy) -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, GraetUiImage)
 
     obj.x = x or 0
@@ -12,6 +12,10 @@ function GraetUiImage:New(x, y, image, sx, sy) -- data is a table {{image/path, 
 
     obj.sx = sx or 1
     obj.sy = sy or 1
+
+    obj.ox = ox or 0
+    obj.oy = oy or 0
+
 
     return obj
 end

@@ -86,7 +86,38 @@ local function extraLoad()
         })
     end
 
+    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+    levelSelectScreen:AddButton("back", -sox, 1080 + soy - 150, 150, 150)
+    levelSelectScreen:GetButtons().back:AddImage(75, 75, love.graphics.newImage("image/titleScreen/titleIco3.png"), nil, nil, nil, 50, 50)
+    levelSelectScreen:GetButtons().back.functions.release = {
+        function() print("AAA"); gameState = "titleScreen" end
+    }
+    levelSelectScreen:GetButtons().back.functions.update = {
+        function(dt, self)
+            if self.mouseMode == "none" then
+                self.graphics[1].sx = self.graphics[1].sx + (1-self.graphics[1].sx)*dt*8
+                self.graphics[1].sy = self.graphics[1].sx + (1-self.graphics[1].sx)*dt*8
+            elseif self.mouseMode == "hover" then
+                self.graphics[1].sx = self.graphics[1].sx + (1.1-self.graphics[1].sx)*dt*8
+                self.graphics[1].sy = self.graphics[1].sx + (1.1-self.graphics[1].sx)*dt*8
+            elseif self.mouseMode == "click" then
+                self.graphics[1].sx = self.graphics[1].sx + (0.9-self.graphics[1].sx)*dt*10
+                self.graphics[1].sy = self.graphics[1].sx + (0.9-self.graphics[1].sx)*dt*10
+            end
+        end,
+
+        levelSelectScreen:GetButtons().back
+    }
+
     dialouge.next()
+end
+
+local function resize()
+    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+    levelSelectScreen:GetButtons().back.x = -sox
+    levelSelectScreen:GetButtons().back.y = 1080+soy-150
 end
 
 local function update(dt)
@@ -94,9 +125,13 @@ local function update(dt)
     dialouge.update(dt)
 
     sine = sine + dt
-    --levelSelectScreen:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+
+    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+    levelSelectScreen:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
 
     if menus and menus[selectedMenu] then
+
         menus[selectedMenu]:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
 
         if menus[selectedMenu].isOpen then
@@ -128,13 +163,15 @@ local function update(dt)
 end
 
 local function mousepressed(x, y, button)
-    dialouge.schedule(assets.image.levelSelect.sign.play, 5)
+   -- dialouge.schedule(assets.image.levelSelect.sign.play, 5)
     local mx, my = getMouseSoxSoy()
 
     if menus[selectedMenu] and menus[selectedMenu].isOpen then
         menus[selectedMenu]:Click(mx, my)
     else
         for i = 1,#levels do
+            levelSelectScreen:Click(x/screenScale, y/screenScale)
+
             local l = levels[i]
 
             local dist = quindoc.dist(mx, my, l.x, l.y)
@@ -149,11 +186,13 @@ end
 local function mousereleased(x, y, button)
     local mx, my = getMouseSoxSoy()
 
-    --levelSelectScreen:Release(mx, my)
+    
     if menus[selectedMenu] and menus[selectedMenu].isOpen then
 
         menus[selectedMenu]:Release(mx, my)
     else
+        levelSelectScreen:Release(x/screenScale, y/screenScale)
+
         for i = 1,#levels do
             local l = levels[i]
             local dist = quindoc.dist(mx, my, l.x, l.y)
@@ -204,7 +243,7 @@ local function draw()
     love.graphics.setColor(1,1,1)
 
     dialouge.draw()
-    --levelSelectScreen:Draw()
+    levelSelectScreen:Draw()
 
     if uiFade > 0 and menus[selectedMenu] then
         local f = tweens.sineInOut(uiFade)
@@ -220,6 +259,8 @@ return {
     load = load,
     extraLoad = extraLoad,
     unload = unload,
+
+    resize = resize,
     
     mousepressed = mousepressed,
     mousereleased = mousereleased,
