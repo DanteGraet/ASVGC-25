@@ -19,7 +19,7 @@ local function load()
     love.mouse.setVisible(false)
     
     local savedSettings = dante.load("save/settings")
-    if savedSettings.graphics and savedSettings.graphics.fullscreen then
+    if savedSettings and savedSettings.graphics and savedSettings.graphics.fullscreen then
         love.window.setFullscreen(savedSettings.graphics.fullscreen)
         resize()
     end
