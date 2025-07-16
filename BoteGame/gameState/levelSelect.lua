@@ -8,6 +8,8 @@ local levels = {}
 
 local sine = 0
 
+dialouge = love.filesystem.load("code/dialogoge.lua")()
+
 local function load()
     local img = "image/loading/" .. riverName .. ".png"
     -- bootleg fix
@@ -84,9 +86,13 @@ local function extraLoad()
         })
     end
 
+    dialouge.next()
 end
 
 local function update(dt)
+
+    dialouge.update(dt)
+
     sine = sine + dt
     --levelSelectScreen:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
 
@@ -122,6 +128,7 @@ local function update(dt)
 end
 
 local function mousepressed(x, y, button)
+    dialouge.schedule(assets.image.levelSelect.sign.play, 5)
     local mx, my = getMouseSoxSoy()
 
     if menus[selectedMenu] and menus[selectedMenu].isOpen then
@@ -196,6 +203,7 @@ local function draw()
     end
     love.graphics.setColor(1,1,1)
 
+    dialouge.draw()
     --levelSelectScreen:Draw()
 
     if uiFade > 0 and menus[selectedMenu] then

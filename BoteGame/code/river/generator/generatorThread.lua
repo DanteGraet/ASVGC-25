@@ -184,6 +184,7 @@ local function GenerateZoneData(zone)
     end
 
     tempZone.subtitle = "-- Zone: " .. zoneCount .. " --"
+    tempZone.zoneCount = zoneCount
     return tempZone
 end
 

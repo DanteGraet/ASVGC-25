@@ -95,7 +95,7 @@ function PlayerBoat:moveToCenter()
 end
 
 function PlayerBoat:UpdateScore()
-    self.score = math.abs(self.y/10) - self.runTime + self.health*1000
+    self.score = math.abs(self.y/10) - self.runTime + math.max(self.health, 0)*1000
     UpdateHighScore(self.score)
 end
 
