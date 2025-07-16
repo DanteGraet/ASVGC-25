@@ -21,6 +21,8 @@ a.sounds = {
     }
 }
 
+local rn = riverName .. ((isStorm == true and "Storm") or "")
+
 function a.update(dt, y)
     -- set up variables
     local p = riverGenerator:GetPercentageThrough(y or player.y)
@@ -31,10 +33,10 @@ function a.update(dt, y)
     local transitionPercent = zoneNames[3] or nil
 
     if zoneNames[1] and type(zoneNames[1]) == "table" then
-        currentZone = assets.code.river.riverData[riverName].ambiance[zoneNames[1].displayName]
-        transitionZone = assets.code.river.riverData[riverName].ambiance[zoneNames[2].displayName]
+        currentZone = assets.code.river.riverData[rn].ambiance[zoneNames[1].displayName]
+        transitionZone = assets.code.river.riverData[rn].ambiance[zoneNames[2].displayName]
     else
-        currentZone = assets.code.river.riverData[riverName].ambiance[zoneNames.displayName]
+        currentZone = assets.code.river.riverData[rn].ambiance[zoneNames.displayName]
     end
     
 
