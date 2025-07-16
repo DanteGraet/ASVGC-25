@@ -62,31 +62,31 @@ local function upperDamBG(x, y, elevation)
     local noiseB = love.math.noise(y/300.01) / 10
     local noiseC = love.math.noise(y/50.01) / 50
 
-    if elevation < 0.015 then --riverbank
-        colour = {0.4,0.4,0.45}
-    elseif elevation < 0.03 +noiseA/10 then --near riverbank
+    if elevation < 0.03 then --riverbank
+        colour = {0.4 + 1/math.huge,0.4,0.45}
+    elseif elevation < 0.06 +noiseA/10 then --near riverbank
 
-        colour = {0.5,0.5,0.55}
+        colour = {0.5001,0.5,0.55}
 
     elseif elevation < 1.17 then --main concrete
 
         if love.math.noise(x/1600.1,y/1600.1) > 0.35 and love.math.noise(x/1600.1,y/1600.1) < 0.65 then --"path" pattern
-            colour = {0.67,0.67,0.67} 
+            colour = {0.67001,0.67,0.67} 
         else      
 
             local u = (x + y) / math.sqrt(2)
             local b = u % 100    
 
             if b < 50 then
-                colour = {0.685,0.685,0.685} --stripes
+                colour = {0.685001,0.685,0.685} --stripes
             else
-                colour = {0.7,0.7,0.7}
+                colour = {0.7001,0.7,0.7}
             end
         end
 
     elseif elevation < 1.2 then
 
-        colour = {0.5,0.5,0.55}
+        colour = {0.5001,0.5,0.55}
 
     else
 
@@ -94,9 +94,9 @@ local function upperDamBG(x, y, elevation)
         local b = u % 200    
 
         if b < 50 then
-            colour = {0.585,0.585,0.585} --stripes
+            colour = {0.585001,0.585,0.585} --stripes
         else
-            colour = {0.6,0.6,0.6}
+            colour = {0.6001,0.6,0.6}
         end
 
     end
@@ -138,11 +138,11 @@ local function GetColourAt(x, y)
         if p < 0.75 - math.abs(x)/10000 then
            return gravelBG(x, y, elevation, p)
         elseif ((GetPercentageThrough and GetPercentageThrough(y + 15)) or riverGenerator:GetPercentageThrough(y+15 )) < 0.75 - quindoc.clamp(math.abs(x)/10000, 0, 0.65) then
-            return {0.4,0.4,0.45}
+            return {0.4001,0.4,0.45}
         elseif ((GetPercentageThrough and GetPercentageThrough(y + 30)) or riverGenerator:GetPercentageThrough(y+30 )) < 0.75 - quindoc.clamp(math.abs(x)/10000, 0, 0.65) then
-            return {0.5,0.5,0.55}
+            return {0.5001,0.5,0.55}
         else
-            return upperDamBG(x, y, elevation/p)
+            return upperDamBG(x, y, distToEdge/500)
         end
     end    
 end
