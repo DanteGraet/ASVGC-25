@@ -35,6 +35,18 @@ return {
 
     },
     {
+        zone = "upperDam-theInlet",
+        displayName = "Upper Dam",
+        distanceTitle = "-- 1.5KM --",
+        subtitle = "Rocky Reservoir",
+        distance = 1000,
+
+        transition = 0,
+
+        currentIcons = 2,
+
+    },
+    {
         zone = "theInlet",
         displayName = "The Inlet",
         subtitle = "Passing the Floodgates",
