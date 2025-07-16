@@ -1,5 +1,6 @@
 -- load this locally, to b removed later :D
-local riverZones = love.filesystem.load("code/river/riverData/" .. riverName .. ((isStorm == true and "Storm") or "") .. "/zone.lua")()
+local rn = riverName .. ((isStorm == true and "Storm") or "")
+local riverZones = love.filesystem.load("code/river/riverData/" .. rn .. "/zone.lua")()
 
 local toLoad = {
     -- player skins
@@ -80,13 +81,13 @@ end
 
 
 -- load this file in a more permenant position.
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/zone.lua"})
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/music.lua", "run"})
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/ambiance.lua", "run"})
-table.insert(toLoad, {"code/river/riverData/" .. riverName .. "/obstacle.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. rn .. "/zone.lua"})
+table.insert(toLoad, {"code/river/riverData/" .. rn .. "/music.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. rn .. "/ambiance.lua", "run"})
+table.insert(toLoad, {"code/river/riverData/" .. rn .. "/obstacle.lua", "run"})
 
 table.insert(toLoad, function()
-    riverFileDirectory = assets.code.river.riverData[riverName]
+    riverFileDirectory = assets.code.river.riverData[rn]
 
     scrapImages = {}
     for i = 1, 5 do
@@ -110,7 +111,7 @@ table.insert(toLoad, function()
     ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
 
     river = assets.code.river.river():New()
-    riverGenerator = assets.code.river.generator.riverGenerator():New(riverName)
+    riverGenerator = assets.code.river.generator.riverGenerator():New(rn)
 
     obstacles = {}
     frontObstacles = {}
