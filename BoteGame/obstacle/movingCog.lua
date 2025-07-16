@@ -1,4 +1,4 @@
-local movingCogShape = love.physics.newCircleShape(30)
+local movingCogShape = love.physics.newCircleShape(35)
 local movingCogImages = {
     love.graphics.newImage("image/obstacle/cog/b1.png"),
     love.graphics.newImage("image/obstacle/cog/b2.png"),
@@ -13,6 +13,17 @@ movingCogObstacle.__index = movingCogObstacle
 
 function movingCogObstacle:New(x, y)
     local y = y - 100
+
+    if globalTableOfBad then
+
+        for i = 1, #globalTableOfBad do
+            if math.abs(y - globalTableOfBad[i]) < 700 then
+                return nil
+            end
+        end
+        
+    end
+
     local obj = Obstacle:New(x, y, movingCogShape)
     setmetatable(obj, self)
     obj.image = movingCogImages[math.random(1, #movingCogImages)]
@@ -27,14 +38,14 @@ function movingCogObstacle:New(x, y)
     obj.centreX = obj.x
     obj.displacement = -1*river:getDistToEdge(obj.x,y)+20
     obj.phase = love.math.random(0,62)/10
-    obj.phaseSpeed = love.math.random(3,8)/10
+    obj.phaseSpeed = love.math.random(5,10)/10
     obj.spinDirection = (math.random(1, 2) == 1 and 1) or -1
     obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
 
-
     table.insert(obstacles, assets.obstacle.noSpawnRect:New(obj.centreX, y - 50/3, obj.displacement, 150/3))
-    
     return obj
+    
+
 end
 
 function movingCogObstacle:Update(no, dt)

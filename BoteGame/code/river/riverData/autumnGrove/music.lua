@@ -16,5 +16,6 @@ return {
         ["Clockwork Ruins"] =      {0,0,0,0.8,0,1},
         ["Clockwork's Core"] = {0,0,0,0.8,1,1},
         ["Autumn Rapids"] =    {1,0.7,1,0,1,1},
+        ["Gravelly Plains"] =         {1,0,0,0,0,0},
     }
 }

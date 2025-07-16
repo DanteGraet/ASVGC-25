@@ -15,7 +15,7 @@ return {
 
             spinner = {
                 -- the base spawnWeight that this obstical has
-                spawnWeight = 1,
+                spawnWeight = 2,
 
                 -- the amount the spawnWeight can change by (+- 1/2)
                 weightChange = 0,

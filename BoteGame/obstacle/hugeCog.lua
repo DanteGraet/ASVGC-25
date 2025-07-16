@@ -11,6 +11,7 @@ local hugeCogObstacle = setmetatable({}, { __index = Obstacle })
 hugeCogObstacle.__index = hugeCogObstacle
 
 function hugeCogObstacle:New(x, y)
+    local x = math.random(-600,600)
     local obj = Obstacle:New(x, y-1000, hugeCogShape)
     setmetatable(obj, self)
     obj.image = hugeCogImages[math.random(1, #hugeCogImages)]
@@ -54,6 +55,11 @@ function hugeCogObstacle:New(x, y)
     --globalCogInCharge = nil
 
     table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y - 1000, 750))
+
+    if not globalTableOfBad then globalTableOfBad = {} end
+
+    table.insert(globalTableOfBad, y-1000)
+
     
     return obj
 end

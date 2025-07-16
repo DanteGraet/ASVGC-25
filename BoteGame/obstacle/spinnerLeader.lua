@@ -90,7 +90,7 @@ function spinnerLeaderLineObstacle:New(x, y, givDir)
             ag = 1 
         end
 
-        table.insert(obstacles, assets.obstacle.spinner:New(x+430*i, y, direction*idk*obj.spinDir,0.5,ag))
+        table.insert(obstacles, assets.obstacle.spinner:New(x+400*i, y, direction*idk*obj.spinDir,0.5,ag))
 
     end
 

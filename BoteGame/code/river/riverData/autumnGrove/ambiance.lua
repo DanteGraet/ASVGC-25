@@ -19,4 +19,8 @@ return {
         leafAmount = 1,
         windSpeed = 200,
     },
+    ["Gravelly Plains"] = {
+        leafAmount = 1,
+        windSpeed = 200,
+    },
 }

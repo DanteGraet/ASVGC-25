@@ -44,7 +44,7 @@ return {
     },
     {
         type = "timer",    
-        maxTime = 2000,
+        maxTime = 2500,
         minTime = 1500,
         data = {
                 hugeCog = {

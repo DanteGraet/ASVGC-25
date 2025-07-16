@@ -1,10 +1,10 @@
 return {
     ["Gravelly Plains"] = {
-        rainAmount = 20,
+        rainAmount = 15,
         windSpeed = 300,
     },
     ["Upper Dam"] = {
-        rainAmount = 30,
+        rainAmount = 20,
         windSpeed = 300,
     },
     ["The Inlet"] = {

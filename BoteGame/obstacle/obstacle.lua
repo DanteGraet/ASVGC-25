@@ -75,6 +75,9 @@ end
 
 function Obstacle:DrawHitbox()
     if self.body then
+
+        love.graphics.setLineWidth(1)
+
         for _, fixture in pairs(self.body:getFixtures()) do
             local shape = fixture:getShape()
             local shapeType = shape:getType()

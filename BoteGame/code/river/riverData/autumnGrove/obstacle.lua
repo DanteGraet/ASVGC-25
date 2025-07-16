@@ -28,6 +28,10 @@ return {
         difficultyFunction = 0.01,
         current = autumnRapidsCurrent,
     },
+    ["Gravelly Plains"] = {
+        difficultyFunction = 0.005,
+        current = 150,
+    },
 }
 
 
