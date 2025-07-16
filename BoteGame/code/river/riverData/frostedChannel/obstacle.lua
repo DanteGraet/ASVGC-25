@@ -2,11 +2,6 @@ local function iceplainsCurrent(percentage)
     return 100*quindoc.clamp(percentage,0,1) + 100
 end
 
-local function boulderValleyDifficulty(percentage)
-    return 0.0015 + 0.0035*quindoc.clamp(percentage,0,1)
-end
-
-
 local function boulderValleyCurrent(percentage)
     return 200*quindoc.clamp(percentage,0,1) + 100
 end
@@ -67,7 +62,7 @@ return {
         current = iceplainsCurrent,
     },
     ["Boulder Valley"] = {
-        difficultyFunction = boulderValleyDifficulty,
+        difficultyFunction = 0.002,
         current = boulderValleyCurrent,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient,
     },

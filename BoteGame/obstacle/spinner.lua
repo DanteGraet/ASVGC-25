@@ -76,8 +76,9 @@ function spinnerObstacle:New(x, y, givDir,givenSpeed,givenAngle)
 
     local ex = x
 
+    local z1 = riverGenerator:GetZone(y)
 
-    if zones.displayName and zones.displayName == "The Inlet" then
+    if z1.displayName and z1.displayName == "The Inlet" then
         ex = river:getCenter(y) + 210*LR
         obj.body:setPosition(ex,y)
         obj.spinSpeed = 4

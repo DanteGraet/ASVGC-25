@@ -162,6 +162,16 @@ function RiverGenerator:GetPercentageThrough(y)
     return 1
 end
 
+function RiverGenerator:GetTotalRiverLength()
+    local length = 0
+    for i = 1,#self.zones do
+        local zone = self.zones[i]
+
+        length = length + zone.distance + zone.transition
+    end
+    return length
+end
+
 function RiverGenerator:Update(y)
     generatorThread_playerY:clear()
     generatorThread_playerY:push(y or -player.y)

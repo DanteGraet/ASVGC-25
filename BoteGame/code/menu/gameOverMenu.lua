@@ -96,23 +96,43 @@ function GameOverMenu:Draw(gs)
     love.graphics.rectangle("line", -width/2, -height/2, width, height, 25)
 
     -- line for the high scores
-    love.graphics.rectangle("line", 20, -height/2 + 100, width/2-40, height-195, 25)
+    love.graphics.setLineWidth(5)
+    love.graphics.rectangle("line", 20, -height/2 + 110, width/2-40, height-205, 25)
 
 
     font.setFont(font2)
     if player.health <=0 then
         love.graphics.printf("Game Over", -width/2, -height/2, width, "center")
+    elseif savedDisplayName == "River Mouth" then
+        love.graphics.printf("Well Done!", -width/2, -height/2, width, "center")
     else
-        love.graphics.printf("You Win!", -width/2, -height/2, width, "center")
+        love.graphics.printf("Stage Clear!", -width/2, -height/2, width, "center")
+    end
+
+    if riverName == "endless" then
+        font.setFont("medium", 50)
+        love.graphics.printf("Distance:", -width/2, -height/2 + 230, width/2, "center")
+
+        font.setFont("medium", 28)
+        love.graphics.printf(zonesCleared.." Zones",-width/2,-height/2 + 290,width/2,"center")
+    else
+        font.setFont("medium", 50)
+        love.graphics.printf("Progress:", -width/2, -height/2 + 230, width/2, "center")
+
+        local p = player.y/riverGenerator:GetTotalRiverLength()
+        local percentageThru = math.floor(p*-100)
+
+        font.setFont("medium", 40)
+        love.graphics.printf(percentageThru.."%",-width/2,-height/2 + 295,width/2,"center")
     end
 
 
     if savedDisplayName then
         font.setFont("medium", 50)
-        love.graphics.printf("Biome:", -width/2, -height/2 + 240, width/2, "center")
+        love.graphics.printf("Zone:", -width/2, -height/2 + 360, width/2, "center")
 
         font.setFont("medium", 28)
-        love.graphics.printf(savedDisplayName,-width/2,-height/2 + 300,width/2,"center")
+        love.graphics.printf(savedDisplayName,-width/2,-height/2 + 420,width/2,"center")
     end
 
 

@@ -48,55 +48,63 @@ spinnerLeaderLineObstacle.__index = spinnerLeaderLineObstacle
 
 function spinnerLeaderLineObstacle:New(x, y, givDir)
 
-    local x = riverBorders.left-math.random(420,460)
-    local y = y - 500
-    local obj = Obstacle:New(x, y, centerShape)
-    local var = math.random(1,3)
-    
-    setmetatable(obj, self)
-    obj.image = spinnerLeaderLineImages[1]
-    obj.bladeImage = spinnerLeaderLineImages[2]
+    local z1 = riverGenerator:GetZone(y)
 
-    obj.body:setPosition(obj.x,y)
-    obj.body:setType("kinematic")
-    obj.angle = 0
+    if z1.displayName and z1.displayName == "The Inlet" then
+        return nil --don't spawn
+    else
 
-    obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
-    obj.bladeFixtures = {}
+        local x = riverBorders.left-math.random(420,460)
+        local y = y - 500
+        local obj = Obstacle:New(x, y, centerShape)
+        local var = math.random(1,3)
+        
+        setmetatable(obj, self)
+        obj.image = spinnerLeaderLineImages[1]
+        obj.bladeImage = spinnerLeaderLineImages[2]
 
-    -- add the blades
-    for i = 1,bladeCount do
-        table.insert(obj.bladeFixtures, love.physics.newFixture(obj.body, bladeShapes[i]))
-        obj.bladeFixtures[i]:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
-    end
+        obj.body:setPosition(obj.x,y)
+        obj.body:setType("kinematic")
+        obj.angle = 0
 
-    obj.spinSpeed = 0.5
+        obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
+        obj.bladeFixtures = {}
 
-    obj.spinDir = (math.random(0,1)*2)-1
-
-    for i = 1, 7 do
-
-        local direction = 1
-        local idk = 1
-
-        if var < 3 and i % 2 == 0 then
-            direction = 1
-            idk = -1
+        -- add the blades
+        for i = 1,bladeCount do
+            table.insert(obj.bladeFixtures, love.physics.newFixture(obj.body, bladeShapes[i]))
+            obj.bladeFixtures[i]:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
         end
 
-        local ag = 0
+        obj.spinSpeed = 0.5
 
-        if var > 1 and direction == -1 then
-            ag = 1 
+        obj.spinDir = (math.random(0,1)*2)-1
+
+        for i = 1, 7 do
+
+            local direction = 1
+            local idk = 1
+
+            if var < 3 and i % 2 == 0 then
+                direction = 1
+                idk = -1
+            end
+
+            local ag = 0
+
+            if var > 1 and direction == -1 then
+                ag = 1 
+            end
+
+            table.insert(obstacles, assets.obstacle.spinner:New(x+400*i, y, direction*idk*obj.spinDir,0.5,ag))
+
         end
 
-        table.insert(obstacles, assets.obstacle.spinner:New(x+400*i, y, direction*idk*obj.spinDir,0.5,ag))
+        table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y, 300))
+
+        return obj
 
     end
-
-    table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y, 300))
-
-    return obj
 end
 
 function spinnerLeaderLineObstacle:Update(no, dt)
