@@ -100,7 +100,7 @@ function PlayerBoat:UpdateScore()
 end
 
 function PlayerBoat:TakeDamage(amount, noShake, immunity)
-    if self.immunity == 0 and self.health > 0 and self.y > riverBorders.up - 100 then
+    if self.immunity == 0 and self.health > 0 and not self.winY then
         self.health = self.health - amount
         self.immunity = immunity or 1
 
