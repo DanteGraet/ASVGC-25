@@ -45,8 +45,8 @@ function teslaObstacle:Update(no, dt)
             local xM = math.cos(self.orbAngle)*200
             local yM = math.sin(self.orbAngle)*200
 
-            table.insert(obstacles, assets.obstacle.energy:New(self.x, self.y,xM,yM))
-            table.insert(obstacles, assets.obstacle.energy:New(self.x, self.y,xM*-1,yM*-1))
+            table.insert(frontObstacles, assets.obstacle.energy:New(self.x, self.y,xM,yM))
+            table.insert(frontObstacles, assets.obstacle.energy:New(self.x, self.y,xM*-1,yM*-1))
 
         end
 

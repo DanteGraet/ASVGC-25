@@ -9,6 +9,10 @@ local image
 local function load()
     local img = "image/loading/title.png"
 
+    if previousGameState == "river" then
+        img = "image/loading/clear.png"
+    end
+
     DynamicLoading:New("code/gameStateLoading/creditsLoading.lua", true, img)
 end
 
@@ -80,16 +84,16 @@ end
 
 local function mousefocus(f)
     if not f then
-        --moveTimer = -math.huge
+        moveTimer = -math.huge
     else
         moveTimer = 0
     end
 end
 
 local function update(dt)
-    if love.mouse.isDown(1) or love.mouse.isDown(2) then
+    --[[if love.mouse.isDown(1) or love.mouse.isDown(2) then
         moveTimer = -1
-    end
+    end]]
     if moveTimer < 0 then
         moveTimer = moveTimer + dt
         scrollSpeed = math.max(scrollSpeed - dt, 0)
@@ -133,17 +137,21 @@ local function draw()
 
     -- Background
     love.graphics.setColor(1,1,1)
-    buttons:Draw()
+    if buttons then
+        buttons:Draw()
+    end
 
     love.graphics.setColor(1,1,1)
     local height
-    for i = 1,#textList do
-        font.setFont(textList[i][2])
-        love.graphics.printf(textList[i][1], 1920/2 - width/2, textList[i][4], width, textList[i][3])
-    end
+    if textList then
+        for i = 1,#textList do
+            font.setFont(textList[i][2])
+            love.graphics.printf(textList[i][1], 1920/2 - width/2, textList[i][4], width, textList[i][3])
+        end
 
-    for i = 1,#image do
-        love.graphics.draw(image[1], image[2], image[3])
+        for i = 1,#image do
+            love.graphics.draw(image[1], image[2], image[3])
+        end
     end
 end
 

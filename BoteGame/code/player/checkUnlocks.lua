@@ -2,6 +2,13 @@ print("checking unlocks")
 -- this should only run if the player has "Won" the levels
 
 if not assets.code.player.unlocks.beatenLevels then assets.code.player.unlocks.beatenLevels = {} end
+
+if riverName == "derelictDam" then
+    if not assets.code.player.unlocks.beatenLevels[riverName] then
+        playCredits = true
+    end
+end
+
 assets.code.player.unlocks.beatenLevels[riverName] = true
 
 if riverName == "frostedChannel" then

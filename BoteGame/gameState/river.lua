@@ -462,7 +462,12 @@ local function draw()
         
         if (player.health <= 0 or player.deathTime >= 1) and not pauseMenu.isOpen then
             local tween = tweens.sineInOut(quindoc.clamp((player.deathTime-1)*2, 0, 1))
-            gameOverMenu:Draw(tween)
+            if playCredits == true then
+                gameState = "credits"
+                playCredits = nil
+            else
+                gameOverMenu:Draw(tween)
+            end
         end
 
 

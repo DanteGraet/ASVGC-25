@@ -35,7 +35,7 @@ function energyObstacle:New(x, y,xM,yM)
 end
 
 function energyObstacle:Update(no, dt)
-    if self.body then
+    if not self.body:isDestroyed() then
 
         self.mathz = self.mathz + dt
         self.dir = math.sin(3*self.mathz)+3*math.cos(0.4*self.mathz)
@@ -51,7 +51,7 @@ function energyObstacle:Update(no, dt)
             self.fixture:setUserData(data)
         end
 
-        Obstacle.Update(self, no, dt)
+        Obstacle.Update(self, no, dt, true)
     end
 end
 
