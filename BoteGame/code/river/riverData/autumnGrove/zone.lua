@@ -48,6 +48,14 @@ return {
         currentIcons = 3,
     },
     {
+        zone = "autumnRapids-gravellyPlains",
+        displayName = "Autumn Rapids",
+        subtitle = "Fast-flowing stream",
+        distance = 1000,
+        transition = 0,
+        currentIcons = 3,
+    },
+    {
         zone = "gravellyPlains",
         displayName = "Gravelly Plains",
         subtitle = "-- Almost There! --",

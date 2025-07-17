@@ -27,9 +27,6 @@ local function GetColourAt(x, y)
         
         --if p > 0.9 then p = 0 end
 
-        if zones and zones.zone == "coniferousMountainside" then
-            p = quindoc.clamp(riverGenerator:GetPercentageThrough(y)-0.2,0,1)
-        end
 
         local elevation = distToEdge/(500+500*p)
 
