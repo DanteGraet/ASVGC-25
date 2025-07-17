@@ -33,6 +33,8 @@ if riverName == "derelictDam" then
     end
 end
 
+assets.code.player.unlocks.beatenLevels[riverName] = true
+
 local b = assets.code.player.unlocks.beatenLevels
 if b.frostedChannelStorm and b.autumnGroveStorm and b.derelictDamStorm then
 
@@ -43,4 +45,3 @@ if b.frostedChannelStorm and b.autumnGroveStorm and b.derelictDamStorm then
     assets.code.player.unlocks.levels.seenDialouge4 = true 
 end
 
-assets.code.player.unlocks.beatenLevels[riverName] = true
