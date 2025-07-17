@@ -9,13 +9,13 @@ if riverName == "derelictDam" then
     end
 end
 
-assets.code.player.unlocks.beatenLevels[riverName] = true
-
 if riverName == "frostedChannel" then
     assets.code.player.unlocks.levels.autumnGrove = true
     assets.code.player.unlocks.levels.frostedChannelStorm = true
 
-    dialouge.schedule("image/levelSelect/dialouge/dialouge2.png")
+    if not assets.code.player.unlocks.beatenLevels[riverName] then
+        dialouge.schedule("image/levelSelect/dialouge/dialouge2.png")
+    end
 end
 
 if riverName == "autumnGrove" then
@@ -28,11 +28,19 @@ if riverName == "derelictDam" then
     assets.code.player.unlocks.levels.derelictDamStorm = true
     assets.code.player.unlocks.levels.endless = true
 
-    dialouge.schedule("image/levelSelect/dialouge/dialouge3.png")
+    if not assets.code.player.unlocks.beatenLevels[riverName] then
+        dialouge.schedule("image/levelSelect/dialouge/dialouge3.png")
+    end
 end
 
 local b = assets.code.player.unlocks.beatenLevels
 if b.frostedChannelStorm and b.autumnGroveStorm and b.derelictDamStorm then
-    --assets.code.player.unlocks.levels.endless_Storm = true
-    dialouge.schedule("image/levelSelect/dialouge/dialouge4.png")
+
+    if not assets.code.player.unlocks.levels.seenDialouge4 then
+        dialouge.schedule("image/levelSelect/dialouge/dialouge4.png")
+    end
+
+    assets.code.player.unlocks.levels.seenDialouge4 = true 
 end
+
+assets.code.player.unlocks.beatenLevels[riverName] = true
