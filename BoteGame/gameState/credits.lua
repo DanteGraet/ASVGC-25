@@ -1,9 +1,9 @@
 local y = 0
 local buttons
 local textList
-local width = 800
+local width = 1000
 local moveTimer = 0
-local scrollSpeed = 1
+local scrollSpeed = 2
 local maxHeight = 0
 local image
 local function load()
@@ -68,7 +68,7 @@ local function unload()
 end
 
 local function mousemoved(x, y)
-    moveTimer = -1
+    --moveTimer = -1
     love.mouse.setVisible(true)
 end
 
@@ -80,7 +80,7 @@ end
 
 local function mousefocus(f)
     if not f then
-        moveTimer = -math.huge
+        --moveTimer = -math.huge
     else
         moveTimer = 0
     end

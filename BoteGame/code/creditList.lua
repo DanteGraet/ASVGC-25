@@ -3,23 +3,38 @@ return {
     text = {    
         -- text, font, other
         {{"Buoyant Voyage"},    {"black", 64}},
-        {{"Jaraph, 2025"},      {"black", 48}},
+        {{"A game by Jaraph"},      {"black", 48}},
         {{" "},                 {"black", 32}},
 
-        {{"Made in Love2D"},    {"black", 32}},
+        {{"Australian Stem Video Games Competition 2025"},    {"black", 32}},
+        {{"Made with Love2D"},    {"black", 32}},
         {{" "},                 {"black", 32}},
 
-        {{"Design Lead",        "Patrick Henschke"},    {"black", 32}},
-        {{"Technical Lead",     "Daniel Smith"},        {"black", 32}},
-        {{"Programer",          "Daniel Smith"},        {"black", 32}},
-        {{"Level Design",       "Patrick Henschke"},    {"black", 32}},
-        {{"Art",                "Patrick Henschke"},    {"black", 32}},
-        {{"Music",              "Patrick Henschke"},    {"black", 32}},
-        {{"SFX",                "Daniel Smith"},        {"black", 32}},
-        {{" "}, {"black", 32}},
+        {{"Programming and SFX",        "Daniel Smith"},            {"black", 32}},
+        {{"Art, Music and Design",      "Patrick Henschke"},        {"black", 32}},
+        {{" "},                                                     {"black", 32}},
+        {{" "},                                                     {"black", 32}},
 
-        {{"Also Try:"},         {"black", 32}},
+        {{"Love2D",     "https://love2d.org/"},                                                   {"black", 32}},
+        {{"Lua",        "https://www.lua.org/"},                                                  {"black", 32}},
+        {{"Zen Maru Gothic",        "https://github.com/googlefonts/zen-marugothic/"},            {"black", 32}},
+
+        {{" "},                                    {"black", 32}},
+        {{" "},                                    {"black", 32}},
+        {{"Playtesters"},                          {"black", 32}},
+        {{"Zac Smith",        "Nobody else, lol"}, {"black", 32}},
+
+
+        {{" "},                 {"black", 32}},
+        {{" "},                 {"black", 32}},
+        {{" "},                 {"black", 32}},
+
+        {{"Also try:"},                                                             {"black", 32}},
         {{"BGWaN",              "https://scratch.mit.edu/projects/545055939"},      {"black", 32}},
+
+        {{" "},                 {"black", 32}},
+        {{" "},                 {"black", 32}},
+        {{"Thank you for playing!"},                                                             {"black", 64}},
     },
 
     --pls sort by Y
