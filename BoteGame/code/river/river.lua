@@ -165,9 +165,7 @@ function River:getDistToEdge(x, y)
             local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
             local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
 
-
             return math.max(leftX - x, (rightX - x)*-1)
-
         end
     end
 end

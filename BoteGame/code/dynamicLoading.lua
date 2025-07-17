@@ -37,7 +37,7 @@ function DynamicLoading:New(toLoad, autoRun, image, colour) -- data is a table {
             love.event.quit()
         end
 
-        if gameState ~= "river" then
+        if gameState ~= "river" and gameState ~= "credits" then
             love.mouse.setVisible(true)
         end
     end

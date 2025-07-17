@@ -25,7 +25,6 @@ local function resize()
 end
 
 local function load()
-    print("AEEE")
     love.physics.setMeter(100)
     resize()
 
@@ -36,6 +35,8 @@ end
 local function unload()
     love.thread.getChannel("background_closeThread"):push(true)
     music.unload()
+
+    titleScreenUI = nil
 end
 
 local function extraLoad()
@@ -196,7 +197,7 @@ local function draw()
         titleScreenUI:Draw()
     end
 
-    if assets.image then 
+    if assets.image and assets.image.titleScreen and assets.image.titleScreen.title then 
         love.graphics.setColor(1,1,1,1)
         love.graphics.draw(assets.image.titleScreen.title,50,50,0,0.75,0.75)
         font.setFont("black", 32)

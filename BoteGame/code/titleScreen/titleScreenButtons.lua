@@ -7,14 +7,25 @@ function tsb.CreateButtons(UI)
     local f = font.getFont({"black", 100})
     print(f:getHeight())
     --Font is temporary i hope.
-    UI:AddTextButton("quitButton",      "Quit",     "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight()*2, 1920,   {{1,1,1}, {1, 0.6, 0.6}, {1, 0.4, 0.4}})
-    UI:AddTextButton("settingsButton",  "Settings", "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight(),   1920,   {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
-    UI:AddTextButton("playButton",      "Play",     "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight()*0, 1920,   {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
+    UI:AddTextButton("quitButton",      "Quit",     "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight()*2.5, 1920,   {{1,1,1}, {1, 0.6, 0.6}, {1, 0.4, 0.4}})
+    UI:AddTextButton("settingsButton",  "Settings", "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight()*0.5,   1920,   {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
+    UI:AddTextButton("playButton",      "Play",     "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight()*-0.5, 1920,   {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
+    UI:AddTextButton("creditButton", "Credits",     "center",    {"black", 100}, width*0.3 - 2.5, 460 + f:getHeight()*1.5, 1920,   {{1,1,1}, {0.7, 0.7, 0.725}, {0.4, 0.4, 0.45}})
 
     --Temporary fix for adding functions to buttons :D
     UI:GetButtons()["quitButton"].functions.release =       {tsb.quitButtonRelease}
     UI:GetButtons()["settingsButton"].functions.release =   {tsb.settingsButtonRelease}
     UI:GetButtons()["playButton"].functions.release =       {tsb.playButtonRelease}
+    UI:GetButtons()["creditButton"].functions.release =       {tsb.creditButtonRelease}
+
+    UI:GetButtons()["creditButton"]:AddText("Credits", "center", {"black", 100}, 12 - (870 - 68), 6, 1920, 1)
+    UI:GetButtons()["creditButton"]:AddImage(-100- 45/2, 45/2 + 5, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1)
+    UI:GetButtons()["creditButton"]:AddImage(-100- 45/2 + 6, 45/2+ 6 + 5, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1, 1)
+
+    UI:GetButtons()["creditButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 1)
+    UI:GetButtons()["creditButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 2)
+    UI:GetButtons()["creditButton"]:SetElementColour({1,1,1}, nil, nil, 4)
+
 
     UI:GetButtons()["quitButton"]:AddText("Quit", "center", {"black", 100}, 12 - 870, 6, 1920, 1)
     UI:GetButtons()["quitButton"]:AddImage(-100- 45/2, 45/2 + 5, love.graphics.newImage("image/titleScreen/titleIco3.png"), 1, 1)
@@ -225,6 +236,15 @@ end
 function tsb.playButtonRelease()
     -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
     gameState = "levelSelect"
+
+    --[[riverName = "mvpRiver"
+    gameState = "river"]]
+end
+
+
+function tsb.creditButtonRelease()
+    -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
+    gameState = "credits"
 
     --[[riverName = "mvpRiver"
     gameState = "river"]]
