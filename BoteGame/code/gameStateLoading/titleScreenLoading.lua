@@ -22,11 +22,14 @@ local toLoad = {
 
     -- in a function so we don't unload it
     function()
+        dialouge = love.filesystem.load("code/dialogoge.lua")()
+
         if not assets.save then assets.save = {} end
         if love.filesystem.getInfo("save/highscore.lua") then
             assets.save.highscore = love.filesystem.load("save/highscore.lua")()
         else
             assets.save.highscore = {}
+            dialouge.schedule("image/levelSelect/dialouge/dialouge1.png", 10)
         end
     end,
 

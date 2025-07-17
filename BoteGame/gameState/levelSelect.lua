@@ -6,9 +6,11 @@ local levelSelectScreen
 
 local levels = {}
 
+local unlockTimer = 0
+
 local sine = 0
 
-dialouge = love.filesystem.load("code/dialogoge.lua")()
+
 
 local function load()
     local img = "image/loading/" .. riverName .. ".png"
@@ -121,6 +123,19 @@ local function resize()
 end
 
 local function update(dt)
+
+    if compRelease then
+        if love.keyboard.isDown("lshift") and love.keyboard.isDown("u") then
+            unlockTimer = unlockTimer + dt
+
+            if unlockTimer > 1 then
+                unlockAllLevels()
+                dialouge.schedule("image/levelSelect/dialouge/dialouge5.png", 5)
+            end
+        else
+            unlockTimer = math.max(unlockTimer - dt, 1)
+        end
+    end
 
     dialouge.update(dt)
 

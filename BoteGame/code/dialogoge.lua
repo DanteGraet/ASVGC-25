@@ -15,7 +15,8 @@ function d.schedule(image, time)
     end
 end
 
-function d.next()
+function d.next(allowRemove)
+
     d.timer = 0
     local next = d.stack[1]
     if next then
@@ -23,7 +24,7 @@ function d.next()
         d.time = next[2]
 
         table.remove(d.stack, 1)
-    else
+    elseif allowRemove then
         d.time = 0
         d.current = nil
     end
@@ -34,7 +35,7 @@ function d.update(dt)
         d.timer = d.timer + dt
 
         if d.timer > d.time then
-            d.next()
+            d.next(true)
         end
     end
 end
