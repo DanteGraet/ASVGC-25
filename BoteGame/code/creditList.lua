@@ -29,7 +29,7 @@ return {
         {{" "},                 {"black", 32}},
         {{" "},                 {"black", 32}},
 
-        {{"Also try:"},                                                             {"black", 32}},
+        {{"Play the original:"},                                                             {"black", 32}},
         {{"BGWaN",              "https://scratch.mit.edu/projects/545055939"},      {"black", 32}},
 
         {{" "},                 {"black", 32}},
