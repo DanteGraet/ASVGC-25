@@ -133,6 +133,13 @@ end
 
 
 local function draw()
+    love.graphics.push()
+    
+    love.graphics.reset()
+    love.graphics.setColor(1,1,1)
+    love.graphics.draw(assets.image.ui.creditsBackground, 0, 0, 0, love.graphics.getWidth()/1920, love.graphics.getHeight()/1080)
+
+    love.graphics.pop()
     love.graphics.translate(0, y)
 
     -- Background
