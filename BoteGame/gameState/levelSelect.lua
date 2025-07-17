@@ -43,7 +43,12 @@ local function extraLoad()
     menus["boatSelectMenu"] = assets.code.menu.boatSelectMenu():New()
     menus["levelMenu"] = assets.code.menu.levelMenu():New()
     levelSelectScreen = GraetUi:New()
-
+    if not assets.code.player.unlocks.levels then
+        print("FIRST")
+        assets.code.player.unlocks.levels = {
+            frostedChannel = true
+        }
+    end
     if assets.code.player.unlocks.levels.frostedChannel then
         table.insert(levels, {
             x = 400,
@@ -130,10 +135,14 @@ local function update(dt)
 
             if unlockTimer > 1 then
                 unlockAllLevels()
+                extraLoad()
+                dante.save(assets.code.player.unlocks, "save", "unlocks")
                 dialouge.schedule("image/levelSelect/dialouge/dialouge5.png", 5)
+
+                unlockTimer = -math.huge
             end
-        else
-            unlockTimer = math.max(unlockTimer - dt, 1)
+        elseif unlockTimer > -100 then
+            unlockTimer = math.max(unlockTimer - dt, 0)
         end
     end
 

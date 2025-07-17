@@ -555,24 +555,27 @@ function UpdateHighScore(newScore)
         end
         assets.save.highscore = {}
     end
-
-    if not assets.save.highscore[riverName] then
-        assets.save.highscore[riverName] = {}
+    local rn = riverName
+    if isStorm then
+        rn = rn .. "Storm"
+    end
+    if not assets.save.highscore[rn] then
+        assets.save.highscore[rn] = {}
     end
 
     if newScore then
-        table.insert(assets.save.highscore[riverName], newScore)
+        table.insert(assets.save.highscore[rn], newScore)
     end
-    table.sort(assets.save.highscore[riverName], function(a, b) return a > b end)
+    table.sort(assets.save.highscore[rn], function(a, b) return a > b end)
 
-    if assets.save.highscore[riverName] then
+    if assets.save.highscore[rn] then
         dante.save(assets.save.highscore, "save", "highscore")
     end
 
     -- only store 6 records
-    if #assets.save.highscore[riverName] > 6 then
-        while #assets.save.highscore[riverName] > 6 do
-            table.remove(assets.save.highscore[riverName], #assets.save.highscore[riverName])
+    if #assets.save.highscore[rn] > 6 then
+        while #assets.save.highscore[rn] > 6 do
+            table.remove(assets.save.highscore[rn], #assets.save.highscore[rn])
         end
     end
 end
