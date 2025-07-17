@@ -22,7 +22,7 @@ local lastLegnth = 10000
 
 --[[assets.code.river.riverData[riverName].zone()]]
 local riverName = love.thread.getChannel("generator_riverData"):pop()
-local screenWidth = love.thread.getChannel("generatorThread_screenWidthlove"):pop()
+local screenWidth = love.thread.getChannel("generatorThread_screenWidth"):pop()
 local RD = love.filesystem.load("code/river/riverData/" .. riverName .. "/zone.lua")()
 local infinite = nil
 -- has to be global so zones can acsess for weight garbage
@@ -489,7 +489,7 @@ else
     infinite = true
     data = RD
     zones = {}
-    addNextZones(1000000)
+    addNextZones(10000)
 end
 love.thread.getChannel("generatorThread_minZones"):clear()
 love.thread.getChannel("generatorThread_minZones"):push(zones)

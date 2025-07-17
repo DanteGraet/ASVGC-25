@@ -1,7 +1,7 @@
 local function GetColourAt(x, y)
     local colour = {0,1,1}
 
-    if getDistToEdge and getDistToEdge(x, y)/100 > 0 then
+    if getDistToEdge and getDistToEdge(x, y) > 0 then
         return {0,0,1}
     end
 
@@ -9,3 +9,6 @@ local function GetColourAt(x, y)
 end
 
 return GetColourAt
+
+
+

@@ -19,6 +19,9 @@ local function resize()
     if titleScreenUI ~= nil then
         titleScreenButtons.CreateButtons(titleScreenUI)
     end
+
+    riverBorders.up =    y
+    riverBorders.down =  y + love.graphics.getHeight()/screenScale
 end
 
 local function load()

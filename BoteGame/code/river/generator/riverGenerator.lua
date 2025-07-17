@@ -12,7 +12,7 @@ local generatorThread_riverSegments = love.thread.getChannel("generatorThread_ri
 
 local generatorThread_minZones = love.thread.getChannel("generatorThread_minZones")
 
-local generatorThread_screenWidth = love.thread.getChannel("generatorThread_screenWidthlove")
+local generatorThread_screenWidth = love.thread.getChannel("generatorThread_screenWidth")
 
 local generatorThread_seed = love.thread.getChannel("generator_seed")
 

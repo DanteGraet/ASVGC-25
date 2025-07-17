@@ -88,7 +88,6 @@ function updateScale()
     end
 end
 
-
 function love.resize(w, h)
     updateScale()
 

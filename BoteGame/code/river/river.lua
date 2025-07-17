@@ -235,8 +235,6 @@ function River:addBackgorundFromData(imageData)
     finalImage:setFilter("nearest", "nearest")
 
     table.insert(self.backgroundImages, {y = -imageData.y, image = finalImage, x = -(imageData.width/2)*pixlesPerPixle})
-    
-   
 end
 
 function River:Draw()
