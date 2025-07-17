@@ -8,7 +8,7 @@ local levels = {}
 
 local sine = 0
 
-dialouge = love.filesystem.load("code/dialogoge.lua")()
+
 
 local function load()
     local img = "image/loading/" .. riverName .. ".png"
