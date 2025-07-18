@@ -1,11 +1,11 @@
 return {
     
     {"image/levelSelect/background.png", "blur"},
-    {"image/levelSelect/flag.png"},
+    --{"image/levelSelect/flag.png"},
 
-    {"image/levelSelect/pin1.png"},
-    {"image/levelSelect/pin2.png"},
-    {"image/levelSelect/pin3.png"},
+    {"image/levelSelect/pin1.png", "blur"},
+    {"image/levelSelect/pin2.png", "blur"},
+    {"image/levelSelect/pin3.png", "blur"},
 
 --    {"image/levelSelect/flag.png"},
 

@@ -116,6 +116,15 @@ function GameOverMenu:Draw(gs)
         local zonesCleared = riverGenerator:GetZone(player.y).zoneCount - 1
         font.setFont("medium", 28)
         love.graphics.printf(zonesCleared.."",-width/2,-height/2 + 290,width/2,"center")
+
+        -- this is a scam fix
+        if zonesCleared >= 0 then
+            assets.code.player.unlocks.beatenLevels["endless"] = true
+        end
+
+        if zonesCleared >= 15 then
+            assets.code.player.unlocks.beatenLevels["endlessStorm"] = true
+        end
     else
         font.setFont("medium", 50)
         love.graphics.printf("Progress:", -width/2, -height/2 + 230, width/2, "center")
