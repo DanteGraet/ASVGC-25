@@ -137,7 +137,7 @@ function levelMenu:Draw(gs)
 
     -- Highscore
     font.setFont("black", 48)
-    local str = "High score: "
+    local str = "High Score: "
     local displayNum = 0
     if assets.save.highscore[riverName] and assets.save.highscore[riverName][1] then
         if settings.graphics.shortNumbers.value then
