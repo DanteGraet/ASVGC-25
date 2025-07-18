@@ -111,10 +111,11 @@ function GameOverMenu:Draw(gs)
 
     if riverName == "endless" then
         font.setFont("medium", 50)
-        love.graphics.printf("Distance:", -width/2, -height/2 + 230, width/2, "center")
+        love.graphics.printf("Zones:", -width/2, -height/2 + 230, width/2, "center")
 
+        local zonesCleared = riverGenerator:GetZone(player.y).zoneCount - 1
         font.setFont("medium", 28)
-        love.graphics.printf(zonesCleared.." Zones",-width/2,-height/2 + 290,width/2,"center")
+        love.graphics.printf(zonesCleared.."",-width/2,-height/2 + 290,width/2,"center")
     else
         font.setFont("medium", 50)
         love.graphics.printf("Progress:", -width/2, -height/2 + 230, width/2, "center")

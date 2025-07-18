@@ -194,7 +194,9 @@ local function mousepressed(x, y, button)
         menus[selectedMenu]:Click(mx, my)
     else
         for i = 1,#levels do
-            levelSelectScreen:Click(x/screenScale, y/screenScale)
+            if levelSelectScreen then
+                levelSelectScreen:Click(x/screenScale, y/screenScale)
+            end
 
             local l = levels[i]
 
@@ -216,7 +218,9 @@ local function mousereleased(x, y, button)
 
         menus[selectedMenu]:Release(mx, my)
     else
-        levelSelectScreen:Release(x/screenScale, y/screenScale)
+        if levelSelectScreen then
+            levelSelectScreen:Release(x/screenScale, y/screenScale)
+        end
 
         for i = 1,#levels do
             local l = levels[i]
