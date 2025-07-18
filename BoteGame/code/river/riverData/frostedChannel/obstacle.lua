@@ -1,9 +1,9 @@
 local function iceplainsCurrent(percentage)
-    return 100*quindoc.clamp(percentage,0,1) + 100
+    return 100*quindoc.clamp(percentage,0,1) + 50
 end
 
 local function boulderValleyCurrent(percentage)
-    return 200*quindoc.clamp(percentage,0,1) + 100
+    return 150
 end
 
 local function boulderValleyChainLengthCoefficient(percentage)
@@ -24,7 +24,7 @@ local function stormValleyCurrent(percentage)
     else
         idk = 1 - 2*((percentage - 0.8) * 5)
     end
-    return 300 + 200*quindoc.clamp(idk,-0.5,1) 
+    return 150 + 150*quindoc.clamp(idk,0,1) 
 end
 
 local function stormValleyChainLengthCoefficient(percentage)
@@ -57,8 +57,12 @@ end
 
 
 return {
+    ["Glacial Lake"] = {
+        difficultyFunction = 0.0001,
+        current = 100,
+    },
     ["Ice Plains"] = {
-        difficultyFunction = 0.01,
+        difficultyFunction = 0.008,
         current = iceplainsCurrent,
     },
     ["Boulder Valley"] = {

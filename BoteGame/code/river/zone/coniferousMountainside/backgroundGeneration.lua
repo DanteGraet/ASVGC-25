@@ -31,7 +31,7 @@ local function GetColourAt(x, y)
             p = quindoc.clamp(riverGenerator:GetPercentageThrough(y)-0.2,0,1)
         end
 
-        local elevation = distToEdge/(500+500*p)
+        local elevation = distToEdge/(500)
 
         local noiseA = love.math.noise(y/1500.01) / 10
         local noiseB = love.math.noise(y/300.01) / 10

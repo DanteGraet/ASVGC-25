@@ -1,5 +1,14 @@
 return {
     {
+        zone = "glacialLake", --ice plains
+        displayName = "Glacial Lake", --Ice Plains
+        distanceTitle = "Starting Point",
+        subtitle = "River's Source",
+        distance = 5000, --9000
+        transition = 0,
+        currentIcons = 2,
+    },
+    {
         zone = "icePlains", --ice plains
         displayName = "Ice Plains", --Ice Plains
         distanceTitle = "Starting Point",

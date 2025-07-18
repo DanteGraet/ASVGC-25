@@ -2,7 +2,7 @@ return {
     data = {
         crossFadeSpeed = 0.3,
         tracks = {  -- Starting Values
-            [1] = {track = love.audio.newSource("music/autumnGrove/forestChords.mp3","stream"),        volume = 1, targetVolume = 1},
+            [1] = {track = love.audio.newSource("music/autumnGrove/forestChords.mp3","stream"),        volume = 0.9, targetVolume = 0.9},
             [2] = {track = love.audio.newSource("music/autumnGrove/forestStrings.mp3","stream"),        volume = 0, targetVolume = 0},
             [3] = {track = love.audio.newSource("music/autumnGrove/forestLead.mp3","stream"),        volume = 0, targetVolume = 0},
             [4] = {track = love.audio.newSource("music/autumnGrove/clockworkChords.mp3","stream"),         volume = 0, targetVolume = 0},
@@ -11,11 +11,11 @@ return {
         },
     },
     zones = {
-        ["Wooded Hills"] =         {1,0,0,0,0,0},
-        ["Autumn Grove"] =         {1,0.7,1,0,0,1},
-        ["Clockwork Ruins"] =      {0,0,0,0.8,0,1},
-        ["Clockwork's Core"] = {0,0,0,0.8,1,1},
-        ["Autumn Rapids"] =    {1,0.7,1,0,1,1},
-        ["Gravelly Plains"] =         {1,0,0,0,0,0},
+        ["Wooded Hills"] =         {0.9,0,0,0,0,0},
+        ["Autumn Grove"] =         {0.9,0.65,0.9,0,0,0.9},
+        ["Clockwork Ruins"] =      {0,0,0,0.8,0,0.9},
+        ["Clockwork's Core"] = {0,0,0,0.8,0.9,0.9},
+        ["Autumn Rapids"] =    {0.9,0.65,0.9,0,0.9,0.9},
+        ["Gravelly Plains"] =         {0.9,0,0,0,0,0},
     }
 }
