@@ -75,7 +75,7 @@ return {
         subtitle = "High-voltage Powerhouse",
         displayName = "Electrical Complex",
         distanceTitle = "",
-        distance = 16000,
+        distance = 18000,
 
         transition = 0,
 

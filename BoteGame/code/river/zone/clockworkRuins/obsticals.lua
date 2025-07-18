@@ -52,8 +52,8 @@ return {
 
 
         },
-        minTime = 300,
-        maxTime = 400,
+        minTime = 400,
+        maxTime = 500,
     },
     {
         type = "difficultyIndependent",    

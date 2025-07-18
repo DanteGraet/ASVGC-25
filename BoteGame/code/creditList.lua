@@ -10,7 +10,7 @@ return {
         {{"Made with Love2D"},    {"black", 32}},
         {{" "},                 {"black", 32}},
 
-        {{"Programming and SFX",        "Daniel Smith"},            {"black", 32}},
+        {{"Lead Programmer, SFX",        "Daniel Smith"},            {"black", 32}},
         {{"Art, Music and Design",      "Patrick Henschke"},        {"black", 32}},
         {{" "},                                                     {"black", 32}},
         {{" "},                                                     {"black", 32}},

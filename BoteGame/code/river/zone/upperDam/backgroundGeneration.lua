@@ -33,7 +33,7 @@ local function GetColourAt(x, y)
         local noiseC = love.math.noise(y/50.01) / 50
 
         if elevation < 0.03 then --riverbank
-            colour = {0.4,0.4,0.45}
+            colour = {0.401,0.4,0.45}
         elseif elevation < 0.06 +noiseA/10 then --near riverbank
 
             colour = {0.5,0.5,0.55}

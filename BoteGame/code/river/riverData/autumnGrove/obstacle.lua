@@ -13,11 +13,11 @@ return {
         current = 150,
     },
     ["Autumn Grove"] = {
-        difficultyFunction = 0.004,
+        difficultyFunction = 0.006,
         current = 250,
     },
     ["Clockwork Ruins"] = {
-        difficultyFunction = 0.015,
+        difficultyFunction = 0.012,
         current = 200,
     },
     ["Clockwork's Core"] = {

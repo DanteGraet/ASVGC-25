@@ -36,7 +36,7 @@ local function GetColourAt(x, y)
             colour = {0.3,0.3,0.35}
         elseif elevation < 0.06 +noiseA/10 then --near riverbank
 
-            colour = {0.40001,0.4,0.45}
+            colour = {0.401,0.4,0.45}
 
         else --main concrete
 
