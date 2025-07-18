@@ -78,46 +78,44 @@ function a.update(dt, y, volMult)
         a.leafUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent, a.globalLeafTimer)
         a.rainUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
 
-    end
-    
-    
 
-    -- sounds
-    for name, data in pairs(a.sounds) do
-        if currentZone and currentZone.audio then 
-            if transitionZone then --if we are in a transition
-                data.value = quindoc.runIfFunc(currentZone.audio[name],p)*(1-transitionPercent) + quindoc.runIfFunc(currentZone.audio[name],0)*transitionPercent
-            elseif currentZone.audio and currentZone.audio[name] then --just set the snow amount to what it needs to be
-                data.value = quindoc.runIfFunc(currentZone.audio[name],p) or 100
-            else
-                data.value = 0
-            end
-        end
-
-        if type(data.sound) == "table" then
-            -- static
-
-
-            data.timer = data.timer + dt*5
-
-            if math.floor(math.random(0, data.timer)) > 10-data.value then
-                audioPlayer.playSound(data.sound, "ambient", nil, nil, tweens.sineInOut(math.min(data.value/10, 1)))
-                data.timer = 0
-            end
-        else
-            -- Looping
-            if data.value > 0 then
-                if not data.playing then
-                    audioPlayer.NewLoopingSound("ambiance_" .. name, data.sound, "ambient", data.value)
-                    data.playing = true
+        -- sounds
+        for name, data in pairs(a.sounds) do
+            if currentZone and currentZone.audio then 
+                if transitionZone then --if we are in a transition
+                    data.value = quindoc.runIfFunc(currentZone.audio[name],p)*(1-transitionPercent) + quindoc.runIfFunc(currentZone.audio[name],0)*transitionPercent
+                elseif currentZone.audio and currentZone.audio[name] then --just set the snow amount to what it needs to be
+                    data.value = quindoc.runIfFunc(currentZone.audio[name],p) or 100
+                else
+                    data.value = 0
                 end
+            end
 
-                audioPlayer.ModifyLoopingSound("ambiance_" .. name, {volume = data.value/10 * (volMult or 1)})
+            if type(data.sound) == "table" then
+                -- static
 
+
+                data.timer = data.timer + dt*5
+
+                if math.floor(math.random(0, data.timer)) > 10-data.value then
+                    audioPlayer.playSound(data.sound, "ambient", nil, nil, tweens.sineInOut(math.min(data.value/10, 1)))
+                    data.timer = 0
+                end
             else
-                if data.playing == true then
-                    audioPlayer.RemoveLoopingSound("ambiance_" .. name)
-                    data.playing = false
+                -- Looping
+                if data.value > 0 then
+                    if not data.playing then
+                        audioPlayer.NewLoopingSound("ambiance_" .. name, data.sound, "ambient", data.value)
+                        data.playing = true
+                    end
+
+                    audioPlayer.ModifyLoopingSound("ambiance_" .. name, {volume = data.value/10 * (volMult or 1)})
+
+                else
+                    if data.playing == true then
+                        audioPlayer.RemoveLoopingSound("ambiance_" .. name)
+                        data.playing = false
+                    end
                 end
             end
         end
