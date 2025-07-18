@@ -27,6 +27,14 @@ a.sounds = {
         },
         timer = 0,
         value = 0
+    },
+    water = {
+        sound = love.audio.newSource("audio/ambient/water.ogg", "stream"),
+        value = 0.7,
+    },
+    waterFast = {
+        sound = love.audio.newSource("audio/ambient/waterFast.ogg", "stream"),
+        value = 0.0,
     }
 }
 
@@ -58,6 +66,10 @@ function a.update(dt, y)
     end
 
     a.globalLeafTimer = a.globalLeafTimer + dt
+
+    if currentPlayerPos then
+        a.sounds.waterFast.value = math.max((currentPlayerPos.current-250), 0)/100
+    end
 
 
     -- update particle spawners
@@ -93,6 +105,7 @@ function a.update(dt, y)
             if data.value > 0 then
                 if not data.playing then
                     audioPlayer.NewLoopingSound("ambiance_" .. name, data.sound, "ambient", data.value)
+                    data.playing = true
                 end
 
                 audioPlayer.ModifyLoopingSound("ambiance_" .. name, {volume = data.value/10})
@@ -100,6 +113,7 @@ function a.update(dt, y)
             else
                 if data.playing == true then
                     audioPlayer.RemoveLoopingSound("ambiance_" .. name)
+                    data.playing = false
                 end
             end
         end
