@@ -42,8 +42,9 @@ local rn = riverName .. ((isStorm == true and "Storm") or "")
 
 function a.update(dt, y, volMult)
     -- set up variables
+    local p = 0
     if y or (player and camera) then
-        local p = riverGenerator:GetPercentageThrough(y or (player and player.y) or camera.y)
+        p = riverGenerator:GetPercentageThrough(y or (player and player.y) or camera.y)
         local zoneNames = riverGenerator:GetZone(y or camera.y, true)
 
         local currentZone
@@ -79,7 +80,10 @@ function a.update(dt, y, volMult)
         a.rainUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
 
 
-        -- sounds
+        
+    end
+
+    -- sounds
         for name, data in pairs(a.sounds) do
             if currentZone and currentZone.audio then 
                 if transitionZone then --if we are in a transition
@@ -119,7 +123,6 @@ function a.update(dt, y, volMult)
                 end
             end
         end
-    end
 end
 
 

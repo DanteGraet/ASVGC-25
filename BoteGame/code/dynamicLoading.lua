@@ -69,7 +69,10 @@ function DynamicLoading:Run()
             loadPercentage = math.min(loadPercentage + dt, 1)
     
             music.manager(dt, loadPercentage)
-            ambiance.update(dt, nil, 1-loadPercentage)
+            if ambiance then
+                ambiance.update(dt, nil, 1-loadPercentage)
+              
+            end
 
             love.graphics.clear()
             love.draw(true)
@@ -79,6 +82,7 @@ function DynamicLoading:Run()
     end
 
     
+
     if previousGameState ~= ""  then
         if previousGameState == "GetWreked" then
             previousGameState = gameState
@@ -130,6 +134,11 @@ function DynamicLoading:Run()
         game[previousGameState or gameState].unload()
     end
 
+    -- shut up, its another hacky fix but no time to explain or there is and i cant be botherd.
+    ambiance = nil
+    audioPlayer.RemoveLoopingSound("ambiance_water")
+    audioPlayer.RemoveLoopingSound("ambiance_waterFast")
+    
 
     self.loadList = love.filesystem.load("code/gameStateLoading/" .. gameState .. "Loading.lua")()
     local i = 1
@@ -186,7 +195,10 @@ function DynamicLoading:Run()
         loadPercentage = math.min(loadPercentage + dt, 2)
 
         music.manager(dt, 1-(loadPercentage-1))
-        ambiance.update(dt, nil, loadPercentage-1)
+        
+        if ambiance then
+            ambiance.update(dt, nil, loadPercentage-1) 
+        end
 
         -- bandaid fix but time is running out so deal with it
         if gameState == "titleScreen" then

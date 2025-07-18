@@ -136,7 +136,8 @@ function levelMenu:Draw(gs)
     love.graphics.printf(typeData[self.type].displayName, 0, 350 - 64, 1920, "center")
 
     -- Highscore
-    font.setFont("black", 64)
+    font.setFont("black", 48)
+    local str = "High score: "
     local displayNum = 0
     if assets.save.highscore[riverName] and assets.save.highscore[riverName][1] then
         if settings.graphics.shortNumbers.value then
@@ -144,23 +145,19 @@ function levelMenu:Draw(gs)
         else
             displayNum = math.floor(math.abs(assets.save.highscore[riverName][1] or 0))
         end
-        love.graphics.printf("" .. displayNum, 1920/2 - 128*2, 350+128, 128*4, "center")
+        str = str .. displayNum
     end
 
-        --👑 is temporary, trust me
-    --love.graphics.printf("👑" .. displayNum, 1920/2, 1080/2 + 50, 128*5, "center")
-    
-
     if assets.save.highscore[riverName .. "Storm"] and assets.save.highscore[riverName .. "Storm"][1] then
+        
         if settings.graphics.shortNumbers.value then
             displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName .. "Storm"][1] or 0)), 2)
         else
             displayNum = math.floor(math.abs(assets.save.highscore[riverName .. "Storm"][1] or 0))
         end
-
-        love.graphics.printf("" .. displayNum, 1920/2, 350+128, 128*5, "center")
+        str = str .. " | Storm Score: " .. displayNum
     end
-    
+    love.graphics.printf(str, 0, 350+128, 1920, "center")
 
 
     self.Ui:Draw()
