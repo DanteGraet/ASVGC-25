@@ -40,43 +40,47 @@ a.sounds = {
 
 local rn = riverName .. ((isStorm == true and "Storm") or "")
 
-function a.update(dt, y)
+function a.update(dt, y, volMult)
     -- set up variables
-    local p = riverGenerator:GetPercentageThrough(y or player.y)
-    local zoneNames = riverGenerator:GetZone(y or camera.y, true)
-    
-    local currentZone
-    local transitionZone
-    local transitionPercent = zoneNames[3] or nil
+    if y or (player and camera) then
+        local p = riverGenerator:GetPercentageThrough(y or (player and player.y) or camera.y)
+        local zoneNames = riverGenerator:GetZone(y or camera.y, true)
 
-    if zoneNames[1] and type(zoneNames[1]) == "table" then
-        currentZone = assets.code.river.riverData[rn].ambiance[zoneNames[1].displayName]
-        transitionZone = assets.code.river.riverData[rn].ambiance[zoneNames[2].displayName]
-    else
-        currentZone = assets.code.river.riverData[rn].ambiance[zoneNames.displayName]
+        local currentZone
+        local transitionZone
+        local transitionPercent = zoneNames[3] or nil
+
+        if zoneNames[1] and type(zoneNames[1]) == "table" then
+            currentZone = assets.code.river.riverData[rn].ambiance[zoneNames[1].displayName]
+            transitionZone = assets.code.river.riverData[rn].ambiance[zoneNames[2].displayName]
+        else
+            currentZone = assets.code.river.riverData[rn].ambiance[zoneNames.displayName]
+        end
+        
+
+        if transitionZone and currentZone.windSpeed then --if we are in a transition
+            a.windSpeed = quindoc.runIfFunc(currentZone.windSpeed,p)*(1-transitionPercent) + quindoc.runIfFunc(transitionZone.windSpeed,0)*transitionPercent
+        elseif currentZone.windSpeed then --just set the snow amount to what it needs to be
+            a.windSpeed = quindoc.runIfFunc(currentZone.windSpeed,p) or 100
+        else
+            a.windSpeed = 0
+        end
+
+        a.globalLeafTimer = a.globalLeafTimer + dt
+
+        if currentPlayerPos then
+            a.sounds.waterFast.value = math.max((currentPlayerPos.current-250), 0)/100
+        end
+
+
+        -- update particle spawners
+        a.snowUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
+        a.leafUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent, a.globalLeafTimer)
+        a.rainUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
+
     end
     
-
-    if transitionZone and currentZone.windSpeed then --if we are in a transition
-        a.windSpeed = quindoc.runIfFunc(currentZone.windSpeed,p)*(1-transitionPercent) + quindoc.runIfFunc(transitionZone.windSpeed,0)*transitionPercent
-    elseif currentZone.windSpeed then --just set the snow amount to what it needs to be
-        a.windSpeed = quindoc.runIfFunc(currentZone.windSpeed,p) or 100
-    else
-        a.windSpeed = 0
-    end
-
-    a.globalLeafTimer = a.globalLeafTimer + dt
-
-    if currentPlayerPos then
-        a.sounds.waterFast.value = math.max((currentPlayerPos.current-250), 0)/100
-    end
-
-
-    -- update particle spawners
-    a.snowUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
-    a.leafUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent, a.globalLeafTimer)
-    a.rainUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
-
+    
 
     -- sounds
     for name, data in pairs(a.sounds) do
@@ -108,7 +112,7 @@ function a.update(dt, y)
                     data.playing = true
                 end
 
-                audioPlayer.ModifyLoopingSound("ambiance_" .. name, {volume = data.value/10})
+                audioPlayer.ModifyLoopingSound("ambiance_" .. name, {volume = data.value/10 * (volMult or 1)})
 
             else
                 if data.playing == true then

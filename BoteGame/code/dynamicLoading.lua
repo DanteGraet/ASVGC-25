@@ -66,9 +66,11 @@ function DynamicLoading:Run()
         while loadPercentage < 1 do
             if love.timer then dt = love.timer.step() end
             self:Update(dt)
-            music.manager(dt, 1)
             loadPercentage = math.min(loadPercentage + dt, 1)
     
+            music.manager(dt, loadPercentage)
+            ambiance.update(dt, nil, 1-loadPercentage)
+
             love.graphics.clear()
             love.draw(true)
             self:Draw()
@@ -182,6 +184,9 @@ function DynamicLoading:Run()
         if love.timer then dt = love.timer.step() end
         self:Update(dt)
         loadPercentage = math.min(loadPercentage + dt, 2)
+
+        music.manager(dt, 1-(loadPercentage-1))
+        ambiance.update(dt, nil, loadPercentage-1)
 
         -- bandaid fix but time is running out so deal with it
         if gameState == "titleScreen" then

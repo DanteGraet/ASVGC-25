@@ -86,6 +86,7 @@ return {
         musicVolume = {type = "slider", displayName = "Music Volume", value = 0.8},
         ambient = {type = "slider", displayName = "Ambiance Volume", value = 0.8},
         player = {type = "slider", displayName = "Player Volume", value = 0.8},
+        ui = {type = "slider", displayName = "UI Volume", value = 0.8},
 
     },
     keybinds = {
@@ -138,7 +139,7 @@ return {
             "musicVolume",
             "player",
             "ambient",
-    
+            "ui",
         },
         keybinds = {
             "accelerate",

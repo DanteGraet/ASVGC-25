@@ -31,6 +31,10 @@ local toLoad = {
             assets.save.highscore = {}
             dialouge.schedule("image/levelSelect/dialouge/dialouge1.png", 10)
         end
+
+        if not assets.audio then assets.audio = {} end
+        if not assets.audio.ui then assets.audio.ui = {} end
+        assets.audio.ui.click = love.audio.newSource("audio/ui/click.ogg", "static")
     end,
 
     function()

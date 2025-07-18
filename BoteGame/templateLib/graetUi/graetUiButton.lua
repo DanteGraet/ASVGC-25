@@ -159,6 +159,7 @@ function GraetButton:Click(mx, my)
     --if mx > self.x and mx < self.x + self.sx and my > self.y and my < self.y + self.sy then
     if self.mouseMode == "hover" then  
         self.mouseMode = "click"
+        audioPlayer.playSound(assets.audio.ui.click, "ui", 0.25, nil, 3)
         if #self.functions.click > 0 then
             self.functions.click[1](self.functions.click[2])
         end

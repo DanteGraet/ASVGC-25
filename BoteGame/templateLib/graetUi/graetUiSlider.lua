@@ -178,14 +178,14 @@ function GraetSlider:Click(mx, my)
     --if mx > self.x and mx < self.x + self.sx and my > self.y and my < self.y + self.sy then
     if self.mouseMode == "hover" then  
         self.mouseMode = "click"
-
+        audioPlayer.playSound(assets.audio.ui.click, "ui", 0.25, nil, 3)
         local startX = ((self.railSize - self.bsx)*self.value) + self.bsx/2
 
         self.mox = self.x + startX - mx 
 
     elseif self.mouseMode == "railHover" then  
         self.mouseMode = "click"
-
+        audioPlayer.playSound(assets.audio.ui.click, "ui", 0.25, nil, 3)
         self.mox = 0
         self.value = quindoc.clamp(((mx+self.mox) - self.bsx/2 - self.x) / (self.railSize - self.bsx), 0, 1)
 

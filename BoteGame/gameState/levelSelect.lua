@@ -201,6 +201,7 @@ local function mousepressed(x, y, button)
             local dist = quindoc.dist(mx, my, l.x, l.y)
 
             if dist < 100 then
+                audioPlayer.playSound(assets.audio.ui.click, "ui", 0.25, nil, 3)
                 l.click = true
             end
         end
