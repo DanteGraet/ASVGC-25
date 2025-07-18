@@ -61,6 +61,19 @@ function PlayerBoat:New(skin)
     obj.currentDir = -math.rad(90)
     obj.currentSpeed = 0
 
+    obj.audio = {
+        damage = {
+            assets.audio.player.damage1,
+            assets.audio.player.damage3,
+            assets.audio.player.damage2,
+        },
+        beach = {
+            assets.audio.player.beach1,
+            assets.audio.player.beach1,
+            assets.audio.player.beach1,
+        }
+    }
+
     -- audio tracks
     audioPlayer.NewLoopingSound("motor1", assets.audio.player["Motor-Motor"], "player", 0)
     audioPlayer.NewLoopingSound("motor2", assets.audio.player["Motor-Noise"], "player", 0)
@@ -102,6 +115,7 @@ end
 function PlayerBoat:TakeDamage(amount, noShake, immunity)
     if self.immunity == 0 and self.health > 0 and not self.winY then
         self.health = self.health - amount
+        audioPlayer.playSound(self.audio.damage, "player", nil, nil, 3)
         self.immunity = immunity or 1
 
         for i = 1, 7*settings.graphics.particles.value do
@@ -113,6 +127,7 @@ function PlayerBoat:TakeDamage(amount, noShake, immunity)
         end
 
         if self.health <= 0 then
+            audioPlayer.playSound(self.audio.damage, "player", nil, nil, 5)
             self:UpdateScore()
 
             for i = 1, 5*settings.graphics.particles.value do
@@ -231,6 +246,9 @@ function PlayerBoat:UpdateBeached(dt)
         -- forces the ability to take damage from beaching
         self.immunity = 0
         self:TakeDamage(2, false, 2)
+        if player.health > 0 then
+            audioPlayer.playSound(self.audio.beach, "player", nil, nil, 3)
+        end
     end
 
     -- update related timers

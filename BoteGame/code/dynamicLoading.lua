@@ -228,7 +228,7 @@ function DynamicLoading:AddItem(path, current, original)
                 current[string.sub(file, 1, #file-4)]:setFilter("nearest", "nearest")
             end
 
-        elseif file:match("%.mp3$") then
+        elseif file:match("%.mp3$") or file:match("%.ogg$") then
             --current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
             current[string.sub(file, 1, #file-4)] = love.audio.newSource(original[1], original[2])
 

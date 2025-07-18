@@ -10,7 +10,12 @@ local toLoad = {
     {"code/player/playerBoat.lua"},
     {"code/player/playerUi.lua"},
 
-
+    {"audio/player/damage1.ogg", "static"},
+    {"audio/player/damage2.ogg", "static"},
+    {"audio/player/damage3.ogg", "static"},
+    {"audio/player/beach1.ogg", "static"},
+    {"audio/player/beach1.ogg", "static"},
+    {"audio/player/beach1.ogg", "static"},
 
 
     -- generation suff

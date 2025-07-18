@@ -17,7 +17,7 @@ local function playSound(sound, catagory, pitchChange, position, volumeOverride)
     if catagory and settings.audio[catagory] then
         subVolume = settings.audio[catagory].value
     end
-    local volume = (settings.audio.masterVolume.value * subVolume) * volumeOverride or 1
+    local volume = (settings.audio.masterVolume.value * subVolume) * (volumeOverride or 1)
     tempSound:setVolume(volume)
 
     -- 'move' the sound
