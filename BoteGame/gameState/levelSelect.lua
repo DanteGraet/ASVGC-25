@@ -152,7 +152,9 @@ local function update(dt)
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    levelSelectScreen:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    if not menus[selectedMenu] or (menus[selectedMenu].isOpen == false) then
+        levelSelectScreen:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    end
 
     if menus and menus[selectedMenu] then
 
@@ -254,7 +256,9 @@ local function draw()
     for i = 1,#levels do
         local l = levels[i]
         local img = assets.image.levelSelect.pin1
-        if assets.code.player.unlocks.beatenLevels[l.name] then
+        if assets.code.player.unlocks.beatenLevels[l.name .. "Storm"] then
+            img = assets.image.levelSelect.pin3
+        elseif assets.code.player.unlocks.beatenLevels[l.name] then
             img = assets.image.levelSelect.pin2
         end
         --img = assets.image.levelSelect.flag

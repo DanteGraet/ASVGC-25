@@ -5,7 +5,9 @@ return {
 
     {"image/levelSelect/pin1.png"},
     {"image/levelSelect/pin2.png"},
-    {"image/levelSelect/flag.png"},
+    {"image/levelSelect/pin3.png"},
+
+--    {"image/levelSelect/flag.png"},
 
     {"image/levelSelect/sign/autumnGrove.png"},
     {"image/levelSelect/sign/derelictDam.png"},

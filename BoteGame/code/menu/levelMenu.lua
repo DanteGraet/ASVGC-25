@@ -65,12 +65,14 @@ function levelMenu:GenerateButtons()
         print(riverName)
         self.Ui:AddButton("play", 1920/2 - 128, 1080/2 + 32, 256, 256)
         self.Ui:GetButtons()["play"]:AddImage(0, 0, assets.image.levelSelect.sign.play)
+        self.Ui:GetButtons()["play"]:SetElementColour({1,1,1}, {.8,.8,.9}, {.7,.7,.8})
         self.Ui:GetButtons()["play"].functions.release = {function() gameState = "river" end}
 
         self.Ui:AddButton("playStorm", 1920/2 + 128*1.5, 1080/2 + 32, 256, 256)
         if assets.code.player.unlocks and assets.code.player.unlocks.levels and assets.code.player.unlocks.levels[riverName .. "Storm"] then
             self.Ui:GetButtons()["playStorm"]:AddImage(0, 0, assets.image.levelSelect.sign.storm)
             self.Ui:GetButtons()["playStorm"].functions.release = {function() isStorm = true; gameState = "river" end}
+            self.Ui:GetButtons()["playStorm"]:SetElementColour({1,1,1}, {.9,.8,.9}, {.8,.7,.8})
         else
             self.Ui:GetButtons()["playStorm"]:AddImage(0, 0, assets.image.levelSelect.sign.lock)
         end
@@ -79,15 +81,20 @@ function levelMenu:GenerateButtons()
         self.Ui:AddButton("back", 1920/2 - 128*3.5, 1080/2  + 32, 256, 256)
         self.Ui:GetButtons()["back"]:AddImage(0, 0, assets.image.levelSelect.sign.back)
         self.Ui:GetButtons()["back"].functions.release = {levelMenu.Close, self}
+        self.Ui:GetButtons()["back"]:SetElementColour({1,1,1}, {.9,.8,.8}, {.8,.7,.7})
     else
         self.Ui:AddButton("play", 1920/2 + 128*0.75, 1080/2 + 32, 256, 256)
         self.Ui:GetButtons()["play"]:AddImage(0, 0, assets.image.levelSelect.sign.play)
         self.Ui:GetButtons()["play"].functions.release = {function() gameState = "river" end}
+        self.Ui:GetButtons()["play"]:SetElementColour({1,1,1}, {.8,.8,.9}, {.7,.7,.8})
+
 
         -- back button
         self.Ui:AddButton("back", 1920/2 - 128*2.75, 1080/2  + 32, 256, 256)
         self.Ui:GetButtons()["back"]:AddImage(0, 0, assets.image.levelSelect.sign.back)
         self.Ui:GetButtons()["back"].functions.release = {levelMenu.Close, self}
+        self.Ui:GetButtons()["back"]:SetElementColour({1,1,1}, {.9,.8,.8}, {.8,.7,.7})
+
     end
 end
 

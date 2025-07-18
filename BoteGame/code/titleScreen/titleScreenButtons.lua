@@ -25,6 +25,49 @@ function tsb.CreateButtons(UI)
     UI:GetButtons()["creditButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 1)
     UI:GetButtons()["creditButton"]:SetElementColour({0.0,0.0,0.0, 0.5}, nil, nil, 2)
     UI:GetButtons()["creditButton"]:SetElementColour({1,1,1}, nil, nil, 4)
+    UI:GetButtons()["creditButton"].functions.hover = {
+    function(dt, self)
+            if not self.graphics[1].sin then
+                self.graphics[1].sin = 0
+
+                -- first time
+                self.graphics[1].ox = 50
+                self.graphics[4].ox = 50
+
+                self.graphics[1].oy = 50
+                self.graphics[4].oy = 50
+
+                self.graphics[1].x = self.graphics[1].x + 50
+                self.graphics[4].x = self.graphics[4].x + 50
+
+                self.graphics[1].y = self.graphics[1].y + 50
+                self.graphics[4].y = self.graphics[4].y + 50
+
+            end
+        end,
+        UI:GetButtons()["creditButton"]
+    }
+    UI:GetButtons()["creditButton"].functions.update = {
+        function(dt, self)
+            if self.graphics[1].sin then
+
+                if self.mouseMode ~= "none" then
+                    self.graphics[1].sin = self.graphics[1].sin + dt*math.pi
+                else
+                    self.graphics[1].sin = math.min(self.graphics[1].sin + dt*math.pi, math.ceil(self.graphics[1].sin/math.pi)*math.pi)
+                end
+
+                self.graphics[1].sy = 1 + math.sin(self.graphics[1].sin)*0.1
+                self.graphics[4].sy = 1 + math.sin(self.graphics[1].sin)*0.1
+
+                self.graphics[1].sx = 1 + math.sin(self.graphics[1].sin)*0.1
+                self.graphics[4].sx = 1 + math.sin(self.graphics[1].sin)*0.1
+
+            end
+        end,
+
+        UI:GetButtons()["creditButton"]
+    }
 
 
     UI:GetButtons()["quitButton"]:AddText("Quit", "center", {"black", 100}, 12 - 870, 6, 1920, 1)
