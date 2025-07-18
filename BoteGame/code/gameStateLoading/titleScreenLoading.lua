@@ -87,7 +87,7 @@ table.insert(toLoad, function()
     --camera = assets.code.camera():New(0, 0, 960, 900)
     love.resize()
 
-    ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
+    --ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
     riverGenerator = {}
     river = {}
     river = assets.code.river.river():New()

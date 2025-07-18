@@ -84,10 +84,10 @@ function music.manager(dt, fadeOut)
         for i = 1, #musicTracks do
     --        if musicTracks[i].drumTrack == nil then
             if musicTracks[i].volume ~= musicTracks[i].targetVolume then
-                musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+((crossFadeSpeed)*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1) * (fadeOut or 1) 
+                musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+((crossFadeSpeed)*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1) 
             end
         
-            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5*settings.audio.masterVolume.value)
+            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5*settings.audio.masterVolume.value* (fadeOut or 1) )
 
     --        elseif music.firstFrameInBar then
     --            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value)

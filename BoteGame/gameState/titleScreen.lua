@@ -70,7 +70,7 @@ local function update(dt)
             zones = riverGenerator:GetZone(y, true)
 
             particles.updateParticles(dt)
-            ambiance.update(dt, -y)
+            --ambiance.update(dt, -y)
 
             riverBorders.up =    y
             riverBorders.down =  y + love.graphics.getHeight()/screenScale
@@ -199,7 +199,7 @@ local function draw()
 
     if assets.image and assets.image.titleScreen and assets.image.titleScreen.title then 
         love.graphics.setColor(1,1,1,1)
-        love.graphics.draw(assets.image.titleScreen.title,50,50,0,0.75,0.75)
+        love.graphics.draw(assets.image.titleScreen.title,width*0.3 - 2.5 - 50,50,0,0.5,0.5, assets.image.titleScreen.title:getWidth()/2, 0)
         --font.setFont("black", 32)
         --love.graphics.print("Alpha Demo 2???",350,350)
     end

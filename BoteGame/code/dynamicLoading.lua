@@ -68,7 +68,7 @@ function DynamicLoading:Run()
             self:Update(dt)
             loadPercentage = math.min(loadPercentage + dt, 1)
     
-            music.manager(dt, loadPercentage)
+            music.manager(dt, 1-loadPercentage)
             if ambiance then
                 ambiance.update(dt, nil, 1-loadPercentage)
               
@@ -194,7 +194,7 @@ function DynamicLoading:Run()
         self:Update(dt)
         loadPercentage = math.min(loadPercentage + dt, 2)
 
-        music.manager(dt, 1-(loadPercentage-1))
+        music.manager(dt, loadPercentage-1)
         
         if ambiance then
             ambiance.update(dt, nil, loadPercentage-1) 
