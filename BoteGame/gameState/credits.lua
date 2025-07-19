@@ -52,6 +52,11 @@ local function extraLoad()
             if string.sub(text[1][1], 1, 5) == "https" then
                 buttons:AddTextButton(text[1][1], text[1][1], "center", text[2], 1920/2 - width/2, height, width, buttonColours)
                 buttons:GetButtons()[text[1][1]].functions.click = {love.system.openURL, text[1][1]}
+
+                buttons:GetButtons()[text[1][1]]:AddText(text[1][1], "left", text[2], 4, 4, 1000, 1)
+                buttons:GetButtons()[text[1][1]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
+
+
             else
                 table.insert(textList, {text[1][1], text[2], "center", height})
             end
@@ -60,6 +65,11 @@ local function extraLoad()
                 -- add button
                 buttons:AddTextButton(text[1][1], text[1][1], "left", text[2], 1920/2 - width/2, height, width, buttonColours)
                 buttons:GetButtons()[text[1][1]].functions.click = {love.system.openURL, text[1][1]}
+
+                buttons:GetButtons()[text[1][1]]:AddText(text[1][1], "left", text[2], 4, 4, 1000, 1)
+                buttons:GetButtons()[text[1][1]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
+                --love.graphics.setColor()
+                
             else
                 table.insert(textList, {text[1][1], text[2], "left", height})
             end
@@ -68,6 +78,11 @@ local function extraLoad()
                 -- add button
                 buttons:AddTextButton(text[1][2], text[1][2], "right", text[2], 1920/2 - width/2, height, width, buttonColours)
                 buttons:GetButtons()[text[1][2]].functions.click = {love.system.openURL, text[1][2]}
+
+                buttons:GetButtons()[text[1][2]]:AddText(text[1][2], "left", text[2], 4, 4, 1000, 1)
+                buttons:GetButtons()[text[1][2]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
+
+
             else
                 table.insert(textList, {text[1][2], text[2], "right", height})
             end
@@ -132,7 +147,8 @@ local function update(dt)
     buttons:Update(dt, mx, my-y)
 
     if y + 50 < maxHeight then
-        love.keyreleased("escape")
+        --love.keyreleased("escape")
+        gameState = "titleScreen"
     end
 end
 

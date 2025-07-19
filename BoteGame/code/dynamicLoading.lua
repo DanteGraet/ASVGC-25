@@ -76,7 +76,8 @@ function DynamicLoading:Run()
             end
 
             love.graphics.clear()
-            love.draw(true)
+            --love.draw(true)
+            game[previousGameState].draw()
             self:Draw()
             if love.timer then love.timer.sleep(0.001) end
         end
