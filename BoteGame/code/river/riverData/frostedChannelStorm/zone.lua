@@ -28,7 +28,7 @@ return {
         currentIcons = 3,
     },
     {
-        zone = "stormValley", --yes i know there is a file for the storm version. not using it yet
+        zone = "hailstormHell", --yes i know there is a file for the storm version. not using it yet
         displayName = "Hailstone Hell",
         subtitle = "Onslaught Approaching",
         distanceTitle = "-- 5KM --",
@@ -38,7 +38,7 @@ return {
     },
         {
         zone = "boulderValley-coniferousMountainside", --yes i know there is a file for the storm version. not using it yet
-        displayName = "_Storm Valley",
+        displayName = "_Hailstone Hell",
         subtitle = "",
         distanceTitle = "",
         distance = 2000,

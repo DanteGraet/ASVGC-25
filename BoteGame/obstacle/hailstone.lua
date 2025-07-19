@@ -36,6 +36,8 @@ function hailstoneObstacle:New(x, y)
 
         obj.speed = math.random(300,400)
 
+        if isStorm then obj.speed = obj.speed*1.7 end
+
 
         obj.particleCounter = 0
         obj.particleTime = 0.1

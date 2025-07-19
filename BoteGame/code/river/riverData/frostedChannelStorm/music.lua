@@ -45,8 +45,8 @@ return {
     zones = {
         ["Ice Rapids"] =        {0.9,0.9,0,0,0,0},
         ["Death Valley"] =    {0,0.9,0.9,0.9,0,0},
-        ["Hailstorm Hell"] =      stormValleyMusicManager,
-        ["_Hailstorm Hell"] =      {0.9,0,0,0,0,0},
+        ["Hailstone Hell"] =      stormValleyMusicManager,
+        ["_Hailstone Hell"] =      {0.9,0,0,0,0,0},
         ["Wooded Hills"] = {0.7,0,0,0,0,0}
     }
 }
