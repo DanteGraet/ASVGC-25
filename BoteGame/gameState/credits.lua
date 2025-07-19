@@ -175,6 +175,9 @@ local function draw()
     if textList then
         for i = 1,#textList do
             font.setFont(textList[i][2])
+            love.graphics.setColor(0,0,0,0.7)
+            love.graphics.printf(textList[i][1], 1920/2 - width/2+4, textList[i][4]+4, width, textList[i][3])
+            love.graphics.setColor(1,1,1)
             love.graphics.printf(textList[i][1], 1920/2 - width/2, textList[i][4], width, textList[i][3])
         end
 

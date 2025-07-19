@@ -15,7 +15,7 @@ return {
         {{"Art, Music and Design",      "Patrick Henschke"},        {"black", 32}},
         {{" "},                 {"black", 32}},
 
-        {{"Australian Stem Video Games Competition 2025"},    {"black", 32}},
+        {{"Australian STEM Video Games Challenge 2025"},    {"black", 32}},
         --{{"Made with Love2D"},    {"black", 32}},
 
         {{" "},                 {"black", 64}},
