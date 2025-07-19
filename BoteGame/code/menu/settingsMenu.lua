@@ -163,59 +163,59 @@ function SettingsMenu.SetCatagory(data)
         for i = 1,#settings.order[self.catagories[self.curentCatagroy].name] do
             local name = settings.order[self.catagories[self.curentCatagroy].name][i]
             local currentSetting = settings[self.catagories[self.curentCatagroy].name][name]
+            if currentSetting then
+                if currentSetting.type == "button" then
+                    if gameState == "titleScreen" or name ~= "removeSave" then
+                        self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, colours, "settings")
+                        self.Ui:GetButtons("settings")[name].functions.release = {currentSetting.func}
+                    end
+                
+                elseif currentSetting.type == "keybindButton" then
+                    self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, nil, "settings")
+                    for i = 1,2 do
+                        local h = f:getHeight()
+                        --name, x, y, sx, sy, layer
+                        self.Ui:AddButton(name .. i, -500 + i*200, currentHeight, 200, h, "settings")
+                        self.Ui:GetButtons("settings")[name .. i].functions.release = {clickKeybind, {name, i}}
+                        self.Ui:GetButtons("settings")[name .. i]:AddText("[" .. currentSetting.value[i] .. "]", "center", font1, 0, 0, 200)
+                        self.Ui:GetButtons("settings")[name .. i]:SetElementColour(colours[1], colours[2], colours[1+2])
 
-            if currentSetting.type == "button" then
-                print(name)
-                if gameState == "titleScreen" or name ~= "removeSave" then
-                    self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, colours, "settings")
-                    self.Ui:GetButtons("settings")[name].functions.release = {currentSetting.func}
+                    end
+                elseif currentSetting.type == "slider" then
+                    self.Ui:AddSlider(name, currentX+f:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
+
+                    self.Ui:GetButtons("settings")[name]:AddImageRail(0, -9, assets.image.ui.settings.indicator)
+                    self.Ui:GetButtons("settings")[name]:AddImage(0, -4, assets.image.ui.settings.bar)
+                    self.Ui:GetButtons("settings")[name]:SetElementColourRail({.9,.9,.9},{.7,.9,.7},{.6,.6,.6})
+
+                    self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -f:getWidth(currentSetting.displayName) - 10, -20, 1000)
+                    self.Ui:GetButtons("settings")[name].func = {sliderFunction, currentSetting}
+
+
+
+                elseif currentSetting.type == "toggle" then
+                    self.Ui:AddToggle(name, currentX, currentHeight, f:getWidth(currentSetting.displayName) + 40, f:getHeight(), currentSetting.value, "settings")
+
+                    self.Ui:GetButtons("settings")[name].button1:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
+                    self.Ui:GetButtons("settings")[name].button1:AddImage(0, 9, assets.image.ui.settings.check)
+                    self.Ui:GetButtons("settings")[name].button1:SetElementColour({1,1,1}, {0.9,0.9,0.9}, {0.8,0.8,0.8})
+
+                    self.Ui:GetButtons("settings")[name].button2:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
+                    self.Ui:GetButtons("settings")[name].button2:AddImage(0, 9, assets.image.ui.settings.empty)
+                    self.Ui:GetButtons("settings")[name].button2:SetElementColour({1,1,1}, {0.9,0.9,0.9}, {0.8,0.8,0.8})
+
+
+
+                    self.Ui:GetButtons("settings")[name].func = {currentSetting.func or toggleFunction, currentSetting}
+
+                elseif currentSetting.type == "header" then
+                    self.Ui:AddTextButton(name, currentSetting.displayName, nil, font.getFont(font2), currentX, currentHeight + 10, 400, {{1,1,1}}, "settings")
+
+                    currentHeight = currentHeight + font.getFont(font2):getHeight() - f:getHeight() + 10
                 end
-            
-            elseif currentSetting.type == "keybindButton" then
-                self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, nil, "settings")
-                for i = 1,2 do
-                    local h = f:getHeight()
-                    --name, x, y, sx, sy, layer
-                    self.Ui:AddButton(name .. i, -500 + i*200, currentHeight, 200, h, "settings")
-                    self.Ui:GetButtons("settings")[name .. i].functions.release = {clickKeybind, {name, i}}
-                    self.Ui:GetButtons("settings")[name .. i]:AddText("[" .. currentSetting.value[i] .. "]", "center", font1, 0, 0, 200)
-                    self.Ui:GetButtons("settings")[name .. i]:SetElementColour(colours[1], colours[2], colours[1+2])
 
-                end
-            elseif currentSetting.type == "slider" then
-                self.Ui:AddSlider(name, currentX+f:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
-
-                self.Ui:GetButtons("settings")[name]:AddImageRail(0, -9, assets.image.ui.settings.indicator)
-                self.Ui:GetButtons("settings")[name]:AddImage(0, -4, assets.image.ui.settings.bar)
-                self.Ui:GetButtons("settings")[name]:SetElementColourRail({.9,.9,.9},{.7,.9,.7},{.6,.6,.6})
-
-                self.Ui:GetButtons("settings")[name]:AddText(currentSetting.displayName, nil, font1, -f:getWidth(currentSetting.displayName) - 10, -20, 1000)
-                self.Ui:GetButtons("settings")[name].func = {sliderFunction, currentSetting}
-
-
-
-            elseif currentSetting.type == "toggle" then
-                self.Ui:AddToggle(name, currentX, currentHeight, f:getWidth(currentSetting.displayName) + 40, f:getHeight(), currentSetting.value, "settings")
-
-                self.Ui:GetButtons("settings")[name].button1:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
-                self.Ui:GetButtons("settings")[name].button1:AddImage(0, 9, assets.image.ui.settings.check)
-                self.Ui:GetButtons("settings")[name].button1:SetElementColour({1,1,1}, {0.9,0.9,0.9}, {0.8,0.8,0.8})
-
-                self.Ui:GetButtons("settings")[name].button2:AddText(currentSetting.displayName, nil, font1, 40, 0, 1000)
-                self.Ui:GetButtons("settings")[name].button2:AddImage(0, 9, assets.image.ui.settings.empty)
-                self.Ui:GetButtons("settings")[name].button2:SetElementColour({1,1,1}, {0.9,0.9,0.9}, {0.8,0.8,0.8})
-
-
-
-                self.Ui:GetButtons("settings")[name].func = {currentSetting.func or toggleFunction, currentSetting}
-
-            elseif currentSetting.type == "header" then
-                self.Ui:AddTextButton(name, currentSetting.displayName, nil, font.getFont(font2), currentX, currentHeight + 10, 400, {{1,1,1}}, "settings")
-
-                currentHeight = currentHeight + font.getFont(font2):getHeight() - f:getHeight() + 10
+                currentHeight = currentHeight + f:getHeight()
             end
-
-            currentHeight = currentHeight + f:getHeight()
         end
     end
 end

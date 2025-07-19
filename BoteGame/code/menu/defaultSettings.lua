@@ -103,6 +103,8 @@ return {
     keybinds = {
         h_keybind = {type = "header", displayName = "Keybinds"},
         h_danger = {type = "header", displayName = "Danger Zone"},
+        h_blank = {type = "header", displayName = "     "},
+
 
         accelerate = {type = "keybindButton", displayName = "Accelerate", value = {"w", "up"}},
         decelerate = {type = "keybindButton", displayName = "Decelerate", value = {"s", "down"}},
@@ -165,6 +167,12 @@ return {
             "left",
             "right",
             "pause",
+
+            "h_blank",
+            "h_blank",
+            
+
+
             "h_danger",
             "resetSettings",
             "removeSave"
