@@ -136,28 +136,30 @@ function levelMenu:Draw(gs)
     love.graphics.printf(typeData[self.type].displayName, 0, 350 - 64, 1920, "center")
 
     -- Highscore
-    font.setFont("black", 48)
-    local str = "High Score: "
-    local displayNum = 0
-    if assets.save.highscore[riverName] and assets.save.highscore[riverName][1] then
-        if settings.graphics.shortNumbers.value then
-            displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][1] or 0)), 2)
-        else
-            displayNum = math.floor(math.abs(assets.save.highscore[riverName][1] or 0))
+    if assets.save and assets.save.highscore then
+        font.setFont("black", 48)
+        local str = "High Score: "
+        local displayNum = 0
+        if assets.save.highscore[riverName] and assets.save.highscore[riverName][1] then
+            if settings.graphics.shortNumbers.value then
+                displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][1] or 0)), 2)
+            else
+                displayNum = math.floor(math.abs(assets.save.highscore[riverName][1] or 0))
+            end
+            str = str .. displayNum
         end
-        str = str .. displayNum
-    end
 
-    if assets.save.highscore[riverName .. "Storm"] and assets.save.highscore[riverName .. "Storm"][1] then
-        
-        if settings.graphics.shortNumbers.value then
-            displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName .. "Storm"][1] or 0)), 2)
-        else
-            displayNum = math.floor(math.abs(assets.save.highscore[riverName .. "Storm"][1] or 0))
+        if assets.save.highscore[riverName .. "Storm"] and assets.save.highscore[riverName .. "Storm"][1] then
+            
+            if settings.graphics.shortNumbers.value then
+                displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName .. "Storm"][1] or 0)), 2)
+            else
+                displayNum = math.floor(math.abs(assets.save.highscore[riverName .. "Storm"][1] or 0))
+            end
+            str = str .. " | Storm Score: " .. displayNum
         end
-        str = str .. " | Storm Score: " .. displayNum
+        love.graphics.printf(str, 0, 350+128, 1920, "center")
     end
-    love.graphics.printf(str, 0, 350+128, 1920, "center")
 
 
     self.Ui:Draw()
