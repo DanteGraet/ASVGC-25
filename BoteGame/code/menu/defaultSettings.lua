@@ -17,9 +17,19 @@ local function RemoveSave()
     assets.save.highscore = nil
 end
 
+local function ResetKeybinds()
+    settings.keybinds = love.filesystem.load("code/menu/defaultSettings.lua")().keybinds
+
+    settingsMenu.SetCatagory({settingsMenu, 3})
+
+    inputManager.keybinds = assets.code.menu.keybinds()
+    saveSettings()
+end
+
 local function ResetSettings()
     settings = love.filesystem.load("code/menu/defaultSettings.lua")()
     settingsMenu.SetCatagory({settingsMenu, 3})
+    inputManager.keybinds = assets.code.menu.keybinds()
     saveSettings()
 end
 
@@ -113,6 +123,7 @@ return {
         pause = {type = "keybindButton", displayName = "Pause", value = {"escape", "p"}},
 
         removeSave = {type = "button", displayName = "Delete Save", func = RemoveSave},
+        resetKeybinds = {type = "button", displayName = "Reset Keybinds", func = ResetKeybinds},
         resetSettings = {type = "button", displayName = "Reset All Settings", func = ResetSettings},
     },
 
@@ -167,8 +178,9 @@ return {
             "left",
             "right",
             "pause",
+            "resetKeybinds",
 
-            "h_blank",
+
             "h_blank",
             
 
