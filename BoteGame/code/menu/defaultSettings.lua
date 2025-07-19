@@ -95,7 +95,7 @@ return {
 
         zoneTitles = {type = "toggle", displayName = "Show Biome Titles", value = true},
 
-        particles = {type = "slider", displayName = "Spawn Particles", value = 1},
+        particles = {type = "slider", displayName = "Particles", value = 1},
         lightning = {type = "toggle", displayName = "Lightning", value = true},
         
 
@@ -106,6 +106,7 @@ return {
 
     },
     audio = {
+        h_blank = {type = "header", displayName = "     "},
         masterVolume = {type = "slider", displayName = "Master Volume", value = 0.8},
 
         h_music = {type = "header", displayName = "Music"},
@@ -169,6 +170,7 @@ return {
             "lightning",
         },
         audio = {
+            "h_blank",
             "masterVolume",
 
             "musicVolume",
