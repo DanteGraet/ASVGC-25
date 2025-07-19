@@ -125,8 +125,10 @@ end
 local function resize()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    levelSelectScreen:GetButtons().back.x = -sox
-    levelSelectScreen:GetButtons().back.y = 1080+soy-150
+    if levelSelectScreen then
+        levelSelectScreen:GetButtons().back.x = -sox
+        levelSelectScreen:GetButtons().back.y = 1080+soy-150
+    end
 end
 
 local function update(dt)
