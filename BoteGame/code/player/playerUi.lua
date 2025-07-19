@@ -109,11 +109,11 @@ function UI.Draw()
 
     love.graphics.setColor(0, 0, 0)
 
-    font.setFont("black", 48)
+    font.setFont("black", 48*2*2)
     if side == 1 then
-        love.graphics.printf(text, x - 350, y - 72, 150, "left")
+        love.graphics.printf(text, x - 350*4*scale, y - 72*scale*4, 150*4, "left", 0, scale, scale)
     else
-        love.graphics.printf(text, x + 200, y - 72, 150, "right")
+        love.graphics.printf(text, x + 200*4*scale, y - 72*scale*4, 150*4, "right", 0, scale, scale)
     end
 
 
