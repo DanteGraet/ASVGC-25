@@ -7,6 +7,9 @@ return {
     {"image/levelSelect/pin2.png", "blur"},
     {"image/levelSelect/pin3.png", "blur"},
 
+    {"image/levelSelect/wood.png", "blur"},
+
+
 --    {"image/levelSelect/flag.png"},
 
     {"image/levelSelect/sign/autumnGrove.png"},

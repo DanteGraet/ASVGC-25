@@ -251,6 +251,15 @@ end
 
 
 local function draw()
+    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+    for x = -10, love.graphics.getWidth()/screenScale + 10, 500 do
+        for y = -10, love.graphics.getHeight()/screenScale + 10, 500 do
+            love.graphics.draw(assets.image.levelSelect.wood, x - sox, y - soy)
+        end
+    end
+
     love.graphics.draw(assets.image.levelSelect.background, 0, 0, 0, 1920/5120, 1080/2880)
 
     for i = 1,#levels do
