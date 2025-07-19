@@ -1,11 +1,3 @@
-local function iceplainsCurrent(percentage)
-    return 100*quindoc.clamp(percentage,0,1) + 50
-end
-
-local function boulderValleyCurrent(percentage)
-    return 150
-end
-
 local function boulderValleyChainLengthCoefficient(percentage)
     return 1.35 - 0.2*quindoc.clamp(percentage,0,1)
 end
@@ -18,11 +10,7 @@ local function stormValleyCurrent(percentage)
     else
         idk = 1 - 2*((percentage - 0.8) * 5)
     end
-    return 150 + 150*quindoc.clamp(idk,0,1) 
-end
-
-local function stormValleyChainLengthCoefficient(percentage)
-    return 1.15 - 0.05*quindoc.clamp(percentage,0,1)
+    return 250 + 150*quindoc.clamp(idk,0,1) 
 end
 
 local function stormValleyStormIntensity(percentage)
@@ -35,6 +23,8 @@ local function stormValleyStormIntensity(percentage)
     else
         idk = 1 - 2*((percentage - 0.8) * 5)
     end
+
+    idk = quindoc.clamp(idk*0.6+0.4,0,1)
 
     return 1000*quindoc.clamp(idk,0,1)
 end
@@ -51,28 +41,27 @@ end
 
 
 return {
-    ["Glacial Lake"] = {
-        difficultyFunction = 0,
-        current = 100,
+
+    ["Ice Rapids"] = {
+        difficultyFunction = 0.024,
+        current = 350,
+        stormIntensity = 400
     },
-    ["Ice Plains"] = {
-        difficultyFunction = 0.008,
-        current = iceplainsCurrent,
+    ["Death Valley"] = {
+        difficultyFunction = 0.004,
+        current = 350,
+        chainLengthCoefficient = 0.9,
+        stormIntensity = 400
     },
-    ["Boulder Valley"] = {
-        difficultyFunction = 0.002,
-        current = boulderValleyCurrent,
-        chainLengthCoefficient = boulderValleyChainLengthCoefficient,
-    },
-    ["Storm Valley"] = {
+    ["Hailstone Hell"] = {
         stormIntensity = stormValleyStormIntensity,
         difficultyFunction = 0.007,
         current = stormValleyCurrent,
         chainLengthCoefficient = stormValleyChainLengthCoefficient,
     },
-    ["_Storm Valley"] = {
+    ["_Hailstone Hell"] = {
         stormIntensity = 0,
-        difficultyFunction = 0.005,
+        difficultyFunction = 0.007,
         current = 100,
         chainLengthCoefficient = 1.1,
     },

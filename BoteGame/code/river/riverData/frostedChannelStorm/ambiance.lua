@@ -1,22 +1,20 @@
 local function boulderValleyWind(percentage)
-    return 100 + 300*quindoc.clamp(percentage,0,1)
+    return 600 + 300*quindoc.clamp(percentage,0,1)
 end
 
 local function boulderValleySnow(percentage)
-    return 10*quindoc.clamp(percentage,0,1) + 5
+    return 10*quindoc.clamp(percentage,0,1) + 15
 end
 
 
 local function stormValleyWind(percentage)
-    local idk = percentage
+    local idk = 0
 
-    if percentage < 0.8 then
-        idk = percentage*1.25
-    else
-        idk = 1 - 2*((percentage - 0.8) * 5)
+    if percentage > 0.8 then
+        idk = percentage-0.8
     end
 
-    return 400 + 900*quindoc.clamp(idk,-0.2,1)
+    return 900 + -900*quindoc.clamp(idk,0,1)
 end
 
 local function stormValleySnow(percentage)
@@ -28,27 +26,23 @@ local function stormValleySnow(percentage)
         idk = 1 - 2*((percentage - 0.8) * 5)
     end
 
-    return 23 + 30*quindoc.clamp(idk,-1,1)
+    return 25 + 30*quindoc.clamp(idk,-1,1)
 end
 
 return {
-    ["Glacial Lake"] = {
-        snowAmount = 1,
-        windSpeed = 200,
+    ["Ice Rapids"] = {
+        snowAmount = 15,
+        windSpeed = 600,
     },
-    ["Ice Plains"] = {
-        snowAmount = 5,
-        windSpeed = 200,
-    },
-    ["Boulder Valley"] = {
+    ["Death Valley"] = {
         snowAmount = boulderValleySnow,
         windSpeed = boulderValleyWind,
     },
-    ["Storm Valley"] = {
+    ["Hailstorm Hell"] = {
         snowAmount = stormValleySnow,
         windSpeed = stormValleyWind,
     },
-    ["_Storm Valley"] = {
+    ["_Hailstorm Hell"] = {
         snowAmount = 3,
         windSpeed = 300,
     },

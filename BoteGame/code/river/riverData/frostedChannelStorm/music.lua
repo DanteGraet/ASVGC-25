@@ -35,7 +35,7 @@ return {
         crossFadeSpeed = 0.3,
         tracks = {  -- Starting Values
             [1] = {track = love.audio.newSource("music/mvpRiver/townChordsV2.mp3","stream"),        volume = 0.9, targetVolume = 0.9},
-            [2] = {track = love.audio.newSource("music/mvpRiver/snowMelodyV2.mp3","stream"),        volume = 0, targetVolume = 0},
+            [2] = {track = love.audio.newSource("music/mvpRiver/snowMelodyV2.mp3","stream"),        volume = 0.9, targetVolume = 0.9},
             [3] = {track = love.audio.newSource("music/mvpRiver/valleyChords.mp3","stream"),        volume = 0, targetVolume = 0},
             [4] = {track = love.audio.newSource("music/mvpRiver/valleyDrums.mp3","stream"),         volume = 0, targetVolume = 0},
             [5] = {track = love.audio.newSource("music/mvpRiver/stormMelodyV2.mp3","stream"),       volume = 0, targetVolume = 0},
@@ -43,11 +43,10 @@ return {
         },
     },
     zones = {
-        ["Glacial Lake"] =        {0.9,0,0,0,0,0},
-        ["Ice Plains"] =        {0.9,0.9,0,0,0,0},
-        ["Boulder Valley"] =    {0,0.9,0.9,0.9,0,0},
-        ["Storm Valley"] =      stormValleyMusicManager,
-        ["_Storm Valley"] =      {0.9,0,0,0,0,0},
+        ["Ice Rapids"] =        {0.9,0.9,0,0,0,0},
+        ["Death Valley"] =    {0,0.9,0.9,0.9,0,0},
+        ["Hailstorm Hell"] =      stormValleyMusicManager,
+        ["_Hailstorm Hell"] =      {0.9,0,0,0,0,0},
         ["Wooded Hills"] = {0.7,0,0,0,0,0}
     }
 }
