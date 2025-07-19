@@ -20,14 +20,18 @@ function RiverGenerator:New(name)
     -- clear all channels
     generatorThread_playerY:clear()
     generatorThread_riverData:clear()
-    generatorThread_scale:clear()
-    generatorThread_backgroundImageData:clear()
-    generatorThread_requestBackground:clear()
-    generatorThread_riverSegments:clear()
-    generatorThread_minZones:clear()
-    generatorThread_screenWidth:clear()
     generatorThread_seed:clear()
 
+    generatorThread_backgroundImageData:clear()
+    generatorThread_minZones:clear()
+    generatorThread_riverSegments:clear()
+    generatorThread_scale:clear()
+    generatorThread_screenWidth:clear()
+
+    -- these threads run in river.lua (gamestate)
+    love.thread.getChannel("generatorThread_requestBackground"):clear()
+    love.thread.getChannel("background_closeThread"):clear()
+    love.thread.getChannel("background_closeThreadReceived"):clear()    -- may be depreciated
 
     local obj = setmetatable({}, RiverGenerator)
 
