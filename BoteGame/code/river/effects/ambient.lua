@@ -81,8 +81,6 @@ function a.update(dt, y, volMult)
         a.leafUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent, a.globalLeafTimer)
         a.rainUpdate(dt, p, a.windSpeed, currentZone, transitionZone, transitionPercent)
 
-
-        
     end
 
     -- sounds

@@ -44,7 +44,7 @@ local function GetColourAt(x, y)
 
                 colour = {0.68,0.34,0.1}
 
-            elseif elevation < 1.37*(3*p+1) + noiseB - noiseA then --main gtass
+            elseif elevation < 1.37 + noiseB - noiseA then --main gtass
                 
                 --local snowPatch = 0.9*love.math.noise(2*x/1600.1,2*y/1600.1) + 0.1*love.math.noise(x/100.1,y/100.1)
 
@@ -53,7 +53,7 @@ local function GetColourAt(x, y)
                 else colour = {0.87,0.5,0.21} end
 
 
-            elseif elevation < 1.4*(3*p+1) + noiseB - noiseA then --uppergrass
+            elseif elevation < 1.4 + noiseB - noiseA then --uppergrass
                 colour = {0.8,0.4,0.16}
             else 
                 if love.math.noise(x/1000.1,y/1000.1) < 0.3 then
@@ -77,7 +77,7 @@ local function GetColourAt(x, y)
                     colour = {0.50,0.33,0.3}
                 end
 
-            elseif elevation < 0.97*(3*p+1) + noiseB - noiseA then --main grass
+            elseif elevation < 0.97 + noiseB - noiseA then --main grass
                 
                 if love.math.noise(x/2000.1,y/2000.1) < 0.48 then --gray gravel
 
@@ -101,7 +101,7 @@ local function GetColourAt(x, y)
 
                 end
 
-            elseif elevation < 1*(3*p+1) + noiseB - noiseA+0.03 then --uppergrass
+            elseif elevation < 1 + noiseB - noiseA+0.03 then --uppergrass
                 colour = {0.26,0.53,0.07}
             else 
                 if love.math.noise(x/1000.1,y/1000.1) < 0.3 then

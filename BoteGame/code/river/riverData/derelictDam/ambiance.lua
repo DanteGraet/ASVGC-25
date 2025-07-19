@@ -11,6 +11,10 @@ return {
         rainAmount = 50,
         windSpeed = 400,
     },
+    ["_The Inlet"] = {
+        rainAmount = 30,
+        windSpeed = 400,
+    },
     ["Electrical Complex"] = {
         rainAmount = 15,
         windSpeed = 300,

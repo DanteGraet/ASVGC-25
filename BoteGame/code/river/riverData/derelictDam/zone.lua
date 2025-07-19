@@ -60,7 +60,7 @@ return {
     },
     {
         zone = "theInlet-lowerDam",
-        displayName = "The Inlet",
+        displayName = "_The Inlet",
         subtitle = "Passing the Floodgates",
         distanceTitle = "-- 5KM --",
         distance = 1000,

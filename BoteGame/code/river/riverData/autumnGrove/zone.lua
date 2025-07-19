@@ -49,7 +49,7 @@ return {
     },
     {
         zone = "autumnRapids-gravellyPlains",
-        displayName = "Autumn Rapids",
+        displayName = "_Autumn Rapids",
         subtitle = "Fast-flowing stream",
         distance = 1000,
         transition = 0,
@@ -63,5 +63,4 @@ return {
         transition = 0,
         currentIcons = 3,
     },
-
 }

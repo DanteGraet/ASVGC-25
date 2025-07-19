@@ -38,6 +38,7 @@ function music.beQuite(dt, abrupt)
         if abrupt then
             for i = 1, #musicTracks do
                 musicTracks[i].volume = 0
+                musicTracks[i].track:setVolume(0.001)
             end
         end
     end
@@ -72,16 +73,6 @@ function music.manager(dt, fadeOut)
 
         -- grab target volume/s
         local targets = quindoc.runIfFunc(zoneMusicTarget[currentZoneName]) or {}
-        --[[if targets then
-            for i = 1,#targets do
-                if musicTracks[i] then
-
-                    musicTracks[i].targetVolume = targets[i] --or musicTracks[i].targetVolume
-                end
-            end
-        end]]
-
-
 
         for i = 1, #musicTracks do
             musicTracks[i].targetVolume = targets[i] or 0.001

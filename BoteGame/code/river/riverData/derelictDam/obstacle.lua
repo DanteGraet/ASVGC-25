@@ -42,6 +42,11 @@ return {
         difficultyFunction = 0.01,
         current = theInletCurrent,
     },
+    ["_The Inlet"] = {
+        stormIntensity = 300,
+        difficultyFunction = 0.015,
+        current = 50,
+    },
     ["Electrical Complex"] = {
         stormIntensity = 300,
         difficultyFunction = 0.015,

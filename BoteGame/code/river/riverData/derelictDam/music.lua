@@ -14,6 +14,7 @@ return {
         ["Gravelly Plains"] =        {1,0,0,0,0,0},
         ["Upper Dam"] =              {0.8,0.8,0.6,1,0,0},
         ["The Inlet"] =              {0,0.7,0.7,0,1,0},
+        ["_The Inlet"] =              {0,0.7,0.7,0,1,0},
         ["Electrical Complex"] =     {0,0,1,0,1,1},
         ["River Mouth"] =            {1,0,0,0,0,0},
     }

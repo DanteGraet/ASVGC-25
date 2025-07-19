@@ -28,7 +28,7 @@ local function GetColourAt(x, y)
         --if p > 0.9 then p = 0 end
 
 
-        local elevation = distToEdge/(500+500*p)
+        local elevation = distToEdge/(500)
 
         local noiseA = love.math.noise(y/1500.01) / 10
         local noiseB = love.math.noise(y/300.01) / 10
