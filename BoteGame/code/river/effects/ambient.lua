@@ -42,10 +42,10 @@ a.sounds = {
 
 local rn = riverName .. ((isStorm == true and "Storm") or "")
 
-function a.update(dt, y, volMult)
+function a.update(dt, y, volMult, zone)
     -- set up variables
     local p = 0
-    local currentZone
+    local currentZone = zone
     local transitionZone
     if y or (player and camera) then
         p = riverGenerator:GetPercentageThrough(y or (player and player.y) or camera.y)
@@ -100,18 +100,18 @@ function a.update(dt, y, volMult)
         if type(data.sound) == "table" then
             -- static
 
-            data.timer = data.timer + dt*5
+            --data.timer = data.timer + dt*5
 
             data.tick = data.tick + dt
 
             if data.tick > 0.3 and data.value > 0 then            
 
-                if math.random(1,math.max(math.ceil(data.value-data.timer)),2) == 1 then
+                if math.random(-50, data.value*100) > 0 then
                     audioPlayer.playSound(data.sound, "", nil, nil, 0.75)
                     data.timer = 0
                 end
 
-                data.tick = 0
+                data.tick = data.tick - 0.3
 
             end
         else

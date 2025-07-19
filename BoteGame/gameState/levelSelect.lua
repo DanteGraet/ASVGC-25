@@ -34,6 +34,8 @@ end
 
 
 local function extraLoad()
+    ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
+
     isStorm = false
 
     uiFade = 0
@@ -128,7 +130,6 @@ local function resize()
 end
 
 local function update(dt)
-
     if compRelease then
         if love.keyboard.isDown("lshift") and love.keyboard.isDown("u") then
             unlockTimer = unlockTimer + dt
@@ -145,6 +146,12 @@ local function update(dt)
             unlockTimer = math.max(unlockTimer - dt, 0)
         end
     end
+
+
+    ambiance.update(dt, nil, nil, {audio = {bird = 0.5, water = 1}})
+
+    --currentZone.audio[name].value
+
 
     dialouge.update(dt)
 
