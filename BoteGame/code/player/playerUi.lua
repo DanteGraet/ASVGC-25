@@ -153,17 +153,34 @@ function UI.Draw()
 
     local keybinds = inputManager.keybinds
 
+    local function cap(str)
+        return (str:gsub("^%l", string.upper))
+    end
+
 
     if player.tutorialAlpha then
 
         font.setFont("black", 64)
-        love.graphics.setColor(0,0,0,0.8*player.tutorialAlpha)
-        love.graphics.print("Steer: "..keybinds["left"].keyboard[1].." / "..keybinds["right"].keyboard[1],250+6,y-200+6)
-        love.graphics.print("Throttle: "..keybinds["accelerate"].keyboard[1].." / "..keybinds["decelerate"].keyboard[1],250+6,y-140+6)
 
-        love.graphics.setColor(1,1,1,1*player.tutorialAlpha)
-        love.graphics.print("Steer: "..keybinds["left"].keyboard[1].." / "..keybinds["right"].keyboard[1],250,y-200)
-        love.graphics.print("Throttle: "..keybinds["accelerate"].keyboard[1].." / "..keybinds["decelerate"].keyboard[1],250,y-140)
+        local text1 = "Steer: ".. cap(keybinds["left"].keyboard[1]) .."/".. cap(keybinds["right"].keyboard[1])
+        local text2 = "Throttle: "..cap(keybinds["accelerate"].keyboard[1]).."/"..cap(keybinds["decelerate"].keyboard[1])
+        if side == 1 then
+            love.graphics.setColor(0,0,0,0.8*player.tutorialAlpha)
+            love.graphics.print(text1,250+6,y-200+6)
+            love.graphics.print(text2,250+6,y-140+6)
+
+            love.graphics.setColor(1,1,1,1*player.tutorialAlpha)
+            love.graphics.print(text1,250,y-200)
+            love.graphics.print(text2,250,y-140)
+        else
+            love.graphics.setColor(0,0,0,0.8*player.tutorialAlpha)
+            love.graphics.printf(text1,250+6,y-200+6, 1910 - 500, "right")
+            love.graphics.printf(text2,250+6,y-140+6, 1910 - 500, "right")
+
+            love.graphics.setColor(1,1,1,1*player.tutorialAlpha)
+            love.graphics.printf(text1,250,y-200, 1910 - 500, "right")
+            love.graphics.printf(text2,250,y-140, 1910 - 500, "right")
+        end
 
     end
 
