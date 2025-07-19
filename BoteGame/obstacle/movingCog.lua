@@ -42,7 +42,7 @@ function movingCogObstacle:New(x, y)
     obj.spinDirection = (math.random(1, 2) == 1 and 1) or -1
     obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
 
-    if isStorm and zones.zone == "gruelingGrove" then obj.phaseSpeed = obj.phaseSpeed*3
+    if isStorm and zones.zone == "ruinsOfRegret" then obj.phaseSpeed = obj.phaseSpeed*1.8
     elseif isStorm then obj.phaseSpeed = obj.phaseSpeed*1.3 end
 
 

@@ -10,7 +10,7 @@ local function gruelingGroveCurrent(percentage)
 
     else
 
-        return 400-100*((percentage-0.8)*5)
+        return 350-150*((percentage-0.8)*5)
 
     end
 
@@ -36,13 +36,14 @@ return {
         stormIntensity = 400
     },
     ["Grueling Grove"] = {
-        difficultyFunction = 0.01,
+        difficultyFunction = 0.004,
         current = gruelingGroveCurrent,
-        stormIntensity = 400
+        stormIntensity = 400,
+        chainLengthCoefficient = 1.25
     },
     ["Ruins of Regret"] = {
         difficultyFunction = 0.026,
-        current = 300,
+        current = 250,
         stormIntensity = ruinsStormIntensity
     },
     ["Clockwork Catastrophe"] = {

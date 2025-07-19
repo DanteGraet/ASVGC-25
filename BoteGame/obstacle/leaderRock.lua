@@ -57,7 +57,7 @@ function leaderRockObstacle:New(x, y)
 
             if randNum == 1 and riverName ~= "autumnGrove" or randNum == 2 and riverName ~= "autumnGrove" then
 
-                error(riverName)
+                --error(riverName)
 
                 chainDiff = math.random(200,250)*chainLengthCoefficient
                 obsToInsert = assets.obstacle.hugeRock
