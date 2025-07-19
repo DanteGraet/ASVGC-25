@@ -117,6 +117,12 @@ local function unload()
     player = nil
     river = nil
 
+    for i = 1,#obstacles do
+        if obstacles[i].Remove then
+            obstacles[i]:Remove()
+        end
+    end
+
     pauseMenu = nil
     gameOverMenu = nil
 end
