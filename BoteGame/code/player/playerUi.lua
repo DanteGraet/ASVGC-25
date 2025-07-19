@@ -151,6 +151,24 @@ function UI.Draw()
         love.graphics.setColor(1,1,0.5+0.5*(1-percentageOver))
     end
 
+    local keybinds = assets.code.menu.keybinds()
+
+
+    if player.tutorialAlpha then
+
+        font.setFont("black", 64)
+        love.graphics.setColor(0,0,0,0.8*player.tutorialAlpha)
+        love.graphics.print("Steer: "..keybinds["left"].keyboard[2].." / "..keybinds["right"].keyboard[2],250+6,y-200+6)
+        love.graphics.print("Throttle: "..keybinds["accelerate"].keyboard[2].." / "..keybinds["decelerate"].keyboard[2],250+6,y-140+6)
+
+        love.graphics.setColor(1,1,1,1*player.tutorialAlpha)
+        love.graphics.print("Steer: "..keybinds["left"].keyboard[2].." / "..keybinds["right"].keyboard[2],250,y-200)
+        love.graphics.print("Throttle: "..keybinds["accelerate"].keyboard[2].." / "..keybinds["decelerate"].keyboard[2],250,y-140)
+
+    end
+
+    love.graphics.setColor(1,1,1,1)
+
     love.graphics.draw(assets.image.ui.needle, x - 480*scale + 960*(1-side)*scale + randShakeX, y - 320*scale + randShakeY, dir, scale, scale, (assets.image.ui.needle:getWidth())-32, assets.image.ui.needle:getHeight()/2)
 end
 

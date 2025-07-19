@@ -52,7 +52,7 @@ end
 
 return {
     ["Glacial Lake"] = {
-        difficultyFunction = 0.0001,
+        difficultyFunction = 0,
         current = 100,
     },
     ["Ice Plains"] = {

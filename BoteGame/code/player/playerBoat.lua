@@ -215,6 +215,19 @@ function PlayerBoat:Update(dt, inputs, gameSpeed)
     else self:UpdateBeached(dt) end
     local bt = tweens.sineInOut(self.beachTimer)
 
+    --Tutorial
+    if zones and zones.zone == "glacialLake" then
+        
+        if not self.tutorialAlpha then self.tutorialAlpha = -2 end
+
+        self.tutorialAlpha = math.min(self.tutorialAlpha + 0.5*dt,1)
+
+    elseif self.tutorialAlpha then
+
+        self.tutorialAlpha = self.tutorialAlpha - 0.5*dt
+
+    end
+
     
     if self.health > 0 and self.y > riverBorders.up - 100 then
         self:ManageInputs(dt, inputs, bt)

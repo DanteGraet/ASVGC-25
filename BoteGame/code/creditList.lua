@@ -36,11 +36,13 @@ return {
         {{" "},                 {"black", 32}},
         {{" "},                 {"black", 32}},
 
-        {{"Play the original:"},                                                             {"black", 32}},
-        {{"BGWaN",              "https://scratch.mit.edu/projects/545055939"},      {"black", 32}},
+        {{"Special Thanks:"},                                                             {"black", 32}},
+        {{"Lisa Pennifold, our team mentor"},    {"black", 32}},
+        {{"Ivan Karyakin, who gave us great feedback last year"},    {"black", 32}},
+        {{"All the friends who played the original 'Boat Game With a Name'"},    {"black", 32}},
 
-        {{" "},                 {"black", 32}},
-        {{"Thank you for playing!"},                                                             {"black", 64}},
+        {{" "},                 {"black", 16}},
+        {{"And thank you for playing!"},                                                             {"black", 64}},
     },
 
     --pls sort by Y
