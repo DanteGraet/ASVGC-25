@@ -35,7 +35,7 @@ return {
         zone = "clockworkCore",
         displayName = "Clockwork's Core",
         subtitle = "Origin of the cog",
-        distance = 15000,
+        distance = 12000,
         transition = 0,
         currentIcons = 3,
     },

@@ -66,7 +66,7 @@ return {
     },
     ["Storm Valley"] = {
         stormIntensity = stormValleyStormIntensity,
-        difficultyFunction = 0.007,
+        difficultyFunction = 0.004,
         current = stormValleyCurrent,
         chainLengthCoefficient = stormValleyChainLengthCoefficient,
     },

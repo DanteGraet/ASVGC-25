@@ -31,7 +31,7 @@ return {
         displayName = "Boulder Valley",
         distanceTitle = "-- 1.5KM --",
         subtitle = "Gully of Rock-Chains",
-        distance = 15000,
+        distance = 12000,
         transition = 0,
         currentIcons = 3,
     },
