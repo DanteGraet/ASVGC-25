@@ -26,6 +26,7 @@ end
 
 local function load()
     love.physics.setMeter(100)
+    y = 0
     resize()
 
 
