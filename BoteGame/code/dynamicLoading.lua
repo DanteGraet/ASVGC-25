@@ -77,7 +77,11 @@ function DynamicLoading:Run()
 
             love.graphics.clear()
             --love.draw(true)
-            game[previousGameState].draw()
+            if previousGameState == "credits" then
+                game[previousGameState].draw()
+            else
+                love.draw(true)
+            end
             self:Draw()
             if love.timer then love.timer.sleep(0.001) end
         end

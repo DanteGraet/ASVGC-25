@@ -4,6 +4,9 @@ local teslaImages = {
     love.graphics.newImage("image/obstacle/tesla/orb.png"),
 }
 
+local sound = love.audio.newSource("audio/tesla.ogg", "static")
+local id = 0
+
 for i = 1,#teslaImages do
     teslaImages[i]:setFilter("nearest", "nearest")
 end
@@ -28,9 +31,17 @@ function teslaObstacle:New(x, y)
     obj.fireCounter = 0.1
     obj.fireTime = 0.5
 
+    obj.id = id
+    id = id + 1
     table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y, 400))
+
+    audioPlayer.NewLoopingSound("tesla_" .. obj.id, sound, "ambient", 0)
     
     return obj
+end
+
+function teslaObstacle:Remove()
+    audioPlayer.RemoveLoopingSound("tesla_" .. self.id)
 end
 
 function teslaObstacle:Update(no, dt)
@@ -49,6 +60,12 @@ function teslaObstacle:Update(no, dt)
             table.insert(frontObstacles, assets.obstacle.energy:New(self.x, self.y,xM*-1,yM*-1))
 
         end
+
+        local distToPlayer = quindoc.dist(player.x, player.y, self.x, self.y)/750
+        local curve = 1- tweens.sineInOut(quindoc.clamp(distToPlayer, 0, 1))
+        
+
+        audioPlayer.ModifyLoopingSound("tesla_" .. self.id, {volume = curve})
 
         Obstacle.Update(self, no, dt)
     end

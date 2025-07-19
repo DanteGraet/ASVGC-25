@@ -44,6 +44,10 @@ function Obstacle:Update(no, dt, front)
             self.fixture:setUserData(data)
         elseif self.fixture:getUserData().remove or self.y > riverBorders.down + 1000 then
             self.body:destroy()
+            if self.Remove then
+                self:Remove()
+            end
+
             if front == true then
                 table.remove(frontObstacles, no)
             else
