@@ -19,7 +19,7 @@ return {
         zone = "autumnGrove",
         displayName = "Autumn Grove",
         subtitle = "Woodland of eternal Fall",
-        distance = 19500,
+        distance = 14500,
         transition = 0,
         currentIcons = 3,
     },
@@ -47,5 +47,20 @@ return {
         transition = 0,
         currentIcons = 3,
     },
-
+    {
+        zone = "autumnRapids-gravellyPlains",
+        displayName = "_Autumn Rapids",
+        subtitle = "Fast-flowing stream",
+        distance = 1000,
+        transition = 0,
+        currentIcons = 3,
+    },
+    {
+        zone = "gravellyPlains",
+        displayName = "Gravelly Plains",
+        subtitle = "-- Almost There! --",
+        distance = 5000,
+        transition = 0,
+        currentIcons = 3,
+    },
 }

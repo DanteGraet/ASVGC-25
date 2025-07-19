@@ -32,12 +32,13 @@ local function stormValleySnow(percentage)
 end
 
 return {
+    ["Glacial Lake"] = {
+        snowAmount = 1,
+        windSpeed = 200,
+    },
     ["Ice Plains"] = {
         snowAmount = 5,
         windSpeed = 200,
-        audio = {
-            bird = 5
-        }
     },
     ["Boulder Valley"] = {
         snowAmount = boulderValleySnow,
