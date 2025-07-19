@@ -1,9 +1,9 @@
 local hillsTreeShape = love.physics.newCircleShape(20*3)
 local hillsTreeImages = {
-    love.graphics.newImage("image/obstacle/highlandsTree/1.png"),
-    love.graphics.newImage("image/obstacle/highlandsTree/2.png"),
-    love.graphics.newImage("image/obstacle/highlandsTree/3.png"),
-    love.graphics.newImage("image/obstacle/highlandsTree/4.png")
+    love.graphics.newImage("image/obstacle/hillsTree/1.png"),
+    love.graphics.newImage("image/obstacle/hillsTree/2.png"),
+    love.graphics.newImage("image/obstacle/hillsTree/3.png"),
+    love.graphics.newImage("image/obstacle/hillsTree/4.png")
 }
 
 for i = 1,#hillsTreeImages do
