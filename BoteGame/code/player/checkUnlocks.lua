@@ -1,4 +1,4 @@
-print("checking unlocks")
+print("Checking Unlocks ...")
 -- this should only run if the player has "Won" the levels
 
 if not assets.code.player.unlocks.beatenLevels then assets.code.player.unlocks.beatenLevels = {} end
@@ -45,3 +45,7 @@ if b.frostedChannelStorm and b.autumnGroveStorm and b.derelictDamStorm then
     assets.code.player.unlocks.levels.seenDialouge4 = true 
 end
 
+dante.printTable(assets.code.player.unlocks)
+if assets.code then
+    dante.save(assets.code.player.unlocks, "save", "unlocks")
+end
