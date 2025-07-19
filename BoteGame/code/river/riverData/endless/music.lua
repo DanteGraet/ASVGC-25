@@ -13,20 +13,20 @@ return {
     },
     zones = {
         ["Ice Plains"] =            {1,1,0,0,0,0},
-        ["Boulder Valley"] =        {1,1,1,0,0,0},
-        ["Storm Valley"] =          {1,0,1,0,0,1},
-        ["Wooded Hills"] =          {1,1,1,0,0,0},
+        ["Boulder Valley"] =        {0,1,1,1,0,0},
+        ["Storm Valley"] =          {0,0,0,0,1,1},
+        ["Wooded Hills"] =          {1,0,0,0,0,0},
 
 
-        ["Autumn Grove"] =          {0,0,1,0,1,0},
-        ["Clockwork Ruins"] =       {1,1,0,0,1,0},
-        ["Clockwork's Core"] =      {1,0,0,1,0,0},
-        ["Autumn Rapids"] =         {1,1,1,0,0,0},
+        ["Autumn Grove"] =          {0,1,1,0,0,0},
+        ["Clockwork Ruins"] =       {0,1,1,0,0,0},
+        ["Clockwork's Core"] =      {0,1,1,1,0,0},
+        ["Autumn Rapids"] =         {0,1,1,1,0,0},
 
 
-        ["Gravelly Plains"] =       {0,1,0,0,1,0},
-        ["Upper Dam"] =             {0,1,0,0,1,0},
-        ["The Inlet"] =             {1,0,1,1,1,0},
-        ["Electrical Complex"] = {1,1,1,0,0,1},
+        ["Gravelly Plains"] =       {1,0,0,0,0,0},
+        ["Upper Dam"] =             {0,1,1,1,0,0},
+        ["The Inlet"] =             {0,0,0,0,1,0},
+        ["Electrical Complex"] =    {0,0,0,0,1,1},
     }
 }

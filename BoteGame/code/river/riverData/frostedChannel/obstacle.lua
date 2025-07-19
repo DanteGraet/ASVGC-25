@@ -10,12 +10,6 @@ local function boulderValleyChainLengthCoefficient(percentage)
     return 1.35 - 0.2*quindoc.clamp(percentage,0,1)
 end
 
-
-local function stormValleyDifficulty(percentage)
-    return 0.005+percentage*0.005
-end
-
-
 local function stormValleyCurrent(percentage)
     local idk = percentage
 
@@ -72,13 +66,13 @@ return {
     },
     ["Storm Valley"] = {
         stormIntensity = stormValleyStormIntensity,
-        difficultyFunction = stormValleyDifficulty,
+        difficultyFunction = 0.007,
         current = stormValleyCurrent,
         chainLengthCoefficient = stormValleyChainLengthCoefficient,
     },
     ["_Storm Valley"] = {
         stormIntensity = 0,
-        difficultyFunction = 0.005+0.005,
+        difficultyFunction = 0.005,
         current = 100,
         chainLengthCoefficient = 1.1,
     },
