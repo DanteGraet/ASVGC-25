@@ -36,7 +36,7 @@ return {
         snowAmount = 1,
         windSpeed = 200,
         audio = {
-            bird = 5
+            bird = 1
         }
     },
     ["Ice Plains"] = {

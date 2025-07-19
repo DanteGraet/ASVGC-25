@@ -3,7 +3,7 @@ local buttons
 local textList
 local width = 1000
 local moveTimer = 0
-local scrollSpeed = 2
+local scrollSpeed = 3
 local maxHeight = 0
 local image
 local paused = false

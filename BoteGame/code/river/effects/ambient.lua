@@ -17,11 +17,8 @@ a.sounds = {
             love.audio.newSource("audio/ambient/bird/3.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/4.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/5.ogg", "static"),
-            love.audio.newSource("audio/ambient/bird/6.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/7.ogg", "static"),
-            love.audio.newSource("audio/ambient/bird/8.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/9.ogg", "static"),
-            love.audio.newSource("audio/ambient/bird/10.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/11.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/12.ogg", "static"),
         },
@@ -101,7 +98,7 @@ function a.update(dt, y, volMult)
             data.timer = data.timer + dt*5
 
             if math.floor(math.random(0, data.timer)) > 10-data.value then
-                audioPlayer.playSound(data.sound, "", nil, nil, tweens.sineInOut(math.min(data.value/10, 1)))
+                audioPlayer.playSound(data.sound, "", nil, nil, tweens.sineInOut(math.min(0.25, 1)))
                 data.timer = 0
             end
         else
