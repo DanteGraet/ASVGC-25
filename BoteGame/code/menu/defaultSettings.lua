@@ -113,7 +113,7 @@ return {
         pause = {type = "keybindButton", displayName = "Pause", value = {"escape", "p"}},
 
         removeSave = {type = "button", displayName = "Delete Save", func = RemoveSave},
-        resetSettings = {type = "button", displayName = "Reset Settings", func = ResetSettings},
+        resetSettings = {type = "button", displayName = "Reset All Settings", func = ResetSettings},
     },
 
     -- the player should NEVER have acsess to these :D

@@ -65,7 +65,7 @@ function teslaObstacle:Update(no, dt)
         local curve = 1- tweens.sineInOut(quindoc.clamp(distToPlayer, 0, 1))
         
 
-        audioPlayer.ModifyLoopingSound("tesla_" .. self.id, {volume = curve})
+        audioPlayer.ModifyLoopingSound("tesla_" .. self.id, {volume = curve*2})
 
         Obstacle.Update(self, no, dt)
     end
