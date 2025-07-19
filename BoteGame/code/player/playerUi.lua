@@ -1,4 +1,4 @@
-local font = love.graphics.newFont(100)
+--local font = love.graphics.newFont(100)
 
 local storedHealth = player.health
 
@@ -88,23 +88,36 @@ function UI.Draw()
     love.graphics.draw(assets.image.ui.currentBar, x, y, 0, scale, scale, assets.image.ui.currentBar:getWidth()*side + 520 - 1040*(1-side), assets.image.ui.currentBar:getHeight())
     love.graphics.draw(assets.image.ui.speedometer, x, y, 0, scale, scale, assets.image.ui.speedometer:getWidth()*side, assets.image.ui.speedometer:getHeight())
 
-    for i = 1,riverGenerator:GetZone(player.y).currentIcons or 1 do
+    --[[for i = 1,riverGenerator:GetZone(player.y).currentIcons or 1 do
         love.graphics.setColor(currentColours[i])
         if side == 1 then
             love.graphics.draw(assets.image.ui.current, x, y, 0, scale, scale, 1580 - (i*120), assets.image.ui.currentBar:getHeight())
         else
             love.graphics.draw(assets.image.ui.current, x, y, 0, scale, -scale, -830 - (i*120))
         end
+    end]]
+
+    --for i = riverGenerator:GetZone(player.y).currentIcons or 1, 4 do
+    local text
+    
+    if riverName == "endless" then
+        text = riverGenerator:GetZone(player.y).zoneCount
+    else
+        local p = player.y/riverGenerator:GetTotalRiverLength()
+        text = math.abs(math.min((math.floor(p*-100) or 0 ), 100)) .. "%"
     end
 
-    for i = riverGenerator:GetZone(player.y).currentIcons or 1, 4 do
-        love.graphics.setColor(currentColours[5])
-        if side == 1 then
-            love.graphics.draw(assets.image.ui.current, x, y, 0, scale, scale, 1580 - (i*120), assets.image.ui.currentBar:getHeight())
-        else
-            love.graphics.draw(assets.image.ui.current, x, y, 0, scale, -scale, -830 - (i*120))
-        end
+    love.graphics.setColor(0, 0, 0)
+
+    font.setFont("black", 48)
+    if side == 1 then
+        love.graphics.printf(text, x - 350, y - 72, 150, "left")
+    else
+        love.graphics.printf(text, x + 200, y - 72, 150, "right")
     end
+
+
+    --end
 
     love.graphics.setColor(healthColour[1]*0.8, healthColour[2]*0.8, healthColour[3]*0.8)
 
