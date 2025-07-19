@@ -40,6 +40,7 @@ end
 
 function PauseMenu.Settings(self)
     settingsMenu.isOpen = true
+    settingsMenu.SetCatagory({settingsMenu, 1})
 end
 
 function PauseMenu.exit(self)

@@ -165,9 +165,12 @@ function SettingsMenu.SetCatagory(data)
             local currentSetting = settings[self.catagories[self.curentCatagroy].name][name]
 
             if currentSetting.type == "button" then
-                self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, colours, "settings")
-                self.Ui:GetButtons("settings")[name].functions.release = {currentSetting.func}
-
+                print(name)
+                if gameState == "titleScreen" or name ~= "removeSave" then
+                    self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, colours, "settings")
+                    self.Ui:GetButtons("settings")[name].functions.release = {currentSetting.func}
+                end
+            
             elseif currentSetting.type == "keybindButton" then
                 self.Ui:AddTextButton(name, currentSetting.displayName, nil, font1, currentX, currentHeight, 400, nil, "settings")
                 for i = 1,2 do
@@ -179,8 +182,6 @@ function SettingsMenu.SetCatagory(data)
                     self.Ui:GetButtons("settings")[name .. i]:SetElementColour(colours[1], colours[2], colours[1+2])
 
                 end
-            
-
             elseif currentSetting.type == "slider" then
                 self.Ui:AddSlider(name, currentX+f:getWidth(currentSetting.displayName) + 10, currentHeight + 20, 25, 30, 250, 20, currentSetting.value, "settings")
 

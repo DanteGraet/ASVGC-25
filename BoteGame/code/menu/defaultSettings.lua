@@ -12,6 +12,17 @@ local function OpenSaveFolder()
     love.system.openURL(love.filesystem.getSaveDirectory())
 end
 
+local function RemoveSave()
+    assets.code.player.unlocks = love.filesystem.load("code/player/playerUnlockDefault.lua")()
+    assets.save.highscore = nil
+end
+
+local function ResetSettings()
+    settings = love.filesystem.load("code/menu/defaultSettings.lua")()
+    settingsMenu.SetCatagory({settingsMenu, 3})
+    saveSettings()
+end
+
 local function devCheatyBoat(value, toggle)
     toggle.value = value
 
@@ -83,18 +94,24 @@ return {
         masterVolume = {type = "slider", displayName = "Master Volume", value = 0.8},
 
         h_music = {type = "header", displayName = "Music"},
-        musicVolume = {type = "slider", displayName = "Music Volume", value = 0.8},
+        musicVolume = {type = "slider", displayName = "Music Volume", value = 0.7},
         ambient = {type = "slider", displayName = "Ambiance Volume", value = 0.8},
-        player = {type = "slider", displayName = "Player Volume", value = 0.8},
+        player = {type = "slider", displayName = "Player Volume", value = 0.3},
         ui = {type = "slider", displayName = "UI Volume", value = 0.8},
 
     },
     keybinds = {
+        h_keybind = {type = "header", displayName = "Keybinds"},
+        h_danger = {type = "header", displayName = "Danger Zone"},
+
         accelerate = {type = "keybindButton", displayName = "Accelerate", value = {"w", "up"}},
         decelerate = {type = "keybindButton", displayName = "Decelerate", value = {"s", "down"}},
         left = {type = "keybindButton", displayName = "Turn Left", value = {"a", "left"}},
         right = {type = "keybindButton", displayName = "Turn Right", value = {"d", "right"}},
         pause = {type = "keybindButton", displayName = "Pause", value = {"escape", "p"}},
+
+        removeSave = {type = "button", displayName = "Delete Save", func = RemoveSave},
+        resetSettings = {type = "button", displayName = "Reset Settings", func = ResetSettings},
     },
 
     -- the player should NEVER have acsess to these :D
@@ -142,11 +159,15 @@ return {
             "ui",
         },
         keybinds = {
+            "h_keybind",
             "accelerate",
             "decelerate",
             "left",
             "right",
             "pause",
+            "h_danger",
+            "resetSettings",
+            "removeSave"
         },
         dev = {
             "removeSave",

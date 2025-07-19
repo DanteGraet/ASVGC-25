@@ -273,6 +273,7 @@ end
 
 function tsb.settingsButtonRelease()
     -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
+    settingsMenu.SetCatagory({settingsMenu, 1})
     settingsMenu.isOpen = true
 end
 
