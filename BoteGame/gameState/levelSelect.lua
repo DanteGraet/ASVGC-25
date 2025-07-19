@@ -148,7 +148,7 @@ local function update(dt)
     end
 
 
-    ambiance.update(dt, nil, nil, {audio = {bird = 0.5, water = 1}})
+    ambiance.update(dt, nil, nil, {audio = {bird = 0.25, water = 1}})
 
     --currentZone.audio[name].value
 
