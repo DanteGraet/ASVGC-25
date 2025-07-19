@@ -14,7 +14,12 @@ end
 
 local function RemoveSave()
     assets.code.player.unlocks = love.filesystem.load("code/player/playerUnlockDefault.lua")()
-    assets.save.highscore = nil
+    assets.save.highscore = {}
+
+    if assets.code then
+        dante.save(assets.code.player.unlocks, "save", "unlocks")
+    end
+    dante.save(assets.save.highscore, "save", "highscore")
 end
 
 local function ResetKeybinds()
@@ -22,14 +27,14 @@ local function ResetKeybinds()
 
     settingsMenu.SetCatagory({settingsMenu, 3})
 
-    inputManager.keybinds = assets.code.menu.keybinds()
+    inputManager.keybinds = love.filesystem.load("code/menu/keybinds.lua")()
     saveSettings()
 end
 
 local function ResetSettings()
     settings = love.filesystem.load("code/menu/defaultSettings.lua")()
     settingsMenu.SetCatagory({settingsMenu, 3})
-    inputManager.keybinds = assets.code.menu.keybinds()
+    inputManager.keybinds = love.filesystem.load("code/menu/keybinds.lua")()
     saveSettings()
 end
 
