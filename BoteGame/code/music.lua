@@ -23,15 +23,22 @@ function music.load()
         musicTracks = data.data.tracks 
     end
     zoneMusicTarget = data.zones
+    music.beQuite(nil, true)
 
     --Actually update the music tracks instantly, might remove later
     music.manager(0)
 end
 
-function music.beQuite(dt)
+function music.beQuite(dt, abrupt)
     if musicTracks then
         for i = 1, #musicTracks do
             musicTracks[i].targetVolume = 0
+        end
+
+        if abrupt then
+            for i = 1, #musicTracks do
+                musicTracks[i].volume = 0
+            end
         end
     end
 end
@@ -40,81 +47,52 @@ function music.manager(dt, fadeOut)
     --play the actual music
     if settings and musicTracks ~= nil then
         if not musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value > 0 and settings.audio.masterVolume.value > 0 then
-            --play all tracks at once to avoid desync
+            -- music should be playing but isn't
+
+            --play all tracks at once to "avoid" desync
             for i = 1, #musicTracks do
-                musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume,0.001,1)
-                musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5*settings.audio.masterVolume.value*settings.audio.masterVolume.value)
+                musicTracks[i].track:stop()
                 musicTracks[i].track:play()
             end
 
-            --music.bar = -1
-            --music.beat = 1
-            --music.lastBar = 0
-            --music.firstFrameInBar = true   
-
         elseif musicTracks[1].track:isPlaying() and settings.audio.musicVolume.value <= 0 and settings.audio.masterVolume.value <= 0  then
+            -- music should not be playing
             for i = 1, #musicTracks do
                 musicTracks[i].track:stop()
             end
         end
 
-        --so this manager manages the other managers. dunno enough about buisness to tell you what that role is called
+        -- get the volume relaed
         local currentZoneName
         if zones and type(zones[1]) == "table" then
             currentZoneName = zones[1].displayName
         elseif zones then
             currentZoneName = zones.displayName
         end
-        --if currentZoneName ~= lastZone then
-        --    if zoneMusicTarget[currentZoneName] then
-                local targets = quindoc.runIfFunc(zoneMusicTarget[currentZoneName])
-                if targets then
-                    for i = 1,#targets do
-                        if musicTracks[i] then
 
-                            musicTracks[i].targetVolume = targets[i] --or musicTracks[i].targetVolume
-                        end
-                    end
+        -- grab target volume/s
+        local targets = quindoc.runIfFunc(zoneMusicTarget[currentZoneName]) or {}
+        --[[if targets then
+            for i = 1,#targets do
+                if musicTracks[i] then
+
+                    musicTracks[i].targetVolume = targets[i] --or musicTracks[i].targetVolume
                 end
-        --    end
-        --    lastZone = currentZoneName
-        --end
+            end
+        end]]
+
 
 
         for i = 1, #musicTracks do
-    --        if musicTracks[i].drumTrack == nil then
+            musicTracks[i].targetVolume = targets[i] or 0.001
+
+            -- Interpolate volume
             if musicTracks[i].volume ~= musicTracks[i].targetVolume then
                 musicTracks[i].volume = quindoc.clamp(musicTracks[i].volume+((crossFadeSpeed)*dt)*quindoc.sign(musicTracks[i].targetVolume-musicTracks[i].volume),0.001,1) 
             end
-        
+            
+            -- finally update thee actual volume
             musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value*0.5*settings.audio.masterVolume.value* (fadeOut or 1) )
-
-    --        elseif music.firstFrameInBar then
-    --            musicTracks[i].track:setVolume(musicTracks[i].volume*settings.audio.musicVolume.value)
-    --        end
-
         end
-
-        --[[
-
-        i had an epic system where drum beats would only start on the first beat of the bar.....
-        but all this ended up being useless because gamespeed screws everything up
-        once i can figure out how to update the counter regardless of gamespeed, pausing etc this can be re-enabled
-
-        --bpm calculations
-        if music.bar == -1 then
-            music.bar = 1
-        else
-            music.beat = music.beat + dt*(music.bpm/60)/(gameSpeed or 1)
-        end
-        
-        if music.beat >= music.beatsPerBar+1 then
-            music.bar = music.bar + 1
-            music.beat = 1
-            music.firstFrameInBar = true   
-        else
-            music.firstFrameInBar = false
-        end]]
     end
-    
 end

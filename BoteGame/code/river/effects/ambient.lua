@@ -70,8 +70,9 @@ function a.update(dt, y, volMult)
 
         a.globalLeafTimer = a.globalLeafTimer + dt
 
-        if currentPlayerPos then
-            a.sounds.waterFast.value = math.max((currentPlayerPos.current-250), 0)/100
+        -- kinda hacky
+        if player then
+            a.sounds.waterFast.value = math.max((player.currentSpeed-250), 0)/100
         end
 
 
