@@ -100,7 +100,7 @@ local function extraLoad()
     levelSelectScreen:AddButton("back", -sox, 1080 + soy - 150, 150, 150)
     levelSelectScreen:GetButtons().back:AddImage(75, 75, love.graphics.newImage("image/titleScreen/titleIco3.png"), nil, nil, nil, 50, 50)
     levelSelectScreen:GetButtons().back.functions.release = {
-        function() print("AAA"); gameState = "titleScreen" end
+        function() gameState = "titleScreen" end
     }
     levelSelectScreen:GetButtons().back.functions.update = {
         function(dt, self)
@@ -125,8 +125,10 @@ end
 local function resize()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    levelSelectScreen:GetButtons().back.x = -sox
-    levelSelectScreen:GetButtons().back.y = 1080+soy-150
+    if levelSelectScreen then
+        levelSelectScreen:GetButtons().back.x = -sox
+        levelSelectScreen:GetButtons().back.y = 1080+soy-150
+    end
 end
 
 local function update(dt)

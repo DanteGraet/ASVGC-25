@@ -93,6 +93,8 @@ local function extraLoad()
     maxHeight = -height
 
     image = assets.code.creditList.image
+
+    zones.displayName = "Credits"
 end
 
 
