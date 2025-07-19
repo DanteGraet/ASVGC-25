@@ -26,11 +26,29 @@ local function electricalComplexCurrent(percentage)
 
 end
 
+local function exitElectricalCurrent(percentage)
+
+    return 150 + 200*quindoc.clamp(percentage,0,1)
+
+end
+
+local function exitElectricalStormIntensity(percentage)
+
+    return 300 - 300*quindoc.clamp(percentage,0,1)
+
+end
+
+local function theInletStormIntensity(percentage)
+
+    return 200 + 100*quindoc.clamp(percentage,0,1)
+
+end
+
 return {
     ["Gravelly Plains"] = {
         stormIntensity = 200,
         difficultyFunction = 0.01,
-        current = 200,
+        current = 150,
     },
     ["Upper Dam"] = {
         stormIntensity = 200,
@@ -38,19 +56,24 @@ return {
         current = 150,
     },
     ["The Inlet"] = {
-        stormIntensity = 200,
+        stormIntensity = theInletStormIntensity,
         difficultyFunction = 0.01,
         current = theInletCurrent,
     },
     ["_The Inlet"] = {
         stormIntensity = 300,
-        difficultyFunction = 0.015,
+        difficultyFunction = 0,
         current = 50,
     },
     ["Electrical Complex"] = {
         stormIntensity = 300,
         difficultyFunction = 0.015,
         current = electricalComplexCurrent,
+    },
+    ["_Electrical Complex"] = {
+        stormIntensity = exitElectricalStormIntensity,
+        difficultyFunction = 0.015,
+        current = exitElectricalCurrent,
     },
     ["River Mouth"] = {
         stormIntensity = 0,

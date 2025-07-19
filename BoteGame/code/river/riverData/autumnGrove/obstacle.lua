@@ -17,7 +17,7 @@ return {
         current = 250,
     },
     ["Clockwork Ruins"] = {
-        difficultyFunction = 0.012,
+        difficultyFunction = 0.016,
         current = 200,
     },
     ["Clockwork's Core"] = {

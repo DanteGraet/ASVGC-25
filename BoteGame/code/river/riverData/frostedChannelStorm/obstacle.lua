@@ -1,25 +1,14 @@
 local function iceplainsCurrent(percentage)
-    return 100*quindoc.clamp(percentage,0,1) + 150
+    return 100*quindoc.clamp(percentage,0,1) + 50
 end
-
-local function boulderValleyDifficulty(percentage)
-    return 0.0015 + 0.0035*quindoc.clamp(percentage,0,1)*2
-end
-
 
 local function boulderValleyCurrent(percentage)
-    return 200*quindoc.clamp(percentage,0,1) + 100
+    return 150
 end
 
 local function boulderValleyChainLengthCoefficient(percentage)
     return 1.35 - 0.2*quindoc.clamp(percentage,0,1)
 end
-
-
-local function stormValleyDifficulty(percentage)
-    return 0.005+percentage*0.005*2
-end
-
 
 local function stormValleyCurrent(percentage)
     local idk = percentage
@@ -29,11 +18,11 @@ local function stormValleyCurrent(percentage)
     else
         idk = 1 - 2*((percentage - 0.8) * 5)
     end
-    return 300 + 200*quindoc.clamp(idk,-0.5,1) *1.1
+    return 150 + 150*quindoc.clamp(idk,0,1) 
 end
 
 local function stormValleyChainLengthCoefficient(percentage)
-    return 1.15 - 0.05*quindoc.clamp(percentage,0,1)*1.5
+    return 1.15 - 0.05*quindoc.clamp(percentage,0,1)
 end
 
 local function stormValleyStormIntensity(percentage)
@@ -47,7 +36,7 @@ local function stormValleyStormIntensity(percentage)
         idk = 1 - 2*((percentage - 0.8) * 5)
     end
 
-    return 1000*quindoc.clamp(idk,0,1)*1.5
+    return 1000*quindoc.clamp(idk,0,1)
 end
 
 local function coniferousMountainsideDifficulty(percentage)
@@ -62,24 +51,28 @@ end
 
 
 return {
+    ["Glacial Lake"] = {
+        difficultyFunction = 0,
+        current = 100,
+    },
     ["Ice Plains"] = {
-        difficultyFunction = 0.02,
+        difficultyFunction = 0.008,
         current = iceplainsCurrent,
     },
     ["Boulder Valley"] = {
-        difficultyFunction = boulderValleyDifficulty,
+        difficultyFunction = 0.002,
         current = boulderValleyCurrent,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient,
     },
     ["Storm Valley"] = {
         stormIntensity = stormValleyStormIntensity,
-        difficultyFunction = stormValleyDifficulty,
+        difficultyFunction = 0.007,
         current = stormValleyCurrent,
         chainLengthCoefficient = stormValleyChainLengthCoefficient,
     },
     ["_Storm Valley"] = {
         stormIntensity = 0,
-        difficultyFunction = 0.005+0.005,
+        difficultyFunction = 0.005,
         current = 100,
         chainLengthCoefficient = 1.1,
     },

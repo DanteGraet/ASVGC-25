@@ -5,7 +5,18 @@ return {
         displayName = "Gravelly Plains",
         distanceTitle = "Starting Point",
         subtitle = "Rocky Lowlands",
-        distance = 5000,
+        distance = 4500,--should be 4500 after
+
+        transition = 0,
+
+        currentIcons = 2,
+    },
+    {
+        zone = "gravellyPlains-upperDam",
+        displayName = "Gravelly Plains",
+        distanceTitle = "Starting Point",
+        subtitle = "Rocky Lowlands",
+        distance = 1000,--should be 4500 after
 
         transition = 0,
 
@@ -16,7 +27,19 @@ return {
         displayName = "Upper Dam",
         distanceTitle = "-- 1.5KM --",
         subtitle = "Rocky Reservoir",
-        distance = 15000,
+        distance = 15400,
+
+        transition = 0,
+
+        currentIcons = 2,
+
+    },
+    {
+        zone = "upperDam-theInlet",
+        displayName = "Upper Dam",
+        distanceTitle = "-- 1.5KM --",
+        subtitle = "Rocky Reservoir",
+        distance = 1000,
 
         transition = 0,
 
@@ -36,11 +59,45 @@ return {
 
     },
     {
+        zone = "theInlet-lowerDam",
+        displayName = "_The Inlet",
+        subtitle = "Passing the Floodgates",
+        distanceTitle = "-- 5KM --",
+        distance = 1000,
+
+        transition = 0,
+
+        currentIcons = 4,
+
+    },
+    {
         zone = "lowerDam",
         subtitle = "High-voltage Powerhouse",
         displayName = "Electrical Complex",
         distanceTitle = "",
-        distance = 20000,
+        distance = 18000,
+
+        transition = 0,
+
+        currentIcons = 1,
+    },
+    {
+        zone = "lowerDam-riverMouth",
+        subtitle = "High-voltage Powerhouse",
+        displayName = "_Electrical Complex",
+        distanceTitle = "",
+        distance = 1000,
+
+        transition = 0,
+
+        currentIcons = 1,
+    },
+    {
+        zone = "riverMouth",
+        subtitle = "Final Stretch!",
+        displayName = "River Mouth",
+        distanceTitle = "",
+        distance = 5000,
 
         transition = 0,
 

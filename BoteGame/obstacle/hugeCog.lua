@@ -36,23 +36,46 @@ function hugeCogObstacle:New(x, y)
     local globalCogPhase = 0
     local globalCogRadius = 400
 
+    if isStorm then
 
-    for i = 1,8 do
-        --if i == 1 then globalCogInCharge = true else globalCogInCharge = false end
-        globalCogPhase = (math.pi*i)/4
-        table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay, globalCogPhase, globalCogRadius, i == 1))
+        for i = 1,8 do
+            --if i == 1 then globalCogInCharge = true else globalCogInCharge = false end
+            globalCogPhase = (math.pi*i)/4
+            table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay, globalCogPhase, globalCogRadius, i == 1))
+        end
+
+        globalCogRadius = 650
+
+        for i = 1,12 do
+            globalCogPhase = (math.pi*i)/6
+            table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay, globalCogPhase, globalCogRadius))
+        end
+        
+        globalCogPhase = nil
+        globalCogRadius = nil
+        --globalCogInCharge = nil
+
+    else
+
+        for i = 1,6 do
+            --if i == 1 then globalCogInCharge = true else globalCogInCharge = false end
+            globalCogPhase = (math.pi*i)/3
+            table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay, globalCogPhase, globalCogRadius, i == 1))
+        end
+
+        globalCogRadius = 650
+
+        for i = 1,8 do
+            globalCogPhase = (math.pi*i)/4
+            table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay, globalCogPhase, globalCogRadius))
+        end
+        
+        globalCogPhase = nil
+        globalCogRadius = nil
+        --globalCogInCharge = nil
+
     end
 
-    globalCogRadius = 650
-
-    for i = 1,12 do
-        globalCogPhase = (math.pi*i)/6
-        table.insert(obstacles, assets.obstacle.subordinateCog:New(x,yay, globalCogPhase, globalCogRadius))
-    end
-    
-    globalCogPhase = nil
-    globalCogRadius = nil
-    --globalCogInCharge = nil
 
     table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y - 1000, 750))
 

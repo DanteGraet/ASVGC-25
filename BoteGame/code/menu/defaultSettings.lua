@@ -74,7 +74,7 @@ return {
         h_other = {type = "header", displayName = "Other"},
 
 
-        uiScale = {type = "slider", displayName = "UI Scale", value = 0.5},
+        uiScale = {type = "slider", displayName = "Gameplay UI Scale", value = 0.5},
         uiSide = {type = "toggle", displayName = "Right UI", value = true},
         uiLock = {type = "toggle", displayName = "Lock UI to 16 X 9", value = false},
 
@@ -96,8 +96,8 @@ return {
         h_music = {type = "header", displayName = "Music"},
         musicVolume = {type = "slider", displayName = "Music Volume", value = 0.7},
         ambient = {type = "slider", displayName = "Ambiance Volume", value = 0.8},
-        player = {type = "slider", displayName = "Player Volume", value = 0.3},
-        ui = {type = "slider", displayName = "Gameplay UI Volume", value = 0.8},
+        player = {type = "slider", displayName = "Player Volume", value = 0.5},
+        ui = {type = "slider", displayName = "UI Volume", value = 0.8},
 
     },
     keybinds = {

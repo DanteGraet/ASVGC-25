@@ -19,6 +19,10 @@ return {
         rainAmount = 15,
         windSpeed = 300,
     },
+    ["_Electrical Complex"] = {
+        rainAmount = 3,
+        windSpeed = 300,
+    },
     ["River Mouth"] = {
         rainAmount = 0,
         windSpeed = 300,
