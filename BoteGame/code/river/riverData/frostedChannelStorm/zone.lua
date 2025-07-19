@@ -29,7 +29,7 @@ return {
     },
     {
         zone = "hailstormHell", --yes i know there is a file for the storm version. not using it yet
-        displayName = "Hailstone Hell",
+        displayName = "Hailstone Heck",
         subtitle = "Onslaught Approaching",
         distanceTitle = "-- 5KM --",
         distance = 19000,
@@ -38,7 +38,7 @@ return {
     },
         {
         zone = "boulderValley-coniferousMountainside", --yes i know there is a file for the storm version. not using it yet
-        displayName = "_Hailstone Hell",
+        displayName = "_Hailstone Heck",
         subtitle = "",
         distanceTitle = "",
         distance = 2000,

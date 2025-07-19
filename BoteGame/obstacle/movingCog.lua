@@ -14,7 +14,7 @@ movingCogObstacle.__index = movingCogObstacle
 function movingCogObstacle:New(x, y)
     local y = y - 100
 
-    if globalTableOfBad then
+    if globalTableOfBad and not isStorm then
 
         for i = 1, #globalTableOfBad do
             if math.abs(y - globalTableOfBad[i]) < 700 then
@@ -41,6 +41,10 @@ function movingCogObstacle:New(x, y)
     obj.phaseSpeed = love.math.random(5,10)/10
     obj.spinDirection = (math.random(1, 2) == 1 and 1) or -1
     obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
+
+    if isStorm and zones.zone == "gruelingGrove" then obj.phaseSpeed = obj.phaseSpeed*3
+    elseif isStorm then obj.phaseSpeed = obj.phaseSpeed*1.3 end
+
 
     table.insert(obstacles, assets.obstacle.noSpawnRect:New(obj.centreX, y - 50/3, obj.displacement, 150/3))
     return obj

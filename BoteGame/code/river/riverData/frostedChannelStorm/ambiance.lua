@@ -38,11 +38,11 @@ return {
         snowAmount = boulderValleySnow,
         windSpeed = boulderValleyWind,
     },
-    ["Hailstone Hell"] = {
+    ["Hailstone Heck"] = {
         snowAmount = stormValleySnow,
         windSpeed = stormValleyWind,
     },
-    ["_Hailstone Hell"] = {
+    ["_Hailstone Heck"] = {
         snowAmount = 3,
         windSpeed = 300,
     },

@@ -1,30 +1,26 @@
 return {
     ["Wooded Hills"] = {
-        leafAmount = 0.5,
-        windSpeed = 100,
-    },
-    ["Autumn Grove"] = {
-        leafAmount = 0.7,
-        windSpeed = 120,
-    },
-    ["Clockwork Ruins"] = {
         leafAmount = 1,
-        windSpeed = 200,
+        windSpeed = 400,
     },
-    ["Clockwork's Core"] = {
-        leafAmount = 1.2,
+    ["Grueling Grove"] = {
+        leafAmount = 1.5,
+        windSpeed = 450,
+    },
+    ["Ruins of Regret"] = {
+        leafAmount = 2,
+        windSpeed = 550,
+    },
+    ["Clockwork Catastrophe"] = {
+        leafAmount = 3,
+        windSpeed = 700,
+    },
+    ["_Clockwork Catastrophe"] = {
+        leafAmount = 1,
         windSpeed = 300,
     },
-    ["Autumn Rapids"] = {
-        leafAmount = 1,
-        windSpeed = 200,
-    },
-    ["_Autumn Rapids"] = {
-        leafAmount = 1,
-        windSpeed = 200,
-    },
     ["Gravelly Plains"] = {
-        leafAmount = 1,
+        leafAmount = 0.5,
         windSpeed = 200,
     },
 }

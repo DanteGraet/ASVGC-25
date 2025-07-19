@@ -20,6 +20,8 @@ function hugeCogObstacle:New(x, y)
     obj.centreX = obj.x
     obj.centreY = obj.y
 
+    obj.rotSpeed = 0.31
+
     local r1 = love.math.random(9,11)/10
     local r2 = love.math.random(8,13)/10
     obj.colour = {0.94*r2*r1,0.5*r2,0.2*r2}
@@ -37,6 +39,8 @@ function hugeCogObstacle:New(x, y)
     local globalCogRadius = 400
 
     if isStorm then
+
+        obj.rotSpeed = 0.5
 
         for i = 1,8 do
             --if i == 1 then globalCogInCharge = true else globalCogInCharge = false end
@@ -90,7 +94,7 @@ end
 function hugeCogObstacle:Update(no, dt)
     if self.body then
 
-        self.dir = self.dir + 0.31*dt --approx 5rpm
+        self.dir = self.dir + self.rotSpeed*dt --approx 5rpm
         if self.drawDelay >= 0 then self.drawDelay = self.drawDelay-dt end
 
         self.body:setPosition(self.centreX,self.centreY) --temporary fix

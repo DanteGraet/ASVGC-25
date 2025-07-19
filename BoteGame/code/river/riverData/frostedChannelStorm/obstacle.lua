@@ -61,20 +61,20 @@ return {
         stormIntensity = 400
     },
     ["Death Valley"] = {
-        difficultyFunction = 0.005,
+        difficultyFunction = 0.004,
         current = 300,
         chainLengthCoefficient = 1,
         stormIntensity = deathValleyStormIntensity
     },
-    ["Hailstone Hell"] = {
+    ["Hailstone Heck"] = {
         stormIntensity = stormValleyStormIntensity,
-        difficultyFunction = 0.013,
+        difficultyFunction = 0.012,
         current = stormValleyCurrent,
         chainLengthCoefficient = stormValleyChainLengthCoefficient,
     },
-    ["_Hailstone Hell"] = {
+    ["_Hailstone Heck"] = {
         stormIntensity = 0,
-        difficultyFunction = 0.007,
+        difficultyFunction = 0.006,
         current = 100,
         chainLengthCoefficient = 1.1,
     },

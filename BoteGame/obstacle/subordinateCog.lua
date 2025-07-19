@@ -29,9 +29,12 @@ function subordinateCogObstacle:New(x, y, globalCogPhase, globalCogRadius, globa
         obj.fixture:setUserData(data)
 
         obj.selfSpinSpeed = -1*math.random(70,80)/100
+        obj.phaseSpeed = 0.31
         obj.phase = globalCogPhase
         obj.radius = globalCogRadius
         obj.body:setType("kinetic")
+
+        if isStorm then obj.phaseSpeed = 0.5 end
 
         obj.centreX = x
         obj.centreY = y-200
@@ -58,10 +61,10 @@ function subordinateCogObstacle:Update(no, dt)
             self.dir = self.dir + self.selfSpinSpeed*dt 
 
             if self.radius == 400 then 
-                self.phase=self.phase + 0.31*dt--same as the huge cog 
+                self.phase=self.phase + self.phaseSpeed*dt--same as the huge cog 
                 if self.phase > 2*math.pi then self.phase=self.phase-2*math.pi end
             else
-                self.phase=self.phase - 0.31*dt--rotate the other way
+                self.phase=self.phase - self.phaseSpeed*dt--rotate the other way
                 if self.phase < -2*math.pi then self.phase=self.phase+2*math.pi end
             end
 

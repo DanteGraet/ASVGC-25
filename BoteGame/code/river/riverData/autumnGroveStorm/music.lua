@@ -12,11 +12,10 @@ return {
     },
     zones = {
         ["Wooded Hills"] =         {0.9,0,0,0,0,0},
-        ["Autumn Grove"] =         {0.9,0.65,0.9,0,0,0.9},
-        ["Clockwork Ruins"] =      {0,0,0,0.8,0,0.9},
-        ["Clockwork's Core"] =     {0,0,0,0.8,0.9,0.9},
-        ["Autumn Rapids"] =        {0.9,0.65,0.9,0,0.9,0.9},
-        ["_Autumn Rapids"] =        {0.9,0.65,0.9,0,0.9,0.9},
+        ["Grueling Grove"] =         {0.9,0.65,0.9,0,0,0.9},
+        ["Ruins of Regret"] =      {0,0,0,0.8,0,0.9},
+        ["Clockwork Catastrophe"] =     {0,0,0,0.8,0.9,0.9},
+        ["_Clockwork Catastrophe"] =        {0.9,0.65,0.9,0,0.9,0.9},
         ["Gravelly Plains"] =      {0.9,0,0,0,0,0},
     }
 }
