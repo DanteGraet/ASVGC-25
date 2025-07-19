@@ -264,8 +264,20 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}\
     if zone.displayName == "River Mouth" and lastPoints ~= nil then
 
         local distRemaining = math.abs(lastPoints[1][1].y)
+
+        local function GetTotalRiverLength()
+            local length = 0
+            for i = 1,#zones do
+                local zone = zones[i]
+
+                length = length + zone.distance + zone.transition
+            end
+            return length
+        end
+
+        local percentage = GetTotalRiverLength()/(distRemaining+500)
         
-        for i = 1,#zones do
+        --[[for i = 1,#zones do
             local z1 = zones[i]
 
             if distRemaining < z1.distance + z1.transition then
@@ -275,17 +287,17 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}\
             end
 
             distRemaining = distRemaining - z1.distance - z1.transition
-        end
+        end]]
 
         ::next::
 
-        if distRemaining < 500 then
+        if percentage < 1 then
             --local percentage = (500-distRemaining)/500
             --v = 10000*percentage 
-            rM = 3000
+            rM = 3000*percentage
             v = 0
         end
-
+        print(distRemaining)
     end
 
 
