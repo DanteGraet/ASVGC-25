@@ -60,6 +60,7 @@ function DynamicLoading:Run()
         -- hope and pray target volume is never more than 1
         self:Update(dt)
         love.graphics.clear()
+        love.draw(true)
         self:Draw()
         if love.timer then love.timer.sleep(0.001) end
     else

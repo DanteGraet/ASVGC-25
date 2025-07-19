@@ -15,8 +15,8 @@ function music.unload()
     musicTracks = nil --this MUST be nil and not empty table!! for now.
 end
 
-function music.load()
-    local data = love.filesystem.load("code/river/riverData/" .. riverName .. "/music.lua")()
+function music.load(data)
+    local data = data or love.filesystem.load("code/river/riverData/" .. riverName .. "/music.lua")()
   
     crossFadeSpeed = data.data.crossFadeSpeed
     if musicTracks == nil then

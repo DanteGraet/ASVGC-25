@@ -2,13 +2,21 @@ return {
     --pls sort by Y
     text = {    
         -- text, font, other
-        {{"Buoyant Voyage"},    {"black", 64}},
+        {{""},    {"black", 64}},
+        {{""},    {"black", 64}},
+        {{""},    {"black", 64}},
+        {{""},    {"black", 64}},
+        {{""},    {"black", 64}},
+        {{""},    {"black", 64}},
+        {{""},    {"black", 64}},
         {{"A game by Jaraph"},      {"black", 48}},
         {{" "},                 {"black", 32}},
 
         {{"Australian Stem Video Games Competition 2025"},    {"black", 32}},
         {{"Made with Love2D"},    {"black", 32}},
-        {{" "},                 {"black", 32}},
+        {{" "},                 {"black", 64}},
+        {{" "},                 {"black", 64}},
+
 
         {{"Lead Programmer, SFX",        "Daniel Smith"},            {"black", 32}},
         {{"Art, Music and Design",      "Patrick Henschke"},        {"black", 32}},
@@ -40,5 +48,6 @@ return {
     --pls sort by Y
     image = {
         -- path, x, y
+        {assets.image.titleScreen.title, (1920 - 1512)/2, 0}
     },
 }

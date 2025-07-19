@@ -6,6 +6,7 @@ local moveTimer = 0
 local scrollSpeed = 2
 local maxHeight = 0
 local image
+local paused = false
 local function load()
     local img = "image/loading/title.png"
 
@@ -14,6 +15,21 @@ local function load()
     end
 
     DynamicLoading:New("code/gameStateLoading/creditsLoading.lua", true, img)
+
+    music.load({
+        data = {
+            crossFadeSpeed = 1,
+            tracks = {  -- Starting Values
+                [1] = {track = love.audio.newSource("music/bonusBoteGame.mp3","stream"),        volume = 1, targetVolume = 1},
+            },
+        },
+        zones = {
+            ["Credits"] =        {1},
+        }
+    })
+    zones.displayName = "Credits"
+
+    paused = false
 end
 
 local function extraLoad()
@@ -91,6 +107,7 @@ local function mousefocus(f)
 end
 
 local function update(dt)
+    music.manager(dt)
     --[[if love.mouse.isDown(1) or love.mouse.isDown(2) then
         moveTimer = -1
     end]]
@@ -105,6 +122,11 @@ local function update(dt)
         scrollSpeed = math.min(scrollSpeed + dt, 1)
     end
     y = y - dt*50*tweens.sineInOut(scrollSpeed)
+
+    if y < 100 and paused == false then
+        paused = true
+        moveTimer = -5
+    end
 
     local mx, my = getMouseSoxSoy()
     buttons:Update(dt, mx, my-y)
@@ -157,7 +179,7 @@ local function draw()
         end
 
         for i = 1,#image do
-            love.graphics.draw(image[1], image[2], image[3])
+            love.graphics.draw(image[i][1], image[i][2], image[i][3])
         end
     end
 end
