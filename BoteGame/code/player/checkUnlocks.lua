@@ -1,39 +1,43 @@
 print("Checking Unlocks ...")
+local rn = riverName
+if isStorm then
+    rn = riverName .. "Storm"
+end
 -- this should only run if the player has "Won" the levels
 
 if not assets.code.player.unlocks.beatenLevels then assets.code.player.unlocks.beatenLevels = {} end
 
-if riverName == "derelictDam" then
-    if not assets.code.player.unlocks.beatenLevels[riverName] then
+if rn == "derelictDam" then
+    if not assets.code.player.unlocks.beatenLevels[rn] then
         playCredits = true
     end
 end
 
-if riverName == "frostedChannel" then
+if v == "frostedChannel" then
     assets.code.player.unlocks.levels.autumnGrove = true
     assets.code.player.unlocks.levels.frostedChannelStorm = true
 
-    if not assets.code.player.unlocks.beatenLevels[riverName] then
+    if not assets.code.player.unlocks.beatenLevels[rn] then
         dialouge.schedule("image/levelSelect/dialouge/dialouge2.png")
     end
 end
 
-if riverName == "autumnGrove" then
+if rn == "autumnGrove" then
     assets.code.player.unlocks.levels.derelictDam = true
     assets.code.player.unlocks.levels.autumnGroveStorm = true
 end
 
-if riverName == "derelictDam" then
+if rn == "derelictDam" then
     assets.code.player.unlocks.levels.endless = true
     assets.code.player.unlocks.levels.derelictDamStorm = true
     assets.code.player.unlocks.levels.endless = true
 
-    if not assets.code.player.unlocks.beatenLevels[riverName] then
+    if not assets.code.player.unlocks.beatenLevels[rn] then
         dialouge.schedule("image/levelSelect/dialouge/dialouge3.png")
     end
 end
 
-assets.code.player.unlocks.beatenLevels[riverName] = true
+assets.code.player.unlocks.beatenLevels[rn] = true
 
 local b = assets.code.player.unlocks.beatenLevels
 if b.frostedChannelStorm and b.autumnGroveStorm and b.derelictDamStorm then
