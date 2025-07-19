@@ -199,21 +199,23 @@ local function mousepressed(x, y, button)
    -- dialouge.schedule(assets.image.levelSelect.sign.play, 5)
     local mx, my = getMouseSoxSoy()
 
-    if menus[selectedMenu] and menus[selectedMenu].isOpen then
-        menus[selectedMenu]:Click(mx, my)
-    else
-        for i = 1,#levels do
-            if levelSelectScreen then
-                levelSelectScreen:Click(x/screenScale, y/screenScale)
-            end
+    if menus then
+        if menus[selectedMenu] and menus[selectedMenu].isOpen then
+            menus[selectedMenu]:Click(mx, my)
+        else
+            for i = 1,#levels do
+                if levelSelectScreen then
+                    levelSelectScreen:Click(x/screenScale, y/screenScale)
+                end
 
-            local l = levels[i]
+                local l = levels[i]
 
-            local dist = quindoc.dist(mx, my, l.x, l.y)
+                local dist = quindoc.dist(mx, my, l.x, l.y)
 
-            if dist < 100 then
-                audioPlayer.playSound(assets.audio.ui.click, "ui", 0.25, nil, 3)
-                l.click = true
+                if dist < 100 then
+                    audioPlayer.playSound(assets.audio.ui.click, "ui", 0.25, nil, 3)
+                    l.click = true
+                end
             end
         end
     end
@@ -222,31 +224,32 @@ end
 local function mousereleased(x, y, button)
     local mx, my = getMouseSoxSoy()
 
-    
-    if menus[selectedMenu] and menus[selectedMenu].isOpen then
+    if menus then
+        if menus[selectedMenu] and menus[selectedMenu].isOpen then
 
-        menus[selectedMenu]:Release(mx, my)
-    else
-        if levelSelectScreen then
-            levelSelectScreen:Release(x/screenScale, y/screenScale)
-        end
-
-        for i = 1,#levels do
-            local l = levels[i]
-            local dist = quindoc.dist(mx, my, l.x, l.y)
-
-            if dist < 100 and l.click then
-                riverName = l.name
-                
-                --open sign
-                selectedMenu = "levelMenu"
-                menus[selectedMenu].type = riverName
-                menus[selectedMenu].isOpen = true
-                menus[selectedMenu]:GenerateButtons()
-
-                --gameState = "river"
+            menus[selectedMenu]:Release(mx, my)
+        else
+            if levelSelectScreen then
+                levelSelectScreen:Release(x/screenScale, y/screenScale)
             end
-            l.click = false
+
+            for i = 1,#levels do
+                local l = levels[i]
+                local dist = quindoc.dist(mx, my, l.x, l.y)
+
+                if dist < 100 and l.click then
+                    riverName = l.name
+                    
+                    --open sign
+                    selectedMenu = "levelMenu"
+                    menus[selectedMenu].type = riverName
+                    menus[selectedMenu].isOpen = true
+                    menus[selectedMenu]:GenerateButtons()
+
+                    --gameState = "river"
+                end
+                l.click = false
+            end
         end
     end
 end
