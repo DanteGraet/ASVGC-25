@@ -151,7 +151,7 @@ function UI.Draw()
         love.graphics.setColor(1,1,0.5+0.5*(1-percentageOver))
     end
 
-    local keybinds = assets.code.menu.keybinds()
+    local keybinds = inputManager.keybinds
 
 
     if player.tutorialAlpha then
