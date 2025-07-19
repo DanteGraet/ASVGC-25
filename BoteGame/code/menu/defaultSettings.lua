@@ -97,7 +97,7 @@ return {
         musicVolume = {type = "slider", displayName = "Music Volume", value = 0.7},
         ambient = {type = "slider", displayName = "Ambiance Volume", value = 0.8},
         player = {type = "slider", displayName = "Player Volume", value = 0.3},
-        ui = {type = "slider", displayName = "UI Volume", value = 0.8},
+        ui = {type = "slider", displayName = "Gameplay UI Volume", value = 0.8},
 
     },
     keybinds = {
