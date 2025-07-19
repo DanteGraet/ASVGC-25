@@ -27,19 +27,19 @@ end
 
 local keybinds = {
     left = {
-        keyboard = {"left", "a"},
+        keyboard = {"a", "left"},
         touch = {touchLeft}
     },
     right = {
-        keyboard = {"right", "d"},
+        keyboard = {"d", "right"},
         touch = {touchRight}
     },    
     accelerate = {
-        keyboard = {"up", "w"},
+        keyboard = {"w", "up"},
         touch = {touchAccelerate}
     },
     decelerate = {
-        keyboard = {"down", "s"},
+        keyboard = {"s", "down"},
         touch = {touchDecelerate}
     },
     pause = {

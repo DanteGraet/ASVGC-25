@@ -16,6 +16,7 @@ return {
         ["The Inlet"] =              {0,0.7,0.7,0,1.1,0},
         ["_The Inlet"] =              {0,0.7,0.7,0,1.1,0},
         ["Electrical Complex"] =     {0,0,1,0,1.2,1.2},
+        ["_Electrical Complex"] =     {0,0,1,0,1.2,1.2},
         ["River Mouth"] =            {1,0,0,0,0,0},
     }
 }

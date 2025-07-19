@@ -243,9 +243,9 @@ function PlayerBoat:Update(dt, inputs, gameSpeed)
         self.body:setPosition(self.x, self.y)
 
         -- Update the audio
-        audioPlayer.ModifyLoopingSound("motor3", {volume = ((self.speed/self.maxSpeed)/4 + 0.2) * gameSpeed*self.beachTimer*0.4, pitch = 1+ self.speed/self.maxSpeed/4 })
-        audioPlayer.ModifyLoopingSound("motor2", {volume = 0.4*gameSpeed*self.beachTimer*0.4 })
-        audioPlayer.ModifyLoopingSound("motor1", {volume = (1- (self.speed/self.maxSpeed)/4 + 0.2)*gameSpeed*self.beachTimer*0.4, pitch = self.speed/self.maxSpeed/2 + .5})
+        audioPlayer.ModifyLoopingSound("motor3", {volume = 0.3*((self.speed/self.maxSpeed)/4 + 0.2) * gameSpeed*self.beachTimer*0.4, pitch = 1+ self.speed/self.maxSpeed/4 })
+        audioPlayer.ModifyLoopingSound("motor2", {volume = 0.3*0.4*gameSpeed*self.beachTimer*0.4 })
+        audioPlayer.ModifyLoopingSound("motor1", {volume = 0.3*(1- (self.speed/self.maxSpeed)/4 + 0.2)*gameSpeed*self.beachTimer*0.4, pitch = self.speed/self.maxSpeed/2 + .5})
     else
         self:UpdateDead(dt, bt, gameSpeed)
     end

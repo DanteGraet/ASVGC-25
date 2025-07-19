@@ -158,12 +158,12 @@ function UI.Draw()
 
         font.setFont("black", 64)
         love.graphics.setColor(0,0,0,0.8*player.tutorialAlpha)
-        love.graphics.print("Steer: "..keybinds["left"].keyboard[2].." / "..keybinds["right"].keyboard[2],250+6,y-200+6)
-        love.graphics.print("Throttle: "..keybinds["accelerate"].keyboard[2].." / "..keybinds["decelerate"].keyboard[2],250+6,y-140+6)
+        love.graphics.print("Steer: "..keybinds["left"].keyboard[1].." / "..keybinds["right"].keyboard[1],250+6,y-200+6)
+        love.graphics.print("Throttle: "..keybinds["accelerate"].keyboard[1].." / "..keybinds["decelerate"].keyboard[1],250+6,y-140+6)
 
         love.graphics.setColor(1,1,1,1*player.tutorialAlpha)
-        love.graphics.print("Steer: "..keybinds["left"].keyboard[2].." / "..keybinds["right"].keyboard[2],250,y-200)
-        love.graphics.print("Throttle: "..keybinds["accelerate"].keyboard[2].." / "..keybinds["decelerate"].keyboard[2],250,y-140)
+        love.graphics.print("Steer: "..keybinds["left"].keyboard[1].." / "..keybinds["right"].keyboard[1],250,y-200)
+        love.graphics.print("Throttle: "..keybinds["accelerate"].keyboard[1].." / "..keybinds["decelerate"].keyboard[1],250,y-140)
 
     end
 

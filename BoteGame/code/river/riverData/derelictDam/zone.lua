@@ -84,7 +84,7 @@ return {
     {
         zone = "lowerDam-riverMouth",
         subtitle = "High-voltage Powerhouse",
-        displayName = "Electrical Complex",
+        displayName = "_Electrical Complex",
         distanceTitle = "",
         distance = 1000,
 
