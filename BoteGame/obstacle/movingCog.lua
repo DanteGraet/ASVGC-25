@@ -43,7 +43,7 @@ function movingCogObstacle:New(x, y)
     obj.fixture:setUserData({type = "obstacle", first = false, remove = false, OnCollideWithPlayer = Obstacle.OnCollideWithPlayer})
 
     if isStorm and zones.zone == "ruinsOfRegret" then obj.phaseSpeed = obj.phaseSpeed*1.8
-    elseif isStorm then obj.phaseSpeed = obj.phaseSpeed*1.3 end
+    elseif isStorm then obj.phaseSpeed = obj.phaseSpeed*1.2 end
 
 
     table.insert(obstacles, assets.obstacle.noSpawnRect:New(obj.centreX, y - 50/3, obj.displacement, 150/3))
