@@ -16,22 +16,27 @@ a.sounds = {
             love.audio.newSource("audio/ambient/bird/2.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/3.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/4.ogg", "static"),
+            love.audio.newSource("audio/ambient/bird/4.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/5.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/7.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/9.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/11.ogg", "static"),
             love.audio.newSource("audio/ambient/bird/12.ogg", "static"),
+            love.audio.newSource("audio/ambient/bird/12.ogg", "static"),
         },
         timer = 0,
-        value = 0
+        value = 0,
+        tick = 0,
     },
     water = {
         sound = love.audio.newSource("audio/ambient/water.ogg", "stream"),
         value = 0.7,
+        tick = 0,
     },
     waterFast = {
         sound = love.audio.newSource("audio/ambient/waterFast.ogg", "stream"),
         value = 0.0,
+        tick = 0,
     }
 }
 
@@ -97,9 +102,17 @@ function a.update(dt, y, volMult)
 
             data.timer = data.timer + dt*5
 
-            if math.floor(math.random(0, data.timer)) > 10-data.value then
-                audioPlayer.playSound(data.sound, "", nil, nil, tweens.sineInOut(math.min(0.25, 1)))
-                data.timer = 0
+            data.tick = data.tick + dt
+
+            if data.tick > 0.3 and data.value > 0 then            
+
+                if math.random(1,math.max(math.ceil(data.value-data.timer)),2) == 1 then
+                    audioPlayer.playSound(data.sound, "", nil, nil, 0.75)
+                    data.timer = 0
+                end
+
+                data.tick = 0
+
             end
         else
             -- Looping

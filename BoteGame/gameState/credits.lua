@@ -3,7 +3,7 @@ local buttons
 local textList
 local width = 1000
 local moveTimer = 0
-local scrollSpeed = 3
+local scrollSpeed = 3.5
 local maxHeight = 0
 local image
 local paused = false
@@ -99,11 +99,11 @@ local function resize()
 end
 
 local function mousefocus(f)
-    if not f then
-        moveTimer = -math.huge
-    else
-        moveTimer = 0
-    end
+    --if not f then
+    --    moveTimer = -math.huge
+    --else
+    --    moveTimer = 0
+    --end
 end
 
 local function update(dt)
@@ -123,15 +123,15 @@ local function update(dt)
     end
     y = y - dt*50*tweens.sineInOut(scrollSpeed)
 
-    if y < 100 and paused == false then
+    if y < 50 and paused == false then
         paused = true
-        moveTimer = -5
+        moveTimer = -3
     end
 
     local mx, my = getMouseSoxSoy()
     buttons:Update(dt, mx, my-y)
 
-    if y + 100 < maxHeight then
+    if y + 50 < maxHeight then
         love.keyreleased("escape")
     end
 end
