@@ -165,7 +165,9 @@ function love.quit()
     if assets.code then
         dante.save(assets.code.player.unlocks, "save", "unlocks")
     end
-    saveSettings()
+    if saveSettings then
+        saveSettings()
+    end
 end
 
 function love.mousepressed(mx, my, button)

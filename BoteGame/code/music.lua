@@ -16,7 +16,7 @@ function music.unload()
 end
 
 function music.load(data)
-    local data = data or love.filesystem.load("code/river/riverData/" .. riverName .. ((isStorm and "Storm") or "") .. "/music.lua")()
+    local data = data or love.filesystem.load("code/river/riverData/" .. riverName .. (((isStorm and riverName ~= "endless") and "Storm") or "") .. "/music.lua")()
   
     crossFadeSpeed = data.data.crossFadeSpeed
     if musicTracks == nil then

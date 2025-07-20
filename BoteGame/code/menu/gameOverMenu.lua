@@ -75,6 +75,10 @@ end
 
 
 function GameOverMenu:Draw(gs)
+    local rn = riverName
+    if isStorm then
+        rn = rn .. "Storm"
+    end
     love.graphics.reset()
 
     -- a background that fills the screen
@@ -163,16 +167,16 @@ function GameOverMenu:Draw(gs)
     -- white is there so if the player gets the same score (unlikely like very unlikey) then there will only on white score
     local white = false
     if assets.save.highscore then
-        if not assets.save.highscore[riverName] then
-            assets.save.highscore[riverName] = {}
+        if not assets.save.highscore[rn] then
+            assets.save.highscore[rn] = {}
         end
     else
-        assets.save.highscore = {riverName = {}}
+        assets.save.highscore = {rn = {}}
     end
-    for i = 1,#assets.save.highscore[riverName] do
+    for i = 1,#assets.save.highscore[rn] do
         local pref = ""
         local suf = ""
-        if assets.save.highscore[riverName][i] == player.score and not white then
+        if assets.save.highscore[rn][i] == player.score and not white then
             love.graphics.setColor(0.1,0.1,0.1)
             white = true
 
@@ -184,9 +188,9 @@ function GameOverMenu:Draw(gs)
 
         local displayNum
         if settings.graphics.shortNumbers.value then
-            displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[riverName][i])), 2)
+            displayNum = dante.formatNnumber(math.floor(math.abs(assets.save.highscore[rn][i])), 2)
         else
-            displayNum = math.floor(math.abs(assets.save.highscore[riverName][i]))
+            displayNum = math.floor(math.abs(assets.save.highscore[rn][i]))
         end
 
         love.graphics.printf(pref .. displayNum --[[.."m"]] .. suf, 20, -height/2 + 105 + i*55, width/2 - 40, "center")
