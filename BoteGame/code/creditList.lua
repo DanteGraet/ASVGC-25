@@ -11,8 +11,8 @@ return {
         {{""},    {"black", 64}},
         {{"A game by Jaraph"},      {"black", 48}},
         {{""},    {"black", 32}},
-        {{"Lead Programmer, SFX",        "Daniel Smith"},            {"black", 32}},
-        {{"Art, Music, Design and Progamming",      "Patrick Henschke"},        {"black", 32}},
+        {{"Lead Programmer, Sound Effects",        "Daniel Smith"},            {"black", 32}},
+        {{"Art, Design, Music and Progamming",      "Patrick Henschke"},        {"black", 32}},
         {{" "},                 {"black", 32}},
 
         {{"Australian STEM Video Games Challenge 2025"},    {"black", 32}},
