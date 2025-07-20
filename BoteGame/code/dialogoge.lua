@@ -9,7 +9,7 @@ function d.schedule(image, time)
     if type(image) == "string" then
         image = love.graphics.newImage(image)
     end
-    table.insert(d.stack, {image, time or 5})
+    table.insert(d.stack, {image, 7})
     if d.timer <= 0 then
         d.next()
     end
