@@ -106,7 +106,7 @@ return {
 
     },
     audio = {
-        h_blank = {type = "header", displayName = "     "},
+        h_blank = {type = "header", displayName = "Audio"},
         masterVolume = {type = "slider", displayName = "Master Volume", value = 0.8},
 
         h_music = {type = "header", displayName = "Music"},
