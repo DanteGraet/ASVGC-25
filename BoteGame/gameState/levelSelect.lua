@@ -2,7 +2,7 @@ local uiFade = 0
 local selectedMenu = ""
 
 local menus = {}
-local levelSelectScreen
+local levelSelectScreen = GraetUi:New()
 
 local levels = {}
 
@@ -125,7 +125,7 @@ end
 local function resize()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    if levelSelectScreen then
+    if levelSelectScreen and levelSelectScreen:GetButtons().back then
         levelSelectScreen:GetButtons().back.x = -sox
         levelSelectScreen:GetButtons().back.y = 1080+soy-150
     end

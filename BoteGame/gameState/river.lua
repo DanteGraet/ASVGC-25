@@ -331,7 +331,9 @@ local function mousepressed(x, y, button)
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
     if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and (pauseMenu and not pauseMenu.isOpen) then
-        gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+        if gameOverMenu then
+            gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+        end
     end
 
     if settingsMenu and settingsMenu.isOpen == true then
@@ -346,7 +348,9 @@ local function mousereleased(x, y, button)
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
     if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
-        gameOverMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+        if gameOverMenu then
+            gameOverMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+        end
     end
 
     if settingsMenu and settingsMenu.isOpen == true then
@@ -369,10 +373,10 @@ local function keyreleased(key)
     end
 
     if input == "pause" then
-        if settingsMenu.isOpen then 
+        if settingsMenu and settingsMenu.isOpen then 
             settingsMenu.isOpen = false
 
-        elseif player.health > 0 or not player.winTimer then 
+        elseif player and (player.health > 0 or not player.winTimer) and pauseMenu then 
             pauseMenu.isOpen = not pauseMenu.isOpen
             pauseMenu.hasOpend = true 
 

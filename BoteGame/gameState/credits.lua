@@ -1,5 +1,5 @@
 local y = 0
-local buttons
+local buttons = GraetUi:New()
 local textList
 local width = 1000
 local moveTimer = 0
@@ -7,6 +7,7 @@ local scrollSpeed = 3.5
 local maxHeight = 0
 local image
 local paused = false
+
 local function load()
     local img = "image/loading/title.png"
 
@@ -15,7 +16,6 @@ local function load()
     end
 
     DynamicLoading:New("code/gameStateLoading/creditsLoading.lua", true, img)
-
     music.load({
         data = {
             crossFadeSpeed = 1,
@@ -156,12 +156,16 @@ end
 
 local function mousepressed(x, y, button)
     local mx, my = getMouseSoxSoy()
-    buttons:Click(mx, my-y)
+    if buttons then
+        buttons:Click(mx, my-y)
+    end
 end
 
 local function mousereleased(x, y, button)
     local mx, my = getMouseSoxSoy()
-    buttons:Release(mx, my-y)
+    if buttons then
+        buttons:Release(mx, my-y)
+    end
 end
 
 

@@ -16,7 +16,7 @@ local function resize()
         backgroundScale = love.graphics.getHeight()/1080
     end
 
-    if titleScreenUI ~= nil then
+    if titleScreenUI ~= nil and titleScreenButtons then
         titleScreenButtons.CreateButtons(titleScreenUI)
     end
 
