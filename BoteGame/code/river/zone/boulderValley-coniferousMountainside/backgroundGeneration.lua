@@ -97,14 +97,30 @@ local function GetColourAt(x, y)
 
             elseif elevation < 0.80*(3*p+1) + noiseB - noiseA then --stone's edge
                 colour = {0.41,0.41,0.41}
-            else --snow
-                colour = {0.45,0.45,0.45}
+            elseif elevation < 1.1*(3*p+1) + noiseB - noiseA then --stone
+
+                if love.math.noise(x/300.1,y/300.1) > 0.5 then
+                    colour = {0.45,0.45,0.45}
+                else
+                    colour = {0.47,0.47,0.47}
+                end
+
+
+            elseif elevation < 1.11*(3*p+1) + 2*noiseB - noiseA +noiseC then --Upper stone's edge
+                colour = {0.31,0.31,0.31}
+            else
+
+                if love.math.noise(x/300.1,y/300.1) > 0.5 then
+                    colour = {0.35,0.35,0.35}
+                else
+                    colour = {0.37,0.37,0.37}
+                end
+
             end
 
             return colour
 
         end
-
     end    
 end
 
