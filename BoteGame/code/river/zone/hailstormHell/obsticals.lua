@@ -81,7 +81,7 @@ return {
                 noiseDiv = 10
             } ,
         },
-        minTime = 50,
+        minTime = 70,
         maxTime = 80,
         isFront = true,
     }

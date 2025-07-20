@@ -31,7 +31,7 @@ function teslaObstacle:New(x, y)
     obj.fireCounter = 0.1
     obj.fireTime = 0.5
 
-    if isStorm then obj.fireTime = 0.4 end
+    if isStorm then obj.fireTime = 0.35 end
 
     obj.id = id
     id = id + 1

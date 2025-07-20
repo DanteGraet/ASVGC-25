@@ -99,7 +99,7 @@ function spinnerLeaderLineObstacle:New(x, y, givDir)
             if isStorm then
                 table.insert(obstacles, assets.obstacle.spinner:New(x+380*i, y, direction*idk*obj.spinDir,0.5,ag))
             else
-                table.insert(obstacles, assets.obstacle.spinner:New(x+400*i, y, direction*idk*obj.spinDir,0.5,ag))
+                table.insert(obstacles, assets.obstacle.spinner:New(x+420*i, y, direction*idk*obj.spinDir,0.5,ag))
             end
 
         end

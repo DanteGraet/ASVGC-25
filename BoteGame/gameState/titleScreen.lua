@@ -132,7 +132,7 @@ local function mousepressed(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if settingsMenu then
+    if settingsMenu and titleScreenUI then
         if settingsMenu.isOpen == false then
             titleScreenUI:Click(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
         else

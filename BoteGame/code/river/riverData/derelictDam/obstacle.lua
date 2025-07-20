@@ -1,5 +1,5 @@
 local function upperDamDifficulty(percentage)
-    return 0.02 + 0.01*quindoc.clamp(percentage,0,1)
+    return 0.015 + 0.01*quindoc.clamp(percentage,0,1)
 end
 
 local function theInletCurrent(percentage)
