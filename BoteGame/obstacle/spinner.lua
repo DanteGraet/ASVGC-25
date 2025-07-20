@@ -82,11 +82,20 @@ function spinnerObstacle:New(x, y, givDir,givenSpeed,givenAngle)
         ex = river:getCenter(y) + 210*LR
         obj.body:setPosition(ex,y)
         obj.spinSpeed = 4
+    elseif z1.displayName and z1.displayName == "Despicable Drainpipe" then
+        ex = river:getCenter(y) + 150*LR
+
+        --if love.math.random(1,3) == 3 then ex = river:getCenter(y) end
+
+        obj.body:setPosition(ex,y)
+        obj.spinSpeed = 4
     elseif not givenSpeed then
         obj.spinSpeed = 1.5
     else
         obj.spinSpeed = givenSpeed
     end
+
+    if isStorm then obj.spinSpeed = obj.spinSpeed*1.5 end
 
     if givenAngle then obj.angle = givenAngle end
 

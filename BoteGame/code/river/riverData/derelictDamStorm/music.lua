@@ -12,11 +12,11 @@ return {
     },
     zones = {
         ["Gravelly Plains"] =        {1,0,0,0,0,0},
-        ["Upper Dam"] =              {0.8,0.8,0.6,1,0,0},
-        ["The Inlet"] =              {0,0.7,0.7,0,1.1,0},
-        ["_The Inlet"] =              {0,0.7,0.7,0,1.1,0},
-        ["Electrical Complex"] =     {0,0,1,0,1.2,1.2},
-        ["_Electrical Complex"] =     {0,0,1,0,1.2,1.2},
+        ["Ultra Dam"] =              {0.8,0.8,0.6,1,0,0},
+        ["Despicable Drainpipe"] =              {0,0.7,0.7,0,1.1,0},
+        ["_Despicable Drainpipe"] =              {0,0.7,0.7,0,1.1,0},
+        ["Electrical Complex Deluxe"] =     {0,0,1,0,1.2,1.2},
+        ["_Electrical Complex Deluxe"] =     {0,0,1,0,1.2,1.2},
         ["River Mouth"] =            {1,0,0,0,0,0},
     }
 }

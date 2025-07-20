@@ -5,7 +5,7 @@ return {
         displayName = "Gravelly Plains",
         distanceTitle = "Starting Point",
         subtitle = "Rocky Lowlands",
-        distance = 4500,--should be 4500 after
+        distance = 1500,--should be 4500 after
 
         transition = 0,
 
@@ -24,9 +24,9 @@ return {
     },
     {
         zone = "upperDam",
-        displayName = "Upper Dam",
+        displayName = "Ultra Dam",
         distanceTitle = "-- 1.5KM --",
-        subtitle = "Rocky Reservoir",
+        subtitle = "Rueful Reservoir",
         distance = 15400,
 
         transition = 0,
@@ -36,9 +36,9 @@ return {
     },
     {
         zone = "upperDam-theInlet",
-        displayName = "Upper Dam",
+        displayName = "Ultra Dam",
         distanceTitle = "-- 1.5KM --",
-        subtitle = "Rocky Reservoir",
+        subtitle = "Rueful Reservoir",
         distance = 1000,
 
         transition = 0,
@@ -47,9 +47,9 @@ return {
 
     },
     {
-        zone = "theInlet",
-        displayName = "The Inlet",
-        subtitle = "Passing the Floodgates",
+        zone = "despicableDrainpipe",
+        displayName = "Despicable Drainpipe",
+        subtitle = "Watery Chute of Pure Misery",
         distanceTitle = "-- 5KM --",
         distance = 20000,
 
@@ -60,8 +60,8 @@ return {
     },
     {
         zone = "theInlet-lowerDam",
-        displayName = "_The Inlet",
-        subtitle = "Passing the Floodgates",
+        displayName = "_Despicable Drainpipe",
+        subtitle = "Watery Chute of Pure Misery",
         distanceTitle = "-- 5KM --",
         distance = 1000,
 
@@ -72,8 +72,8 @@ return {
     },
     {
         zone = "lowerDam",
-        subtitle = "High-voltage Powerhouse",
-        displayName = "Electrical Complex",
+        subtitle = "Good luck!",
+        displayName = "Electrical Complex Deluxe",
         distanceTitle = "",
         distance = 18000,
 
@@ -83,8 +83,8 @@ return {
     },
     {
         zone = "lowerDam-riverMouth",
-        subtitle = "High-voltage Powerhouse",
-        displayName = "_Electrical Complex",
+        subtitle = "Good luck!",
+        displayName = "_Electrical Complex Deluxe",
         distanceTitle = "",
         distance = 1000,
 
@@ -94,10 +94,10 @@ return {
     },
     {
         zone = "riverMouth",
-        subtitle = "Final Stretch!",
+        subtitle = "You've done it!",
         displayName = "River Mouth",
         distanceTitle = "",
-        distance = 5000,
+        distance = 3000,
 
         transition = 0,
 

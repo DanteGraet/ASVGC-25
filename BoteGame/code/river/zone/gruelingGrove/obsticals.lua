@@ -65,7 +65,7 @@ return {
 
 
         },
-        minTime = 500,
+        minTime = 600,
         maxTime = 700,
     },
     {

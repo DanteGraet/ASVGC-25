@@ -31,6 +31,8 @@ function teslaObstacle:New(x, y)
     obj.fireCounter = 0.1
     obj.fireTime = 0.5
 
+    if isStorm then obj.fireTime = 0.4 end
+
     obj.id = id
     id = id + 1
     table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y, 400))
@@ -50,7 +52,25 @@ function teslaObstacle:Update(no, dt)
         self.orbAngle = self.orbAngle + 0.7*dt
 
         self.fireCounter = self.fireCounter - dt
-        if self.fireCounter < 0 then --fire
+        if self.fireCounter < 0 and isStorm then --fire
+            self.fireCounter = self.fireTime
+
+            local xM = math.cos(self.orbAngle)*300
+            local yM = math.sin(self.orbAngle)*300
+
+            local xM2 = math.cos(self.orbAngle+math.pi/1.5)*300
+            local yM2 = math.sin(self.orbAngle+math.pi/1.5)*300
+
+            local xM3 = math.cos(self.orbAngle-math.pi/1.5)*300
+            local yM3 = math.sin(self.orbAngle-math.pi/1.5)*300
+
+
+            table.insert(frontObstacles, assets.obstacle.energy:New(self.x, self.y,xM,yM))
+            table.insert(frontObstacles, assets.obstacle.energy:New(self.x, self.y,xM2,yM2))
+            table.insert(frontObstacles, assets.obstacle.energy:New(self.x, self.y,xM3,yM3))
+
+        elseif self.fireCounter < 0 then
+
             self.fireCounter = self.fireTime
 
             local xM = math.cos(self.orbAngle)*200
@@ -58,6 +78,7 @@ function teslaObstacle:Update(no, dt)
 
             table.insert(frontObstacles, assets.obstacle.energy:New(self.x, self.y,xM,yM))
             table.insert(frontObstacles, assets.obstacle.energy:New(self.x, self.y,xM*-1,yM*-1))
+
 
         end
 

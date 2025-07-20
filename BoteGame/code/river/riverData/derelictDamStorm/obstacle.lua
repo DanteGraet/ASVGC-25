@@ -1,5 +1,5 @@
 local function upperDamDifficulty(percentage)
-    return 0.02 + 0.01*quindoc.clamp(percentage,0,1)
+    return 0.03 + 0.01*quindoc.clamp(percentage,0,1)
 end
 
 local function theInletCurrent(percentage)
@@ -34,43 +34,43 @@ end
 
 local function exitElectricalStormIntensity(percentage)
 
-    return 300 - 300*quindoc.clamp(percentage,0,1)
+    return 800 - 800*quindoc.clamp(percentage,0,1)
 
 end
 
 local function theInletStormIntensity(percentage)
 
-    return 200 + 100*quindoc.clamp(percentage,0,1)
+    return 400 + 400*quindoc.clamp(percentage,0,1)
 
 end
 
 return {
     ["Gravelly Plains"] = {
-        stormIntensity = 200,
+        stormIntensity = 400,
         difficultyFunction = 0.01,
-        current = 150,
+        current = 180,
     },
-    ["Upper Dam"] = {
-        stormIntensity = 200,
+    ["Ultra Dam"] = {
+        stormIntensity = 400,
         difficultyFunction = upperDamDifficulty,
-        current = 150,
+        current = 180,
     },
-    ["The Inlet"] = {
+    ["Despicable Drainpipe"] = {
         stormIntensity = theInletStormIntensity,
         difficultyFunction = 0.01,
         current = theInletCurrent,
     },
-    ["_The Inlet"] = {
-        stormIntensity = 300,
+    ["_Despicable Drainpipe"] = {
+        stormIntensity = 800,
         difficultyFunction = 0,
         current = 50,
     },
-    ["Electrical Complex"] = {
-        stormIntensity = 300,
+    ["Electrical Complex Deluxe"] = {
+        stormIntensity = 800,
         difficultyFunction = 0.015,
         current = electricalComplexCurrent,
     },
-    ["_Electrical Complex"] = {
+    ["_Electrical Complex Deluxe"] = {
         stormIntensity = exitElectricalStormIntensity,
         difficultyFunction = 0.015,
         current = exitElectricalCurrent,

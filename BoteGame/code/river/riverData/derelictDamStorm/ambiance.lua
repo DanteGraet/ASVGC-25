@@ -1,26 +1,26 @@
 return {
     ["Gravelly Plains"] = {
-        rainAmount = 15,
-        windSpeed = 300,
-    },
-    ["Upper Dam"] = {
-        rainAmount = 20,
-        windSpeed = 300,
-    },
-    ["The Inlet"] = {
         rainAmount = 50,
-        windSpeed = 400,
-    },
-    ["_The Inlet"] = {
-        rainAmount = 30,
-        windSpeed = 400,
-    },
-    ["Electrical Complex"] = {
-        rainAmount = 15,
         windSpeed = 300,
     },
-    ["_Electrical Complex"] = {
-        rainAmount = 3,
+    ["Ultra Dam"] = {
+        rainAmount = 60,
+        windSpeed = 300,
+    },
+    ["Despicable Drainpipe"] = {
+        rainAmount = 100,
+        windSpeed = 400,
+    },
+    ["_Despicable Drainpipe"] = {
+        rainAmount = 40,
+        windSpeed = 400,
+    },
+    ["Electrical Complex Deluxe"] = {
+        rainAmount = 40,
+        windSpeed = 300,
+    },
+    ["_Electrical Complex Deluxe"] = {
+        rainAmount = 20,
         windSpeed = 300,
     },
     ["River Mouth"] = {
