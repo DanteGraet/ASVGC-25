@@ -40,7 +40,7 @@ local zoneDefaultWeight = {
 }
 
 local expectedDifficulty = 0
-local continuityBonus = 7/5
+local continuityBonus = 0.5
 local function calculateWeight(self)
     if self[1].difficulty == "rest" then
         expectedDifficulty = expectedDifficulty + 3

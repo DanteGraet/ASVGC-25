@@ -130,7 +130,7 @@ return {
         current = function() return 200 * currentMult() end,
     },
     ["Upper Dam"] = {
-        difficultyFunction = function() return 0.12 * difficultyMult() end,
+        difficultyFunction = function() return 0.012 * difficultyMult() end,
         current = function() return 150 * currentMult() end,
     },
     ["The Inlet"] = {
