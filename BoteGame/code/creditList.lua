@@ -21,22 +21,43 @@ return {
         {{" "},                 {"black", 64}},
         {{" "},                 {"black", 32}},
 
-        {{"Software"},                                                     {"black", 32}},
+        {{"Software"},                                                     {"black", 48}},
 
         {{"Love2D",     "https://love2d.org/"},                                                   {"black", 32}},
         {{"Lua",        "https://www.lua.org/"},                                                  {"black", 32}},
         {{"Zen Maru Gothic",        "https://github.com/googlefonts/zen-marugothic/"},            {"black", 32}},
 
         {{" "},                 {"black", 64}},
-        {{"Playtesters"},                          {"black", 32}},
-        {{"Zac Smith",        "Nobody else, lol"}, {"black", 32}},
+        {{"Playtesters"},                          {"black", 48}},
+        {{"Zac Smith",        "Playtester #2"}, {"black", 32}},
+        {{"Tester3",        "Tester4"}, {"black", 32}},
+        {{"Tester5",        "Tester6"}, {"black", 32}},
+
+        {{" "},                 {"black", 64}},
+        {{"Sounds Used"},                          {"black", 48}},
+
+        {{"Marine diesel engine by AugustSandberg"}, {"black", 32}},
+        {{"License: Creative Commons 0",        "https://freesound.org/s/264864/ "}, {"black", 32}},
+        {{" "}, {"black", 16}},
+        
+        {{"Low Metal Thud 2.wav by F.M.Audio"}, {"black", 32}},
+        {{"License: Attribution 4.0",        "https://freesound.org/s/620830/ "}, {"black", 32}},
+        {{" "}, {"black", 16}},
+
+        {{"Wind On Door Short.wav by Benboncan"}, {"black", 32}},
+        {{"License: Attribution 4.0",        "https://freesound.org/s/84111/ "}, {"black", 32}},
+        {{" "}, {"black", 16}},
+
+        {{"Thunderstorm_Lightning_RX_No_Birds by johnnydekk"}, {"black", 32}},
+        {{"License: Creative Commons 0",        "https://freesound.org/s/686207/ "}, {"black", 32}},
+        {{" "}, {"black", 16}},
 
 
-        {{" "},                 {"black", 32}},
-        {{" "},                 {"black", 32}},
-        {{" "},                 {"black", 32}},
 
-        {{"Special Thanks:"},                                                             {"black", 32}},
+        {{" "},                 {"black", 64}},
+
+
+        {{"Special Thanks:"},                                                             {"black", 48}},
         {{"Lisa Pennifold, our team mentor"},    {"black", 32}},
         {{"Ivan Karyakin, who gave us great feedback last year"},    {"black", 32}},
         {{"All the friends who played the original 'Boat Game With a Name'"},    {"black", 32}},
