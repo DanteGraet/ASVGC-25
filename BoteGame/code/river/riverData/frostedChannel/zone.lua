@@ -4,7 +4,7 @@ return {
         displayName = "Glacial Lake", --Ice Plains
         distanceTitle = "Starting Point",
         subtitle = "River's Source",
-        distance = 3000, --9000
+        distance = 4000, --9000
         transition = 0,
         currentIcons = 2,
     },

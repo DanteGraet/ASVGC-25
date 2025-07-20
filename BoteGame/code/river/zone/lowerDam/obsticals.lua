@@ -47,8 +47,8 @@ return {
 
 
         },
-        minTime = 700,
-        maxTime = 900,
+        minTime = 800,
+        maxTime = 930,
     },
 
     {
