@@ -13,7 +13,7 @@ if rn == "derelictDam" then
     end
 end
 
-if v == "frostedChannel" then
+if rn == "frostedChannel" then
     assets.code.player.unlocks.levels.autumnGrove = true
     assets.code.player.unlocks.levels.frostedChannelStorm = true
 
@@ -28,7 +28,6 @@ if rn == "autumnGrove" then
 end
 
 if rn == "derelictDam" then
-    assets.code.player.unlocks.levels.endless = true
     assets.code.player.unlocks.levels.derelictDamStorm = true
     assets.code.player.unlocks.levels.endless = true
 

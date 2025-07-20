@@ -41,12 +41,12 @@ function GameOverMenu:GenerateButtons()
     }
 
     if player and player.health > 0 then
-        self.Ui:AddTextButton("restart", "Play Again", "center", font1, -width/4, height/2 - 75, width, colours)
+        self.Ui:AddTextButton("restart", "Play Again", "center", font1, -width/4 + 10, height/2 - 90, width, colours)
     else
-        self.Ui:AddTextButton("restart", "Retry", "center", font1, -width/4, height/2 - 75, width, colours)
+        self.Ui:AddTextButton("restart", "Retry", "center", font1, -width/4 + 10, height/2 - 90, width, colours)
     end
 
-    self.Ui:AddTextButton("exit", "Exit", "center", font1, width/4, height/2 - 75, width, colours)
+    self.Ui:AddTextButton("exit", "Exit", "center", font1, width/4, height/2 - 90, width, colours)
 
     self.Ui:GetButtons()["restart"].functions.release = {GameOverMenu.RestartGame, self}
     self.Ui:GetButtons()["exit"].functions.release = {GameOverMenu.exit, self}
@@ -106,20 +106,20 @@ function GameOverMenu:Draw(gs)
 
     font.setFont(font2)
     if player.health <=0 then
-        love.graphics.printf("Game Over", -width/2, -height/2, width, "center")
+        love.graphics.printf("Game Over", -width/2 + 10, -height/2, width, "center")
     elseif savedDisplayName == "River Mouth" then
-        love.graphics.printf("Well Done!", -width/2, -height/2, width, "center")
+        love.graphics.printf("Well Done!", -width/2 + 10, -height/2, width, "center")
     else
-        love.graphics.printf("Stage Clear!", -width/2, -height/2, width, "center")
+        love.graphics.printf("Stage Clear!", -width/2 + 10, -height/2, width, "center")
     end
 
     if riverName == "endless" then
         font.setFont("medium", 50)
-        love.graphics.printf("Zones:", -width/2, -height/2 + 230, width/2, "center")
+        love.graphics.printf("Zones:", -width/2 + 10, -height/2 + 230 + 15, width/2, "center")
 
         local zonesCleared = riverGenerator:GetZone(player.y).zoneCount - 1
         font.setFont("medium", 28)
-        love.graphics.printf(zonesCleared.."",-width/2,-height/2 + 290,width/2,"center")
+        love.graphics.printf(zonesCleared.."",-width/2 + 10,-height/2 + 290 + 15,width/2,"center")
 
         -- this is a scam fix
         if zonesCleared >= 0 then
@@ -131,27 +131,27 @@ function GameOverMenu:Draw(gs)
         end
     else
         font.setFont("medium", 50)
-        love.graphics.printf("Progress:", -width/2, -height/2 + 230, width/2, "center")
+        love.graphics.printf("Progress:", -width/2 + 10, -height/2 + 230 + 15, width/2, "center")
 
         local p = player.y/riverGenerator:GetTotalRiverLength()
         local percentageThru = math.floor(p*-100)
 
         font.setFont("medium", 40)
-        love.graphics.printf(quindoc.clamp(percentageThru,0,100).."%",-width/2,-height/2 + 295,width/2,"center")
+        love.graphics.printf(quindoc.clamp(percentageThru,0,100).."%",-width/2 + 10,-height/2 + 295 + 15,width/2,"center")
     end
 
 
     if savedDisplayName then
         font.setFont("medium", 50)
-        love.graphics.printf("Zone:", -width/2, -height/2 + 360, width/2, "center")
+        love.graphics.printf("Zone:", -width/2 + 10, -height/2 + 360 + 15, width/2, "center")
 
         font.setFont("medium", 28)
-        love.graphics.printf(savedDisplayName,-width/2,-height/2 + 420,width/2,"center")
+        love.graphics.printf(savedDisplayName,-width/2+ 10,-height/2 + 420 + 15,width/2,"center")
     end
 
 
     font.setFont("medium", 50)
-    love.graphics.printf("Score:", -width/2, -height/2 + 100, width/2, "center")
+    love.graphics.printf("Score:", -width/2 + 10, -height/2 + 100 + 15, width/2, "center")
 
     font.setFont("medium", 40)
     love.graphics.printf("High Scores:", 20, -height/2 + 115, width/2 - 40, "center")
@@ -162,7 +162,7 @@ function GameOverMenu:Draw(gs)
     else
         displayNum = math.floor(math.abs(player.score))
     end
-    love.graphics.printf(displayNum, -width/2, -height/2 + 160, width/2, "center")
+    love.graphics.printf(displayNum, -width/2+ 10, -height/2 + 160 + 15, width/2, "center")
     
     -- white is there so if the player gets the same score (unlikely like very unlikey) then there will only on white score
     local white = false

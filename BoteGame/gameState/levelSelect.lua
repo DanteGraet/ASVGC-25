@@ -258,7 +258,14 @@ end
 
 
 local function keyreleased(key)
-   
+    if key == "escape" then
+        if menus and menus[selectedMenu] and menus[selectedMenu].isOpen then
+            menus[selectedMenu].isOpen = false
+        else
+            gameState = "titleScreen"
+                
+        end
+    end
 end
 
 

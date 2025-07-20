@@ -565,7 +565,7 @@ while threadRunning do
 
         love.thread.getChannel("generatorThread_backgroundImageData"):push(generateImageData(math.floor(bgRequest.maxHeight)-3, math.floor((bgRequest.minHeight-bgRequest.maxHeight)/3)+200))
     else        
-        if playerY + 1000 > backgroundY then
+        if playerY + 2500 > backgroundY then
             love.thread.getChannel("generatorThread_backgroundImageData"):push(generateImageData(backgroundY))
         end
     end

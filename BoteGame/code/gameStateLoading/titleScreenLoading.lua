@@ -22,7 +22,6 @@ local toLoad = {
 
     -- in a function so we don't unload it
     function()
-        dialouge = love.filesystem.load("code/dialogoge.lua")()
 
         if not assets.save then assets.save = {} end
         if love.filesystem.getInfo("save/highscore.lua") then

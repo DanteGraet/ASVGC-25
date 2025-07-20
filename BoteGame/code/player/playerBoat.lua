@@ -250,7 +250,7 @@ function PlayerBoat:Update(dt, inputs, gameSpeed)
         self:UpdateDead(dt, bt, gameSpeed)
     end
 
-    self.visualDir = self.visualDir + (self.dir-self.visualDir)*math.min(10*dt, 1)
+    self.visualDir = self.visualDir + (self.dir-self.visualDir)*math.min(7.5*dt, 1)
 end
 
 function PlayerBoat:UpdateBeached(dt)

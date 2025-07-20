@@ -83,10 +83,21 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
         end
     end
 
-    if settings.graphics.fullscreen.value then
+    --[[if settings.graphics.fullscreen.value then
         love.window.setFullscreen(true)
-    end
+    end]]
 
+    if settings.graphics.fullscreen.value ~= love.window.getFullscreen() then
+        if self.Ui then
+            if self.catagories[self.curentCatagroy].name == "graphics" then
+                self.Ui:GetButtons("settings")["fullscreen"].value = love.window.getFullscreen()
+            end
+
+
+            SettingsMenu.SetCatagory({self, self.curentCatagroy})
+        end
+        settings.graphics.fullscreen.value = love.window.getFullscreen()
+    end
 
     obj.Ui = GraetUi:New()
 
@@ -132,13 +143,22 @@ function SettingsMenu:toggleFullscreen()
 
     mx, my = mx/screenScale, my/screenScale
     love.window.setFullscreen(not love.window.getFullscreen())
+
     love.resize(love.graphics.getWidth(), love.graphics.getHeight())
 
-    if self.catagories[self.curentCatagroy].name == "graphics" then
-        self.Ui:GetButtons("settings")["fullscreen"].value = love.window.getFullscreen()
+
+    if self.Ui then
+        if self.catagories[self.curentCatagroy].name == "graphics" then
+            self.Ui:GetButtons("settings")["fullscreen"].value = love.window.getFullscreen()
+        end
+
+
+        SettingsMenu.SetCatagory({self, self.curentCatagroy})
     end
+    settings.graphics.fullscreen.value = love.window.getFullscreen()
 
     love.mouse.setPosition(mx*screenScale, my*screenScale)
+
 end
 
 
