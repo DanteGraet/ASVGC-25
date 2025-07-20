@@ -29,7 +29,7 @@ a.sounds = {
         tick = 0,
     },
     wind = {
-        sound = love.audio.newSource("audio/ambient/wind.ogg", "stream"),
+        sound = love.audio.newSource("audio/ambient/water.ogg", "stream"),
         value = 0,
     },
     water = {
