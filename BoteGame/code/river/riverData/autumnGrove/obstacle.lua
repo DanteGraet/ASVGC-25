@@ -14,7 +14,7 @@ return {
     },
     ["Autumn Grove"] = {
         difficultyFunction = 0.006,
-        current = 250,
+        current = 200,
     },
     ["Clockwork Ruins"] = {
         difficultyFunction = 0.016,
@@ -22,7 +22,7 @@ return {
     },
     ["Clockwork's Core"] = {
         difficultyFunction = 0.05,
-        current = 100,
+        current = 120,
     },
     ["Autumn Rapids"] = {
         difficultyFunction = 0.007,

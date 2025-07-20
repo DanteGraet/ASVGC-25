@@ -138,9 +138,9 @@ local function update(dt)
     else
         scrollSpeed = math.min(scrollSpeed + dt, 1)
     end
-    y = y - dt*50*tweens.sineInOut(scrollSpeed)
+    y = y - dt*65*tweens.sineInOut(scrollSpeed)
 
-    if y < 50 and paused == false then
+    if y < 70 and paused == false then
         paused = true
         moveTimer = -3
     end

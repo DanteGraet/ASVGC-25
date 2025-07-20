@@ -12,7 +12,7 @@ return {
         {{"A game by Jaraph"},      {"black", 48}},
         {{""},    {"black", 32}},
         {{"Lead Programmer, SFX",        "Daniel Smith"},            {"black", 32}},
-        {{"Art, Music and Design",      "Patrick Henschke"},        {"black", 32}},
+        {{"Art, Music, Design and Progamming",      "Patrick Henschke"},        {"black", 32}},
         {{" "},                 {"black", 32}},
 
         {{"Australian STEM Video Games Challenge 2025"},    {"black", 32}},
@@ -29,7 +29,7 @@ return {
 
         {{" "},                 {"black", 64}},
         {{"Playtesters"},                          {"black", 48}},
-        {{"Zac Smith",        "Playtester #2"}, {"black", 32}},
+        {{"Zac Smith",        "Angela Henschke"}, {"black", 32}},
         {{"Tester3",        "Tester4"}, {"black", 32}},
         {{"Tester5",        "Tester6"}, {"black", 32}},
 
