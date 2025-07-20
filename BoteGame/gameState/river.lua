@@ -193,7 +193,7 @@ local function update(dt)
                 local strikeIntensity = math.random(2,6)/10
                 lightningAlpha = strikeIntensity
                 --TODO: Play lightning sound here, based on intensity
-                audioPlayer.playSound(ambiance.sounds.thunder, "ambient", nil, nil, strikeIntensity)
+                audioPlayer.playSound(ambiance.sounds.thunder.sound, "ambient", nil, nil, strikeIntensity*3)
             else
                 lightningAlpha = math.max(lightningAlpha-2*dt,0)
             end
