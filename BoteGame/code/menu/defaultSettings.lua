@@ -112,12 +112,12 @@ return {
     },
     audio = {
         h_blank = {type = "header", displayName = "Audio"},
-        masterVolume = {type = "slider", displayName = "Master Volume", value = 0.8},
+        masterVolume = {type = "slider", displayName = "Master Volume", value = 0.5},
 
         h_music = {type = "header", displayName = "Music"},
         musicVolume = {type = "slider", displayName = "Music Volume", value = 0.7},
         ambient = {type = "slider", displayName = "Ambiance Volume", value = 0.8},
-        player = {type = "slider", displayName = "Player Volume", value = 0.5},
+        player = {type = "slider", displayName = "Player Volume", value = 0.6},
         ui = {type = "slider", displayName = "UI Volume", value = 0.8},
 
     },
