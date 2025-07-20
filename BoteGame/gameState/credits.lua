@@ -79,7 +79,7 @@ local function extraLoad()
                 buttons:AddTextButton(text[1][2], text[1][2], "right", text[2], 1920/2 - width/2, height, width, buttonColours)
                 buttons:GetButtons()[text[1][2]].functions.click = {love.system.openURL, text[1][2]}
 
-                buttons:GetButtons()[text[1][2]]:AddText(text[1][2], "left", text[2], 4, 4, 1000, 1)
+                buttons:GetButtons()[text[1][2]]:AddText(text[1][2], "left", text[2], 4, -4, 1000, 1)
                 buttons:GetButtons()[text[1][2]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
 
 
