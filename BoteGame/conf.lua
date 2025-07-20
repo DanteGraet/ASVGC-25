@@ -1,4 +1,4 @@
-VERSION = "V1.0 (Competition Release)"
+VERSION = "V1.0 (Challenge Release)"
 DEV = true
 compRelease = true
 

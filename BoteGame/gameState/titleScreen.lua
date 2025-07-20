@@ -134,7 +134,9 @@ local function mousepressed(x, y, button)
 
     if settingsMenu then
         if settingsMenu.isOpen == false then
-            titleScreenUI:Click(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+            if titleScreenUI then
+                titleScreenUI:Click(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+            end
         else
             settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
         end
@@ -147,7 +149,9 @@ local function mousereleased(x, y, button)
 
     if settingsMenu then
         if settingsMenu.isOpen == false then
-            titleScreenUI:Release(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+            if titleScreenUI then
+                titleScreenUI:Release(love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+            end
         else
             settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)        
         end
