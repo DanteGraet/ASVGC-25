@@ -28,16 +28,29 @@ a.sounds = {
         value = 0,
         tick = 0,
     },
+    wind = {
+        sound = love.audio.newSource("audio/ambient/wind.ogg", "stream"),
+        value = 0,
+    },
     water = {
         sound = love.audio.newSource("audio/ambient/water.ogg", "stream"),
         value = 0.7,
-        tick = 0,
     },
     waterFast = {
         sound = love.audio.newSource("audio/ambient/waterFast.ogg", "stream"),
         value = 0.0,
-        tick = 0,
-    }
+    },
+    thunder = {
+        sound = {
+            love.audio.newSource("audio/ambient/thunder/1.ogg", "static"),
+            love.audio.newSource("audio/ambient/thunder/2.ogg", "static"),
+            love.audio.newSource("audio/ambient/thunder/3.ogg", "static"),
+            love.audio.newSource("audio/ambient/thunder/4.ogg", "static"),
+            love.audio.newSource("audio/ambient/thunder/5.ogg", "static"),
+        },
+        timer = 0,
+        value = 0,
+    },
 }
 
 local rn = riverName .. ((isStorm == true and "Storm") or "")
@@ -101,18 +114,19 @@ function a.update(dt, y, volMult, zone)
             -- static
 
             --data.timer = data.timer + dt*5
+            if data.tick then
+                data.tick = data.tick + dt
 
-            data.tick = data.tick + dt
+                if data.tick > 0.3 and data.value > 0 then            
 
-            if data.tick > 0.3 and data.value > 0 then            
+                    if math.random(-50, data.value*100) > 0 then
+                        audioPlayer.playSound(data.sound, "", nil, nil, 0.75)
+                        data.timer = 0
+                    end
 
-                if math.random(-50, data.value*100) > 0 then
-                    audioPlayer.playSound(data.sound, "", nil, nil, 0.75)
-                    data.timer = 0
+                    data.tick = data.tick - 0.3
+
                 end
-
-                data.tick = data.tick - 0.3
-
             end
         else
             -- Looping
