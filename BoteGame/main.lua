@@ -6,7 +6,7 @@ gameState = ""
 previousGameState = ""
 game = {}
 
-
+dialouge = love.filesystem.load("code/dialogoge.lua")() 
 
 log = {
 }
