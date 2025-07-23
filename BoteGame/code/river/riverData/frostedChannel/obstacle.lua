@@ -56,11 +56,11 @@ return {
         current = 100,
     },
     ["Ice Plains"] = {
-        difficultyFunction = 0.008,
+        difficultyFunction = 0.01,
         current = iceplainsCurrent,
     },
     ["Boulder Valley"] = {
-        difficultyFunction = 0.002,
+        difficultyFunction = 0.003,
         current = boulderValleyCurrent,
         chainLengthCoefficient = boulderValleyChainLengthCoefficient,
     },

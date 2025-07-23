@@ -29,9 +29,9 @@ return {
 
         {{" "},                 {"black", 64}},
         {{"Playtesters"},                          {"black", 48}},
-        {{"Zac Smith",        "Angela Henschke"}, {"black", 32}},
-        {{"Tester3",        "Tester4"}, {"black", 32}},
-        {{"Tester5",        "Tester6"}, {"black", 32}},
+        {{"Zac Smith",        "Archibald Nagel"}, {"black", 32}},
+        {{"Jason Kang",        "Jacob Wong"}, {"black", 32}},
+        {{"Angela Henschke",        ""}, {"black", 32}},
 
         {{" "},                 {"black", 64}},
         {{"Sounds Used"},                          {"black", 48}},

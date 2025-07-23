@@ -56,7 +56,7 @@ end
 return {
 
     ["Ice Rapids"] = {
-        difficultyFunction = 0.020,
+        difficultyFunction = 0.015,
         current = 350,
         stormIntensity = 400
     },
