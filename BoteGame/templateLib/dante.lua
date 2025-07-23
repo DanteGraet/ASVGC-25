@@ -78,6 +78,9 @@ function dante.varToString(var)
     elseif type(var) == "image" then
         return "image"
     elseif type(var) == "string" then
+        if var == "\\" then
+            var = "\\\\"
+        end
         return '"' .. var .. '"'
     elseif type(var) == "number" then
         return tostring(var)

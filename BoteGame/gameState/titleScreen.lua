@@ -35,7 +35,9 @@ end
 
 local function unload()
     love.thread.getChannel("background_closeThread"):push(true)
-    music.unload()
+    if music then
+        music.unload()
+    end
 
     titleScreenUI = nil
 end

@@ -133,7 +133,8 @@ end
 function love.keypressed(key)
     if key == "f11" then
         if settingsMenu then
-            settingsMenu:toggleFullscreen()
+            --settingsMenu:toggleFullscreen()
+            settingsMenu:toggleFunction(not love.window.getFullscreen(), settings.graphics.fullscreen)
         else
             love.window.setFullscreen( not love.window.getFullscreen())
         end

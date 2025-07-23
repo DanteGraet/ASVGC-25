@@ -138,6 +138,15 @@ local function toggleFunction(value, toggle)
     end
 end
 
+function SettingsMenu:toggleFunction(value, toggle)
+    toggle.value = value
+
+
+    if toggle == settings.graphics.fullscreen then
+        settingsMenu:toggleFullscreen()
+    end
+end
+
 function SettingsMenu:toggleFullscreen()
     local mx, my = love.mouse.getPosition()
 
@@ -155,7 +164,7 @@ function SettingsMenu:toggleFullscreen()
 
         SettingsMenu.SetCatagory({self, self.curentCatagroy})
     end
-    settings.graphics.fullscreen.value = love.window.getFullscreen()
+    --settings.graphics.fullscreen.value = not love.window.getFullscreen()
 
     love.mouse.setPosition(mx*screenScale, my*screenScale)
 
@@ -254,8 +263,8 @@ function SettingsMenu:KeyRelased(key)
         self.Ui:GetButtons("settings")[changingKeybind[2] .. changingKeybind[3]].graphics[1].text = "[" .. key .. "]"
 
         if key == "\\" then
-            settings.keybinds[changingKeybind[2]].value[changingKeybind[3]] = "\\\\"
-            self.Ui:GetButtons("settings")[changingKeybind[2] .. changingKeybind[3]].graphics[1].text = "[\\]s"
+            settings.keybinds[changingKeybind[2]].value[changingKeybind[3]] = "\\"
+            self.Ui:GetButtons("settings")[changingKeybind[2] .. changingKeybind[3]].graphics[1].text = "[\\]"
         end
 
         changingKeybind[1] = false
