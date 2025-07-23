@@ -28,7 +28,7 @@ for i = 1,bladeCount do
         table.insert(vertecies, newX)
         table.insert(vertecies, newY)
     end
-    dante.printTable(vertecies)
+    --dante.printTable(vertecies)
     table.insert(bladeShapes, love.physics.newPolygonShape(vertecies))
 end
 

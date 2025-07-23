@@ -1,5 +1,5 @@
 VERSION = "V1.0 (Challenge Release)"
-DEV = true
+DEV = false
 compRelease = true
 
 lockedAspectRatio = true
