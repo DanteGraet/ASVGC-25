@@ -1,6 +1,6 @@
-VERSION = "V1.0 (Challenge Release)"
+VERSION = "V1.1 (post VGC)"
 DEV = true
-compRelease = true
+compRelease = false
 
 lockedAspectRatio = true
 screenBarColour = {0,0,0}
