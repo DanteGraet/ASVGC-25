@@ -103,15 +103,13 @@ local function lowerDamBG(x, y, elevation)
     return colour
 end
 
-local function GetColourAt(x, y)
+local function GetColourAt(x, y, distToEdge)
     local colour = {0.5,0.5,0.5}
 
-    local distToEdge
-    if getDistToEdge then
-        distToEdge = getDistToEdge(x, y)
-    else
+    if not distToEdge then
         distToEdge = river:getDistToEdge(x, y)
     end
+
 
     local p = (GetPercentageThrough and GetPercentageThrough(y)) or riverGenerator:GetPercentageThrough(y)
 

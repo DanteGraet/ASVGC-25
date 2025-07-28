@@ -71,6 +71,25 @@ function getDistToEdge(x, y)    -- global so we can acsess in generating colours
     end
 end
 
+function getCenterX(y)    -- global so we can acsess in generating colours scripts
+    if tempRiver and #tempRiver > 0 then
+        for channel = 1,#tempRiver do
+            local leftHight, leftLow = FindHighAndLowPoints(channel, 1, y)
+            local rightHight, rightLow = FindHighAndLowPoints(channel, 2, y)
+
+            local leftPercentage = (y - leftLow.y)/(leftHight.y - leftLow.y)
+            local rightPercentage = (y - rightLow.y)/(rightHight.y - rightLow.y)
+
+            local leftX = leftLow.x + (leftHight.x - leftLow.x)*leftPercentage
+            local rightX = rightLow.x + (rightHight.x - rightLow.x)*rightPercentage
+
+
+            return (leftX+rightX)/2, math.abs(leftX - rightX)
+
+        end
+    end
+end
+
 function GetPercentageThrough(y)
     local distRemaining = math.abs(y)
     for i = 1,#zones do
@@ -465,16 +484,20 @@ local function generateImageData(startY, layers)
             zone = zone[1]
         end
 
+        local center, width = getCenterX(-top+relativeY*3)
+
         for x = -data.width/2 + 1, data.width/2 do
             local colour
             local num = chance or -1
+
+            local distToEdge = math.abs(center - (x*3)) - width/2
     
-            --if zone2 and math.random(0, 100)/100 < chance then
+            -- default noise transition
             if zone2 and love.math.noise((x)*3/250, (-top+relativeY*3)/250) < chance then
-                colour = zoneData[zone2.zone].background(x*3, -top+relativeY*3)
+                colour = zoneData[zone2.zone].background(x*3, -top+relativeY*3, distToEdge)
     
             else
-                colour = zoneData[zone.zone].background(x*3, -top+relativeY*3)
+                colour = zoneData[zone.zone].background(x*3, -top+relativeY*3, distToEdge)
             end
 
             table.insert(data.pixles[relativeY], colour)
