@@ -1,9 +1,7 @@
-local function GetColourAt(x, y)
-    local colour = {0,1,1}
+local function GetColourAt(x, y, dist)
+    local colour = {math.min(dist/100, 0.5) / 2,dist/1000,dist/500/ 2}
 
-    if getDistToEdge and getDistToEdge(x, y) > 0 then
-        return {0,0,1}
-    end
+    
 
     return colour
 end
