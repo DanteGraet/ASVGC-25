@@ -103,7 +103,11 @@ end
 
 local function unload()
     love.thread.getChannel("background_closeThread"):push(true)
-    --while not love.thread.getChannel("background_closeThreadReceived"):pop() do
+
+    --love.timer.sleep
+
+
+    
       --  --print("waiting")
     --end
     UpdateHighScore()
@@ -125,6 +129,9 @@ local function unload()
 
     pauseMenu = nil
     gameOverMenu = nil
+
+    -- wait untill fully unloaded
+    love.thread.getChannel("background_closeThreadReceived"):demand()
 end
 
 

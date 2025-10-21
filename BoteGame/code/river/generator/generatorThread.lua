@@ -612,5 +612,8 @@ while threadRunning do
     end
 
     local endThread = love.thread.getChannel("background_closeThread"):pop()
-    if endThread then threadRunning = false; love.thread.getChannel("background_closeThreadReceived"):push(true); print("[RiverGeneratorThread]: Closing Thread") end
+    if endThread then threadRunning = false end
 end
+
+print("[RiverGeneratorThread]: Closing Thread")
+love.thread.getChannel("background_closeThreadReceived"):push(true)
