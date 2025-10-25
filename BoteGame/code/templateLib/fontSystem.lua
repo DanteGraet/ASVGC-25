@@ -1,4 +1,4 @@
-local f = {}
+font = {}
 
 local fonts = {}
 local fontLookUp = {}
@@ -6,11 +6,11 @@ local fontLookUp = {}
 local lastFontSize = 32
 local lastFontName = ""
 
-function f.loadFont(location, name)
+function font.loadFont(location, name)
     fontLookUp[name] = location
 end
 
-function f.setFont(name, size)
+function font.setFont(name, size)
     local name = name
     local size = size
 
@@ -43,7 +43,7 @@ function f.setFont(name, size)
 end
 
 
-function f.getFont(name, size)
+function font.getFont(name, size)
     local name = name
     local size = size
     

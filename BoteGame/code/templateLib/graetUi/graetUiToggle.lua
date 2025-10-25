@@ -1,7 +1,7 @@
-local Text = require("templateLib.graetUi.graetUiTextElement")
-local Rect = require("templateLib.graetUi.graetUiRectElement")
-local Image = require("templateLib.graetUi.graetUiImageElement")
-local Button = require("templateLib.graetUi.graetUiButton")
+local Text = require("code.templateLib.graetUi.graetUiTextElement")
+local Rect = require("code.templateLib.graetUi.graetUiRectElement")
+local Image = require("code.templateLib.graetUi.graetUiImageElement")
+local Button = require("code.templateLib.graetUi.graetUiButton")
 
 
 local GraetToggle = {}

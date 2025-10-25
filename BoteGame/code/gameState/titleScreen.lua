@@ -21,7 +21,7 @@ local function resize()
     end
 
     riverBorders.up =    y
-    riverBorders.down =  y + love.graphics.getHeight()/screenScale
+    riverBorders.down =  y + love.graphics.getHeight()/screen.getScale()
 end
 
 local function load()
@@ -30,7 +30,8 @@ local function load()
     resize()
 
 
-    DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true, (previousGameState == "splash" and "image/loading/clear.png") or "image/loading/title.png")
+    
+    --DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true, (previousGameState == "splash" and "image/loading/clear.png") or "image/loading/title.png")
 end
 
 local function unload()
@@ -62,6 +63,7 @@ end
 
 
 local function update(dt)
+    local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
@@ -116,17 +118,19 @@ local function update(dt)
             end
         end
 
-        if settingsMenu.isOpen == false then
-            titleScreenUI:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
-            settingsTimer = math.max(settingsTimer - dt*2, 0)
-        else
-            -- Use math.huge so it will never be hovering over a button right?
-            titleScreenUI:Update(dt, math.huge, math.huge)
-            settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-            settingsTimer = math.min(settingsTimer + dt*2, 1)
+        if settingsMenu then
+            if settingsMenu.isOpen == false then
+                titleScreenUI:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
+                settingsTimer = math.max(settingsTimer - dt*2, 0)
+            else
+                -- Use math.huge so it will never be hovering over a button right?
+                titleScreenUI:Update(dt, math.huge, math.huge)
+                settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+                settingsTimer = math.min(settingsTimer + dt*2, 1)
+            end
         end
 
-        if music.manager then music.manager(dt) end
+        if music and music.manager then music.manager(dt) end
     end
 end
 
@@ -169,6 +173,7 @@ end
 
 
 local function draw()
+    local screenScale = screen.getScale()
     love.graphics.reset()
     love.graphics.scale(screenScale)
 
@@ -229,6 +234,6 @@ return {
     update = update,
     draw = draw,
 
-    isFirst = DEV,
+    --isFirst = DEV,
     noTransform = true,
 }

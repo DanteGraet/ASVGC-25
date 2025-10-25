@@ -1,10 +1,10 @@
 local particleTable = {}
 local particleClass = {}
 
+particles = {}
 
 
-
-local function loadParticles()
+function particles.loadParticles()
     particleTable = {}
     particleClass = {}
 
@@ -16,7 +16,7 @@ local function loadParticles()
     end
 end
 
-local function spawnParticle(spawnClass,spawnX,spawnY,spawnAngle,spawnData, layer)
+function particles.spawnParticle(spawnClass,spawnX,spawnY,spawnAngle,spawnData, layer)
     local layer = layer
     if layer then
         if not particleTable[layer] then
@@ -34,7 +34,7 @@ local function spawnParticle(spawnClass,spawnX,spawnY,spawnAngle,spawnData, laye
     table.insert(particleTable[layer], particleClass[spawnClass]:New(spawnX,spawnY,spawnAngle,spawnData))
 end
 
-local function updateParticles(dt)
+function particles.updateParticles(dt)
 
     for key, value in pairs(particleTable) do
         for i = #value,1, -1 do
@@ -47,7 +47,7 @@ local function updateParticles(dt)
     end
 end
 
-local function drawParticles(layer)
+function particles.drawParticles(layer)
     if particleTable[layer] then
         for i = #particleTable[layer], 1, -1 do
             particleTable[layer][i]:Draw()

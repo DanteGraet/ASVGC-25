@@ -1,4 +1,4 @@
-local tweens = {}
+tweens = {}
 
 function tweens.linear(percent, pos1, pos2)
     local pos1, pos2 = pos1 or 0, pos2 or 1

@@ -1,0 +1,10 @@
+-- load permenant stuff here
+font.loadFont("font/fontBlack.ttf", "black")
+font.loadFont("font/fontMedium.ttf", "medium")
+
+dialouge = love.filesystem.load("code/global/dialogoge.lua")() 
+music = love.filesystem.load("code/global/music.lua")() 
+
+
+assets = {}
+

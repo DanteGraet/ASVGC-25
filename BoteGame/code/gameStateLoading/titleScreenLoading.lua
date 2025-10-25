@@ -89,9 +89,15 @@ table.insert(toLoad, function()
     --ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
     riverGenerator = {}
     river = {}
+
     
     river = assets.code.river.river():New()
+
+    print("generator river")
+
     riverGenerator = assets.code.river.generator.riverGenerator():New(rn)
+
+    print("generator finishedLoading")
 
 end)
 

@@ -1,4 +1,4 @@
-require("templateLib/quindoc")
+--[[require("templateLib/quindoc")
 require("templateLib/dante")
 
 font = require("templateLib/fontSystem")
@@ -23,4 +23,4 @@ require("code/river/effects/zoneTitle")
 require("code/music")
 
 -- Global variables
-assets = {}
+assets = {}]]

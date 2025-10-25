@@ -39,7 +39,9 @@ local function update(dt)
     timer = timer + dt
     if timer >= 5.5 then
         --previousGameState = ""
-        gameState = "titleScreen"
+        --gameState = "titleScreen"
+
+        gameStateManager.setGameState("responsiveLoading", false, "titleScreen", "image/loading/clear.png")
     end
 end
 
@@ -117,6 +119,6 @@ return {
     update = update,
     draw = draw,
 
-    isFirst = not DEV,
+    isFirst = true,
     noTransform = true,
 }

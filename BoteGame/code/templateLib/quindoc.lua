@@ -1,13 +1,23 @@
 quindoc = {}
-drawDebugRuler = false
+local drawDebugRuler = false
+local debugFont
 if love.graphics then
-    debug = love.graphics.newFont(16)
+    debugFont = love.graphics.newFont(16)
 end
 
 --Some stuff that i wished the math library had, and also some lazy tools.
+function quindoc.pythag(x1, y1, x2, y2)
+    local dx = x1 - (x2 or 0)
+    local dy = y1 - (y2 or 0)
+    return math.sqrt(dx * dx + dy * dy)
+end
 
-function quindoc.pythag(x,y)
-    return math.sqrt(x^2+y^2)
+function quindoc.clamp(val, min, max)
+    return math.max(min, math.min(val, max))
+end
+
+function quindoc.sign(x)
+    return x > 0 and 1 or x < 0 and -1 or 0
 end
 
 function quindoc.round(num,digits)
@@ -15,16 +25,6 @@ function quindoc.round(num,digits)
     num = math.floor(num + 0.5)
     num = num / 10^(digits or 0)
     return num
-end
-
-function quindoc.dist(x1, y1, x2, y2)
-    local dx = x2 - x1
-    local dy = y2 - y1
-    return math.sqrt(dx * dx + dy * dy)
-end
-
-function quindoc.sign(x)
-    return x > 0 and 1 or x < 0 and -1 or 0
 end
 
 function quindoc.numberLength(num)
@@ -35,14 +35,12 @@ function quindoc.numberLength(num)
     end
 end
 
-function quindoc.clamp(val, min, max)
-    return math.max(min, math.min(val, max))
-end
+
 
 --Lazy tools
 
 function quindoc.drawRuler()
-    love.graphics.setFont(debug)
+    love.graphics.setFont(debugFont)
     love.graphics.setColor(1, 1, 1,0.2)
 
     for w = 0, 1920, 50 do

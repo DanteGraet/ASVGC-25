@@ -5,6 +5,9 @@ compRelease = false
 lockedAspectRatio = true
 screenBarColour = {0,0,0}
 
+TARGET_WIDTH = 1920
+TARGET_HEIGHT = 1080
+
 function love.conf(t)
     t.title = "Bouyant Voyage " .. VERSION
     t.window.icon = "image/icon/icon256.png"

@@ -1,4 +1,6 @@
-local function playSound(sound, catagory, pitchChange, position, volumeOverride)
+audioPlayer = {}
+
+function audioPlayer.playSound(sound, catagory, pitchChange, position, volumeOverride)
     local tempSound
 
     --create the sound from either a table (pick random) or sound
@@ -33,7 +35,7 @@ end
 
 
 local loopingSounds = {}
-local function NewLoopingSound(name, sound, catagory, volume)
+function audioPlayer.NewLoopingSound(name, sound, catagory, volume)
     loopingSounds[name] = {}
 
     --create the sound from either a table (pick random) or sound
@@ -58,7 +60,7 @@ local function NewLoopingSound(name, sound, catagory, volume)
 
 end
 
-local function ModifyLoopingSound(name, data)
+function audioPlayer.ModifyLoopingSound(name, data)
     if not loopingSounds[name] then
         return
     end
@@ -84,18 +86,10 @@ local function ModifyLoopingSound(name, data)
         end
     end
 end
-local function RemoveLoopingSound(name)
+function audioPlayer.RemoveLoopingSound(name)
     if loopingSounds[name] and loopingSounds[name].sound then 
         loopingSounds[name].sound:stop()
         print(name)
         loopingSounds[name] = nil
     end
 end
-
-
-return {
-    playSound = playSound,
-    NewLoopingSound = NewLoopingSound,
-    ModifyLoopingSound = ModifyLoopingSound,
-    RemoveLoopingSound = RemoveLoopingSound,
-}

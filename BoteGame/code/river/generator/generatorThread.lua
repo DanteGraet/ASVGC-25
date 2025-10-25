@@ -6,15 +6,16 @@ local math = require("math")
 local table = require("table")
 local string = require("string")
 
-require("templateLib/quindoc")
-require("templateLib/dante")
+
+require("code/templateLib/quindoc")
+require("code/templateLib/dante")
+
 
 math.randomseed(os.time(), love.thread.getChannel("generator_seed"):pop() or 0)
 
 
 local threadRunning = true
 local playerY = love.thread.getChannel("generator_playerY"):pop() or 0
-
 
 lastPoints = nil
 
@@ -28,6 +29,7 @@ local infinite = nil
 -- has to be global so zones can acsess for weight garbage
 data = nil
 local zoneData = {}
+
 
 local backgroundY = -180
 
@@ -105,8 +107,6 @@ function GetPercentageThrough(y)
     return 1
 end
 
-
-
 -- functions for river generating
 local function GetZone(y, extra)
     local y = y or playerY
@@ -144,17 +144,16 @@ local function generateLastPoints(zoneName)
     local size = math.random(zone.minWidth,zone.maxWidth)
 
     local a = 0   
-
-    local scale = love.thread.getChannel("generatorThread_scale"):peek()
+    local scale = love.thread.getChannel("generatorThread_scale"):peek() or 1
 
     table.insert(lastPoints, {})
-
     table.insert(lastPoints[1], {})
 
     lastPoints[1][1].x = -size/2
     lastPoints[1][1].y = (1080/scale)
 
     table.insert(lastPoints[1], {})
+
 
     lastPoints[1][2].x = size/2
     lastPoints[1][2].y = (1080/scale)
@@ -275,13 +274,11 @@ local function addNextZones(y)
 end
 
 local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}\
-
     --logic for river mouth. This has to be done at the start of the function, before we run zone = zonedata[zone.zone].path
     local rM = 0
     local v = 1
 
     if zone.displayName == "River Mouth" and lastPoints ~= nil then
-
         local distRemaining = math.abs(lastPoints[1][1].y)
 
         local function GetTotalRiverLength()
@@ -318,8 +315,6 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}\
         end
         print(distRemaining)
     end
-
-
     local zone = zoneData[zone.zone].path
     local localLastPoints = lastPoints or generateLastPoints(GetZone(playerY).zone)
     
@@ -411,7 +406,6 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}\
             }
         )
     end
-
     lastPoints = {}
     for channel = 1,#newPoints do
         table.insert(lastPoints, {})
@@ -427,7 +421,6 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}\
             lastPoints[channel][side].y = s[#s]
         end
     end
-
     return newPoints
 end
 
@@ -453,10 +446,6 @@ local function mergePoints(newPoints)
         end
     end
 end
-
-
-
-
 
 
 local layersToGenerate = 25
@@ -541,9 +530,10 @@ while threadRunning do
         love.thread.getChannel("generatorThread_minZones"):clear()
         love.thread.getChannel("generatorThread_minZones"):push(zones)
     end
-    
 
     -- Generate river segments
+
+    
     if not lastPoints or lastPoints[1][#lastPoints[1]].y > -(playerY+50 + 5000) then
         local i = 0
 
@@ -559,10 +549,8 @@ while threadRunning do
             mergePoints(p)
         end
     end
-
+    
     -- Generate Background images
-
-
     local bgRequest = love.thread.getChannel("generatorThread_requestBackground"):pop()
     if bgRequest then
         love.thread.getChannel("generatorThread_backgroundImageData"):clear()
