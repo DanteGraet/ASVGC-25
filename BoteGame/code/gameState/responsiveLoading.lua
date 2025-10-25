@@ -1,24 +1,26 @@
 local rl = {}
 
-local state = "load"
+local state
+local nextGamestate
+local loadPercentage
+
+local unloading
+
+
+local processList
+local processIndex
+
+local timer             -- literally for the ...
+local ox, oy
+local backgroundImage
+local fade
+
 
 local angle = -0.1
-local nextGamestate
-local unloading = true
-local percentage = 0
-local loadPercentage
-local timer
-local ox, oy
 
-local backgroundImage
-
-local processList = {}
-local processIndex = 0
 
 function rl.load(gameState, image)
-
     love.mouse.setVisible(false)
-
 
     backgroundImage = love.graphics.newImage(image or "image/loading/autumnGrove.png")
 
@@ -32,17 +34,16 @@ function rl.load(gameState, image)
     }}
     screen.load(screenLayers)
 
-    print(gameState)
     nextGamestate = gameState
     unloading = true
-    percentage = 0
 
     loadPercentage = 0
 
     timer = 0
+    fade = 0
     ox, oy = 0, 0
 
-    state = initialState or "loadScreen"
+    state = "loadScreen"
 
     processList = {}
 end
@@ -126,35 +127,60 @@ function rl.removeItem(path, current)
 end
 
 local updateFunctions = {
-    loadScreen = function()
-
+    loadScreen = function(dt)
+        unloading = true
         -- put the animation back here later
 
+        fade = math.min(fade + dt*4, 1)
 
-        local previousState = gameStateManager.getGameStateName(true) 
+        if fade == 1 then
+            local previousState = gameStateManager.getGameStateName(true) 
+            if love.filesystem.getInfo("code/gameStateLoading/" .. previousState .. "Loading.lua") then
 
-        if love.filesystem.getInfo("code/gameStateLoading/" .. previousState .. "Loading.lua") then
+                state = "unloadData"
+                processList = love.filesystem.load("code/gameStateLoading/" .. previousState .. "Loading.lua")()
+                processIndex = 1
 
-            state = "unloadData"
-            processList = love.filesystem.load("code/gameStateLoading/" .. previousState .. "Loading.lua")()
-            processIndex = 1
+            elseif love.filesystem.getInfo("code/gameStateLoading/" .. nextGamestate .. "Loading.lua") then
 
-        elseif love.filesystem.getInfo("code/gameStateLoading/" .. nextGamestate .. "Loading.lua") then
+                state = "loadData"
+                processList = love.filesystem.load("code/gameStateLoading/" .. nextGamestate .. "Loading.lua")()
+                processIndex = 1
 
-            state = "loadData"
-            processList = love.filesystem.load("code/gameStateLoading/" .. nextGamestate .. "Loading.lua")()
-            processIndex = 1
-
-        else
-            state = "unloadScreen"
+            else
+                state = "unloadScreen"
+            end
         end
     end,
     unloadData = function()
-        print("un")
+        if type(processList[processIndex]) == "table" then
+            local path = {}
+            for match in string.gmatch(processList[processIndex][1], "[^/]+") do
+                table.insert(path, match)
+            end
+
+            rl.removeItem(path, assets, processList[processIndex])
+        elseif type(processList[processIndex]) == "function" then
+            --processList[processIndex]()
+        end
+
+        processIndex = processIndex + 1
+
+
+        if processIndex > #processList then
+            if love.filesystem.getInfo("code/gameStateLoading/" .. nextGamestate .. "Loading.lua") then
+
+                state = "loadData"
+                processList = love.filesystem.load("code/gameStateLoading/" .. nextGamestate .. "Loading.lua")()
+                processIndex = 1
+
+            else
+                state = "unloadScreen"
+            end
+        end
 
     end,
     loadData = function()
-
         if type(processList[processIndex]) == "table" then
             local path = {}
             for match in string.gmatch(processList[processIndex][1], "[^/]+") do
@@ -166,9 +192,6 @@ local updateFunctions = {
             processList[processIndex]()
         end
 
-
-        print(processIndex .. "/ " .. #processList)
-
         processIndex = processIndex + 1
 
 
@@ -176,15 +199,26 @@ local updateFunctions = {
             state = "unloadScreen"
         end
     end,
-    unloadScreen = function()
-        print("finished Loading scene")
-        gameStateManager.setGameState(nextGamestate)
+    unloadScreen = function(dt)
+        unloading = false
+        fade = math.max(fade - dt, 0)
+
+        if fade == 0 then
+            gameStateManager.setGameState(nextGamestate)
+        end
     end
 }
 
 function rl.update(dt)
     timer = timer + (dt*math.pi)/10
     ox = ox - dt*24 -- dt*(100*math.sin(timer) + 200)/10
+
+    if unloading ~= nil then
+        local behindGamestateName = (unloading and gameStateManager.getGameStateName(true)) or nextGamestate
+        local behindGamestate = gameStateManager.getGameState(behindGamestateName)
+
+        behindGamestate.update(dt)
+    end
 
     --oy = oy - dt*(100*math.cos(timer))/10
     if loadPercentage == 1 then
@@ -196,9 +230,14 @@ function rl.update(dt)
 end
 
 function rl.draw()
+    if fade < 1 then
+        local behindGamestateName = (unloading and gameStateManager.getGameStateName(true)) or nextGamestate
+        local behindGamestate = gameStateManager.getGameState(behindGamestateName)
+        screen.draw(behindGamestate, behindGamestateName)
+    end
+
+
     love.graphics.origin()
-
-
     local screenScale = love.graphics.getWidth()/1920
     if love.graphics.getHeight()/1080 > screenScale then
         screenScale = love.graphics.getHeight()/1080
@@ -211,12 +250,12 @@ function rl.draw()
 
     local a = 1
     if loadPercentage < 0.5 then
-        a = tweens.sineIn(loadPercentage*2)
+        a = tweens.sineIn(fade)
     elseif loadPercentage > 1.5 then
-        a = tweens.sineOut((2- loadPercentage)*2)
+        a = tweens.sineOut(fade)
     end
     --love.graphics.setColor(self.colour[1], self.colour[2], self.colour[3], a)
-    love.graphics.setColor(1,1,1,1)
+    love.graphics.setColor(1,1,1,a)
 
     love.graphics.rectangle("fill", 0, 0, width, height)
     love.graphics.setColor({1,1,1})

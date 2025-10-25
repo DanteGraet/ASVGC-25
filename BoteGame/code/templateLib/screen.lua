@@ -141,5 +141,4 @@ function screen.draw(gameState)
         
         --love.graphics.pop()
     end
-
 end

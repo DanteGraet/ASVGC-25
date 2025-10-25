@@ -8,9 +8,6 @@ for name, library in pairs(libraryList) do
     -- remove the ".lua"
     local libraryName = library:gsub("%.lua$", "")
     require("code/templateLib/" .. libraryName)
-    print(libraryName)
-
-    print(dante and dante.dataToString(debug))
     if debug then debug.print("[LOADING] Loaded Library " .. libraryName) end
 end
 

@@ -8,3 +8,4 @@ music = love.filesystem.load("code/global/music.lua")()
 
 assets = {}
 
+love.physics.setMeter(100)

@@ -3,7 +3,6 @@ local music = {} --table for music functions and variables
 local crossFadeSpeed
 local musicTracks
 local zoneMusicTarget
-local lastZone = ""
 
 function music.unload()
     if musicTracks then
@@ -16,19 +15,11 @@ function music.unload()
 end
 
 function music.load(musicData)
-    -- stop and remove music tracks
-    if musicTracks ~= nil then
-        for i = 1,#musicTracks do
-            musicTracks[i].track:stop()
-        end
-    end
-    musicTracks = {}
+    music.unload()
 
-
-    --local musicData = musicData --or love.filesystem.load("code/river/riverData/" .. riverName .. (((isStorm and riverName ~= "endless") and "Storm") or "") .. "/music.lua")()
-  
     crossFadeSpeed = musicData.crossFadeSpeed or 0.3
 
+    musicTracks = {}
     for i = 1,#musicData.tracks do
         table.insert(musicTracks, {
             track = love.audio.newSource(musicData.tracks[i], "stream"),
@@ -41,7 +32,7 @@ function music.load(musicData)
     music.beQuite(nil, true)
 
     --Actually update the music tracks instantly, might remove later
-    music.manager(0)
+    music.update(0)
 end
 
 function music.beQuite(dt, abrupt)
@@ -62,8 +53,10 @@ end
 function music.update(dt)
     --play the actual music
 
-    if settings and musicTracks ~= nil then
-        local globalMusicVolume = settings.audio.musicVolume.value * settings.audio.masterVolume.value
+
+    if musicTracks ~= nil then
+
+        local globalMusicVolume = (settings and settings.audio.musicVolume.value * settings.audio.masterVolume.value) or 0.5
 
         if musicTracks[1].track:isPlaying() then
             if globalMusicVolume == 0 then
@@ -90,8 +83,6 @@ function music.update(dt)
 
         -- grab target volume/s
         local targets = quindoc.runIfFunc(zoneMusicTarget[currentZoneName]) or {}
-
-
         local fadeThisFrame = crossFadeSpeed*dt
 
         for i = 1, #musicTracks do
@@ -102,11 +93,12 @@ function music.update(dt)
             if track.volume ~= track.targetVolume then
                 local targetVolumeDifference = track.targetVolume-track.volume
                 track.volume = track.volume + math.min(fadeThisFrame*quindoc.sign(targetVolumeDifference), targetVolumeDifference)
+
+                -- finally update thee actual volume
+                track.track:setVolume(track.volume*0.5 * globalMusicVolume )
             end
-            
-            -- finally update thee actual volume
-            track.track:setVolume(track.volume*0.5 * globalMusicVolume )
         end
+
     end
 end
 

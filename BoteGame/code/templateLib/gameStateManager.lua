@@ -1,4 +1,5 @@
 local currentGameState = ""
+local nextGamestate = ""
 local previousGameState = ""
 local reload = false
 local gameStates = {}
@@ -9,11 +10,9 @@ gameStateManager = {}
 
 
 function gameStateManager.setGameState(gameState, forceReload, ...)
-    currentGameState = gameState
+    nextGamestate = gameState
     loadParam = ...  or nil
-    if forceReload then
-        reload = true
-    end
+    reload = forceReload
 end
 
 function gameStateManager.getGameStateName(getPrevious)
@@ -25,19 +24,21 @@ function gameStateManager.getGameState(stateName)
 end
 
 function gameStateManager.updateGameState()
-    if currentGameState ~= previousGameState or reload then
+    if currentGameState ~= nextGamestate or reload then
         
-        if currentGameState == previousGameState then
+        if gameStates[currentGameState] and gameStates[currentGameState].unload then gameStates[currentGameState].unload() end
+        --[[if currentGameState == nextGamestate then
             -- reloading
             if gameStates[currentGameState] and gameStates[currentGameState].unload then gameStates[currentGameState].unload() end
         else
             -- unloading
             if gameStates[previousGameState] and gameStates[previousGameState].unload then gameStates[previousGameState].unload() end
-        end
+        end]]
         
-        if gameStates[currentGameState].load then gameStates[currentGameState].load((type(loadParam) == "table" and love.data.unpack(loadParam)) or loadParam) end
+        if gameStates[nextGamestate].load then gameStates[nextGamestate].load((type(loadParam) == "table" and love.data.unpack(loadParam)) or loadParam) end
 
         previousGameState = currentGameState
+        currentGameState = nextGamestate
 
         reload = false
 

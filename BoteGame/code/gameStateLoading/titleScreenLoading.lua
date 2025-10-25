@@ -103,7 +103,6 @@ end)
 
 table.insert(toLoad, function()
 
-
     obstacles = {}
     local zoneObsitcalList = {}
     local riverZones = riverFileDirectory.zone()
@@ -146,6 +145,10 @@ table.insert(toLoad, function()
     end
 
     particles.loadParticles()
+
+    music.load(love.filesystem.load("code/river/riverData/titleScreenRiver/music.lua")())
+
+
 end)
 
 
