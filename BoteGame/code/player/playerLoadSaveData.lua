@@ -11,7 +11,7 @@ if not assets.code.player then
 end
 
 if assets.code.player.unlocks == {} then
-    dante.save(assets.code.player.unlocks, "save", "unlocks")
+    --dante.save(assets.code.player.unlocks, "save", "unlocks")
 end
 
 print("loading Unlocks :D")
@@ -23,5 +23,5 @@ if not assets.code.player.unlocks then
     -- load the default & run
     assets.code.player.unlocks = love.filesystem.load("code/player/playerUnlockDefault.lua")()
     -- save the file
-    dante.save(assets.code.player.unlocks, "save", "unlocks")
+    --dante.save(assets.code.player.unlocks, "save", "unlocks")
 end

@@ -1,6 +1,6 @@
-local Button = require("code.templateLib.graetUi.graetUiButton")
-local Slider = require("code.templateLib.graetUi.graetUiSlider")
-local Toggle = require("code.templateLib.graetUi.graetUiToggle")
+--local Button = require("code.templateLib.graetUi.graetUiButton")
+--local Slider = require("code.templateLib.graetUi.graetUiSlider")
+--local Toggle = require("code.templateLib.graetUi.graetUiToggle")
 
 GraetUi = {}
 GraetUi.__index = GraetUi

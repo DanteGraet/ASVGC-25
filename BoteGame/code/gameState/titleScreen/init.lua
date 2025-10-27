@@ -135,6 +135,7 @@ local function update(dt)
 end
 
 local function mousepressed(x, y, button)
+    local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
@@ -150,6 +151,7 @@ local function mousepressed(x, y, button)
 end
 
 local function mousereleased(x, y, button)
+    local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
@@ -219,6 +221,12 @@ local function draw()
     if settingsMenu then
         settingsMenu:Draw(tweens.sineInOut(settingsTimer))
     end
+
+end
+
+local function drawUI()
+    userInterface:draw("")
+    
 end
 
 
@@ -233,7 +241,7 @@ return {
     keyreleased = keyreleased,
     update = update,
     draw = draw,
-
+    drawUI = drawUI,
     --isFirst = DEV,
     noTransform = true,
 }

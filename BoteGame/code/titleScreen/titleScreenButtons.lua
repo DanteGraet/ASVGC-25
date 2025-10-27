@@ -281,6 +281,8 @@ function tsb.playButtonRelease()
     -- Could just be stuffed into the function but this is better when looking for what this does trust. 50%
     gameState = "levelSelect"
 
+    gameStateManager.setGameState("responsiveLoading", false, "levelSelect")
+
     --[[riverName = "mvpRiver"
     gameState = "river"]]
 end

@@ -152,4 +152,34 @@ table.insert(toLoad, function()
 end)
 
 
+table.insert(toLoad, function()
+
+    local screenLayers = {{
+        name = "",
+        scaleType = "fill",
+        scale = 1,
+        useOffset = true,
+        isBoarderd = false,
+        anchor = {0,0}
+    },
+    {
+        name = "UI",
+        scaleType = "fit",
+        scale = 1,
+        useOffset = false,
+        isBoarderd = false,
+        anchor = {0,0}
+    }}
+    screen.load(screenLayers)
+
+end)
+
+table.insert(toLoad, function()
+    userInterface = {}
+    userInterface = graetUI:newUI()
+
+    --local f = font.getFont({"black", 100})
+    userInterface:addCustomObject("playButton", 100, 100, {0, 0.5}, love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/playButton.lua")())
+end)
+
 return toLoad
