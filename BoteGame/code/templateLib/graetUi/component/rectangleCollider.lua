@@ -18,11 +18,11 @@ function rectangleCollider:new(x, y, sx, sy)
     return obj
 end
 
-function rectangleCollider:checkHover(x, y)
+function rectangleCollider:checkHover(button, x, y)
     return x > self.x and  x < self.x + self.sx and y > self.y and y < self.y + self.sy
 end
 
-function rectangleCollider:drawDebug(x, y, button)
+function rectangleCollider:drawDebug(button, x, y)
     love.graphics.setColor(debugColours[button.mouseState or "none"])
     love.graphics.rectangle("line", x + self.x, y + self.y, self.sx, self.sy)
 end

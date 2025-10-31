@@ -25,6 +25,7 @@ end
 
 
 function getMouseSoxSoy()
+    local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 

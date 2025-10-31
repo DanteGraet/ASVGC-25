@@ -20,7 +20,18 @@ objects.custom =               require("code/templateLib/graetUi/object/textbox"
 objects.rectangleButton =       require("code/templateLib/graetUi/object/rectangleButton")
 objects.textButton =            require("code/templateLib/graetUi/object/textButton")]]
 
-
+local function runButtonFunction(obj, func, button)
+    if func == nil then return nil end
+    if type(func) == "table" then
+        if type(func[2]) == "table" then
+            return func[1](obj, button,unpack(func[2]))
+        else
+            return func[1](obj, button, func[2])
+        end
+    else
+        return func(obj, button)
+    end
+end
 
 -- function
 function graetUI:newUI(screenLayer)
@@ -38,7 +49,7 @@ function graetUI:newUI(screenLayer)
     return obj
 end
 
-function graetUI:addCustomObject(id, x, y, anchor, buttonComponents)
+function graetUI:addCustomObject(id, x, y, anchor, button)
     --local b = objects[type]:new(components, ...)
     --b.id = id
 
@@ -51,6 +62,7 @@ function graetUI:addCustomObject(id, x, y, anchor, buttonComponents)
         components = {}
     }
 
+    local buttonComponents = button.components
     for i = 1,#buttonComponents do
         local componentName = buttonComponents[i].type
 
@@ -61,6 +73,10 @@ function graetUI:addCustomObject(id, x, y, anchor, buttonComponents)
         else
             print("no such button component " .. componentName)
         end
+    end
+
+    for key,value in pairs(button.data) do
+        b[key] = value
     end
 
     table.insert(self.ui, b)
@@ -74,47 +90,31 @@ function graetUI:reset(layer)
     self.ui = {}
 end
 
-function graetUI:toggleClick(pressed)
-    for i = 1,#self.ui do
-        local b = self.ui[i]
+function graetUI:toggleClick(pressed, screenLayer)
+    local hoverdButton = self:checkHover(screenLayer, true)
+    if pressed == true and hoverdButton then
+        hoverdButton.mouseState = "clicked"
+        self.clicked = true 
 
-        if pressed == true then
-            if b.mouseState == "hover" then
-                b.mouseState = "clicked"
-                self.clicked = true
+        runButtonFunction(hoverdButton, hoverdButton.onClick, hoverdButton)
 
-                if b.onClicked then b:onClicked(b.params.onClicked) end
-
-                for j = 1,#self.ui do
-                    if i ~= j then
-                        local b = self.ui[j]
-                        if b.onClickOff then b:onClickOff(b.params.onClickOff) end
-                    end
-                end
-
-                return
-            end
-        else
-            if b.mouseState == "clicked" then
-                self.clicked = false
-                self:checkHover(self.screenLayer)
-
-                return
-
-            end
+        return
+    else
+        if hoverdButton and hoverdButton.mouseState == "clicked" then
+            runButtonFunction(hoverdButton, hoverdButton.onRelease, hoverdButton)
         end
-    end
 
-    for j = 1,#self.ui do
-        if self.ui[j].mouseState ~= "clicked" then
-            local b = self.ui[j]
-            if b.onClickOff then b:onClickOff(b.params.onClickOff) end
-        end
+        self.clicked = false
+        self:checkHover(screenLayer)
+
+        return
     end
 end
 
-function graetUI:checkHover(screenLayer)
-    if self.clicked == false then
+function graetUI:checkHover(screenLayer, doNotUpdate)
+    if self.clicked == false or doNotUpdate then
+        local hoverdButton
+
 
         local mx, my = screen.translatePosition(love.mouse.getX(), love.mouse.getY(), screenLayer or "")
         local targetWidth, targetHeight, offsetX, offsetY = screen.getScaledSize(screenLayer or "")
@@ -122,22 +122,37 @@ function graetUI:checkHover(screenLayer)
         for i = 1,#self.ui do
             local b = self.ui[i]    
 
-            if b.collider then
-                local anchorX, anchorY = targetWidth * b.anchor[1],  targetHeight * b.anchor[2]
-                local x = mx - anchorX - b.position.x --+ offsetX
-                local y = my - anchorY - b.position.y --+ offsetY
+            local anchorX, anchorY = targetWidth * b.anchor[1],  targetHeight * b.anchor[2]
+            local x = mx - anchorX - b.x --+ offsetX
+            local y = my - anchorY - b.y --+ offsetY
 
-                if b.collider:checkHover(x, y) then 
+            for j = 1,#b.components do
+                local component = b.components[i]
+
+                local checkHover = {
+                    component.checkHover, {x, y}
+                }
+                if runButtonFunction(component, checkHover, b) == true then
+                    hoverdButton = b
+
+                    if doNotUpdate then goto nextButton end
+
                     b.mouseState = "hover"
 
-                    if b.onHover then b:onHover(b.params.onHover) end
-                else
-                    b.mouseState = "none"
-                    if b.onReleased then b:onReleased(b.params.onReleased) end
-
+                    runButtonFunction(component, b.onHover, b)
+                    goto nextButton
                 end
-            end 
+
+                if not doNotUpdate then
+                    b.mouseState = "none"
+                end
+                --runButtonFunction(component, b.onReleased, b)
+
+            end
+            ::nextButton::
+
         end
+        return hoverdButton
     end
 end
 
@@ -170,27 +185,34 @@ function graetUI:draw(layer)
 
             for i = 1,#b.components do 
                 if b.components[i].drawDebug then
-                    b.components[i]:drawDebug(x, y, b)
+                    b.components[i]:drawDebug(b, x, y)
                 end
             end
-
-            love.graphics.circle("line", x, y, 10)
-            love.graphics.circle("line", x, y, 100)
-            love.graphics.circle("line", x, y, 1000)
-            love.graphics.circle("line", x, y, 2500)
-            love.graphics.circle("line", x, y, 5000)
-            love.graphics.circle("line", x, y, 7500)
-
         end
     end
 end
+
+function graetUI:update(dt, ...)
+    for i = 1,#self.ui do
+        local b = self.ui[i]
+
+        for i = 1,#b.components do 
+            if b.components[i].update then
+                b.components[i]:update(dt, b, ...)
+            end
+        end
+    end
+end
+
 
 function graetUI:generalCallback(callback, ...)
     for i = 1,#self.ui do
         local b = self.ui[i]
 
-        if b[callback] and b[callback](b, ...) then
-            return true
+        for i = 1,#b.components do 
+            if b.components[i][callback] then
+                b.components[i][callback](b, ...)
+            end
         end
     end
 end

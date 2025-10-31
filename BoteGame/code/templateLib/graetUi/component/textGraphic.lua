@@ -1,7 +1,8 @@
 local textGraphic = {}
 
 function textGraphic:new(text, font, x, y, colour, anchor)
-    print(text, font, x, y, colour, anchor)
+    local font = font or love.graphics.getFont()
+
     local obj = {
         x = x,
         y = y,
@@ -10,12 +11,13 @@ function textGraphic:new(text, font, x, y, colour, anchor)
         font = font
     }
 
-    local textWidth = font:getWidth(text)
-    local textHeight = font:getHeight(text)
 
+    local textWidth = font:getWidth(text or "")
+    local textHeight = font:getHeight(text or "")
+    anchor = anchor or{0,0}
     print(x, textWidth, anchor[1])
-    obj.x = x - textWidth * (anchor[1] or 0)
-    obj.y = y - textHeight * (anchor[2] or 0)
+    obj.x = (x or 0) - textWidth * (anchor[1] or 0)
+    obj.y = (x or 0) - textHeight * (anchor[2] or 0)
 
 
     setmetatable(obj, self)

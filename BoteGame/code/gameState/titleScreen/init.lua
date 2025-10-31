@@ -132,6 +132,9 @@ local function update(dt)
 
         if music and music.manager then music.manager(dt) end
     end
+
+    userInterface:update(dt)
+    userInterface:checkHover("UI")
 end
 
 local function mousepressed(x, y, button)
@@ -148,6 +151,8 @@ local function mousepressed(x, y, button)
             settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
         end
     end
+
+    userInterface:toggleClick(true, "UI")
 end
 
 local function mousereleased(x, y, button)
@@ -164,6 +169,8 @@ local function mousereleased(x, y, button)
             settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)        
         end
     end
+
+    userInterface:toggleClick(false, "UI")
 end
 
 
@@ -225,7 +232,7 @@ local function draw()
 end
 
 local function drawUI()
-    userInterface:draw("")
+    userInterface:draw("UI")
     
 end
 
