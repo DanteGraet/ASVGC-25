@@ -1,4 +1,4 @@
-return {
+local l = {
     
     {"image/levelSelect/background.png", "blur"},
     --{"image/levelSelect/flag.png"},
@@ -40,3 +40,8 @@ return {
     {"code/player/playerData.lua", "run"}
 
 }
+
+
+table.insert(l, function() ambiance = love.filesystem.load("code/river/effects/ambient.lua")() end)
+
+return l

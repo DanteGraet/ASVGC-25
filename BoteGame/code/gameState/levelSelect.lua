@@ -22,7 +22,7 @@ local function load()
         img = "image/loading/title.png"
     end
 
-    DynamicLoading:New("code/gameStateLoading/levelSelectLoading.lua", true, img)
+    --DynamicLoading:New("code/gameStateLoading/levelSelectLoading.lua", true, img)
 end
 
 
@@ -132,6 +132,7 @@ local function resize()
 end
 
 local function update(dt)
+    local screenScale = screen.getScale()
     if compRelease then
         if love.keyboard.isDown("lshift") and love.keyboard.isDown("u") then
             unlockTimer = unlockTimer + dt
@@ -198,6 +199,7 @@ local function update(dt)
 end
 
 local function mousepressed(x, y, button)
+    local screenScale = screen.getScale()
    -- dialouge.schedule(assets.image.levelSelect.sign.play, 5)
     local mx, my = getMouseSoxSoy()
 
@@ -224,6 +226,7 @@ local function mousepressed(x, y, button)
 end
 
 local function mousereleased(x, y, button)
+    local screenScale = screen.getScale()
     local mx, my = getMouseSoxSoy()
 
     if menus then
@@ -270,6 +273,7 @@ end
 
 
 local function draw()
+    local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 

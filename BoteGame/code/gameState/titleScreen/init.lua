@@ -233,7 +233,6 @@ end
 
 local function drawUI()
     userInterface:draw("UI")
-    
 end
 
 

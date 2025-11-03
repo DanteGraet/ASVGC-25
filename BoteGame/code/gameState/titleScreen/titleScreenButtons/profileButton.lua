@@ -1,11 +1,11 @@
-local textFont = font.getFont({"black", 150})
+local textFont = font.getFont({"black", 80})
 
-local buttonText = "Play"
+local buttonText = "Profile"
 local textWidth = textFont:getWidth(buttonText)
 local textHeight = textFont:getHeight(buttonText)
 
-local buttonWidth = 550
-local buttonHeight = 200
+local buttonWidth = 410
+local buttonHeight = 100
 
 
 return {
@@ -30,9 +30,17 @@ return {
         pi = math.pi,
 
         onRelease = function()
-            gameStateManager.setGameState("responsiveLoading", false, "levelSelect", "image/loading/title.png")
+            --gameStateManager.setGameState("levelSelect")
         end,
         update = function(self, button, dt)
+          -- if self.mouseState ~= "none" then
+          --     self.sine = self.sine - dt*self.pi
+          -- else
+          --     self.sine = math.min(self.sine + dt*self.pi, math.ceil(self.sine/self.pi)*self.pi)
+          -- end
+
+          -- self.components[4].y = math.sin(self.sine)*10 - textHeight/2 + shadowOffset
+          -- self.components[5].y = math.sin(self.sine)*10 - textHeight/2
         end,
     }
 }

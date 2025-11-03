@@ -134,6 +134,7 @@ local updateFunctions = {
         fade = math.min(fade + dt*4, 1)
 
         if fade == 1 then
+            unloading = nil
             local previousState = gameStateManager.getGameStateName(true) 
             if love.filesystem.getInfo("code/gameStateLoading/" .. previousState .. "Loading.lua") then
 

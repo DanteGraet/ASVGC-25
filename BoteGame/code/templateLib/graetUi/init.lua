@@ -12,6 +12,8 @@ local components = {}
 components.rectangleCollider =    require("code/templateLib/graetUi/component/rectangleCollider")
 components.circleCollider =       require("code/templateLib/graetUi/component/circleCollider")
 components.textGraphic =          require("code/templateLib/graetUi/component/textGraphic")
+components.imageGraphic =          require("code/templateLib/graetUi/component/imageGraphic")
+
 
 
 --[[local objects = {}
@@ -22,14 +24,17 @@ objects.textButton =            require("code/templateLib/graetUi/object/textBut
 
 local function runButtonFunction(obj, func, button)
     if func == nil then return nil end
-    if type(func) == "table" then
-        if type(func[2]) == "table" then
+
+    if type(func) ~= "table" then
+        return func(obj, button)
+    end
+
+    if type(func[2]) == "table" then
+        if func[1] then
             return func[1](obj, button, unpack(func[2]))
-        else
-            return func[1](obj, button, func[2])
         end
     else
-        return func(obj, button)
+        return func[1](obj, button, func[2])
     end
 end
 
@@ -54,6 +59,7 @@ function graetUI:addCustomObject(id, x, y, anchor, button)
     --b.id = id
 
     local b = {
+        id = id,
         x = x or 0,
         y =  y or 0,
         anchor = anchor or {.5, .5},
@@ -115,11 +121,19 @@ function graetUI:checkHover(screenLayer, doNotUpdate)
     if self.clicked == false or doNotUpdate then
         local hoverdButton
 
-
         local mx, my = screen.translatePosition(love.mouse.getX(), love.mouse.getY(), screenLayer or "")
+        if not mx or not my then return end
+
         local targetWidth, targetHeight, offsetX, offsetY = screen.getScaledSize(screenLayer or "")
 
-        for i = 1,#self.ui do
+        if not doNotUpdate then
+            for i = #self.ui, 1, -1 do
+                local b = self.ui[i]    
+                b.mouseState = "none"
+            end
+        end
+
+        for i = #self.ui, 1, -1 do
             local b = self.ui[i]    
 
             local anchorX, anchorY = targetWidth * b.anchor[1],  targetHeight * b.anchor[2]
@@ -127,7 +141,11 @@ function graetUI:checkHover(screenLayer, doNotUpdate)
             local y = my - anchorY - b.y --+ offsetY
 
             for j = 1,#b.components do
-                local component = b.components[i]
+                local component = b.components[j]
+
+                if not component.checkHover then
+                    goto nextButton
+                end
 
                 local checkHover = {
                     component.checkHover, {x, y}
@@ -140,18 +158,26 @@ function graetUI:checkHover(screenLayer, doNotUpdate)
                     b.mouseState = "hover"
 
                     runButtonFunction(component, b.onHover, b)
-                    goto nextButton
+
+                    return b
+                    --goto nextButton
+
+                    --break
                 end
 
-                if not doNotUpdate then
-                    b.mouseState = "none"
-                end
+                --if doNotUpdate then
+                --    goto nextButton
+                --end
+
+                
+
                 --runButtonFunction(component, b.onReleased, b)
 
             end
             ::nextButton::
 
         end
+
         return hoverdButton
     end
 end
