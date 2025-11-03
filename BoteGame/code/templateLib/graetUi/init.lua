@@ -24,7 +24,7 @@ local function runButtonFunction(obj, func, button)
     if func == nil then return nil end
     if type(func) == "table" then
         if type(func[2]) == "table" then
-            return func[1](obj, button,unpack(func[2]))
+            return func[1](obj, button, unpack(func[2]))
         else
             return func[1](obj, button, func[2])
         end
@@ -196,11 +196,13 @@ function graetUI:update(dt, ...)
     for i = 1,#self.ui do
         local b = self.ui[i]
 
-        for i = 1,#b.components do 
-            if b.components[i].update then
-                b.components[i]:update(dt, b, ...)
-            end
-        end
+        local u = {
+            b.update,
+            {dt,
+            ...}
+        }
+
+        runButtonFunction(b, u, b)
     end
 end
 
