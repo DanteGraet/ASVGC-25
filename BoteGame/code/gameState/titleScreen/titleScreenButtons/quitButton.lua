@@ -26,21 +26,10 @@ return {
         },
     },
     data = {
-        sine = 0,
-        pi = math.pi,
-
         onRelease = function()
-            --gameStateManager.setGameState("levelSelect")
+            love.event.quit()
         end,
         update = function(self, button, dt)
-          -- if self.mouseState ~= "none" then
-          --     self.sine = self.sine - dt*self.pi
-          -- else
-          --     self.sine = math.min(self.sine + dt*self.pi, math.ceil(self.sine/self.pi)*self.pi)
-          -- end
-
-          -- self.components[4].y = math.sin(self.sine)*10 - textHeight/2 + shadowOffset
-          -- self.components[5].y = math.sin(self.sine)*10 - textHeight/2
         end,
     }
 }

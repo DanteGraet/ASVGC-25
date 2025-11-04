@@ -13,6 +13,8 @@ components.rectangleCollider =    require("code/templateLib/graetUi/component/re
 components.circleCollider =       require("code/templateLib/graetUi/component/circleCollider")
 components.textGraphic =          require("code/templateLib/graetUi/component/textGraphic")
 components.imageGraphic =          require("code/templateLib/graetUi/component/imageGraphic")
+components.nineSliceGraphic =          require("code/templateLib/graetUi/component/nineSliceGraphic")
+
 
 
 
