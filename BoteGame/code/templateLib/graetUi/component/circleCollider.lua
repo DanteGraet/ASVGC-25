@@ -17,12 +17,12 @@ function circleCollider:new(x, y, r)
     return obj
 end
 
-function circleCollider:checkHover(x, y)
-    return quindoc.pythag(x, y, self.x, self.y) < self.r
+function circleCollider:checkHover(button, x, y)
+    return quindoc.pythag(x, y, self.x, self.y) < self.r, quindoc.pythag(x, y, self.x, self.y) - self.r
 end
 
-function circleCollider:drawDebug(x, y, mouseState)
-    love.graphics.setColor(debugColours[mouseState])
+function circleCollider:drawDebug(button, x, y)
+    love.graphics.setColor(debugColours[button.mouseState or "none"])
     love.graphics.circle("line", x + self.x, y + self.y, self.r)
 end
 

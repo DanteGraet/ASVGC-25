@@ -30,10 +30,6 @@ local l = {
     {"image/levelSelect/sign/back.png"},
 
 
-
-
-
-
     {"code/menu/levelMenu.lua"},
 
     {"code/menu/boatSelectMenu.lua"},
@@ -41,7 +37,43 @@ local l = {
 
 }
 
+table.insert(l, function()
+    local screenLayers = {{
+        name = "",
+        scaleType = "fit",
+        scale = 1,
+        useOffset = true,
+        isBoarderd = false,
+        anchor = {0,0}
+    }}
+    screen.load(screenLayers)
+
+end)
+
 
 table.insert(l, function() ambiance = love.filesystem.load("code/river/effects/ambient.lua")() end)
+
+table.insert(l, function()
+    local generateButton = love.filesystem.load("code/gameState/levelSelect/levelButton.lua")()
+    userInterface = {}
+    userInterface = graetUI:newUI()
+
+    if assets.code.player.unlocks.levels.frostedChannel then
+        userInterface:addCustomObject("frostedChannel",  400,     310,   {0,0}, generateButton("frostedChannel"))
+    end
+
+    if assets.code.player.unlocks.levels.autumnGrove then
+        userInterface:addCustomObject("autumnGrove",  810,     425,   {0,0}, generateButton("autumnGrove"))
+    end
+
+    if assets.code.player.unlocks.levels.derelictDam then
+        userInterface:addCustomObject("derelictDam",  1260,     510,   {0,0}, generateButton("derelictDam"))
+    end
+
+    if assets.code.player.unlocks.levels.endless then
+        userInterface:addCustomObject("endless",  600,     265,   {0,0}, generateButton("endless"))
+    end
+
+end)
 
 return l

@@ -184,12 +184,12 @@ table.insert(toLoad, function()
 
     local x, y = -257, -100
 
-    userInterface:addCustomObject("playButton",     x,      y,          {0.275, 0.5}, love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/playButton.lua")())
-    userInterface:addCustomObject("profileButton",  x,      y + 240,    {0.275, 0.5}, love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/profileButton.lua")())
-    userInterface:addCustomObject("achievementButton",  x + 450,      y + 240,    {0.275, 0.5}, love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/achievementButton.lua")())
-    userInterface:addCustomObject("quitButton",  x ,      y + 380,                  {0.275, 0.5}, love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/quitButton.lua")())
-    userInterface:addCustomObject("settingsButton",  x + 310,      y + 380,               {0.275, 0.5}, love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/settingsButton.lua")())
-    userInterface:addCustomObject("creditsButton",  x + 450,      y + 380,               {0.275, 0.5}, love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/creditsButton.lua")())
+    userInterface:addCustomObject("playButton",     x,      y,          {0.275, 0.5},                           love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/playButton.lua")())
+    userInterface:addCustomObject("profileButton",  x,      y + 240,    {0.275, 0.5},                           love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/profileButton.lua")())
+    userInterface:addCustomObject("achievementButton",  x + 450,      y + 240,    {0.275, 0.5},                 love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/achievementButton.lua")())
+    userInterface:addCustomObject("quitButton",  x ,      y + 380,                  {0.275, 0.5},               love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/quitButton.lua")())
+    userInterface:addCustomObject("settingsButton",  x + 310,      y + 380,               {0.275, 0.5},         love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/settingsButton.lua")())
+    userInterface:addCustomObject("creditsButton",  x + 450,      y + 380,               {0.275, 0.5},          love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/creditsButton.lua")())
 
 end)
 
