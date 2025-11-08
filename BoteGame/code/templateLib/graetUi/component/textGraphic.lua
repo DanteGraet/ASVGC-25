@@ -14,8 +14,7 @@ function textGraphic:new(text, font, x, y, colour, anchor)
 
     local textWidth = font:getWidth(text or "")
     local textHeight = font:getHeight(text or "")
-    anchor = anchor or{0,0}
-    print(x, textWidth, anchor[1])
+    anchor = anchor or {0,0}
     obj.x = (x or 0) - textWidth * (anchor[1] or 0)
     obj.y = (x or 0) - textHeight * (anchor[2] or 0)
 

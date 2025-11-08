@@ -87,7 +87,7 @@ function unlockAllLevels()
     }
 end
 
--- load each setting as catagories with special order table
+-- load each setting as categories with special order table
 return {
     graphics = {
         h_ui = {type = "header", displayName = "User Interface"},
@@ -137,6 +137,9 @@ return {
         resetKeybinds = {type = "button", displayName = "Reset Keybinds", func = ResetKeybinds},
         resetSettings = {type = "button", displayName = "Reset All Settings", func = ResetSettings},
     },
+    hidden = {
+        profile = {type = "slider", displayName = "Wait How?", value = 1},
+    },
 
     -- the player should NEVER have acsess to these :D
     dev = {
@@ -157,65 +160,85 @@ return {
         ab_playerCollision = {type = "toggle", displayName = "AB Player sensor", value = false}
     },
 
-    -- Order is here so we load it in at the same time, we can then hvae key, value tables in an ordeer that is not alphabetti-spaghetti.
+    -- Order is here so we load it in at the same time, we can then have key, value tables in an ordeer that is not alphabetti-spaghetti.
     order = {
-        graphics = {
-            "fullscreen",
-            "showFPS",
+        {
+            category = "graphics",
+            displayName = "Graphics",
+            isActive = function() return true end,
+            data = {
+                "fullscreen",
+                "showFPS",
 
-            "h_ui",
-            "uiScale",
-            "uiSide",
-            "uiLock",
-            "shortNumbers",
+                "h_ui",
+                "uiScale",
+                "uiSide",
+                "uiLock",
+                "shortNumbers",
 
-            "h_other",
-            "particles",
-            "zoneTitles",
-            "lightning",
+                "h_other",
+                "particles",
+                "zoneTitles",
+                "lightning",
+            }
         },
-        audio = {
-            "h_blank",
-            "masterVolume",
+        {
+            category = "audio",
+            displayName = "Audio",
+            isActive = function() return true end,
+            data = {
+                "h_blank",
+                "masterVolume",
 
-            "musicVolume",
-            "player",
-            "ambient",
-            "ui",
+                "musicVolume",
+                "player",
+                "ambient",
+                "ui",
+            }
         },
-        keybinds = {
-            "h_keybind",
-            "accelerate",
-            "decelerate",
-            "left",
-            "right",
-            "pause",
-            "resetKeybinds",
+        {
+            category = "keybinds",
+            displayName = "Keybinds",
+            isActive = function() return true end,
+            data = {
+                "h_keybind",
+                "accelerate",
+                "decelerate",
+                "left",
+                "right",
+                "pause",
+                "resetKeybinds",
 
 
-            "h_blank",
-            
+                "h_blank",
+                
 
 
-            "h_danger",
-            "resetSettings",
-            "removeSave"
+                "h_danger",
+                "resetSettings",
+                "removeSave"
+            }
         },
-        dev = {
-            "removeSave",
-            "unlockAll",
-            "openSaveFolder",
-            "reloadGamestate",
+        {
+            category = "dev",
+            displayName = "DEV",
+            isActive = function() return DEV end,
+            data = {
+                "removeSave",
+                "unlockAll",
+                "openSaveFolder",
+                "reloadGamestate",
 
-            "devCheatyBoat",
+                "devCheatyBoat",
 
-            "drawHitboxes",
-            "playerInfo",
-            "musicInfo",
+                "drawHitboxes",
+                "playerInfo",
+                "musicInfo",
 
 
-            "h_ab",
-            "ab_playerCollision"
-        },
+                "h_ab",
+                "ab_playerCollision"
+            }
+        }
     }
 }

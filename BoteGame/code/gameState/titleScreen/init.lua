@@ -133,14 +133,23 @@ local function update(dt)
         if music and music.manager then music.manager(dt) end
     end
 
-    userInterface:update(dt)
-    userInterface:checkHover("UI")
+    if menuManager.isMenuOpen() then
+        menuManager.update(dt)
+    else
+        userInterface:update(dt)
+        userInterface:checkHover("UI")
+    end
 end
 
 local function mousepressed(x, y, button)
     local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+    local mx, my = screen.translatePosition(x, y, "Menu")
+    if menuManager.mousepressed(mx, my, button) then
+        return
+    end
 
     if settingsMenu and titleScreenUI then
         if settingsMenu.isOpen == false then
@@ -156,9 +165,15 @@ local function mousepressed(x, y, button)
 end
 
 local function mousereleased(x, y, button)
+
     local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+
+    local mx, my = screen.translatePosition(x, y, "Menu")
+    if menuManager.mousereleased(mx, my, button) then
+        return
+    end
 
     if settingsMenu then
         if settingsMenu.isOpen == false then
@@ -235,6 +250,10 @@ local function drawUI()
     userInterface:draw("UI")
 end
 
+local function drawMenu(targetWidth, targetHeight, offsetX, offsetY)
+    menuManager.draw(targetWidth, targetHeight, offsetX, offsetY)
+end
+
 
 return {
     load = load,
@@ -248,6 +267,7 @@ return {
     update = update,
     draw = draw,
     drawUI = drawUI,
+    drawMenu = drawMenu,
     --isFirst = DEV,
     noTransform = true,
 }

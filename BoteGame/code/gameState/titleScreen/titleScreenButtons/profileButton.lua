@@ -18,6 +18,15 @@ return {
             sy = buttonHeight,
         },
         {
+            type = "nineSliceGraphic",
+            x = 0,
+            y = 0,
+            width = buttonWidth,
+            height = buttonHeight,
+            image = love.graphics.newImage("image/nineSliceTest.png"),
+            colour = {1,1,1},
+        },
+        {
             type = "textGraphic",
             text = buttonText,
             x = buttonHeight,
@@ -30,7 +39,7 @@ return {
         pi = math.pi,
 
         onRelease = function()
-            --gameStateManager.setGameState("levelSelect")
+            menuManager.openMenu("profileSwapper")
         end,
         update = function(self, button, dt)
           -- if self.mouseState ~= "none" then

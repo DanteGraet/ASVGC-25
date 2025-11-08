@@ -40,6 +40,13 @@ local function runButtonFunction(obj, func, button)
     end
 end
 
+function graetUI:getComponent(component)
+    if not components[component] then
+        print("GraetUi Error: No component '" .. component .. "'")
+    end
+    return components[component]
+end
+
 -- function
 function graetUI:newUI(screenLayer)
     local obj = {

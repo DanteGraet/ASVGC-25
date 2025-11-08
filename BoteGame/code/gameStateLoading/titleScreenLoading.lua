@@ -169,6 +169,14 @@ table.insert(toLoad, function()
         useOffset = false,
         isBoarderd = false,
         anchor = {0,0}
+    },
+    {
+        name = "Menu",
+        scaleType = "fit",
+        scale = 1,
+        useOffset = false,
+        isBoarderd = false,
+        anchor = {.5,.5}
     }}
     screen.load(screenLayers)
 
@@ -182,7 +190,7 @@ table.insert(toLoad, function()
     local base = -50
     local buttonHeight = 100
 
-    local x, y = -257, -100
+    local x, y = -350, -100
 
     userInterface:addCustomObject("playButton",     x,      y,          {0.275, 0.5},                           love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/playButton.lua")())
     userInterface:addCustomObject("profileButton",  x,      y + 240,    {0.275, 0.5},                           love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/profileButton.lua")())

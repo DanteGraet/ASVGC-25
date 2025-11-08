@@ -18,6 +18,15 @@ return {
             sy = buttonHeight,
         },
         {
+            type = "nineSliceGraphic",
+            x = 0,
+            y = 0,
+            width = buttonWidth,
+            height = buttonHeight,
+            image = love.graphics.newImage("image/nineSliceTest.png"),
+            colour = {1,1,1},
+        },
+        {
             type = "textGraphic",
             text = buttonText,
             x = buttonHeight,

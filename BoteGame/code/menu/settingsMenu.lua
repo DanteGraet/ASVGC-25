@@ -56,8 +56,6 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
     obj.isOpen = false
     obj.scroll = 0
 
-    
-
     --[[if settings.graphics.fullscreen.value then
         love.window.setFullscreen(true)
     end]]
@@ -67,7 +65,6 @@ function SettingsMenu:New() -- data is a table {{image/path, layer}}
             if self.catagories[self.curentCatagroy].name == "graphics" then
                 self.Ui:GetButtons("settings")["fullscreen"].value = love.window.getFullscreen()
             end
-
 
             SettingsMenu.SetCatagory({self, self.curentCatagroy})
         end

@@ -1,14 +1,14 @@
 local imageGraphic = {}
 
-function imageGraphic:new()
+function imageGraphic:new(image, x, y, sx, sy, cornerSize, colour)
     local obj = {
-        x = 0,
-        y = 0,
-        width = 100,
-        height = 100, 
-        colour = {1,1,1},
-        image = nil,
-        cornerSize = 10,
+        x =             x           or 0,
+        y =             y           or 0,
+        width =         sx          or 100,
+        height =        sy          or 100, 
+        colour =        colour      or {1,1,1},
+        image =         image       or nil,
+        cornerSize =    cornerSize  or 10,
     }
 
     setmetatable(obj, self)
@@ -48,17 +48,17 @@ function imageGraphic:draw(x, y, mouseState)
     -- widths & heights of stretch areas
     local mw, mh = self.width - self.cornerSize*2, self.height - self.cornerSize*2
 
-    love.graphics.draw(self.image, self.quads[1], x, y)
-    love.graphics.draw(self.image, self.quads[2], x2, y, 0, mw / (iw - self.cornerSize*2), 1)
-    love.graphics.draw(self.image, self.quads[3], x3, y)
+    love.graphics.draw(self.image, self.quads[1], self.x + x, self.y + y)
+    love.graphics.draw(self.image, self.quads[2], self.x + x2, self.y + y, 0, mw / (iw - self.cornerSize*2), 1)
+    love.graphics.draw(self.image, self.quads[3], self.x + x3, self.y + y)
 
-    love.graphics.draw(self.image, self.quads[4], x, y2, 0, 1, mh / (ih - self.cornerSize*2))
-    love.graphics.draw(self.image, self.quads[5], x2, y2, 0, mw / (iw - self.cornerSize*2), mh / (ih - self.cornerSize*2))
-    love.graphics.draw(self.image, self.quads[6], x3, y2, 0, 1, mh / (ih - self.cornerSize*2))
+    love.graphics.draw(self.image, self.quads[4], self.x + x, self.y + y2, 0, 1, mh / (ih - self.cornerSize*2))
+    love.graphics.draw(self.image, self.quads[5], self.x + x2, self.y + y2, 0, mw / (iw - self.cornerSize*2), mh / (ih - self.cornerSize*2))
+    love.graphics.draw(self.image, self.quads[6], self.x + x3, self.y + y2, 0, 1, mh / (ih - self.cornerSize*2))
 
-    love.graphics.draw(self.image, self.quads[7], x, y3)
-    love.graphics.draw(self.image, self.quads[8], x2, y3, 0, mw / (iw - self.cornerSize*2), 1)
-    love.graphics.draw(self.image, self.quads[9], x3, y3)
+    love.graphics.draw(self.image, self.quads[7], self.x + x, self.y + y3)
+    love.graphics.draw(self.image, self.quads[8], self.x + x2, self.y + y3, 0, mw / (iw - self.cornerSize*2), 1)
+    love.graphics.draw(self.image, self.quads[9], self.x + x3, self.y + y3)
 
 
     --love.graphics.draw(self.image, x + self.x, y + self.y, self.r, self.sx, self.sy, self.ox, self.oy)
