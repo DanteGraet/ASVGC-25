@@ -4,6 +4,8 @@ local data = {}
 local width = 1000
 local height = 700
 
+local changingKeybind = {false}
+
 settingsMenu.width = width
 settingsMenu.height = height
 settingsMenu.transitionIn = 0
@@ -11,14 +13,49 @@ settingsMenu.transitionIn = 0
 settingsMenu.ui = graetUI:newUI()
 
 local buttonTypeFunctions = {
-    button = function(settingName, setting)
+    button = function(settingName, setting, currentFont)
         return {
+            components = {
+                {
+                    type = "rectangleCollider",
+                    x = 0,
+                    y = 0,
+                    sx = currentFont:getWidth(setting.displayName),
+                    sy = currentFont:getHeight(),
+                },
+                {
+                    type = "textGraphic",
+                    text = setting.displayName,
+                    font = currentFont,
 
+                    x = 0,
+                    y = 0,
+                    colour = {1,1,1},
+                },
+            },
+            data = {
+                onRelease = function(obj, button)
+                    setting.func()
+                    --gameStateManager.setGameState("responsiveLoading", false, "levelSelect", "image/loading/title.png")
+                end,
+            }
         }
     end,
-    keybindButton = function(settingName, setting)
+    keybindButton = function(settingName, setting, currentFont)
         return {
+            components = {
+                {
+                    type = "textGraphic",
+                    text = setting.displayName,
+                    font = currentFont,
 
+                    x = 0,
+                    y = 0,
+                    colour = {1,1,1},
+                },
+            },
+            data = {
+            }
         }
     end,
     slider = function(settingName, setting, currentFont)
@@ -106,38 +143,38 @@ local buttonTypeFunctions = {
     end,
     toggle = function(settingName, setting, currentFont)
         return {
-                components = {
-                    {
-                        type = "rectangleCollider",
-                        x = 0,
-                        y = 0,
-                        sx = currentFont:getWidth(setting.displayName) + 50,
-                        sy = currentFont:getHeight(),
-                    },
-                    {
-                        type = "textGraphic",
-                        text = setting.displayName,
-                        font = currentFont,
-
-                        x = 50,
-                        y = 0,
-                        colour = {1,1,1},
-                    },
-                    {
-                        type = "imageGraphic",
-                        x = 10,
-                        y = 10,
-                        image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
-                    }
+            components = {
+                {
+                    type = "rectangleCollider",
+                    x = 0,
+                    y = 0,
+                    sx = currentFont:getWidth(setting.displayName) + 50,
+                    sy = currentFont:getHeight(),
                 },
-                data = {
-                    onRelease = function(obj, button)
-                        setting.value = not setting.value
+                {
+                    type = "textGraphic",
+                    text = setting.displayName,
+                    font = currentFont,
 
-                        button.components[3].image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
-                        --gameStateManager.setGameState("responsiveLoading", false, "levelSelect", "image/loading/title.png")
-                    end,
+                    x = 50,
+                    y = 0,
+                    colour = {1,1,1},
+                },
+                {
+                    type = "imageGraphic",
+                    x = 10,
+                    y = 10,
+                    image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
                 }
+            },
+            data = {
+                onRelease = function(obj, button)
+                    setting.value = not setting.value
+
+                    button.components[3].image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
+                    --gameStateManager.setGameState("responsiveLoading", false, "levelSelect", "image/loading/title.png")
+                end,
+            }
         }
     end,
     header = function(settingName, setting)
@@ -241,6 +278,21 @@ function settingsMenu.loadCatagory(catagory)
         local settingName = catagoryToLoad.data[i]
         local setting = settings[catagoryToLoad.category][settingName]
 
+        if setting.type == "keybindButton" then
+            for i = 1, 2 do
+                local button = buttonTypeFunctions["button"](settingName, setting, currentFont)
+                button.components[2].text = "[" .. setting.value[i] .. "]"
+                button.components[1].sx = currentFont:getWidth("[" .. setting.value[i] .. "]")
+
+                button.data.onRelease = function()
+                    changingKeybind = {true, settingName, i}
+                end
+                if button.components then
+                    settingsMenu.ui:addCustomObject(settingName .. "Setting" .. i, currentX + 200*i + 25, currentY, {0,0}, button)
+                end
+            end
+        end
+
         local button, heightOffset = buttonTypeFunctions[setting.type](settingName, setting, currentFont)
         if button.components then
             settingsMenu.ui:addCustomObject(settingName .. "Setting", currentX, currentY, {0,0}, button)
@@ -283,7 +335,37 @@ function settingsMenu.update(dt)
     end
 end
 
+function settingsMenu.keyreleased(key)
+    if changingKeybind[1] then
+        if key == "escape" then 
+            changingKeybind = {false}
+            return true
+        end
+
+        settings.keybinds[changingKeybind[2]].value[changingKeybind[3]] = key
+
+        local currentFont = font.getFont("medium", 30)
+        local button = settingsMenu.ui:getButton(changingKeybind[2] .. "Setting" .. changingKeybind[3])
+
+        button.components[2].text = "[" .. key .. "]"
+        button.components[1].sx = currentFont:getWidth("[" .. key .. "]")
+
+        changingKeybind = {false}
+
+        return true
+    end
+
+    if key == "escape" then 
+        settingsMenu.startClose()
+        return true
+    end
+
+    return false
+end
+
 function settingsMenu.startClose()
+    saveManager.saveSettings()
+
     data.closing = true
 end
 

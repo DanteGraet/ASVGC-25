@@ -1,6 +1,8 @@
 local menuManager = {}
 local openMenus = {}
 
+
+
 function menuManager.openMenu(menuName)
     for i = 1,#openMenus do
     if openMenus[i].name == menuName then
@@ -45,6 +47,24 @@ function menuManager.mousepressed(mx, my, button)
     end
 
     return true
+end
+
+function menuManager.keyreleased(key)
+    if #openMenus <= 0 then
+        return false
+    end
+
+    if openMenus[1].keyreleased then
+        return openMenus[1].keyreleased(key)
+    end
+end
+
+function menuManager.getTopMenu(menuName)
+    if #openMenus <= 0 then
+        return false
+    end
+
+    return openMenus[1]
 end
 
 function menuManager.mousereleased(mx, my, button)
@@ -92,6 +112,8 @@ function menuManager.draw(targetWidth, targetHeight, offsetX, offsetY)
     for i = #openMenus, 1, -1 do
         openMenus[i].draw()
         if openMenus[i].ui then
+            openMenus[i].ui.drawDebug = settings.dev.drawHitboxes.value
+
             openMenus[i].ui:draw()
         end
     end

@@ -25,7 +25,7 @@ end
 function saveManager.loadSettings()
     settings = love.filesystem.load("code/saveManager/defaultSettings.lua")()
 
-    local savedSettings = dante.load("save/settings")
+    local savedSettings = dante.load("save/settings.lua")
     
     mergeSettings(settings, savedSettings)
 end
@@ -45,7 +45,7 @@ function saveManager.saveSettings()
         ::nextCatagory::
     end
 
-    dante.save(savingSettings, "save", "settings")
+    dante.save(savingSettings, "save/settings.lua")
 end
 
 function saveManager.loadProfile(profileNumber)

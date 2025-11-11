@@ -23,13 +23,19 @@ local function RemoveSave()
 end
 
 local function ResetKeybinds()
-    settings.keybinds = love.filesystem.load("code/menu/defaultSettings.lua")().keybinds
+    settings.keybinds = love.filesystem.load("code/saveManager/defaultSettings.lua")().keybinds
 
-    settingsMenu.SetCatagory({settingsMenu, 3})
+    local topMenu = menuManager.getTopMenu()
+
+    if topMenu and topMenu.loadCatagory then
+        topMenu.loadCatagory(3)
+    end
+
     if inputManager then
         inputManager.keybinds = love.filesystem.load("code/menu/keybinds.lua")()
     end
-    saveSettings()
+    --saveSettings()
+
 end
 
 local function ResetSettings()

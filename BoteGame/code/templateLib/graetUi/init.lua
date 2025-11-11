@@ -39,6 +39,16 @@ local function runButtonFunction(obj, func, button, mx, my)
     end
 end
 
+function graetUI:getButton(id)
+    for i = 1,#self.ui do
+        if self.ui[i].id == id then
+            return self.ui[i]
+        end
+    end
+
+    return nil
+end
+
 function graetUI:getComponent(component)
     if not components[component] then
         print("GraetUi Error: No component '" .. component .. "'")
