@@ -70,7 +70,6 @@ local buttonTypeFunctions = {
                     if component.sx == 25 then
                         button.ox = mx - component.x - 25/2
                     else
-                        print(component.sx)
                         button.components[1].x = quindoc.clamp(mx-25/2, button.initialX, maxWidth)
                         button.ox = 0
                     end
