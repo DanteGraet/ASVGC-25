@@ -2,7 +2,7 @@ local settingsMenu = {}
 local data = {}
 
 local width = 1000
-local height = 600
+local height = 700
 
 settingsMenu.width = width
 settingsMenu.height = height
@@ -21,14 +21,124 @@ local buttonTypeFunctions = {
 
         }
     end,
-    slider = function(settingName, setting)
+    slider = function(settingName, setting, currentFont)
+        local buttonX = setting.value * (250-25)
+        local initialX = currentFont:getWidth(setting.displayName) + 25
+        local maxWidth = currentFont:getWidth(setting.displayName) + 25 + 250-25
         return {
+            components = {
+                {
+                    type = "rectangleCollider",
+                    x =  initialX + buttonX,
+                    y = 5,
+                    sx = 25,
+                    sy = currentFont:getHeight()-10,
+                },
+                {
+                    type = "rectangleCollider",
+                    x = currentFont:getWidth(setting.displayName) + 25,
+                    y = 10,
+                    sx = 250,
+                    sy = currentFont:getHeight()-20,
+                },
+                {
+                    type = "textGraphic",
+                    text = setting.displayName,
+                    font = currentFont,
 
+                    x = 0,
+                    y = 0,
+                    colour = {1,1,1},
+                },
+                {
+                    type = "imageGraphic",
+                    x = initialX,
+                    y = 12,
+                    image = assets.image.ui.settings.bar
+                },
+                {
+                    type = "imageGraphic",
+                    x = initialX + buttonX,
+                    y = 6,
+                    image = assets.image.ui.settings.indicator
+                },
+            },
+            data = {
+                initialX = currentFont:getWidth(setting.displayName) + 25,
+                ox = 0,
+                onClick = function(component, button, mx, my)
+                    if component.sx == 25 then
+                        button.ox = mx - component.x - 25/2
+                    else
+                        print(component.sx)
+                        button.components[1].x = quindoc.clamp(mx-25/2, button.initialX, maxWidth)
+                        button.ox = 0
+                    end
+                end,
+                update = function(button)
+                    if button.mouseState == "clicked" then
+                        local hoverdButton
+                        local hoverdComponent
+                        local ox, oy 
+
+                        local mx, my = screen.translatePosition(love.mouse.getX(), love.mouse.getY(), "Menu")
+                        if not mx or not my then return end
+
+                        local targetWidth, targetHeight, offsetX, offsetY = screen.getScaledSize("Menu")
+
+                        local anchorX, anchorY = targetWidth * button.anchor[1],  targetHeight * button.anchor[2]
+                        local x = mx - anchorX - button.x --+ offsetX
+
+                        button.components[1].x = quindoc.clamp((x-25/2) - button.ox, button.initialX, maxWidth)
+                        button.components[5].x = button.components[1].x
+
+                        local newValue = (button.components[1].x - button.initialX)/225
+                        setting.value = newValue
+                    end
+                end
+                --[[onRelease = function(obj, button)
+                    setting.value = not setting.value
+
+                    button.components[3].image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
+                    --gameStateManager.setGameState("responsiveLoading", false, "levelSelect", "image/loading/title.png")
+                end,]]
+            }
         }
     end,
-    toggle = function(settingName, setting)
+    toggle = function(settingName, setting, currentFont)
         return {
+                components = {
+                    {
+                        type = "rectangleCollider",
+                        x = 0,
+                        y = 0,
+                        sx = currentFont:getWidth(setting.displayName) + 50,
+                        sy = currentFont:getHeight(),
+                    },
+                    {
+                        type = "textGraphic",
+                        text = setting.displayName,
+                        font = currentFont,
 
+                        x = 50,
+                        y = 0,
+                        colour = {1,1,1},
+                    },
+                    {
+                        type = "imageGraphic",
+                        x = 10,
+                        y = 10,
+                        image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
+                    }
+                },
+                data = {
+                    onRelease = function(obj, button)
+                        setting.value = not setting.value
+
+                        button.components[3].image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
+                        --gameStateManager.setGameState("responsiveLoading", false, "levelSelect", "image/loading/title.png")
+                    end,
+                }
         }
     end,
     header = function(settingName, setting)
@@ -40,6 +150,7 @@ local buttonTypeFunctions = {
                         text = setting.displayName,
                         x = 0,
                         y = 0,
+                        font = headerFont,
                         colour = {1,1,1},
                     },
                 },
@@ -131,7 +242,7 @@ function settingsMenu.loadCatagory(catagory)
         local settingName = catagoryToLoad.data[i]
         local setting = settings[catagoryToLoad.category][settingName]
 
-        local button, heightOffset = buttonTypeFunctions[setting.type](settingName, setting)
+        local button, heightOffset = buttonTypeFunctions[setting.type](settingName, setting, currentFont)
         if button.components then
             settingsMenu.ui:addCustomObject(settingName .. "Setting", currentX, currentY, {0,0}, button)
         end

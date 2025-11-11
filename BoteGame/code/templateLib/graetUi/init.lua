@@ -24,19 +24,18 @@ objects.custom =               require("code/templateLib/graetUi/object/textbox"
 objects.rectangleButton =       require("code/templateLib/graetUi/object/rectangleButton")
 objects.textButton =            require("code/templateLib/graetUi/object/textButton")]]
 
-local function runButtonFunction(obj, func, button)
+local function runButtonFunction(obj, func, button, mx, my)
     if func == nil then return nil end
 
     if type(func) ~= "table" then
-        return func(obj, button)
+        return func(obj, button, mx, my)
     end
-
     if type(func[2]) == "table" then
         if func[1] then
-            return func[1](obj, button, unpack(func[2]))
+            return func[1](obj, button, mx, my, unpack(func[2]))
         end
     else
-        return func[1](obj, button, func[2])
+        return func[1](obj, button, mx, my, func[2])
     end
 end
 
@@ -106,17 +105,16 @@ function graetUI:reset(layer)
 end
 
 function graetUI:toggleClick(pressed, screenLayer)
-    local hoverdButton = self:checkHover(screenLayer, true)
+    local hoverdButton, component, mx, my = self:checkHover(screenLayer, true)
     if pressed == true and hoverdButton then
         hoverdButton.mouseState = "clicked"
         self.clicked = true 
-
-        runButtonFunction(hoverdButton, hoverdButton.onClick, hoverdButton)
+        runButtonFunction(component, hoverdButton.onClick, hoverdButton, mx, my)
 
         return
     else
         if hoverdButton and hoverdButton.mouseState == "clicked" then
-            runButtonFunction(hoverdButton, hoverdButton.onRelease, hoverdButton)
+            runButtonFunction(hoverdButton, hoverdButton.onRelease, hoverdButton, mx, my)
         end
 
         self.clicked = false
@@ -129,6 +127,8 @@ end
 function graetUI:checkHover(screenLayer, doNotUpdate)
     if self.clicked == false or doNotUpdate then
         local hoverdButton
+        local hoverdComponent
+        local ox, oy 
 
         local mx, my = screen.translatePosition(love.mouse.getX(), love.mouse.getY(), screenLayer or "")
         if not mx or not my then return end
@@ -153,22 +153,24 @@ function graetUI:checkHover(screenLayer, doNotUpdate)
                 local component = b.components[j]
 
                 if not component.checkHover then
-                    goto nextButton
+                    goto nextComponent
                 end
 
                 local checkHover = {
                     component.checkHover, {x, y}
                 }
-                if runButtonFunction(component, checkHover, b) == true then
+                if runButtonFunction(component, checkHover, b, x, y) == true then
                     hoverdButton = b
+                    hoverdComponent = component
+                    ox, oy = x, y
 
                     if doNotUpdate then goto nextButton end
 
                     b.mouseState = "hover"
 
-                    runButtonFunction(component, b.onHover, b)
+                    runButtonFunction(component, b.onHover, b, x, y)
 
-                    return b
+                    return hoverdButton, hoverdComponent, ox, oy
                     --goto nextButton
 
                     --break
@@ -179,7 +181,7 @@ function graetUI:checkHover(screenLayer, doNotUpdate)
                 --end
 
                 
-
+                ::nextComponent::
                 --runButtonFunction(component, b.onReleased, b)
 
             end
@@ -187,7 +189,7 @@ function graetUI:checkHover(screenLayer, doNotUpdate)
 
         end
 
-        return hoverdButton
+        return hoverdButton, hoverdComponent, ox, oy
     end
 end
 
@@ -220,7 +222,8 @@ function graetUI:draw(layer)
 
             for i = 1,#b.components do 
                 if b.components[i].drawDebug then
-                    b.components[i]:drawDebug(b, x, y)
+
+                    b.components[i]:drawDebug(b, x or 0, y or 0)
                 end
             end
         end

@@ -18,7 +18,7 @@ function rectangleCollider:new(x, y, sx, sy)
     return obj
 end
 
-function rectangleCollider:checkHover(button, x, y)
+function rectangleCollider:checkHover(button, mx, my, x, y)
     return x > self.x and  x < self.x + self.sx and y > self.y and y < self.y + self.sy
 end
 

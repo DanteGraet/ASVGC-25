@@ -65,6 +65,10 @@ function menuManager.update(dt)
         if openMenus[i].update  then
             openMenus[i].update(dt)
 
+            if openMenus[1].ui then
+                openMenus[1].ui:update(dt)
+            end
+
             if openMenus[i].remove then
                 table.remove(openMenus, i)
             end

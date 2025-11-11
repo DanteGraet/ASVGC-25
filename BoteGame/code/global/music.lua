@@ -57,7 +57,7 @@ function music.update(dt)
     if musicTracks ~= nil then
 
         local globalMusicVolume = (settings and settings.audio.musicVolume.value * settings.audio.masterVolume.value) or 0.5
-
+        print("globalMusicVolume", globalMusicVolume, dt)
         if musicTracks[1].track:isPlaying() then
             if globalMusicVolume == 0 then
                 for i = 1, #musicTracks do
@@ -87,7 +87,7 @@ function music.update(dt)
 
         for i = 1, #musicTracks do
             local track = musicTracks[i]
-            track.targetVolume = targets[i] or 0.001
+            track.targetVolume = (targets[i] or 0.001)* globalMusicVolume
 
             -- Interpolate volume
             if track.volume ~= track.targetVolume then
@@ -95,7 +95,7 @@ function music.update(dt)
                 track.volume = track.volume + math.min(fadeThisFrame*quindoc.sign(targetVolumeDifference), targetVolumeDifference)
 
                 -- finally update thee actual volume
-                track.track:setVolume(track.volume*0.5 * globalMusicVolume )
+                track.track:setVolume(track.volume*0.5)
             end
         end
 
