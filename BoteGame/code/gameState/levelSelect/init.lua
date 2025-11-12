@@ -198,14 +198,25 @@ local function update(dt)
         end
     end
 
+    if menuManager.isMenuOpen() then
+        menuManager.update(dt)
+    else
+        userInterface:checkHover("")
+    end
+
     userInterface:update(dt)
-    userInterface:checkHover("")
 end
 
 local function mousepressed(x, y, button)
     local screenScale = screen.getScale()
    -- dialouge.schedule(assets.image.levelSelect.sign.play, 5)
+    local mx, my = screen.translatePosition(x, y, "Menu")
+    if menuManager.mousepressed(mx, my, button) then
+        return
+    end
+
     local mx, my = getMouseSoxSoy()
+
 
     --if menus then
     --    if menus[selectedMenu] and menus[selectedMenu].isOpen then
@@ -233,7 +244,13 @@ end
 
 local function mousereleased(x, y, button)
     local screenScale = screen.getScale()
+    local mx, my = screen.translatePosition(x, y, "Menu")
+    if menuManager.mousereleased(mx, my, button) then
+        return
+    end
+
     local mx, my = getMouseSoxSoy()
+
 
    --if menus then
    --    if menus[selectedMenu] and menus[selectedMenu].isOpen then
@@ -269,13 +286,17 @@ end
 
 
 local function keyreleased(key)
+    if menuManager.keyreleased and menuManager.keyreleased(key) then
+        return true
+    end
     if key == "escape" then
-        if menus and menus[selectedMenu] and menus[selectedMenu].isOpen then
-            menus[selectedMenu].isOpen = false
-        else
-            gameState = "titleScreen"
-                
-        end
+        gameState = "titleScreen"
+        --if menus and menus[selectedMenu] and menus[selectedMenu].isOpen then
+        --    menus[selectedMenu].isOpen = false
+        --else
+        --    gameState = "titleScreen"
+        --        
+        --end
     end
 end
 
@@ -331,6 +352,10 @@ local function draw()
 end
 
 
+local function drawMenu(targetWidth, targetHeight, offsetX, offsetY)
+    menuManager.draw(targetWidth, targetHeight, offsetX, offsetY)
+end
+
 return {
     load = load,
     extraLoad = extraLoad,
@@ -343,4 +368,5 @@ return {
     keyreleased = keyreleased,
     update = update,
     draw = draw,
+    drawMenu = drawMenu,
 }

@@ -3,7 +3,7 @@ local openMenus = {}
 
 
 
-function menuManager.openMenu(menuName)
+function menuManager.openMenu(menuName, ...)
     for i = 1,#openMenus do
     if openMenus[i].name == menuName then
             print("menu '" .. menuName .. "'' already open")
@@ -12,7 +12,7 @@ function menuManager.openMenu(menuName)
     end
 
     local newMenu = love.filesystem.load("code/menuManager/menu/" .. menuName .. ".lua")()
-    quindoc.runIfFunc(newMenu.load)
+    quindoc.runIfFunc(newMenu.load, ...)
 
     newMenu.name = menuName
     table.insert(openMenus, 1, newMenu)
@@ -32,7 +32,7 @@ function menuManager.closeMenu(menuName)
 end
 
 function menuManager.isMenuOpen()
-    return #openMenus >= 0
+    return #openMenus >= 1
 end
 
 function menuManager.mousepressed(mx, my, button)

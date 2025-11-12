@@ -273,3 +273,29 @@ function dante.splitString(str, sep)
     end
     return unpack(result)
 end
+
+
+function dante.formatNumber(num, decimals)
+
+    local num = num
+
+    local ends = {
+        "",
+        "k",
+        "m",
+        "b",
+        "t",
+        "q",
+    }
+    for i = 1,#ends do
+        if num < 1000 then
+            local finalNumber = math.floor(num * (math.pow(10, decimals)))/(math.pow(10, decimals))
+            return tostring(finalNumber) .. ends[i]
+        else
+
+
+            num = num / 1000
+
+        end
+    end
+end

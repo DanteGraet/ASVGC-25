@@ -193,7 +193,6 @@ local function keyreleased(key)
     if menuManager.keyreleased and menuManager.keyreleased(key) then
         return true
     end
-    print("AEEE")
     if settingsMenu and settingsMenu.isOpen == true then
         settingsMenu:KeyRelased(key)
     end

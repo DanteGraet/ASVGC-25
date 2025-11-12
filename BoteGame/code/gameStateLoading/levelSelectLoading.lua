@@ -45,6 +45,14 @@ table.insert(l, function()
         useOffset = true,
         isBoarderd = false,
         anchor = {0,0}
+    },
+    {
+        name = "Menu",
+        scaleType = "fit",
+        scale = 1,
+        useOffset = false,
+        isBoarderd = false,
+        anchor = {.5,.5}
     }}
     screen.load(screenLayers)
 

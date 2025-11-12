@@ -42,8 +42,9 @@ return function(level)
             sine = 0,
             onRelease = function()
                 -- goto level/ open level menu
+                menuManager.openMenu("levelMenu", level)
             end,
-            update = function(self, button, dt)
+            update = function(self, button, mx, my, dt)
                 if self.mouseState == "clicked" then -- um temporary?
                     self.components[2].colour = {.8,.8,.8}
                 else

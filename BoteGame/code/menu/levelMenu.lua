@@ -37,7 +37,7 @@ local typeData = {
     },
 }
 
-function levelMenu:New() -- data is a table {{image/path, layer}}
+function levelMenu:New(type) -- data is a table {{image/path, layer}}
     local obj = setmetatable({}, levelMenu)
 
     obj.isOpen = false
@@ -94,7 +94,6 @@ function levelMenu:GenerateButtons()
         self.Ui:GetButtons()["back"]:AddImage(0, 0, assets.image.levelSelect.sign.back)
         self.Ui:GetButtons()["back"].functions.release = {levelMenu.Close, self}
         self.Ui:GetButtons()["back"]:SetElementColour({1,1,1}, {.9,.8,.8}, {.8,.7,.7})
-
     end
 end
 
