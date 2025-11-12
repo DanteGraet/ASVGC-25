@@ -104,14 +104,15 @@ function love.resize(width, height)
 end
 
 function love.quit()
-	dante.save(save, "save")
+	saveManager.saveSettings()
+    saveManager.saveProfile(settings.hidden.profile.value)
 end
 
 function love.keypressed(key)
     if key == "f11" then
         if settingsMenu then
             --settingsMenu:toggleFullscreen()
-            settingsMenu:toggleFunction(not love.window.getFullscreen(), settings.graphics.fullscreen)
+            --settingsMenu:toggleFunction(not love.window.getFullscreen(), settings.graphics.fullscreen)
         else
             love.window.setFullscreen( not love.window.getFullscreen())
         end

@@ -12,6 +12,10 @@ settingsMenu.transitionIn = 0
 
 settingsMenu.ui = graetUI:newUI()
 
+local function checkToggleSettings()
+    love.window.setFullscreen(settings.graphics.fullscreen.value)
+end
+
 local buttonTypeFunctions = {
     button = function(settingName, setting, currentFont)
         return {
@@ -172,6 +176,8 @@ local buttonTypeFunctions = {
                     setting.value = not setting.value
 
                     button.components[3].image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
+
+                    checkToggleSettings()
                     --gameStateManager.setGameState("responsiveLoading", false, "levelSelect", "image/loading/title.png")
                 end,
             }
@@ -371,6 +377,7 @@ end
 
 function settingsMenu.draw()
     data.background:draw(0, 0 + data.yOffset)
+    love.graphics.translate(0, data.yOffset)
 end
 
 return settingsMenu

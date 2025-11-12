@@ -4,7 +4,6 @@ saveManager.isFirstLaunch = not love.filesystem.getInfo("save", "directory")
 local function mergeCatagories(catagory, savedSettings)
     for key, value in pairs(savedSettings) do
         if not catagory[key] then return end
-
         catagory[key].value = savedSettings[key]
     end
 end
@@ -35,16 +34,17 @@ function saveManager.saveSettings()
 
     for key, value in pairs(settings) do
         if key == "order" then              goto nextCatagory end
-        if (key ~= "DEV" or not DEV) then   goto nextCatagory end
+        if (key == "DEV" and not DEV) then   goto nextCatagory end
        
         savingSettings[key] = {}
+
         for setting, data in pairs(value) do
+
             savingSettings[key][setting] = data.value
         end
 
         ::nextCatagory::
     end
-
     dante.save(savingSettings, "save/settings.lua")
 end
 
@@ -56,11 +56,11 @@ function saveManager.loadProfile(profileNumber)
 
     local profileToLoad = profileNumber or settings.hidden.profile.value
     unlocks = dante.load("save/profile" .. profileToLoad) or {}
-    settings.hidden.profile.value = profileNumber
+    settings.hidden.profile.value = profileToLoad
 end
 
 function saveManager.saveProfile(profileNumber)
-    dante.save(unlocks, "save/profile" .. profileNumber)
+    dante.save(unlocks, "save/profile" .. (profileNumber or settings.hidden.profile.value))
 end
 
 
