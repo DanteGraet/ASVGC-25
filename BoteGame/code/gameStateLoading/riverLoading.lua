@@ -93,6 +93,28 @@ table.insert(toLoad, {"code/river/riverData/" .. rn .. "/ambiance.lua", "run"})
 table.insert(toLoad, {"code/river/riverData/" .. rn .. "/obstacle.lua", "run"})
 
 table.insert(toLoad, function()
+
+    local screenLayers = {{
+        name = "",
+        scaleType = "fit",
+        scale = 1,
+        useOffset = true,
+        isBoarderd = false,
+        anchor = {0,0}
+    },
+    {
+        name = "Menu",
+        scaleType = "fit",
+        scale = 1,
+        useOffset = false,
+        isBoarderd = false,
+        anchor = {.5,.5}
+    }}
+    screen.load(screenLayers)
+
+end)
+
+table.insert(toLoad, function()
     riverFileDirectory = assets.code.river.riverData[rn]
 
     scrapImages = {}
@@ -174,7 +196,7 @@ table.insert(toLoad, function()
 
     particles.loadParticles()
 
-    music.load()
+    music.load(love.filesystem.load("code/river/riverData/" .. rn .. "/music.lua")())
 
     savedDisplayName = nil
 end)

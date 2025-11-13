@@ -94,7 +94,7 @@ function levelMenu.load(type)
     
     data.yOffset = 0 
 
-    local b = getButton(assets.image.levelSelect.sign.play, function() print("play") end)
+    local b = getButton(assets.image.levelSelect.sign.play, function() gameStateManager.setGameState("responsiveLoading", false, "river", "image/loading/title.png") end)
     levelMenu.ui:addCustomObject("playLevel", 0-256*1.25, 32+256, {0,0}, b)
 
     b = getButton(assets.image.levelSelect.sign.storm, function() isStorm = true; print("play") end)

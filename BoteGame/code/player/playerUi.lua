@@ -19,7 +19,9 @@ function UI:Update(dt)
         --storedHealth = math.max(storedHealth - dt*3, player.health)
         storedHealth = quindoc.clamp(storedHealth + (math.max(player.health, 0) - storedHealth)*dt*5, 0, player.maxHealth)
     end
-    updateZoneTitles(dt)
+    if updateZoneTitles then
+        updateZoneTitles(dt)
+    end
 end
 
 function UI.Draw()
@@ -37,7 +39,7 @@ function UI.Draw()
     local scale = ((settings.graphics.uiScale.value) + 0.5)/4
 
 
-    if settings.graphics.zoneTitles.value then
+    if settings.graphics.zoneTitles.value and drawZoneTitle then
         drawZoneTitle()
     end
 
@@ -67,22 +69,24 @@ function UI.Draw()
     local tweendHealth = math.floor(storedHealth) + tweens.sineInOut(storedHealth%1)
     --local tweendHealth = storedHealth
 
-
     local healthColour = {.9,.1,.2}
-    -- heck you, i like it, also it gives another point of inspiration for GDD
-    if player.health == 1 and math.sin(uiSineCounter*30) > 0 then
-        healthColour = {1,0.6,0.6}
-    elseif tweendHealth and tweendHealth-0.1 > player.health and math.sin(uiSineCounter*30) > 0 then
-        healthColour = {1,0.6,0.6}
-    end
 
-    if player.immunity ~= 0 --[[and math.sin(uiSineCounter*30) > 0]] then
-        local sine = math.pow((math.sin(uiSineCounter*30) + 1) /2, 3)
-        local percentage = sine * (1 - (player.health-1)/(player.maxHealth-1))
-        local r = 0.9 + 0.1*percentage
-        local g = 0.1 + 0.5*percentage
-        local b = 0.2 + 0.4*percentage
-        healthColour = {r, g, b}
+    if uiSineCounter then
+        -- heck you, i like it, also it gives another point of inspiration for GDD
+        if player.health == 1 and math.sin(uiSineCounter*30) > 0 then
+            healthColour = {1,0.6,0.6}
+        elseif tweendHealth and tweendHealth-0.1 > player.health and math.sin(uiSineCounter*30) > 0 then
+            healthColour = {1,0.6,0.6}
+        end
+
+        if player.immunity ~= 0 --[[and math.sin(uiSineCounter*30) > 0]] then
+            local sine = math.pow((math.sin(uiSineCounter*30) + 1) /2, 3)
+            local percentage = sine * (1 - (player.health-1)/(player.maxHealth-1))
+            local r = 0.9 + 0.1*percentage
+            local g = 0.1 + 0.5*percentage
+            local b = 0.2 + 0.4*percentage
+            healthColour = {r, g, b}
+        end
     end
 
     love.graphics.draw(assets.image.ui.currentBar, x, y, 0, scale, scale, assets.image.ui.currentBar:getWidth()*side + 520 - 1040*(1-side), assets.image.ui.currentBar:getHeight())

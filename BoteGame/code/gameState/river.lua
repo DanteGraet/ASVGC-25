@@ -1,8 +1,8 @@
 local smoothPause = true
 local gameSpeed = 1
 
-local scale 
-local sox
+local scale = love.graphics.getWidth()/1920
+local sox = 0
 local soy = 0
 
 local loading
@@ -21,6 +21,8 @@ riverBorders = {
     right = 960,
     up = 0,
     down = 1080,
+    width = 1920,
+    height = 1080
 }
 
 -- this should solve all our problems ☜(ﾟヮﾟ☜) 👍
@@ -136,23 +138,23 @@ end
 
 
 local function load()
-    love.physics.setMeter(100)
+    --love.physics.setMeter(100)
 
     mouseTimer = 5
     love.mouse.setVisible(false)
 
-    local image
-    -- bootleg fix
-    if isStorm then
-        image = "storm"
-    end
-    loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true, "image/loading/" .. (image or riverName) .. ".png")
+    --local image
+    ---- bootleg fix
+    --if isStorm then
+    --    image = "storm"
+    --end
+    --loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true, "image/loading/" .. (image or riverName) .. ".png")
 
 end
 
 local function extraLoad()
-    pauseMenu = PauseMenu:New()--assets.code.menu.pauseMenu():New()
-    gameOverMenu = GameOverMenu:New()
+    --pauseMenu = PauseMenu:New()--assets.code.menu.pauseMenu():New()
+    --gameOverMenu = GameOverMenu:New()
 
     gameSpeed = 0
 
@@ -177,6 +179,7 @@ local lightningAlpha = 0
 
 
 local function update(dt)
+    local screenScale = screen.getScale()
     -- hide mouse if not moved
     if mouseTimer < 1 and player.health > 0 then
         mouseTimer = mouseTimer + dt*gameSpeed
@@ -288,23 +291,23 @@ local function update(dt)
             end
 
 
-            if (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
+            if (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 then
                 local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
                 local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-                gameOverMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+                --gameOverMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
 
-            elseif pauseMenu.isOpen then
+            --elseif pauseMenu.isOpen then
                 local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
                 local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
             
-                pauseMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+                --pauseMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
 
                 gameSpeed = math.max(gameSpeed - dt*2, 0)
 
-                if pauseMenu.settingsTimer > 0 then
-                    settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-                end
+                --if pauseMenu.settingsTimer > 0 then
+                --    settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+                --end
             else
                 if not player.wasBeached then
                     gameSpeed = math.min(gameSpeed + dt*2, 1)
@@ -335,37 +338,39 @@ end
 
 
 local function mousepressed(x, y, button)
+    local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and (pauseMenu and not pauseMenu.isOpen) then
-        if gameOverMenu then
-            gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-        end
-    end
-
-    if settingsMenu and settingsMenu.isOpen == true then
-        settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-    elseif pauseMenu and pauseMenu.isOpen == true then
-        pauseMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-    end
+   -- if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and (pauseMenu and not pauseMenu.isOpen) then
+   --     if gameOverMenu then
+   --         gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+   --     end
+   -- end
+--
+   -- if settingsMenu and settingsMenu.isOpen == true then
+   --     settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+   -- elseif pauseMenu and pauseMenu.isOpen == true then
+   --     pauseMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+   -- end
 end
 
 local function mousereleased(x, y, button)
+    local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-    if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
-        if gameOverMenu then
-            gameOverMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-        end
-    end
-
-    if settingsMenu and settingsMenu.isOpen == true then
-        settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
-    elseif pauseMenu and pauseMenu.isOpen == true then
-        pauseMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
-    end
+    --if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
+    --    if gameOverMenu then
+    --        gameOverMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
+    --    end
+    --end
+--
+    --if settingsMenu and settingsMenu.isOpen == true then
+    --    settingsMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
+    --elseif pauseMenu and pauseMenu.isOpen == true then
+    --    pauseMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)      
+    --end
 end
 
 
@@ -374,28 +379,28 @@ local function keyreleased(key)
     if inputManager then
         input = inputManager:Send("keyboard", key)
     end
-    if settingsMenu.isOpen then
-        if settingsMenu:KeyRelased(key) then
-            return
-        end
-    end
+    --if settingsMenu.isOpen then
+    --    if settingsMenu:KeyRelased(key) then
+    --        return
+    --    end
+    --end
 
     if input == "pause" then
-        if settingsMenu and settingsMenu.isOpen then 
-            settingsMenu.isOpen = false
-
-        elseif player and (player.health > 0 or not player.winTimer) and pauseMenu then 
-            pauseMenu.isOpen = not pauseMenu.isOpen
-            pauseMenu.hasOpend = true 
-
-            if pauseMenu.isOpen then
-                mouseTimer = 0
-                love.mouse.setVisible(true)
-            else
-                mouseTimer = 5
-                love.mouse.setVisible(false)
-            end
-        end
+        --if settingsMenu and settingsMenu.isOpen then 
+        --    settingsMenu.isOpen = false
+--
+        --elseif player and (player.health > 0 or not player.winTimer) and pauseMenu then 
+        --    pauseMenu.isOpen = not pauseMenu.isOpen
+        --    pauseMenu.hasOpend = true 
+--
+        --    if pauseMenu.isOpen then
+        --        mouseTimer = 0
+        --        love.mouse.setVisible(true)
+        --    else
+        --        mouseTimer = 5
+        --        love.mouse.setVisible(false)
+        --    end
+        --end
     end
 
     if key == "-" then
@@ -406,11 +411,12 @@ end
 
 
 local function draw()
+    screenScale = screen.getScale()
     if river:HasPoints() then
-        love.graphics.scale(scale)
+        --love.graphics.scale(scale)
         love.graphics.setColor(1,1,1)
 
-        love.graphics.translate(sox, soy)
+        love.graphics.translate(0, 0)
         love.graphics.push()
 
         camera:TranslateCanvas()
@@ -435,7 +441,7 @@ local function draw()
 
         ---TEMPORARY (TM) placeholder (r) storm mode effect
 
-        local stormIntensity = currentPlayerPos.stormIntensity or 0
+        local stormIntensity = (currentPlayerPos and currentPlayerPos.stormIntensity) or 0
 
         if stormIntensity then love.graphics.setColor(1,1,1,stormIntensity/1000) end
         love.graphics.draw(assets.image.ui.viginette, -riverBorders.width/2-100*riverBorders.width/1920, riverBorders.up-100*riverBorders.height/1080, 0, riverBorders.width/1920, riverBorders.height/1080)
@@ -466,6 +472,8 @@ local function draw()
         --love.graphics.draw(assets.image.ui["Sprite-0007"])
 
 
+
+
         love.graphics.reset()
         love.graphics.scale(screenScale)
     
@@ -490,11 +498,11 @@ local function draw()
 
 
         if 1-gs > 0  then
-            pauseMenu:Draw(1-gs)
-
-            if pauseMenu.settingsTimer > 0 then
-                settingsMenu:Draw(tweens.sineInOut(pauseMenu.settingsTimer), true)
-            end
+            --pauseMenu:Draw(1-gs)
+--
+            --if pauseMenu.settingsTimer > 0 then
+            --    settingsMenu:Draw(tweens.sineInOut(pauseMenu.settingsTimer), true)
+            --end
         end
 
         love.graphics.reset()
@@ -587,7 +595,7 @@ function UpdateHighScore(newScore)
     table.sort(assets.save.highscore[rn], function(a, b) return a > b end)
 
     if assets.save.highscore[rn] then
-        dante.save(assets.save.highscore, "save", "highscore")
+        dante.save(assets.save.highscore, "save/highscore.lua")
     end
 
     -- only store 6 records

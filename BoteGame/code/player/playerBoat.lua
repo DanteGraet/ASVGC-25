@@ -234,7 +234,9 @@ function PlayerBoat:Update(dt, inputs, gameSpeed)
 
         self:MoveWithCurrent(dt, bt)
 
-        spawnTrail(dt) --spawning damage smoke is in here also
+        if spawnTrail then
+            spawnTrail(dt) --spawning damage smoke is in here also
+        end
 
         if not uiSineCounter then uiSineCounter = 0 end
         uiSineCounter = uiSineCounter + dt

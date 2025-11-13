@@ -163,40 +163,27 @@ local function update(dt)
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    if not menus[selectedMenu] or (menus[selectedMenu].isOpen == false) then
-        levelSelectScreen:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-    end
-
-    if menus and menus[selectedMenu] then
-
-        menus[selectedMenu]:Update(dt, love.mouse.getX()/screenScale, love.mouse.getY()/screenScale)
-
-        if menus[selectedMenu].isOpen then
-            uiFade = math.min(uiFade + dt*2, 1)
-        else
-            uiFade = math.max(uiFade - dt*2, 0)    
-        end
-    end
+    
 
     local mx, my = getMouseSoxSoy()
-    for i = 1,#levels do
-        local l = levels[i]
-
-        local dist = 100 - quindoc.dist(mx, my, l.x, l.y)
-
-        if dist > 0 then
-            dist = math.min(dist*10, 100)
-        else
-            dist = 0
-        end
-        l.sineEffect = quindoc.clamp(dist/10, l.sineEffect-dt*10, l.sineEffect+dt*10)
-
-        if l.sineEffect == 0 then
-            l.sine = 0
-        else     
-            l.sine = l.sine+dt*3
-        end
-    end
+    --for i = 1,#levels do
+    --    local l = levels[i]
+--
+    --    local dist = 100 - quindoc.dist(mx, my, l.x, l.y)
+--
+    --    if dist > 0 then
+    --        dist = math.min(dist*10, 100)
+    --    else
+    --        dist = 0
+    --    end
+    --    l.sineEffect = quindoc.clamp(dist/10, l.sineEffect-dt*10, l.sineEffect+dt*10)
+--
+    --    if l.sineEffect == 0 then
+    --        l.sine = 0
+    --    else     
+    --        l.sine = l.sine+dt*3
+    --    end
+    --end
 
     if menuManager.isMenuOpen() then
         menuManager.update(dt)
@@ -315,30 +302,30 @@ local function draw()
 
     love.graphics.draw(assets.image.levelSelect.background, 0, 0, 0, 1920/5120, 1080/2880)
 
-    for i = 1,#levels do
-        local l = levels[i]
-        local img = assets.image.levelSelect.pin1
-        if assets.code.player.unlocks.beatenLevels[l.name .. "Storm"] then
-            img = assets.image.levelSelect.pin3
-        elseif assets.code.player.unlocks.beatenLevels[l.name] then
-            img = assets.image.levelSelect.pin2
-        end
-        --img = assets.image.levelSelect.flag
-
-        if l.click then
-            love.graphics.setColor(.8,.8,.8)
-        else
-            love.graphics.setColor(1,1,1)
-        end
-
-        --love.graphics.draw(img, l.x, l.y - (math.sin(l.sine)+1)*l.sineEffect, 0, 0.375, 0.375, img:getWidth()/2, img:getHeight()/2)
-        love.graphics.draw(img, l.x, l.y - (math.sin(l.sine)+1)*l.sineEffect, 0, 0.375, 0.375, img:getWidth()/2, img:getHeight() - 96/2)
-
-    end
+    --for i = 1,#levels do
+    --    local l = levels[i]
+    --    local img = assets.image.levelSelect.pin1
+    --    if assets.code.player.unlocks.beatenLevels[l.name .. "Storm"] then
+    --        img = assets.image.levelSelect.pin3
+    --    elseif assets.code.player.unlocks.beatenLevels[l.name] then
+    --        img = assets.image.levelSelect.pin2
+    --    end
+    --    --img = assets.image.levelSelect.flag
+--
+    --    if l.click then
+    --        love.graphics.setColor(.8,.8,.8)
+    --    else
+    --        love.graphics.setColor(1,1,1)
+    --    end
+--
+    --    --love.graphics.draw(img, l.x, l.y - (math.sin(l.sine)+1)*l.sineEffect, 0, 0.375, 0.375, img:getWidth()/2, img:getHeight()/2)
+    --    love.graphics.draw(img, l.x, l.y - (math.sin(l.sine)+1)*l.sineEffect, 0, 0.375, 0.375, img:getWidth()/2, img:getHeight() - 96/2)
+--
+    --end
     love.graphics.setColor(1,1,1)
 
     dialouge.draw()
-    levelSelectScreen:Draw()
+    --levelSelectScreen:Draw()
 
     if uiFade > 0 and menus[selectedMenu] then
         local f = tweens.sineInOut(uiFade)
