@@ -1,8 +1,8 @@
 local settingsMenu = {}
 local data = {}
 
-local width = 1000
-local height = 700
+local width = 1050
+local height = 750
 
 local changingKeybind = {false}
 
@@ -212,7 +212,7 @@ function settingsMenu.loadCatagory(catagory)
         end
     end
 
-    local widthPerCategory = (width - 100) / categoryCount
+    local widthPerCategory = (width - 150) / categoryCount
     local buttonFont = font.getFont("black", 40)
     for i = 1,#settings.order do
         if settings.order[i].isActive() then
@@ -243,7 +243,9 @@ function settingsMenu.loadCatagory(catagory)
                 }
             }
 
-            settingsMenu.ui:addCustomObject(c.category .. "Settings", -width/2 + widthPerCategory*(i-1), -height/2, {0,0}, button)
+            local extraBorderOffSet = 25
+
+            settingsMenu.ui:addCustomObject(c.category .. "Settings", -width/2 + widthPerCategory*(i-1)+extraBorderOffSet, -height/2+extraBorderOffSet, {0,0}, button)
         end
     end
 
@@ -272,10 +274,10 @@ function settingsMenu.loadCatagory(catagory)
         }
     }
 
-    settingsMenu.ui:addCustomObject("close" .. "Settings", -width/2 + widthPerCategory*categoryCount, -height/2, {0,0}, button)
+    settingsMenu.ui:addCustomObject("close" .. "Settings", -width/2 + widthPerCategory*categoryCount, -height/2+25, {0,0}, button)
 
     local currentY = - height/2 + 110
-    local currentX = - width/2 + 25
+    local currentX = - width/2 + 50
     local currentFont = font.getFont("medium", 30)
 
     local catagoryToLoad = settings.order[catagory]
@@ -315,7 +317,8 @@ function settingsMenu.load()
     bg.y = -height/2
     bg.sx = width
     bg.sy = height
-    bg.cornerSize = 10
+    bg.cornerSize = 84
+    bg.image = assets.nineslice.menu
 
     local nineSlice = graetUI:getComponent("nineSliceGraphic")
     data.background = nineSlice:new(bg.image, bg.x, bg.y, bg.sx, bg.sy, bg.cornerSize)

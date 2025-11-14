@@ -18,6 +18,7 @@ return {
             height = buttonHeight,
             image = love.graphics.newImage("image/nineSliceTest.png"),
             colour = {1,1,1},
+            image = assets.nineslice.button,
         },
     },
     data = {

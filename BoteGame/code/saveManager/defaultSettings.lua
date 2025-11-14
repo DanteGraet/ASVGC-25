@@ -96,6 +96,7 @@ end
 -- load each setting as categories with special order table
 return {
     graphics = {
+        h_display = {type = "header", displayName = "Display"},
         h_ui = {type = "header", displayName = "User Interface"},
         h_other = {type = "header", displayName = "Other"},
 
@@ -173,6 +174,7 @@ return {
             displayName = "Graphics",
             isActive = function() return true end,
             data = {
+                "h_display",
                 "fullscreen",
                 "showFPS",
 

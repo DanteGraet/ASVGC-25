@@ -14,6 +14,13 @@ music = love.filesystem.load("code/global/music.lua")()
 
 
 
-assets = {}
+assets = {
+
+    nineslice = {
+        menu = love.graphics.newImage("image/nineSliceNailless.png"),
+        button = love.graphics.newImage("image/buttonNineSlice.png")
+    }
+
+}
 
 love.physics.setMeter(100)

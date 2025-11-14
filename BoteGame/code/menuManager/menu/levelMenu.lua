@@ -82,7 +82,7 @@ function levelMenu.load(type)
     bg.y = -height/2
     bg.sx = width
     bg.sy = height
-    bg.cornerSize = 10
+    bg.cornerSize = 84
 
     data.background = assets.image.levelSelect.sign[type]
     data.backgroundExtender = assets.image.levelSelect.sign[type .. "Ext"]

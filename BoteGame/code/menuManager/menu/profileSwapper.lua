@@ -1,8 +1,8 @@
 local profileSwapper = {}
 local data = {}
 
-local width = 900
-local height = 500
+local width = 1200
+local height = 800
 
 profileSwapper.width = width
 profileSwapper.height = height
@@ -17,7 +17,7 @@ function profileSwapper.load()
     bg.y = -height/2
     bg.sx = width
     bg.sy = height
-    bg.cornerSize = 10
+    bg.cornerSize = 84
 
     local nineSlice = graetUI:getComponent("nineSliceGraphic")
     data.background = nineSlice:new(bg.image, bg.x, bg.y, bg.sx, bg.sy, bg.cornerSize)

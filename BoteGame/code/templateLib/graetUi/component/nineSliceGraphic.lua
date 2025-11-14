@@ -8,7 +8,7 @@ function imageGraphic:new(image, x, y, sx, sy, cornerSize, colour)
         height =        sy          or 100, 
         colour =        colour      or {1,1,1},
         image =         image       or nil,
-        cornerSize =    cornerSize  or 10,
+        cornerSize =    cornerSize  or 42,
     }
 
     setmetatable(obj, self)

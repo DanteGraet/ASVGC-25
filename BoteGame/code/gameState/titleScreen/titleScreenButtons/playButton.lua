@@ -23,16 +23,25 @@ return {
             y = 0,
             width = buttonWidth,
             height = buttonHeight,
-            image = love.graphics.newImage("image/nineSliceTest.png"),
+            image = assets.nineslice.button,
             colour = {1,1,1},
+            cornerSize = 40
+        },
+        {
+            type = "textGraphic",
+            text = buttonText,
+            x = buttonHeight+5,
+            y = -buttonHeight*0.15+5,
+            colour = {0,0,0,0.3},
         },
         {
             type = "textGraphic",
             text = buttonText,
             x = buttonHeight,
             y = -buttonHeight*0.15,
-            colour = {1,1,1},
+            colour = {1,1,1,0.8},
         },
+
     },
     data = {
         sine = 0,

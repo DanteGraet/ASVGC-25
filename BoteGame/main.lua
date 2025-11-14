@@ -35,6 +35,22 @@ function getMouseSoxSoy()
     return mx - sox, my - soy
 end
 
+function love.draw()
+
+    if settings.graphics.showFPS.value then
+
+        love.graphics.origin()
+        font.setFont("medium",24)
+
+        love.graphics.setColor(0,0,0,0.4)
+        love.graphics.print("FPS: "..love.timer.getFPS(),2,-7) --shadow
+
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.print("FPS: "..love.timer.getFPS(),0,-9)
+    end
+
+end
+
 --[[function love.draw(pre)
 
     love.graphics.reset()

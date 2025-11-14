@@ -1,8 +1,8 @@
 local pauseMenu = {}
 local data = {}
 
-local width = 500
-local height = 400
+local width = 450
+local height = 500
 
 pauseMenu.width = width
 pauseMenu.height = height
@@ -52,7 +52,7 @@ function pauseMenu.load()
     bg.y = -height/2
     bg.sx = width
     bg.sy = height
-    bg.cornerSize = 10
+    bg.cornerSize = 84
 
     local nineSlice = graetUI:getComponent("nineSliceGraphic")
     data.background = nineSlice:new(bg.image, bg.x, bg.y, bg.sx, bg.sy, bg.cornerSize)
@@ -99,7 +99,7 @@ function pauseMenu.draw()
     data.background:draw(0, 0)
 
     font.setFont("black", 75)
-    love.graphics.printf("Paused", -width/2, -height/2, width, "center")
+    love.graphics.printf("Paused", -width/2, -height/2+40, width, "center")
 end
 
 function pauseMenu.keyreleased(key)
