@@ -178,6 +178,13 @@ local updateFunctions = {
             else
                 state = "unloadScreen"
             end
+
+            local stateName = gameStateManager.getGameStateName(true)
+            local state = gameStateManager.getGameState(stateName)
+            if state.hyperUnload then
+                state.hyperUnload()
+            end
+            menuManager.forceClose(nil, true)
         end
 
     end,

@@ -18,6 +18,22 @@ function menuManager.openMenu(menuName, ...)
     table.insert(openMenus, 1, newMenu)
 end
 
+function menuManager.forceClose(menuName, all)
+    local currentMenu = 1
+
+    if all then
+        openMenus = {}
+        return
+    end
+
+    for i = 1,#openMenus do
+        if openMenus[i].name == menuName then
+            currentMenu = i
+            table.remove(openMenus, i)
+        end
+    end
+end
+
 function menuManager.closeMenu(menuName)
     local currentMenu = 1
 

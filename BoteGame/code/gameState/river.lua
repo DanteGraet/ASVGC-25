@@ -25,8 +25,7 @@ riverBorders = {
     height = 1080
 }
 
--- this should solve all our problems ☜(ﾟヮﾟ☜) 👍
-local pain = false
+
 
 function SetGameSpeed(speed)
     gameSpeed = speed
@@ -103,9 +102,8 @@ local function resize()
 end
 
 
-local function unload()
+local function hyperUnload()
     love.thread.getChannel("background_closeThread"):push(true)
-
     --love.timer.sleep
 
 
@@ -113,7 +111,7 @@ local function unload()
       --  --print("waiting")
     --end
     UpdateHighScore()
-    music.unload()
+    --music.unload()
 
     -- stop the player sunds permenantly
     audioPlayer.RemoveLoopingSound("motor3")
@@ -131,6 +129,16 @@ local function unload()
 
     pauseMenu = nil
     gameOverMenu = nil
+
+
+    smoothPause = true
+    gameSpeed = 1
+
+    scale = love.graphics.getWidth()/1920
+    sox = 0
+    soy = 0
+
+    mouseTimer = 0
 
     -- wait untill fully unloaded
     love.thread.getChannel("background_closeThreadReceived"):demand()
@@ -186,6 +194,13 @@ local function update(dt)
         if mouseTimer >= 1 then
             love.mouse.setVisible(false)
         end
+    end
+
+    if menuManager.isMenuOpen() then
+        menuManager.update(dt)
+        gameSpeed = math.max(gameSpeed - dt*2, 0) 
+    else
+        gameSpeed = math.min(gameSpeed + dt*2, 1) 
     end
 
     updateZonesAndRelatedData()
@@ -298,21 +313,21 @@ local function update(dt)
                 --gameOverMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
 
             --elseif pauseMenu.isOpen then
-                local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-                local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
+                ---local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
+                ---local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
             
                 --pauseMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
 
-                gameSpeed = math.max(gameSpeed - dt*2, 0)
+                --gameSpeed = math.max(gameSpeed - dt*2, 0)
 
                 --if pauseMenu.settingsTimer > 0 then
                 --    settingsMenu:Update(dt, love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
                 --end
             else
                 if not player.wasBeached then
-                    gameSpeed = math.min(gameSpeed + dt*2, 1)
+                    --gameSpeed = math.min(gameSpeed + dt*2, 1)
                 else
-                    gameSpeed = math.min(gameSpeed + dt, 1)
+                    --gameSpeed = math.min(gameSpeed + dt, 1)
 
                     if gameSpeed == 1 then
                         player.wasBeached = nil
@@ -338,21 +353,15 @@ end
 
 
 local function mousepressed(x, y, button)
+    local mx, my = screen.translatePosition(x, y, "Menu")
+
     local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
-   -- if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and (pauseMenu and not pauseMenu.isOpen) then
-   --     if gameOverMenu then
-   --         gameOverMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-   --     end
-   -- end
---
-   -- if settingsMenu and settingsMenu.isOpen == true then
-   --     settingsMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-   -- elseif pauseMenu and pauseMenu.isOpen == true then
-   --     pauseMenu:Click(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
-   -- end
+    if menuManager.mousepressed(mx, my, button) then
+        return
+    end
 end
 
 local function mousereleased(x, y, button)
@@ -360,6 +369,10 @@ local function mousereleased(x, y, button)
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 
+    local mx, my = screen.translatePosition(x, y, "Menu")
+    if menuManager.mousereleased(mx, my, button) then
+        return
+    end
     --if player and (player.health <= 0 or player.winTimer > 0) and player.deathTime >= 1 and not pauseMenu.isOpen then
     --    if gameOverMenu then
     --        gameOverMenu:Release(love.mouse.getX()/screenScale - sox, love.mouse.getY()/screenScale - soy)
@@ -375,32 +388,17 @@ end
 
 
 local function keyreleased(key)
+    if menuManager.keyreleased and menuManager.keyreleased(key) then
+        return true
+    end
+
     local input = {}
     if inputManager then
         input = inputManager:Send("keyboard", key)
     end
-    --if settingsMenu.isOpen then
-    --    if settingsMenu:KeyRelased(key) then
-    --        return
-    --    end
-    --end
 
     if input == "pause" then
-        --if settingsMenu and settingsMenu.isOpen then 
-        --    settingsMenu.isOpen = false
---
-        --elseif player and (player.health > 0 or not player.winTimer) and pauseMenu then 
-        --    pauseMenu.isOpen = not pauseMenu.isOpen
-        --    pauseMenu.hasOpend = true 
---
-        --    if pauseMenu.isOpen then
-        --        mouseTimer = 0
-        --        love.mouse.setVisible(true)
-        --    else
-        --        mouseTimer = 5
-        --        love.mouse.setVisible(false)
-        --    end
-        --end
+        menuManager.openMenu("pauseMenu")
     end
 
     if key == "-" then
@@ -486,13 +484,13 @@ local function draw()
     
         local gs = tweens.sineInOut(gameSpeed)
         
-        if (player.health <= 0 or player.deathTime >= 1) and not pauseMenu.isOpen then
+        if (player.health <= 0 or player.deathTime >= 1) and not menuManager.isMenuOpen() then
             local tween = tweens.sineInOut(quindoc.clamp((player.deathTime-1)*2, 0, 1))
             if playCredits == true then
                 gameState = "credits"
                 playCredits = nil
             else
-                gameOverMenu:Draw(tween)
+                --gameOverMenu:Draw(tween)
             end
         end
 
@@ -519,9 +517,6 @@ local function draw()
         if settings.dev.musicInfo.value then
             love.graphics.printf("music = " .. dante.dataToString(music), 0, 0,riverBorders.right-10,"right")
         end
-
-
-
     else
 
         local screenScale = love.graphics.getWidth()/1920
@@ -612,6 +607,10 @@ local function mousemoved()
     love.mouse.setVisible(true)
 end
 
+local function drawMenu(targetWidth, targetHeight, offsetX, offsetY)
+    menuManager.draw(targetWidth, targetHeight, offsetX, offsetY)
+end
+
 return {
     load = load,
     extraLoad = extraLoad,
@@ -623,7 +622,9 @@ return {
     resize = resize,
     mousemoved = mousemoved,
     draw = draw,
-    unload = unload,
+    hyperUnload = hyperUnload,
+
+    drawMenu = drawMenu,
 
     noTransform = true,
 }

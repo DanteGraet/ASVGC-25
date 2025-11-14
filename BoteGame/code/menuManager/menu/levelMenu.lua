@@ -104,6 +104,7 @@ function levelMenu.load(type)
     levelMenu.ui:addCustomObject("back", 256*1.25, 32+256, {0,0}, b)
 end
 
+
 function levelMenu.update(dt)
     if data.closing then
         levelMenu.transitionIn = math.max(levelMenu.transitionIn - dt*2, 0)
@@ -119,9 +120,11 @@ function levelMenu.update(dt)
     end
 end
 
+
 function levelMenu.startClose()
     data.closing = true
 end
+
 
 function levelMenu.draw()
     data.background2:draw(0, 0 + data.yOffset)
@@ -179,6 +182,15 @@ function levelMenu.draw()
             love.graphics.draw(image, -1920/2, -1080/2 - (i)*h + 10)
         end
     end
+end
+
+
+function levelMenu.keyreleased(key)
+    if key == "escape" then 
+        levelMenu.startClose()
+    end
+
+    return true
 end
 
 return levelMenu

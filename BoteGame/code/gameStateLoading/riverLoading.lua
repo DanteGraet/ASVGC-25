@@ -115,6 +115,28 @@ table.insert(toLoad, function()
 end)
 
 table.insert(toLoad, function()
+    local scale = love.graphics.getWidth()/1920
+    if love.graphics.getHeight()/1080 < scale then
+        scale = love.graphics.getHeight()/1080
+    end
+
+    sox = ((love.graphics.getWidth()/scale) - 1920) /2
+
+    if not player then
+        player = {
+            x = 0,
+            y = 0,
+        }
+    end
+    riverBorders = {
+        left = -love.graphics.getWidth()/2 / scale,
+        right = love.graphics.getWidth()/2 / scale,
+        up =    player.y - 900,
+        down =  player.y - 900 + love.graphics.getHeight()/scale,
+        width = love.graphics.getWidth() / scale,
+        height= love.graphics.getHeight() / scale,
+    }
+
     riverFileDirectory = assets.code.river.riverData[rn]
 
     scrapImages = {}
@@ -199,6 +221,8 @@ table.insert(toLoad, function()
     music.load(love.filesystem.load("code/river/riverData/" .. rn .. "/music.lua")())
 
     savedDisplayName = nil
+
+    menuManager.forceClose(nil, true)
 end)
 
 table.insert(toLoad, function()
