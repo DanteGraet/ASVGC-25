@@ -66,19 +66,19 @@ table.insert(l, function()
     userInterface = {}
     userInterface = graetUI:newUI()
 
-    if assets.code.player.unlocks.levels.frostedChannel then
+    if currentProfile.unlockedLevels.frostedChannel then
         userInterface:addCustomObject("frostedChannel",  400,     310,   {0,0}, generateButton("frostedChannel"))
     end
 
-    if assets.code.player.unlocks.levels.autumnGrove then
+    if currentProfile.unlockedLevels.autumnGrove then
         userInterface:addCustomObject("autumnGrove",  810,     425,   {0,0}, generateButton("autumnGrove"))
     end
 
-    if assets.code.player.unlocks.levels.derelictDam then
+    if currentProfile.unlockedLevels.derelictDam then
         userInterface:addCustomObject("derelictDam",  1260,     510,   {0,0}, generateButton("derelictDam"))
     end
 
-    if assets.code.player.unlocks.levels.endless then
+    if currentProfile.unlockedLevels.endless then
         userInterface:addCustomObject("endless",  600,     265,   {0,0}, generateButton("endless"))
     end
 

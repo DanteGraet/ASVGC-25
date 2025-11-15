@@ -50,11 +50,7 @@ local function ResetSettings()
 end
 
 local function devCheatyBoat(value, toggle)
-    toggle.value = value
-
-
-    print("cheeaty Boat Toggle")
-    if value then
+    if player.maxSpeed ~= 3000 then
         player.immunity = -1
         player.health = 1000
         player.speed = 100
@@ -160,7 +156,7 @@ return {
         playerInfo = {type = "toggle", displayName = "Show Player Debug Info", value = false},
         musicInfo = {type = "toggle", displayName = "Show Music Debug Info", value = false}, 
 
-        devCheatyBoat = {type = "toggle", displayName = "Dev Cheaty Boat", value = false, func = devCheatyBoat}, 
+        devCheatyBoat = {type = "button", displayName = "Dev Cheaty Boat", func = devCheatyBoat}, 
 
         h_ab = {type = "header", displayName = "AB testing"},
 

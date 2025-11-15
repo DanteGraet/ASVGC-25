@@ -5,50 +5,49 @@ if isStorm then
 end
 -- this should only run if the player has "Won" the levels
 
-if not assets.code.player.unlocks.beatenLevels then assets.code.player.unlocks.beatenLevels = {} end
+if not currentProfile.beatenLevels then currentProfile.beatenLevels = {} end
+if not currentProfile.unlockedLevels then currentProfile.unlockedLevels = {} end
 
 if rn == "derelictDam" then
-    if not assets.code.player.unlocks.beatenLevels[rn] then
+    if not currentProfile.beatenLevels[rn] then
         playCredits = true
     end
 end
 
 if rn == "frostedChannel" then
-    assets.code.player.unlocks.levels.autumnGrove = true
-    assets.code.player.unlocks.levels.frostedChannelStorm = true
+    currentProfile.unlockedLevels.autumnGrove = true
+    currentProfile.unlockedLevels.frostedChannelStorm = true
 
-    if not assets.code.player.unlocks.beatenLevels[rn] then
+    if not currentProfile.beatenLevels[rn] then
         dialouge.schedule("image/levelSelect/dialouge/dialouge2.png")
     end
 end
 
 if rn == "autumnGrove" then
-    assets.code.player.unlocks.levels.derelictDam = true
-    assets.code.player.unlocks.levels.autumnGroveStorm = true
+    currentProfile.unlockedLevels.derelictDam = true
+    currentProfile.unlockedLevels.autumnGroveStorm = true
 end
 
 if rn == "derelictDam" then
-    assets.code.player.unlocks.levels.derelictDamStorm = true
-    assets.code.player.unlocks.levels.endless = true
+    currentProfile.unlockedLevels.derelictDamStorm = true
+    currentProfile.unlockedLevels.endless = true
 
-    if not assets.code.player.unlocks.beatenLevels[rn] then
+    if not currentProfile.beatenLevels[rn] then
         dialouge.schedule("image/levelSelect/dialouge/dialouge3.png")
     end
 end
 
-assets.code.player.unlocks.beatenLevels[rn] = true
+currentProfile.beatenLevels[rn] = true
 
-local b = assets.code.player.unlocks.beatenLevels
+local b = currentProfile.beatenLevels
 if b.frostedChannelStorm and b.autumnGroveStorm and b.derelictDamStorm then
 
-    if not assets.code.player.unlocks.levels.seenDialouge4 then
+    if not currentProfile.unlockedLevels.seenDialouge4 then
         dialouge.schedule("image/levelSelect/dialouge/dialouge4.png")
     end
 
-    assets.code.player.unlocks.levels.seenDialouge4 = true 
+    currentProfile.unlockedLevels.seenDialouge4 = true 
 end
 
-dante.printTable(assets.code.player.unlocks)
-if assets.code then
-    dante.save(assets.code.player.unlocks, "save", "unlocks")
-end
+
+saveManager.saveProfile()

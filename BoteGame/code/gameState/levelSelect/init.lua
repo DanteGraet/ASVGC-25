@@ -45,13 +45,9 @@ local function extraLoad()
     menus["boatSelectMenu"] = assets.code.menu.boatSelectMenu():New()
     menus["levelMenu"] = assets.code.menu.levelMenu():New()
     levelSelectScreen = GraetUi:New()
-    if not assets.code.player.unlocks.levels then
-        print("FIRST")
-        assets.code.player.unlocks.levels = {
-            frostedChannel = true
-        }
-    end
-    if assets.code.player.unlocks.levels.frostedChannel then
+
+
+    if currentProfile.unlockedLevels.frostedChannel then
         table.insert(levels, {
             x = 400,
             y = 310,
@@ -62,7 +58,7 @@ local function extraLoad()
         })
     end
 
-    if assets.code.player.unlocks.levels.autumnGrove then
+    if currentProfile.unlockedLevels.autumnGrove then
         table.insert(levels, {
             x = 810,
             y = 425,
@@ -73,7 +69,7 @@ local function extraLoad()
         })
     end
 
-    if assets.code.player.unlocks.levels.derelictDam then
+    if currentProfile.unlockedLevels.derelictDam then
         table.insert(levels, {
             x = 1260,
             y = 510,
@@ -84,7 +80,7 @@ local function extraLoad()
         })
     end
 
-    if assets.code.player.unlocks.levels.endless then
+    if currentProfile.unlockedLevels.endless then
         table.insert(levels, {
             x = 600,
             y = 265,

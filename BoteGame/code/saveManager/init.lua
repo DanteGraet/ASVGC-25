@@ -49,24 +49,35 @@ function saveManager.saveSettings()
 end
 
 function saveManager.loadProfile(profileNumber)
-    if unlocks then
-        local currentProfile = settings.hidden.profile.value
-        saveManager.saveProfile(currentProfile)
+    if currentProfile then
+        local profile = settings.hidden.profile.value
+        saveManager.saveProfile(profile)
     end
 
     local profileToLoad = profileNumber or settings.hidden.profile.value
-    unlocks = dante.load("save/profile" .. profileToLoad) or {}
+    currentProfile = dante.load("save/profile" .. profileToLoad) or {
+        unlockedLevels = {
+            frostedChannel = true
+        }
+    }
+    
+    -- just in case someone sacked 
+    if not currentProfile.unlockedLevels then
+        currentProfile.unlockedLevels = {}
+    end
+    if not currentProfile.unlockedLevels.frostedChannel then
+        currentProfile.unlockedLevels.frostedChannel = true
+    end
     settings.hidden.profile.value = profileToLoad
 end
 
 function saveManager.saveProfile(profileNumber)
-    dante.save(unlocks, "save/profile" .. (profileNumber or settings.hidden.profile.value))
+    dante.save(currentProfile, "save/profile" .. (profileNumber or settings.hidden.profile.value))
 end
 
 
 if saveManager.isFirstLaunch then
     saveManager.saveSettings()
-
 end
 
 return saveManager

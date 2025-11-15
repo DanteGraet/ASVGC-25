@@ -6,7 +6,7 @@ local levelBeatenImage = assets.image.levelSelect.pin2
 local stormBeatenImage = assets.image.levelSelect.pin3
 
 return function(level)
-    local levelsBeaten = assets.code.player.unlocks.beatenLevel or {}
+    local levelsBeaten = currentProfile.beatenLevels or {}
     local buttonImage
 
     if levelsBeaten[level .. "Storm"] then
