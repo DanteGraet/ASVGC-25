@@ -88,11 +88,30 @@ function graetUI:addCustomObject(id, x, y, anchor, button)
 
     local buttonComponents = button.components
     for i = 1,#buttonComponents do
-        local componentName = buttonComponents[i].type
+        local c = buttonComponents[i]
+        local componentName = c.type
+
+        c.interpolators = {}
+
+        for key, value in pairs(c) do
+            if key ~= "interpolators" then
+                if key == "colour" then
+                    if type(value[1]) == "table" then
+                        c.interpolators[key] = value
+                        c[key] = value[1]
+                    end
+                else
+                    if type(value) == "table" then
+                        c.interpolators[key] = value
+                        c[key] = value[1]
+                    end
+                end
+            end
+        end
 
         if components[componentName] then
             local newComponent = components[componentName]:new()
-            newComponent = dante.mergeTables(newComponent, buttonComponents[i])
+            newComponent = dante.mergeTables(newComponent, c, false)
             table.insert(b.components, newComponent)
         else
             print("no such button component " .. componentName)
@@ -240,6 +259,18 @@ function graetUI:draw(layer)
     end
 end
 
+local lerpFloat = function(dt, currentValue, targetValue) 
+    local diff = targetValue - currentValue
+
+    local clamp = math.min
+    if diff < 0 then
+        clamp = math.max
+    end
+    local value = clamp((currentValue + diff*dt*10), targetValue)
+
+    return value
+end
+
 function graetUI:update(dt, ...)
     for i = 1,#self.ui do
         local b = self.ui[i]
@@ -251,6 +282,28 @@ function graetUI:update(dt, ...)
         }
 
         runButtonFunction(b, u, b)
+
+        local target = (((b.mouseState == "clicked" and 3) or b.mouseState == "hover" and 2 ) or 1)
+        for j = 1,#b.components do
+            if b.components[j].interpolators then
+                for component, data in pairs(b.components[j].interpolators) do
+                    
+                    local func = b.interpolationFunction or lerpFloat
+                    local new
+
+                    if type(data[1]) == "table" then
+                        -- table
+                        new = {}
+                        for i = 1,#data do
+                            table.insert(new, func(dt, b.components[j][component][i], data[target][i]))
+                        end
+                    else
+                        new = func(dt, b.components[j][component], data[target])
+                    end
+                    b.components[j][component] = new
+                end
+            end
+        end
     end
 end
 

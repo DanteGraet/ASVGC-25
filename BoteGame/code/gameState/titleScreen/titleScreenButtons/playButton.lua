@@ -31,7 +31,7 @@ return {
             type = "textGraphic",
             text = buttonText,
             x = buttonHeight+5,
-            y = -buttonHeight*0.15+5,
+            y = {-buttonHeight*0.15+5, -buttonHeight*0.15 + 5, -buttonHeight*0.15},
             colour = {0,0,0,0.3},
         },
         {
