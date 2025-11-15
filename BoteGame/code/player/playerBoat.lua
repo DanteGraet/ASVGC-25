@@ -145,6 +145,7 @@ end
 function PlayerBoat:OnWin()
     self.winY = self.y
     self:UpdateScore()
+    menuManager.openMenu("gameOverMenu")
     love.filesystem.load("code/player/checkUnlocks.lua")()
 end
 

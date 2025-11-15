@@ -198,7 +198,10 @@ local function update(dt)
 
     if menuManager.isMenuOpen() then
         menuManager.update(dt)
-        gameSpeed = math.max(gameSpeed - dt*2, 0) 
+
+        if not player.winY then
+            gameSpeed = math.max(gameSpeed - dt*2, 0) 
+        end
     else
         gameSpeed = math.min(gameSpeed + dt*2, 1) 
     end
