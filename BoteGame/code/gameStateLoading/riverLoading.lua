@@ -218,6 +218,7 @@ table.insert(toLoad, function()
 
     particles.loadParticles()
 
+    print(riverName, rn)
     music.load(love.filesystem.load("code/river/riverData/" .. rn .. "/music.lua")())
 
     savedDisplayName = nil

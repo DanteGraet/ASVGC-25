@@ -6,7 +6,6 @@ local loadPercentage
 
 local unloading
 
-
 local processList
 local processIndex
 

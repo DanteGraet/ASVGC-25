@@ -74,6 +74,7 @@ end
 
 
 function levelMenu.load(type)
+    riverName = type
     data = typeData[type]
     data.type = type
     local bg = {}

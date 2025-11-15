@@ -1,15 +1,13 @@
 -- placeholder
 return {
-    data = {
-        crossFadeSpeed = 0.3,
-        tracks = {  -- Starting Values
-            [1] = "music/mvpRiver/townChordsV2.mp3",
-            [2] = "music/mvpRiver/snowMelodyV2.mp3",
-            [3] = "music/mvpRiver/valleyChords.mp3",
-            [4] = "music/mvpRiver/valleyDrums.mp3",
-            [5] = "music/mvpRiver/stormMelodyV2.mp3",
-            [6] = "music/mvpRiver/stormDrumsChordsV3.mp3",
-        },
+    crossFadeSpeed = 0.3,
+    tracks = {  -- Starting Values
+        [1] = "music/mvpRiver/townChordsV2.mp3",
+        [2] = "music/mvpRiver/snowMelodyV2.mp3",
+        [3] = "music/mvpRiver/valleyChords.mp3",
+        [4] = "music/mvpRiver/valleyDrums.mp3",
+        [5] = "music/mvpRiver/stormMelodyV2.mp3",
+        [6] = "music/mvpRiver/stormDrumsChordsV3.mp3",
     },
     zones = {
         ["Ice Plains"] =            {1,1,0,0,0,0},
