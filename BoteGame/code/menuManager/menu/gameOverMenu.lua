@@ -157,17 +157,17 @@ function gameOverMenu.draw()
     
     -- white is there so if the player gets the same score (unlikely like very unlikey) then there will only on white score
     local white = false
-    if assets.save.highscore then
-        if not assets.save.highscore[rn] then
-            assets.save.highscore[rn] = {}
+    if currentProfile.highscore then
+        if not currentProfile.highscore[rn] then
+            currentProfile.highscore[rn] = {}
         end
     else
-        assets.save.highscore = {rn = {}}
+        currentProfile.highscore = {rn = {}}
     end
-    for i = 1,#assets.save.highscore[rn] do
+    for i = 1,#currentProfile.highscore[rn] do
         local pref = ""
         local suf = ""
-        if assets.save.highscore[rn][i] == player.score and not white then
+        if currentProfile.highscore[rn][i] == player.score and not white then
             love.graphics.setColor(0.1,0.1,0.1)
             white = true
 
@@ -179,9 +179,9 @@ function gameOverMenu.draw()
 
         local displayNum
         if settings.graphics.shortNumbers.value then
-            displayNum = dante.formatNumber(math.floor(math.abs(assets.save.highscore[rn][i])), 2)
+            displayNum = dante.formatNumber(math.floor(math.abs(currentProfile.highscore[rn][i])), 2)
         else
-            displayNum = math.floor(math.abs(assets.save.highscore[rn][i]))
+            displayNum = math.floor(math.abs(currentProfile.highscore[rn][i]))
         end
 
         love.graphics.printf(pref .. displayNum --[[.."m"]] .. suf, 20, -height/2 + 105 + i*55, width/2 - 40, "center")

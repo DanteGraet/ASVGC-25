@@ -313,7 +313,6 @@ local function nextSegment(zone) -- {chanel1, chanel2, chanel3, etc.}\
             rM = 3000*percentage
             v = 0
         end
-        print(distRemaining)
     end
     local zone = zoneData[zone.zone].path
     local localLastPoints = lastPoints or generateLastPoints(GetZone(playerY).zone)

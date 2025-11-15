@@ -109,7 +109,7 @@ end
 
 function PlayerBoat:UpdateScore()
     self.score = math.abs(self.y/10) - self.runTime + math.max(self.health, 0)*1000
-    UpdateHighScore(self.score)
+    saveManager.updateHighScore(self.score)
 end
 
 function PlayerBoat:TakeDamage(amount, noShake, immunity)

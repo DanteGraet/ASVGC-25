@@ -83,9 +83,9 @@ function hugeCogObstacle:New(x, y)
 
     table.insert(obstacles, assets.obstacle.noSpawnSphere:New(x, y - 1000, 750))
 
-    if not globalTableOfBad then globalTableOfBad = {} end
+    if not hugeCogPositions then hugeCogPositions = {} end
 
-    table.insert(globalTableOfBad, y-1000)
+    table.insert(hugeCogPositions, y-1000)
 
     
     return obj

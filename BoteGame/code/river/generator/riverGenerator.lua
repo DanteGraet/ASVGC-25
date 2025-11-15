@@ -71,15 +71,10 @@ function RiverGenerator:New(name)
 
     obj.generatorThread:start()
 
-    print("a", riverBorders.up - 1500)
-
     
     repeat
-        print("OE")
         local startingPoints = generatorThread_riverSegments:demand()
         river:MergePoints(startingPoints)
-
-        print(river:GetLastPoints()[1][1].y, riverBorders.up - 1500)
     until river:GetLastPoints()[1][1].y < riverBorders.up - 1500
 
     local bgData = generatorThread_backgroundImageData:demand()
