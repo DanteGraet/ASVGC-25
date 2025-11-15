@@ -49,24 +49,67 @@ function saveManager.saveSettings()
 end
 
 function saveManager.loadProfile(profileNumber)
-    if unlocks then
-        local currentProfile = settings.hidden.profile.value
-        saveManager.saveProfile(currentProfile)
+    if currentProfile then
+        local profile = settings.hidden.profile.value
+        saveManager.saveProfile(profile)
     end
 
     local profileToLoad = profileNumber or settings.hidden.profile.value
-    unlocks = dante.load("save/profile" .. profileToLoad) or {}
+    currentProfile = dante.load("save/profile" .. profileToLoad) or {
+        unlockedLevels = {
+            frostedChannel = true
+        }
+    }
+    
+    -- just in case someone sacked 
+    if not currentProfile.unlockedLevels then
+        currentProfile.unlockedLevels = {}
+    end
+    if not currentProfile.unlockedLevels.frostedChannel then
+        currentProfile.unlockedLevels.frostedChannel = true
+    end
     settings.hidden.profile.value = profileToLoad
 end
 
 function saveManager.saveProfile(profileNumber)
-    dante.save(unlocks, "save/profile" .. (profileNumber or settings.hidden.profile.value))
+    dante.save(currentProfile, "save/profile" .. (profileNumber or settings.hidden.profile.value))
 end
+
+function saveManager.updateHighScore(newScore)
+    if not currentProfile.highscore then
+        currentProfile.highscore = {}
+    end
+    --print("--- updating high score")
+
+    local rn = riverName
+    if isStorm then
+        rn = rn .. "Storm"
+    end
+    if not currentProfile.highscore[rn] then
+        currentProfile.highscore[rn] = {}
+    end
+
+    if newScore then
+        table.insert(currentProfile.highscore[rn], newScore)
+    end
+    table.sort(currentProfile.highscore[rn], function(a, b) return a > b end)
+
+    if currentProfile.highscore[rn] then
+        dante.save(currentProfile.highscore, "save/highscore.lua")
+    end
+
+    -- only store 6 records
+    if #currentProfile.highscore[rn] > 6 then
+        while #currentProfile.highscore[rn] > 6 do
+            table.remove(currentProfile.highscore[rn], #currentProfile.highscore[rn])
+        end
+    end
+end
+
 
 
 if saveManager.isFirstLaunch then
     saveManager.saveSettings()
-
 end
 
 return saveManager

@@ -14,10 +14,10 @@ movingCogObstacle.__index = movingCogObstacle
 function movingCogObstacle:New(x, y)
     local y = y - 100
 
-    if globalTableOfBad and not isStorm then
+    if hugeCogPositions and not isStorm then
 
-        for i = 1, #globalTableOfBad do
-            if math.abs(y - globalTableOfBad[i]) < 700 then
+        for i = 1, #hugeCogPositions do
+            if math.abs(y - hugeCogPositions[i]) < 700 then
                 return nil
             end
         end

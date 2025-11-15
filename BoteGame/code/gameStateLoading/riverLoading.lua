@@ -154,7 +154,7 @@ table.insert(toLoad, function()
     ui = assets.code.player.playerUi()
     camera = assets.code.camera():New(0, 0, 960, 900)
 
-    globalTableOfBad = nil
+    hugeCogPositions = nil
 
     love.resize()
 

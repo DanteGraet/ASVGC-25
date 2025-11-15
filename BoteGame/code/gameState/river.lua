@@ -110,7 +110,7 @@ local function hyperUnload()
     
       --  --print("waiting")
     --end
-    UpdateHighScore()
+    saveManager.updateHighScore()
     --music.unload()
 
     -- stop the player sunds permenantly
@@ -198,7 +198,10 @@ local function update(dt)
 
     if menuManager.isMenuOpen() then
         menuManager.update(dt)
-        gameSpeed = math.max(gameSpeed - dt*2, 0) 
+
+        if not player.winY then
+            gameSpeed = math.max(gameSpeed - dt*2, 0) 
+        end
     else
         gameSpeed = math.min(gameSpeed + dt*2, 1) 
     end
@@ -268,16 +271,6 @@ local function update(dt)
                             collideData = dataA
                             dataA:OnCollideWithPlayer(fixtureA, collideData)
                         end
-
-                        -- the nuclear option
-                   --[[ elseif dataA.type == "remBox" or dataB.type == "remBox" then
-                        if dataA.type ~= "remBox" then
-                            dataA.remove = true
-                            fixtureA:setUserData(dataA)
-                        elseif dataB.type ~= "remBox" then
-                            dataB.remove = true
-                            fixtureB:setUserData(dataB)
-                        end]]
                     
                     -- it has to be two rocks/obstacles
                     -- currently only changes between layers so this is fine but might change later
@@ -288,11 +281,6 @@ local function update(dt)
                         elseif dataB.first then
                             dataB.remove = true
                             fixtureB:setUserData(dataB)
-                        else
-                            --we actually don't want this
-                            --dataB.first = false
-                            --dataB.remove = true
-                            --fixtureB:setUserData(dataB)
                         end
                     end    
                 end
@@ -403,7 +391,6 @@ local function keyreleased(key)
 
     if key == "-" then
         love.graphics.captureScreenshot("BoteGameScreenShot" .. os.time() .. ".png")
-        --print("screnshot")
     end
 end
 
@@ -506,10 +493,6 @@ local function draw()
         love.graphics.reset()
         love.graphics.setColor(0,0,0)
 
-        if settings.graphics.showFPS.value then
-            love.graphics.print("FPS: "..love.timer.getFPS())
-        end
-
         if settings.dev.playerInfo.value then
             love.graphics.print("player = " .. dante.dataToString(player), 0, 20)
         end
@@ -566,40 +549,6 @@ local function draw()
     love.graphics.reset()
 end
 
-function UpdateHighScore(newScore)
-    --print("--- updating high score")
-    if assets.save and assets.save.highscore and type(assets.save.highscore) == "table" then
-    else
-        if assets.save then
-        else
-            assets.save = {}
-        end
-        assets.save.highscore = {}
-    end
-    local rn = riverName
-    if isStorm then
-        rn = rn .. "Storm"
-    end
-    if not assets.save.highscore[rn] then
-        assets.save.highscore[rn] = {}
-    end
-
-    if newScore then
-        table.insert(assets.save.highscore[rn], newScore)
-    end
-    table.sort(assets.save.highscore[rn], function(a, b) return a > b end)
-
-    if assets.save.highscore[rn] then
-        dante.save(assets.save.highscore, "save/highscore.lua")
-    end
-
-    -- only store 6 records
-    if #assets.save.highscore[rn] > 6 then
-        while #assets.save.highscore[rn] > 6 do
-            table.remove(assets.save.highscore[rn], #assets.save.highscore[rn])
-        end
-    end
-end
 
 
 local function mousemoved()

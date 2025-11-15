@@ -109,7 +109,7 @@ end
 
 function PlayerBoat:UpdateScore()
     self.score = math.abs(self.y/10) - self.runTime + math.max(self.health, 0)*1000
-    UpdateHighScore(self.score)
+    saveManager.updateHighScore(self.score)
 end
 
 function PlayerBoat:TakeDamage(amount, noShake, immunity)
@@ -142,17 +142,20 @@ function PlayerBoat:TakeDamage(amount, noShake, immunity)
     end
 end
 
+function PlayerBoat:OnWin()
+    self.winY = self.y
+    self:UpdateScore()
+    menuManager.openMenu("gameOverMenu")
+    love.filesystem.load("code/player/checkUnlocks.lua")()
+end
 
 -- Input
 function PlayerBoat:ManageInputs(dt, inputs, bt)
     if -self.y >= riverGenerator:GetLegnth() then
+        if not self.winY then self:OnWin() end
+
         -- player has won, override inputs
         inputs = self:UpdateAuto(dt)
-        if not self.winY then
-            self.winY = self.y
-            self:UpdateScore()
-            love.filesystem.load("code/player/checkUnlocks.lua")()
-        end
         self.winTimer = math.min(self.winTimer + dt, 1)
     end
 
@@ -200,12 +203,9 @@ end
 
 
 -- Update
-
 function PlayerBoat:Update(dt, inputs, gameSpeed)
     self.runTime = self.runTime + dt
     self.x, self.y = self.body:getPosition()
-
-    self.percentageThroughZoneDebug = riverGenerator:GetPercentageThrough(player.y)
 
     -- immunity
     if self.immunity > 0 then self.immunity = math.max(self.immunity - dt, 0) end
