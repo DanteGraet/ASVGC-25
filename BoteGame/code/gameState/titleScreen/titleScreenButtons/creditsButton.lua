@@ -37,6 +37,7 @@ return {
     },
     data = {
         onRelease = function()
+            gameStateManager.setGameState("responsiveLoading", nil, "credits")
         end,
     }
 }

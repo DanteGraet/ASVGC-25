@@ -52,9 +52,9 @@ local function draw()
 
     if font then
         love.graphics.setFont(font)
-        --love.graphics.setColor(104/255, 171/255, 197/255)
+        love.graphics.setColor(104/255, 171/255, 197/255)
 
-        love.graphics.setColor(((104+0)/2)/255, ((171+183)/2)/255, ((197+239)/2)/255)
+        --love.graphics.setColor(((104+0)/2)/255, ((171+183)/2)/255, ((197+239)/2)/255)
 
     --love.graphics.setColor(0/255, 183/255, 239/255)
 

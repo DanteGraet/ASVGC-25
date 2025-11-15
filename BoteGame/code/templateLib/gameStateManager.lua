@@ -11,7 +11,7 @@ gameStateManager = {}
 
 function gameStateManager.setGameState(gameState, forceReload, ...)
     nextGamestate = gameState
-    loadParam = ...  or nil
+    loadParam = {...}  or nil
     reload = forceReload
 end
 
@@ -34,8 +34,14 @@ function gameStateManager.updateGameState()
             -- unloading
             if gameStates[previousGameState] and gameStates[previousGameState].unload then gameStates[previousGameState].unload() end
         end]]
-        
-        if gameStates[nextGamestate].load then gameStates[nextGamestate].load((type(loadParam) == "table" and love.data.unpack(loadParam)) or loadParam) end
+        if gameStates[nextGamestate].load then
+            if type(loadParam) == "table" then
+                gameStates[nextGamestate].load(unpack(loadParam))
+            else
+                gameStates[nextGamestate].load(loadParam)
+            end
+
+        end
 
         previousGameState = currentGameState
         currentGameState = nextGamestate

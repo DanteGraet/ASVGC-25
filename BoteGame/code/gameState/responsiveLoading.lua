@@ -130,7 +130,7 @@ local updateFunctions = {
         unloading = true
         -- put the animation back here later
 
-        fade = math.min(fade + dt*4, 1)
+        fade = math.min(fade + dt, 1)
 
         if fade == 1 then
             unloading = nil
@@ -256,16 +256,18 @@ function rl.draw()
 
 
     local a = 1
-    if loadPercentage < 0.5 then
-        a = tweens.sineIn(fade)
-    elseif loadPercentage > 1.5 then
-        a = tweens.sineOut(fade)
-    end
+
+    a = tweens.sineInOut(fade)
+   --if loadPercentage < 0.5 then
+   --    a = tweens.sineIn(fade)
+   --elseif loadPercentage > 1.5 then
+   --    a = tweens.sineOut(fade)
+   --end
     --love.graphics.setColor(self.colour[1], self.colour[2], self.colour[3], a)
-    love.graphics.setColor(1,1,1,a)
+    love.graphics.setColor(0,0,0,a)
 
     love.graphics.rectangle("fill", 0, 0, width, height)
-    love.graphics.setColor({1,1,1})
+    love.graphics.setColor(1,1,1)
     love.graphics.rotate(angle)
 
 
@@ -273,19 +275,19 @@ function rl.draw()
     local trigWidth = width * math.cos(-angle) - height * math.sin(-angle)--math.cos(angle + startAngle/2)*legnth
     local trigHeight = width * math.sin(-angle) + height * math.cos(-angle)--math.sin(angle + startAngle/2)*height 
 
-    love.graphics.setColor(1,1,1,1)
+    love.graphics.setColor(1,1,1,a*3)
 
 
     for x = math.sin(angle)*height -50 - ox , trigWidth + 100, backgroundImage:getWidth() do
         for y = -(math.cos(angle)*width + math.cos(angle)*height) -50 - oy, trigHeight + 100 -oy, backgroundImage:getHeight() do
-            if loadPercentage <= 1 then
-                love.graphics.draw(backgroundImage, x + (trigWidth + backgroundImage:getWidth()*3)*tweens.sineOut(loadPercentage) - (trigWidth+ backgroundImage:getWidth()*3), y) 
+            if unloading == true then
+                love.graphics.draw(backgroundImage, x -(trigWidth+ backgroundImage:getWidth()*3)*(1-a), y) 
+
             else
-                love.graphics.draw(backgroundImage, x + (trigWidth + backgroundImage:getWidth()*3)*tweens.sineIn(1-loadPercentage), y) 
+                love.graphics.draw(backgroundImage, x +(trigWidth+ backgroundImage:getWidth()*3)*(1-a), y) 
             end
         end
     end
-
 
     love.graphics.origin()
     love.graphics.scale(screenScale)

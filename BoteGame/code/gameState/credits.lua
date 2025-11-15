@@ -8,35 +8,14 @@ local maxHeight = 0
 local image
 local paused = false
 
-local function load()
-    local img = "image/loading/title.png"
-
-    if previousGameState == "river" then
-        img = "image/loading/clear.png"
-    end
-
-    DynamicLoading:New("code/gameStateLoading/creditsLoading.lua", true, img)
-    music.load({
-        data = {
-            crossFadeSpeed = 1,
-            tracks = {  -- Starting Values
-                [1] = {track = love.audio.newSource("music/bonusBoteGame.mp3","stream"),        volume = 1, targetVolume = 1},
-            },
-        },
-        zones = {
-            ["Credits"] =        {1},
-        }
-    })
-    zones.displayName = "Credits"
-
-    paused = false
-end
 
 local function extraLoad()
+    local screenScale = screen.getScale()
+
     river = nil
     y = love.graphics.getHeight()/screenScale
     textList = {}
-    buttons = GraetUi:New()
+    --buttons = GraetUi:New()
 
     local buttonColours = {
         {1,1,1},
@@ -50,11 +29,11 @@ local function extraLoad()
 
         if #text[1] == 1 then
             if string.sub(text[1][1], 1, 5) == "https" then
-                buttons:AddTextButton(text[1][1], text[1][1], "center", text[2], 1920/2 - width/2, height, width, buttonColours)
-                buttons:GetButtons()[text[1][1]].functions.click = {love.system.openURL, text[1][1]}
-
-                buttons:GetButtons()[text[1][1]]:AddText(text[1][1], "left", text[2], 4, 4, 1000, 1)
-                buttons:GetButtons()[text[1][1]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
+                --buttons:AddTextButton(text[1][1], text[1][1], "center", text[2], 1920/2 - width/2, height, width, buttonColours)
+                --buttons:GetButtons()[text[1][1]].functions.click = {love.system.openURL, text[1][1]}
+--
+                --buttons:GetButtons()[text[1][1]]:AddText(text[1][1], "left", text[2], 4, 4, 1000, 1)
+                --buttons:GetButtons()[text[1][1]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
 
 
             else
@@ -63,11 +42,11 @@ local function extraLoad()
         else
             if string.sub(text[1][1], 1, 5) == "https" then
                 -- add button
-                buttons:AddTextButton(text[1][1], text[1][1], "left", text[2], 1920/2 - width/2, height, width, buttonColours)
-                buttons:GetButtons()[text[1][1]].functions.click = {love.system.openURL, text[1][1]}
-
-                buttons:GetButtons()[text[1][1]]:AddText(text[1][1], "left", text[2], 4, 4, 1000, 1)
-                buttons:GetButtons()[text[1][1]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
+                --buttons:AddTextButton(text[1][1], text[1][1], "left", text[2], 1920/2 - width/2, height, width, buttonColours)
+                --buttons:GetButtons()[text[1][1]].functions.click = {love.system.openURL, text[1][1]}
+--
+                --buttons:GetButtons()[text[1][1]]:AddText(text[1][1], "left", text[2], 4, 4, 1000, 1)
+                --buttons:GetButtons()[text[1][1]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
                 --love.graphics.setColor()
                 
             else
@@ -76,11 +55,11 @@ local function extraLoad()
 
             if string.sub(text[1][2], 1, 5) == "https" then
                 -- add button
-                buttons:AddTextButton(text[1][2], text[1][2], "right", text[2], 1920/2 - width/2, height, width, buttonColours)
-                buttons:GetButtons()[text[1][2]].functions.click = {love.system.openURL, text[1][2]}
-
-                buttons:GetButtons()[text[1][2]]:AddText(text[1][2], "left", text[2], 4, 4, 1000, 1)
-                buttons:GetButtons()[text[1][2]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
+                --buttons:AddTextButton(text[1][2], text[1][2], "right", text[2], 1920/2 - width/2, height, width, buttonColours)
+                --buttons:GetButtons()[text[1][2]].functions.click = {love.system.openURL, text[1][2]}
+--
+                --buttons:GetButtons()[text[1][2]]:AddText(text[1][2], "left", text[2], 4, 4, 1000, 1)
+                --buttons:GetButtons()[text[1][2]]:SetElementColour({0,0,0,0.7}, nil, nil, 1)
 
 
             else
@@ -97,6 +76,30 @@ local function extraLoad()
     zones.displayName = "Credits"
 end
 
+local function load()
+    local img = "image/loading/title.png"
+
+    if previousGameState == "river" then
+        img = "image/loading/clear.png"
+    end
+
+    music.load({
+        crossFadeSpeed = 1,
+        tracks = {  -- Starting Values
+            [1] = "music/bonusBoteGame.mp3",
+        },
+        zones = {
+            ["Credits"] =        {1},
+        }
+    })
+    zones.displayName = "Credits"
+
+    paused = false
+
+    extraLoad()
+end
+
+
 
 local function unload()
     textList = nil
@@ -111,20 +114,13 @@ end
 
 
 local function resize()
+    local screenScale = screen.getScale()
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
 end
 
-local function mousefocus(f)
-    --if not f then
-    --    moveTimer = -math.huge
-    --else
-    --    moveTimer = 0
-    --end
-end
-
 local function update(dt)
-    music.manager(dt)
+    music.update(dt)
     --[[if love.mouse.isDown(1) or love.mouse.isDown(2) then
         moveTimer = -1
     end]]
@@ -146,11 +142,10 @@ local function update(dt)
     end
 
     local mx, my = getMouseSoxSoy()
-    buttons:Update(dt, mx, my-y)
+    --buttons:Update(dt, mx, my-y)
 
     if y + 50 < maxHeight then
-        --love.keyreleased("escape")
-        gameState = "titleScreen"
+        gameStateManager.setGameState("responsiveLoading", nil, "titleScreen")
     end
 end
 
