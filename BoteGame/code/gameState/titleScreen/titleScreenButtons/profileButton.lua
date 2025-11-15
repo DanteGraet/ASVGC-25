@@ -4,8 +4,8 @@ local buttonText = "Profile"
 local textWidth = textFont:getWidth(buttonText)
 local textHeight = textFont:getHeight(buttonText)
 
-local buttonWidth = 410
-local buttonHeight = 100
+local buttonWidth = 420
+local buttonHeight = 110
 
 
 return {
@@ -30,9 +30,30 @@ return {
         {
             type = "textGraphic",
             text = buttonText,
+            x = buttonHeight+4,
+            y = -buttonHeight*0.10+6,
+            colour = {0,0,0,0.4},
+        },
+        {
+            type = "textGraphic",
+            text = buttonText,
             x = buttonHeight,
-            y = -buttonHeight*0.15,
-            colour = {1,1,1},
+            y = -buttonHeight*0.10+1,
+            colour = {1,1,1,0.9},
+        },
+        {
+            type = "imageGraphic", --shadow
+            ox = -25,
+            oy = -25,
+            image = assets.image.titleScreenButtons.profile,
+            colour = {0,0,0,0.4},
+        },
+        {
+            type = "imageGraphic",
+            ox = -23,
+            oy = -23,
+            image = assets.image.titleScreenButtons.profile,
+            colour = {1,1,1,1},
         },
     },
     data = {

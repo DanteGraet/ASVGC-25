@@ -1,5 +1,5 @@
-local buttonWidth = 100
-local buttonHeight = 100
+local buttonWidth = 110
+local buttonHeight = 110
 
 return {
     components = {
@@ -19,6 +19,20 @@ return {
             image = love.graphics.newImage("image/nineSliceTest.png"),
             colour = {1,1,1},
             image = assets.nineslice.button,
+        },
+        {
+            type = "imageGraphic", --shadow
+            ox = -25,
+            oy = -25,
+            image = assets.image.titleScreenButtons.test,
+            colour = {0,0,0,0.4},
+        },
+        {
+            type = "imageGraphic",
+            ox = -23,
+            oy = -23,
+            image = assets.image.titleScreenButtons.test,
+            colour = {1,1,1,1},
         },
     },
     data = {

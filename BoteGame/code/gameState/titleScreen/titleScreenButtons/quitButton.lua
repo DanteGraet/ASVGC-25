@@ -4,8 +4,8 @@ local buttonText = "Quit"
 local textWidth = textFont:getWidth(buttonText)
 local textHeight = textFont:getHeight(buttonText)
 
-local buttonWidth = 270
-local buttonHeight = 100
+local buttonWidth = 280
+local buttonHeight = 110
 
 
 return {
@@ -30,9 +30,30 @@ return {
         {
             type = "textGraphic",
             text = buttonText,
+            x = buttonHeight+4,
+            y = -buttonHeight*0.10+8,
+            colour = {0,0,0,0.4},
+        },
+        {
+            type = "textGraphic",
+            text = buttonText,
             x = buttonHeight,
-            y = -buttonHeight*0.10,
-            colour = {1,1,1},
+            y = -buttonHeight*0.10+3,
+            colour = {1,1,1,0.9},
+        },
+        {
+            type = "imageGraphic", --shadow
+            ox = -25,
+            oy = -25,
+            image = assets.image.titleScreenButtons.quit,
+            colour = {0,0,0,0.4},
+        },
+        {
+            type = "imageGraphic",
+            ox = -23,
+            oy = -23,
+            image = assets.image.titleScreenButtons.quit,
+            colour = {1,1,1,1},
         },
     },
     data = {

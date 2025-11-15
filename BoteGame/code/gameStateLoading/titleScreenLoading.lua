@@ -77,6 +77,14 @@ table.insert(toLoad, function()
     assets.image.ui.settings.indicator = love.graphics.newImage("image/ui/settings/indicator.png")
     assets.image.ui.settings.check = love.graphics.newImage("image/ui/settings/check.png")
     assets.image.ui.settings.empty = love.graphics.newImage("image/ui/settings/empty.png")
+
+    if not assets.image.titleScreenButtons then assets.image.titleScreenButtons = {} end
+    assets.image.titleScreenButtons.test = love.graphics.newImage("image/titlescreen/testIcon.png")
+    assets.image.titleScreenButtons.quit = love.graphics.newImage("image/titlescreen/quitIcon.png")
+    assets.image.titleScreenButtons.settings = love.graphics.newImage("image/titlescreen/settingsIcon.png")
+    assets.image.titleScreenButtons.profile = love.graphics.newImage("image/titlescreen/profileIcon.png")
+    assets.image.titleScreenButtons.credits = love.graphics.newImage("image/titlescreen/creditsIcon.png")
+
 end)
 
 table.insert(toLoad, function()
