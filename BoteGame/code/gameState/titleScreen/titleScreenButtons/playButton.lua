@@ -31,17 +31,30 @@ return {
             type = "textGraphic",
             text = buttonText,
             x = buttonHeight+5,
-            y = {-buttonHeight*0.15+5, -buttonHeight*0.15 + 5, -buttonHeight*0.15},
-            colour = {0,0,0,0.3},
+            y = {-buttonHeight*0.15+4, -buttonHeight*0.15 + 4, -buttonHeight*0.15},
+            colour = {0,0,0,0.4},
         },
         {
             type = "textGraphic",
             text = buttonText,
             x = buttonHeight,
             y = -buttonHeight*0.15,
-            colour = {1,1,1,0.8},
+            colour = {1,1,1,0.9},
         },
-
+        {
+            type = "imageGraphic", --shadow
+            ox = -38,
+            oy = -23,
+            image = assets.image.titleScreenButtons.play,
+            colour = {0,0,0,0.4},
+        },
+        {
+            type = "imageGraphic",
+            ox = -33,
+            oy = -18,
+            image = assets.image.titleScreenButtons.play,
+            colour = {1,1,1,1},
+        },
     },
     data = {
         sine = 0,

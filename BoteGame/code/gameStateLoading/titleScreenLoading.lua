@@ -79,6 +79,7 @@ table.insert(toLoad, function()
     assets.image.ui.settings.empty = love.graphics.newImage("image/ui/settings/empty.png")
 
     if not assets.image.titleScreenButtons then assets.image.titleScreenButtons = {} end
+    assets.image.titleScreenButtons.play = love.graphics.newImage("image/titlescreen/playIcon.png")
     assets.image.titleScreenButtons.test = love.graphics.newImage("image/titlescreen/testIcon.png")
     assets.image.titleScreenButtons.quit = love.graphics.newImage("image/titlescreen/quitIcon.png")
     assets.image.titleScreenButtons.settings = love.graphics.newImage("image/titlescreen/settingsIcon.png")
@@ -198,7 +199,7 @@ table.insert(toLoad, function()
     local base = -50
     local buttonHeight = 100
 
-    local x, y = -350, -100
+    local x, y = -350, -50
 
     userInterface:addCustomObject("playButton",     x,      y,          {0.275, 0.5},                           love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/playButton.lua")())
     userInterface:addCustomObject("profileButton",  x,      y + 240,    {0.275, 0.5},                           love.filesystem.load("code/gameState/titleScreen/titleScreenButtons/profileButton.lua")())

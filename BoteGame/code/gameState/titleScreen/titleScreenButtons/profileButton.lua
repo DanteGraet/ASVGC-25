@@ -1,6 +1,6 @@
 local textFont = font.getFont({"black", 80})
 
-local buttonText = "Profile"
+local buttonText = "Profiles"
 local textWidth = textFont:getWidth(buttonText)
 local textHeight = textFont:getHeight(buttonText)
 
@@ -43,15 +43,15 @@ return {
         },
         {
             type = "imageGraphic", --shadow
-            ox = -25,
-            oy = -25,
+            ox = -26,
+            oy = -26,
             image = assets.image.titleScreenButtons.profile,
             colour = {0,0,0,0.4},
         },
         {
             type = "imageGraphic",
-            ox = -23,
-            oy = -23,
+            ox = -22,
+            oy = -22,
             image = assets.image.titleScreenButtons.profile,
             colour = {1,1,1,1},
         },

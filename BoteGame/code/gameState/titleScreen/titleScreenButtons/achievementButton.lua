@@ -22,15 +22,15 @@ return {
         },
         {
             type = "imageGraphic", --shadow
-            ox = -25,
-            oy = -25,
+            ox = -26,
+            oy = -26,
             image = assets.image.titleScreenButtons.test,
             colour = {0,0,0,0.4},
         },
         {
             type = "imageGraphic",
-            ox = -23,
-            oy = -23,
+            ox = -22,
+            oy = -22,
             image = assets.image.titleScreenButtons.test,
             colour = {1,1,1,1},
         },
