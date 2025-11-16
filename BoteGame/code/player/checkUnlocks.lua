@@ -10,6 +10,9 @@ if not currentProfile.unlockedLevels then currentProfile.unlockedLevels = {} end
 
 if rn == "derelictDam" then
     if not currentProfile.beatenLevels[rn] then
+
+        gameStateManager.setGameState("responsiveLoading", nil, "credits")
+
         playCredits = true
     end
 end

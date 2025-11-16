@@ -82,7 +82,7 @@ function teslaObstacle:Update(no, dt)
 
         end
 
-        local distToPlayer = quindoc.dist(player.x, player.y, self.x, self.y)/750
+        local distToPlayer = quindoc.pythag(player.x, player.y, self.x, self.y)/750
         local curve = 1- tweens.sineInOut(quindoc.clamp(distToPlayer, 0, 1))
         
 

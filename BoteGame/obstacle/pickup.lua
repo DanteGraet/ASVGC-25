@@ -26,12 +26,9 @@ end
 function pickupObstacle:OnCollideWithPlayer(self, collideData)
     if not collideData.hasCollided then
         collideData.hasCollided = true
-
         
         local data = collideData
         data.remove = true
-        print("pickedUp")
-        dante.printTable(self)
 
         self:setUserData(data)
     end

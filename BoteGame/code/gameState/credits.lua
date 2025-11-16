@@ -157,7 +157,7 @@ end
 
 local function keyreleased(key)
     if key == "escape" then
-        gameState = "titleScreen"
+        gameStateManager.setGameState("responsiveLoading", nil, "titleScreen")
     end
 end
 

@@ -51,9 +51,7 @@ function hillsTreeObstacle:OnCollideWithPlayer(self, collideData)
 end
 
 function hillsTreeObstacle:firstFunction()
-    if river:getDistToEdge(self.x, self.y) < 0 then
-        print("grr")
-    end
+
 end
 
 function hillsTreeObstacle:Update(no, dt, front)

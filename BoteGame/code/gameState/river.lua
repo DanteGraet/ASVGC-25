@@ -471,15 +471,7 @@ local function draw()
     
         local gs = tweens.sineInOut(gameSpeed)
         
-        if (player.health <= 0 or player.deathTime >= 1) and not menuManager.isMenuOpen() then
-            local tween = tweens.sineInOut(quindoc.clamp((player.deathTime-1)*2, 0, 1))
-            if playCredits == true then
-                gameState = "credits"
-                playCredits = nil
-            else
-                --gameOverMenu:Draw(tween)
-            end
-        end
+
 
 
         if 1-gs > 0  then

@@ -89,7 +89,6 @@ end
 function audioPlayer.RemoveLoopingSound(name)
     if loopingSounds[name] and loopingSounds[name].sound then 
         loopingSounds[name].sound:stop()
-        print(name)
         loopingSounds[name] = nil
     end
 end
