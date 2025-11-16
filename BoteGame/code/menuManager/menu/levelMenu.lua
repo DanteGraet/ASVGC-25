@@ -95,10 +95,10 @@ function levelMenu.load(type)
     
     data.yOffset = 0 
 
-    local b = getButton(assets.image.levelSelect.sign.play, function() gameStateManager.setGameState("responsiveLoading", false, "river", "image/loading/title.png") end)
+    local b = getButton(assets.image.levelSelect.sign.play, function() gameStateManager.setGameState("responsiveLoading", false, "river", "image/loading/".. type .. ".png") end)
     levelMenu.ui:addCustomObject("playLevel", 0-256*1.25, 32+256, {0,0}, b)
 
-    b = getButton(assets.image.levelSelect.sign.storm, function() isStorm = true; print("play") end)
+    b = getButton(assets.image.levelSelect.sign.storm, function() isStorm = true; gameStateManager.setGameState("responsiveLoading", false, "river", "image/loading/storm.png") end)
     levelMenu.ui:addCustomObject("playStormLevel", 0, 32+256, {0,0}, b)
 
     b = getButton(assets.image.levelSelect.sign.back, function() levelMenu.startClose() end)
@@ -114,7 +114,7 @@ function levelMenu.update(dt)
     end
 
     local sine = tweens.sineOut(levelMenu.transitionIn)
-    data.yOffset = 1000 - sine*1000
+    data.yOffset = data.yfunc(tweens.sineInOut(levelMenu.transitionIn))--1000 - sine*1000
 
     if data.closing == true and levelMenu.transitionIn == 0 then
         levelMenu.remove = true

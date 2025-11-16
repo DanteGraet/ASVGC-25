@@ -83,7 +83,7 @@ function gameOverMenu.update(dt)
 end
 
 function gameOverMenu.startClose()
-    data.closing = true
+    --data.closing = true
 end
 
 function gameOverMenu.draw()

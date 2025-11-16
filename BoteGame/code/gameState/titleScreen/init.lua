@@ -34,13 +34,15 @@ local function load()
     --DynamicLoading:New("code/gameStateLoading/titleScreenLoading.lua", true, (previousGameState == "splash" and "image/loading/clear.png") or "image/loading/title.png")
 end
 
-local function unload()
+local function hyperUnload()
     love.thread.getChannel("background_closeThread"):push(true)
     if music then
         music.unload()
     end
 
     titleScreenUI = nil
+
+    love.thread.getChannel("background_closeThreadReceived"):demand()
 end
 
 local function extraLoad()
@@ -239,8 +241,6 @@ local function draw()
     if assets.image and assets.image.titleScreen and assets.image.titleScreen.title then 
         love.graphics.setColor(1,1,1,1)
         love.graphics.draw(assets.image.titleScreen.title,width*0.3 - 2.5 - 50,0,0,0.75,0.75, assets.image.titleScreen.title:getWidth()/2, 0)
-        --font.setFont("black", 32)
-        --love.graphics.print("Alpha Demo 2???",350,350)
     end
 
     if settingsMenu then
@@ -262,7 +262,7 @@ end
 return {
     load = load,
     extraLoad = extraLoad,
-    unload = unload, 
+    hyperUnload = hyperUnload, 
     resize = resize,
     mousefocus = mousefocus,
     mousepressed = mousepressed,

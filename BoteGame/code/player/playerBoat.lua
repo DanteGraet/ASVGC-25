@@ -138,6 +138,8 @@ function PlayerBoat:TakeDamage(amount, noShake, immunity)
             audioPlayer.RemoveLoopingSound("motor3")
             audioPlayer.RemoveLoopingSound("motor2")
             audioPlayer.RemoveLoopingSound("motor1")
+
+            menuManager.openMenu("gameOverMenu")
         end
     end
 end

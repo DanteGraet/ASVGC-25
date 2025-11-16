@@ -2,7 +2,6 @@ local rl = {}
 
 local state
 local nextGamestate
-local loadPercentage
 
 local unloading
 
@@ -23,20 +22,44 @@ function rl.load(gameState, image)
 
     backgroundImage = love.graphics.newImage(image or "image/loading/autumnGrove.png")
 
-    local screenLayers = {{
+    local screenLayers = {
+    {
+        name = "Back",
+        scaleType = "fill",
+        scale = 1,
+        useOffset = true,
+        isBoarderd = false,
+        anchor = {0,0}
+    },
+
+    {
+        name = "Menu",
+        scaleType = "fit",
+        scale = 1,
+        useOffset = false,
+        isBoarderd = false,
+        anchor = {.5,.5}
+    },
+    {
         name = "",
         scaleType = "fill",
         scale = 1,
         useOffset = true,
         isBoarderd = false,
         anchor = {0,0}
-    }}
+    },
+    {
+        name = "UI",
+        scaleType = "fit",
+        scale = 1,
+        useOffset = false,
+        isBoarderd = false,
+        anchor = {0,0}
+    },}
     screen.load(screenLayers)
 
     nextGamestate = gameState
     unloading = true
-
-    loadPercentage = 0
 
     timer = 0
     fade = 0
@@ -228,7 +251,7 @@ function rl.update(dt)
     end
 
     --oy = oy - dt*(100*math.cos(timer))/10
-    if loadPercentage == 1 then
+    if fade == 1 then
         ox = ox % backgroundImage:getWidth()
         oy = oy % backgroundImage:getHeight()
     end
@@ -236,13 +259,28 @@ function rl.update(dt)
     updateFunctions[state](dt)
 end
 
-function rl.draw()
+function rl.drawBack()
     if fade < 1 then
         local behindGamestateName = (unloading and gameStateManager.getGameStateName(true)) or nextGamestate
         local behindGamestate = gameStateManager.getGameState(behindGamestateName)
-        screen.draw(behindGamestate, behindGamestateName)
+        screen.draw(behindGamestate)
     end
+end
 
+function rl.drawMenu(targetWidth, targetHeight, offsetX, offsetY)
+    if unloading == true then
+        menuManager.draw(targetWidth, targetHeight, offsetX, offsetY)
+    end
+end
+
+function rl.draw()
+    if unloading == false then
+        if fade < 1 then
+            local behindGamestateName = (unloading and gameStateManager.getGameStateName(true)) or nextGamestate
+            local behindGamestate = gameStateManager.getGameState(behindGamestateName)
+            screen.draw(behindGamestate)
+        end
+    end
 
     love.graphics.origin()
     local screenScale = love.graphics.getWidth()/1920
