@@ -111,7 +111,13 @@ end
 end]]
 
 function love.update(dt)
-    music.update(dt)
+    local gameState = gameStateManager.getGameState()
+
+    local volumeMult = 1
+    if gameState.getMusicMultiplier then
+        volumeMult = gameState.getMusicMultiplier()
+    end
+    music.update(dt, volumeMult)
 end
 
 function love.resize(width, height)

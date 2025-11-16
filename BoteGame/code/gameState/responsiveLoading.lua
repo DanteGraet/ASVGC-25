@@ -148,6 +148,10 @@ function rl.removeItem(path, current)
     end
 end
 
+function rl.getMusicMultiplier()
+    return tweens.sineIn(1-fade)
+end
+
 local updateFunctions = {
     loadScreen = function(dt)
         unloading = true

@@ -50,10 +50,10 @@ function music.beQuite(dt, abrupt)
     end
 end
 
-function music.update(dt)
+function music.update(dt, volume)
     --play the actual music
     if musicTracks ~= nil then
-        local globalMusicVolume = (settings and settings.audio.musicVolume.value * settings.audio.masterVolume.value) or 0.5
+        local globalMusicVolume = ((settings and settings.audio.musicVolume.value * settings.audio.masterVolume.value) or 0.5) * (volume or 1)
         if musicTracks[1].track:isPlaying() then
             if globalMusicVolume == 0 then
                 for i = 1, #musicTracks do
