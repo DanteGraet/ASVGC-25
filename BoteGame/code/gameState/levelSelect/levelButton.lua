@@ -51,7 +51,7 @@ return function(level)
                     self.components[2].colour = {1,1,1}
                 end
 
-                local mx, my = getMouseSoxSoy()
+                local mx, my = screen.translatePosition(love.mouse.getX(), love.mouse.getY(), "")
                 local dist = 100 - quindoc.pythag(mx, my, self.x, self.y)
 
                 if dist > 0 then

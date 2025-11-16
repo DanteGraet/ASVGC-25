@@ -130,23 +130,6 @@ end
 
 local function update(dt)
     local screenScale = screen.getScale()
---    if compRelease then
---        if love.keyboard.isDown("lshift") and love.keyboard.isDown("u") then
---            unlockTimer = unlockTimer + dt
---
---            if unlockTimer > 1 then
---                unlockAllLevels()
---                extraLoad()
---                dante.save(assets.code.player.unlocks, "save", "unlocks")
---                dialouge.schedule("image/levelSelect/dialouge/dialouge5.png", 5)
---
---                unlockTimer = -math.huge
---            end
---        elseif unlockTimer > -100 then
---            unlockTimer = math.max(unlockTimer - dt, 0)
---        end
---    end
-
 
     ambiance.update(dt, nil, nil, {audio = {bird = 0.1, water = 1}})
 
@@ -159,27 +142,7 @@ local function update(dt)
 
     local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
     local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-    
 
-    local mx, my = getMouseSoxSoy()
-    --for i = 1,#levels do
-    --    local l = levels[i]
---
-    --    local dist = 100 - quindoc.dist(mx, my, l.x, l.y)
---
-    --    if dist > 0 then
-    --        dist = math.min(dist*10, 100)
-    --    else
-    --        dist = 0
-    --    end
-    --    l.sineEffect = quindoc.clamp(dist/10, l.sineEffect-dt*10, l.sineEffect+dt*10)
---
-    --    if l.sineEffect == 0 then
-    --        l.sine = 0
-    --    else     
-    --        l.sine = l.sine+dt*3
-    --    end
-    --end
 
     if menuManager.isMenuOpen() then
         menuManager.update(dt)
@@ -198,30 +161,6 @@ local function mousepressed(x, y, button)
         return
     end
 
-    local mx, my = getMouseSoxSoy()
-
-
-    --if menus then
-    --    if menus[selectedMenu] and menus[selectedMenu].isOpen then
-    --        menus[selectedMenu]:Click(mx, my)
-    --    else
-    --        for i = 1,#levels do
-    --            if levelSelectScreen then
-    --                levelSelectScreen:Click(x/screenScale, y/screenScale)
-    --            end
---
-    --            local l = levels[i]
---
-    --            local dist = quindoc.dist(mx, my, l.x, l.y)
---
-    --            if dist < 100 then
-    --                audioPlayer.playSound(assets.audio.ui.click, "ui", 0.25, nil, 3)
-    --                l.click = true
-    --            end
-    --        end
-    --    end
-    --end
-
     userInterface:toggleClick(true, "")
 end
 
@@ -232,38 +171,6 @@ local function mousereleased(x, y, button)
         return
     end
 
-    local mx, my = getMouseSoxSoy()
-
-
-   --if menus then
-   --    if menus[selectedMenu] and menus[selectedMenu].isOpen then
-
-   --        menus[selectedMenu]:Release(mx, my)
-   --    else
-   --        if levelSelectScreen then
-   --            levelSelectScreen:Release(x/screenScale, y/screenScale)
-   --        end
-
-   --        for i = 1,#levels do
-   --            local l = levels[i]
-   --            local dist = quindoc.dist(mx, my, l.x, l.y)
-
-   --            if dist < 100 and l.click then
-   --                riverName = l.name
-   --                
-   --                --open sign
-   --                selectedMenu = "levelMenu"
-   --                menus[selectedMenu].type = riverName
-   --                menus[selectedMenu].isOpen = true
-   --                menus[selectedMenu]:GenerateButtons()
-
-   --                --gameState = "river"
-   --            end
-   --            l.click = false
-   --        end
-   --    end
-   --end
-
     userInterface:toggleClick(false, "")
 end
 
@@ -273,13 +180,7 @@ local function keyreleased(key)
         return true
     end
     if key == "escape" then
-        gameState = "titleScreen"
-        --if menus and menus[selectedMenu] and menus[selectedMenu].isOpen then
-        --    menus[selectedMenu].isOpen = false
-        --else
-        --    gameState = "titleScreen"
-        --        
-        --end
+        gameStateManager.setGameState("responsiveLoading", nil, "titleScreen")
     end
 end
 
@@ -298,30 +199,9 @@ local function draw()
 
     love.graphics.draw(assets.image.levelSelect.background, 0, 0, 0, 1920/5120, 1080/2880)
 
-    --for i = 1,#levels do
-    --    local l = levels[i]
-    --    local img = assets.image.levelSelect.pin1
-    --    if assets.code.player.unlocks.beatenLevels[l.name .. "Storm"] then
-    --        img = assets.image.levelSelect.pin3
-    --    elseif assets.code.player.unlocks.beatenLevels[l.name] then
-    --        img = assets.image.levelSelect.pin2
-    --    end
-    --    --img = assets.image.levelSelect.flag
---
-    --    if l.click then
-    --        love.graphics.setColor(.8,.8,.8)
-    --    else
-    --        love.graphics.setColor(1,1,1)
-    --    end
---
-    --    --love.graphics.draw(img, l.x, l.y - (math.sin(l.sine)+1)*l.sineEffect, 0, 0.375, 0.375, img:getWidth()/2, img:getHeight()/2)
-    --    love.graphics.draw(img, l.x, l.y - (math.sin(l.sine)+1)*l.sineEffect, 0, 0.375, 0.375, img:getWidth()/2, img:getHeight() - 96/2)
---
-    --end
     love.graphics.setColor(1,1,1)
 
     dialouge.draw()
-    --levelSelectScreen:Draw()
 
     if uiFade > 0 and menus[selectedMenu] then
         local f = tweens.sineInOut(uiFade)

@@ -32,18 +32,18 @@ local function ResetKeybinds()
     end
 
     if inputManager then
-        inputManager.keybinds = love.filesystem.load("code/menu/keybinds.lua")()
+        inputManager.keybinds = love.filesystem.load("code/saveManager/defaultKeybinds.lua")()
     end
     --saveSettings()
 
 end
 
 local function ResetSettings()
-    settings = love.filesystem.load("code/menu/defaultSettings.lua")()
+    settings = love.filesystem.load("code/saveManager/defaultSettings.lua")()
     settingsMenu.SetCatagory({settingsMenu, 3})
 
     if inputManager then
-        inputManager.keybinds = love.filesystem.load("code/menu/keybinds.lua")()
+        inputManager.keybinds = love.filesystem.load("code/saveManager/defaultKeybinds.lua")()
     end
 
     saveSettings()

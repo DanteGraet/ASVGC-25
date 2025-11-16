@@ -136,12 +136,6 @@ local buttonTypeFunctions = {
                         setting.value = newValue
                     end
                 end
-                --[[onRelease = function(obj, button)
-                    setting.value = not setting.value
-
-                    button.components[3].image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
-                    --gameStateManager.setGameState("responsiveLoading", false, "levelSelect", "image/loading/title.png")
-                end,]]
             }
         }
     end,
@@ -202,7 +196,7 @@ local buttonTypeFunctions = {
     end,
 }
 
-function settingsMenu.loadCatagory(catagory)
+function settingsMenu.loadCategory(category)
     settingsMenu.ui = graetUI:newUI()
 
     local categoryCount = 0
@@ -238,7 +232,7 @@ function settingsMenu.loadCatagory(catagory)
                 },
                 data = {
                     onRelease = function()
-                        settingsMenu.loadCatagory(i)
+                        settingsMenu.loadCategory(i)
                     end,
                 }
             }
@@ -280,11 +274,11 @@ function settingsMenu.loadCatagory(catagory)
     local currentX = - width/2 + 50
     local currentFont = font.getFont("medium", 30)
 
-    local catagoryToLoad = settings.order[catagory]
+    local categoryToLoad = settings.order[category]
 
-    for i = 1,#catagoryToLoad.data do
-        local settingName = catagoryToLoad.data[i]
-        local setting = settings[catagoryToLoad.category][settingName]
+    for i = 1,#categoryToLoad.data do
+        local settingName = categoryToLoad.data[i]
+        local setting = settings[categoryToLoad.category][settingName]
 
         if setting.type == "keybindButton" then
             for i = 1, 2 do
@@ -307,6 +301,8 @@ function settingsMenu.loadCatagory(catagory)
         end
         currentY = currentY + (heightOffset or currentFont:getHeight())
     end
+
+    settingsMenu.currentCategory = category
 end
 
 function settingsMenu.load()
@@ -326,7 +322,7 @@ function settingsMenu.load()
     
     data.yOffset = 0 
 
-    settingsMenu.loadCatagory(1)
+    settingsMenu.loadCategory(1)
 end
 
 function settingsMenu.update(dt)

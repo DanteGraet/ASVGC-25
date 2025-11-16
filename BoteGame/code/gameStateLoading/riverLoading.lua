@@ -25,7 +25,7 @@ local toLoad = {
 
     {"code/camera.lua"},
     {"code/inputManager.lua"},
-    {"code/menu/keybinds.lua"},
+    {"code/saveManager/defaultKeybinds.lua"},
     {"code/menu/pauseMenu.lua", "run"},
     {"code/menu/gameOverMenu.lua", "run"},
 
@@ -55,18 +55,6 @@ local toLoad = {
 }
 
 
---[[
-                    current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])
-
-                if original[2] == "addObstacles" then
-                    local c = current[string.sub(file, 1, #file-4)]()
-                    for i = 1,#c do
-                        for name, _ in pairs(c[i].data) do
-                            table.insert(self.loadList, #self.loadList+1, {"obstacle/" .. name .. ".lua", "run"})
-                        end
-                    end
-                end
-]]
 
 for i , value in pairs(riverZones) do
     -- add a falg to tell the code to add the obsticals to the loaded list later :/
@@ -83,9 +71,6 @@ for i , value in pairs(riverZones) do
 end
 
 
-
-
-
 -- load this file in a more permenant position.
 table.insert(toLoad, {"code/river/riverData/" .. rn .. "/zone.lua"})
 table.insert(toLoad, {"code/river/riverData/" .. rn .. "/music.lua", "run"})
@@ -93,7 +78,6 @@ table.insert(toLoad, {"code/river/riverData/" .. rn .. "/ambiance.lua", "run"})
 table.insert(toLoad, {"code/river/riverData/" .. rn .. "/obstacle.lua", "run"})
 
 table.insert(toLoad, function()
-
     local screenLayers = {{
         name = "",
         scaleType = "fit",
@@ -111,17 +95,10 @@ table.insert(toLoad, function()
         anchor = {.5,.5}
     }}
     screen.load(screenLayers)
-
 end)
 
 table.insert(toLoad, function()
-    local scale = love.graphics.getWidth()/1920
-    if love.graphics.getHeight()/1080 < scale then
-        scale = love.graphics.getHeight()/1080
-    end
-
-    sox = ((love.graphics.getWidth()/scale) - 1920) /2
-
+    local scale = screen.getScale()
     if not player then
         player = {
             x = 0,
@@ -136,36 +113,60 @@ table.insert(toLoad, function()
         width = love.graphics.getWidth() / scale,
         height= love.graphics.getHeight() / scale,
     }
+end)
 
+table.insert(toLoad, function()
     riverFileDirectory = assets.code.river.riverData[rn]
+    savedDisplayName = nil
+end)
 
+table.insert(toLoad, function()
     scrapImages = {}
     for i = 1, 5 do
         scrapImages[i] = love.graphics.newImage("image/player/scrap/scrap"..i..".png")
         scrapImages[i]:setFilter("nearest")
     end --this has to go here because of how constrained the dynamic loading system is :/
+end)
 
+table.insert(toLoad, function()
     world = love.physics.newWorld(0, 0, false)
     world:setCallbacks( beginContact, endContact, preSolve, postSolve )
+    hugeCogPositions = nil
+end)
 
-
-
+table.insert(toLoad, function()
     player = assets.code.player.playerBoat():New()
     ui = assets.code.player.playerUi()
     camera = assets.code.camera():New(0, 0, 960, 900)
+    local keybinds = assets.code.saveManager.defaultKeybinds()
+    for key, value in pairs(keybinds) do
+        if settings.keybinds[key] then
+            keybinds[key].keyboard = settings.keybinds[key].value
+        end
+    end
+    inputManager = assets.code.inputManager():New( keybinds )
+end)
 
-    hugeCogPositions = nil
 
+table.insert(toLoad, function()
     love.resize()
-
     ambiance = love.filesystem.load("code/river/effects/ambient.lua")()
+end)
 
+
+table.insert(toLoad, function()
     river = assets.code.river.river():New()
-    riverGenerator = assets.code.river.generator.riverGenerator():New(rn)
+end)
 
+table.insert(toLoad, function()
+    riverGenerator = assets.code.river.generator.riverGenerator():New(rn)
+end)
+
+
+
+table.insert(toLoad, function()
     obstacles = {}
     frontObstacles = {}
-    
     local zoneObsitcalList = {}
     local riverZones = riverFileDirectory.zone()
     for key, z in pairs(riverZones) do
@@ -173,10 +174,14 @@ table.insert(toLoad, function()
     end
     obstacleSpawner = assets.code.river.generator.obstacleSpawner():New(zoneObsitcalList, 1000)
     obstacleSpawner:Update()
+end)
 
+table.insert(toLoad, function()
     world:update(0)
+end)
 
-        -- remove colliding rocks
+table.insert(toLoad, function()
+    -- remove colliding rocks
     local contacts = world:getContacts()
     for _, contact in ipairs(contacts) do
         if contact:isTouching() then
@@ -197,7 +202,9 @@ table.insert(toLoad, function()
             end    
         end
     end
+end)
 
+table.insert(toLoad, function()
     for i = #obstacles,1, -1 do
         obstacles[i]:Update(i, 0)
     end
@@ -205,23 +212,12 @@ table.insert(toLoad, function()
     for i = #frontObstacles,1, -1 do
         frontObstacles[i]:Update(i, 0)
     end
+end)
 
-    
-    local keybinds = assets.code.menu.keybinds()
-    for key, value in pairs(keybinds) do
-        if settings.keybinds[key] then
-            keybinds[key].keyboard = settings.keybinds[key].value
-        end
-    end
-
-    inputManager = assets.code.inputManager():New( keybinds )
-
+table.insert(toLoad, function()    
     particles.loadParticles()
 
     music.load(love.filesystem.load("code/river/riverData/" .. rn .. "/music.lua")())
-
-    savedDisplayName = nil
-
     menuManager.forceClose(nil, true)
 end)
 

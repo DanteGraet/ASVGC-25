@@ -1,38 +1,5 @@
-require("requirements")
-
---require("i give up")
-
-gameState = ""
-previousGameState = ""
-game = {}
-
-
-
 function love.quit()
-    --[[if game[gameState] and game[gameState].unload then
-        game[gameState].unload()
-    end
-
-    if assets.code then
-        dante.save(assets.code.player.unlocks, "save", "unlocks")
-    end
-    if saveSettings then
-        saveSettings()
-    end]]
-end
-
-
-
-
-function getMouseSoxSoy()
-    local screenScale = screen.getScale()
-    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-
-    local mx = love.mouse.getX()/screenScale
-    local my = love.mouse.getY()/screenScale
-
-    return mx - sox, my - soy
+    saveManager.saveProfile(profileNumber)
 end
 
 function love.draw()
@@ -50,65 +17,6 @@ function love.draw()
     end
 
 end
-
---[[function love.draw(pre)
-
-    love.graphics.reset()
-
-    local sox = ((love.graphics.getWidth()/screenScale) - 1920) /2
-    local soy = ((love.graphics.getHeight()/screenScale) - 1080) /2
-
-
-
-    if not pre then
-        if not game[gameState].noTransform == true then
-
-            love.graphics.scale(screenScale)
-            if lockedAspectRatio then
-                love.graphics.translate(sox, soy)
-            end
-    
-        end
-
-        if game[gameState] and game[gameState].draw then
-            game[gameState].draw()
-        end
-    else
-        local p = previousGameState
-        if p == "GetWreked" then
-            p = gameState
-        end
-
-        if game[p] then
-            if not game[p].noTransform == true then
-
-                love.graphics.scale(screenScale)
-                if lockedAspectRatio then
-                    love.graphics.translate(sox, soy)
-                end
-        
-            end
-            if game[p] and game[p].draw then
-                game[p].draw()
-            end
-        end
-    end
-
-    if drawDebugRuler then quindoc.drawRuler() end
-
-    if lockedAspectRatio and not game[gameState].noTransform == true then
-        love.graphics.setColor(screenBarColour)
-        --x bars
-        --love.graphics.rectangle("fill", 0, 0, -sox, love.graphics.getHeight()/screenScale)
-        --love.graphics.rectangle("fill", 1920, 0, sox, love.graphics.getHeight()/screenScale)
-
-        --y bars
-        --love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth()/screenScale, -soy)
-        --love.graphics.rectangle("fill", 0, 1080, love.graphics.getWidth()/screenScale, soy)
-    end
-
-
-end]]
 
 function love.update(dt)
     local gameState = gameStateManager.getGameState()
@@ -136,7 +44,13 @@ function love.keypressed(key)
             --settingsMenu:toggleFullscreen()
             --settingsMenu:toggleFunction(not love.window.getFullscreen(), settings.graphics.fullscreen)
         else
+            settings.graphics.fullscreen.value = not settings.graphics.fullscreen.value
             love.window.setFullscreen( not love.window.getFullscreen())
+            local menu = menuManager.getTopMenu()
+
+            if menu and menu.loadCategory then
+                menu.loadCategory(menu.currentCategory)
+            end
         end
     end
 

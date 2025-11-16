@@ -56,9 +56,3 @@ function particles.drawParticles(layer)
     end
 end
 
-return {
-    loadParticles = loadParticles,
-    spawnParticle = spawnParticle,
-    updateParticles = updateParticles,
-    drawParticles = drawParticles,
-}

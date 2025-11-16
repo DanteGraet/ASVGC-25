@@ -141,26 +141,17 @@ local function update(dt)
         moveTimer = -3
     end
 
-    local mx, my = getMouseSoxSoy()
-    --buttons:Update(dt, mx, my-y)
-
     if y + 50 < maxHeight then
         gameStateManager.setGameState("responsiveLoading", nil, "titleScreen")
     end
 end
 
 local function mousepressed(x, y, button)
-    local mx, my = getMouseSoxSoy()
-    if buttons then
-        buttons:Click(mx, my-y)
-    end
+
 end
 
 local function mousereleased(x, y, button)
-    local mx, my = getMouseSoxSoy()
-    if buttons then
-        buttons:Release(mx, my-y)
-    end
+
 end
 
 
