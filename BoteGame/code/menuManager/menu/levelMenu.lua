@@ -57,7 +57,7 @@ local function getButton(image, func, ...)
                 type = "imageGraphic",
                 image = image,
                 ox = image:getWidth()/2,
-                oy = image:getHeight() - 96/2,
+                oy = image:getHeight()/2,
                 colour = {1,1,1}
             },
         },
@@ -88,21 +88,18 @@ function levelMenu.load(type)
     data.background = assets.image.levelSelect.sign[type]
     data.backgroundExtender = assets.image.levelSelect.sign[type .. "Ext"]
 
-
-    local nineSlice = graetUI:getComponent("nineSliceGraphic")
-    data.background2 = nineSlice:new(bg.image, bg.x, bg.y, bg.sx, bg.sy, bg.cornerSize)
     data.closing = false
     
     data.yOffset = 0 
 
     local b = getButton(assets.image.levelSelect.sign.play, function() gameStateManager.setGameState("responsiveLoading", false, "river", "image/loading/".. type .. ".png") end)
-    levelMenu.ui:addCustomObject("playLevel", 0-256*1.25, 32+256, {0,0}, b)
+    levelMenu.ui:addCustomObject("playLevel", 0-256*1.25, 32+256 - 128, {0,0}, b)
 
     b = getButton(assets.image.levelSelect.sign.storm, function() isStorm = true; gameStateManager.setGameState("responsiveLoading", false, "river", "image/loading/storm.png") end)
-    levelMenu.ui:addCustomObject("playStormLevel", 0, 32+256, {0,0}, b)
+    levelMenu.ui:addCustomObject("playStormLevel", 0, 32+256 - 128, {0,0}, b)
 
     b = getButton(assets.image.levelSelect.sign.back, function() levelMenu.startClose() end)
-    levelMenu.ui:addCustomObject("back", 256*1.25, 32+256, {0,0}, b)
+    levelMenu.ui:addCustomObject("back", 256*1.25, 32+256 - 128, {0,0}, b)
 end
 
 
@@ -128,8 +125,6 @@ end
 
 
 function levelMenu.draw()
-    data.background2:draw(0, 0 + data.yOffset)
-
     love.graphics.translate(0, data.yOffset)
 
     love.graphics.draw(data.background, -960, -540)

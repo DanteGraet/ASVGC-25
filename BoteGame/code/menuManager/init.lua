@@ -101,14 +101,17 @@ function menuManager.update(dt)
         if openMenus[i].update  then
             openMenus[i].update(dt)
 
-            if openMenus[1].ui then
-                openMenus[1].ui:update(dt)
-            end
+
 
             if openMenus[i].remove then
                 table.remove(openMenus, i)
             end
         end
+    end
+
+    if openMenus[1] and openMenus[1].ui then
+        openMenus[1].ui:checkHover("Menu")
+        openMenus[1].ui:update(dt)
     end
 end
 

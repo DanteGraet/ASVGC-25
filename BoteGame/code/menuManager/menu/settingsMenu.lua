@@ -34,7 +34,7 @@ local buttonTypeFunctions = {
 
                     x = 0,
                     y = 0,
-                    colour = {1,1,1},
+                    colour = {{1,1,1}, {.8,.8,.9}, {.2,.2,.4}},
                 },
             },
             data = {
@@ -55,7 +55,7 @@ local buttonTypeFunctions = {
 
                     x = 0,
                     y = 0,
-                    colour = {1,1,1},
+                    colour = {{1,1,1}, {.8,.8,.9}, {.2,.2,.4}},
                 },
             },
             data = {
@@ -101,7 +101,8 @@ local buttonTypeFunctions = {
                     type = "imageGraphic",
                     x = initialX + buttonX,
                     y = 6,
-                    image = assets.image.ui.settings.indicator
+                    image = assets.image.ui.settings.indicator,
+                    colour = {{1,1,1}, {.8,.8,.9}, {.2,.2,.4}},
                 },
             },
             data = {
@@ -156,13 +157,14 @@ local buttonTypeFunctions = {
 
                     x = 50,
                     y = 0,
-                    colour = {1,1,1},
+                    colour = {{1,1,1}, {.8,.8,.9}, {.8,.8,.9}},
                 },
                 {
                     type = "imageGraphic",
                     x = 10,
                     y = 10,
-                    image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty
+                    image = (setting.value and assets.image.ui.settings.check) or assets.image.ui.settings.empty,
+                    colour = {{1,1,1}, {.8,.8,.9}, {.2,.2,.4}},
                 }
             },
             data = {
@@ -268,7 +270,7 @@ function settingsMenu.loadCategory(category)
         }
     }
 
-    settingsMenu.ui:addCustomObject("close" .. "Settings", -width/2 + widthPerCategory*categoryCount, -height/2+25, {0,0}, button)
+    settingsMenu.ui:addCustomObject("close" .. "Settings", -width/2 + widthPerCategory*categoryCount + 25, -height/2+25, {0,0}, button)
 
     local currentY = - height/2 + 110
     local currentX = - width/2 + 50

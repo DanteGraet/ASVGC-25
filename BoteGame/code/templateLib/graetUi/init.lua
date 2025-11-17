@@ -63,7 +63,7 @@ function graetUI:newUI(screenLayer)
 
         screenLayer = screenLayer,
 
-        drawDebug = true,
+        drawDebug = false,
         mouseControll = true,
         clicked = false,
     }

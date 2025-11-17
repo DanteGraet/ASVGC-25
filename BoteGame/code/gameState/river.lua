@@ -150,14 +150,6 @@ local function load()
 
     mouseTimer = 5
     love.mouse.setVisible(false)
-
-    --local image
-    ---- bootleg fix
-    --if isStorm then
-    --    image = "storm"
-    --end
-    --loading = DynamicLoading:New("code/gameStateLoading/riverLoading.lua", true, "image/loading/" .. (image or riverName) .. ".png")
-
 end
 
 local function extraLoad()
