@@ -22,40 +22,14 @@ function rl.load(gameState, image)
 
     backgroundImage = love.graphics.newImage(image or "image/loading/autumnGrove.png")
 
+    -- All screen layers used in bote game to prevent scuffed drawing
     local screenLayers = {
-    {
-        name = "Back",
-        scaleType = "fill",
-        scale = 1,
-        useOffset = true,
-        isBoarderd = false,
-        anchor = {0,0}
-    },
+        {name = "Back",     scaleType = "fill",     scale = 1,  useOffset = true,   isBoarderd = false,     anchor = {0,0}      },
+        {name = "Menu",     scaleType = "fit",      scale = 1,  useOffset = false,  isBoarderd = false,     anchor = {.5,.5}    },
+        {name = "",         scaleType = "fill",     scale = 1,  useOffset = true,   isBoarderd = false,     anchor = {0,0}      },
+        {name = "UI",       scaleType = "fit",      scale = 1,  useOffset = false,  isBoarderd = false,     anchor = {0,0}      }
+    }
 
-    {
-        name = "Menu",
-        scaleType = "fit",
-        scale = 1,
-        useOffset = false,
-        isBoarderd = false,
-        anchor = {.5,.5}
-    },
-    {
-        name = "",
-        scaleType = "fill",
-        scale = 1,
-        useOffset = true,
-        isBoarderd = false,
-        anchor = {0,0}
-    },
-    {
-        name = "UI",
-        scaleType = "fit",
-        scale = 1,
-        useOffset = false,
-        isBoarderd = false,
-        anchor = {0,0}
-    },}
     screen.load(screenLayers)
 
     nextGamestate = gameState
@@ -77,38 +51,37 @@ end
 function rl.AddItem(path, current, original)
     if #path == 1 then
         local file = path[#path]
+        local fileName = string.sub(file, 1, #file-4)
 
         if file:match("%.png$") then
-            current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
-            --print("Loaded Image " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
-
+            current[fileName] = love.graphics.newImage(original[1])
             if original[2] == "blur" then
-                current[string.sub(file, 1, #file-4)]:setFilter("linear", "linear")
+                current[fileName]:setFilter("linear", "linear")
 
             else
-                current[string.sub(file, 1, #file-4)]:setFilter("nearest", "nearest")
+                current[fileName]:setFilter("nearest", "nearest")
             end
 
         elseif file:match("%.mp3$") or file:match("%.ogg$") then
-            --current[string.sub(file, 1, #file-4)] = love.graphics.newImage(original[1])
-            current[string.sub(file, 1, #file-4)] = love.audio.newSource(original[1], original[2])
-
-            --print("Loaded Sound " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
+            current[fileName] = love.audio.newSource(original[1], original[2])
 
         elseif file:match("%.lua$") then
             if original[2] == "run" then
                 if original[3] then
                     current[original[3]] = love.filesystem.load(original[1])()
+
                 else
                     if love.filesystem.getInfo(original[1], "file") then
-                        current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])()
+                        current[fileName] = love.filesystem.load(original[1])()
                     end
+
                 end
+
             else
-                current[string.sub(file, 1, #file-4)] = love.filesystem.load(original[1])
+                current[fileName] = love.filesystem.load(original[1])
 
                 if original[2] == "addObstacles" then
-                    local c = current[string.sub(file, 1, #file-4)]()
+                    local c = current[fileName]()
                     for i = 1,#c do
                         for name, _ in pairs(c[i].data) do
                             table.insert(processList, #processList+1, {"obstacle/" .. name .. ".lua", "run"})
@@ -117,9 +90,9 @@ function rl.AddItem(path, current, original)
                 end
             end
 
-            --print("Loaded Script " .. string.sub(file, 1, #file-4) .. " (" .. original[1] .. ")")
         elseif file:match("%.ttf$") then
-            current[string.sub(file, 1, #file-4)..original[2] or "32"] = love.graphics.newFont(original[1],original[2] or 32)
+            current[fileName .. original[2] or "32"] = love.graphics.newFont(original[1],original[2] or 32)
+            
         end
         
     else
@@ -162,16 +135,16 @@ local updateFunctions = {
         if fade == 1 then
             unloading = nil
             local previousState = gameStateManager.getGameStateName(true) 
-            if love.filesystem.getInfo("code/gameStateLoading/" .. previousState .. "Loading.lua") then
+            if love.filesystem.getInfo("code/gameState/" .. previousState .. "/loading.lua") then
 
                 state = "unloadData"
-                processList = love.filesystem.load("code/gameStateLoading/" .. previousState .. "Loading.lua")()
+                processList = love.filesystem.load("code/gameState/" .. previousState .. "/loading.lua")()
                 processIndex = 1
 
-            elseif love.filesystem.getInfo("code/gameStateLoading/" .. nextGamestate .. "Loading.lua") then
+            elseif love.filesystem.getInfo("code/gameState/" .. nextGamestate .. "/loading.lua") then
 
                 state = "loadData"
-                processList = love.filesystem.load("code/gameStateLoading/" .. nextGamestate .. "Loading.lua")()
+                processList = love.filesystem.load("code/gameState/" .. nextGamestate .. "/loading.lua")()
                 processIndex = 1
 
             else
@@ -179,6 +152,8 @@ local updateFunctions = {
             end
         end
     end,
+
+
     unloadData = function()
         if type(processList[processIndex]) == "table" then
             local path = {}
@@ -187,6 +162,7 @@ local updateFunctions = {
             end
 
             rl.removeItem(path, assets, processList[processIndex])
+            print(processList[processIndex][1])
         elseif type(processList[processIndex]) == "function" then
             --processList[processIndex]()
         end
@@ -195,10 +171,10 @@ local updateFunctions = {
 
 
         if processIndex > #processList then
-            if love.filesystem.getInfo("code/gameStateLoading/" .. nextGamestate .. "Loading.lua") then
+            if love.filesystem.getInfo("code/gameState/" .. nextGamestate .. "/loading.lua") then
 
                 state = "loadData"
-                processList = love.filesystem.load("code/gameStateLoading/" .. nextGamestate .. "Loading.lua")()
+                processList = love.filesystem.load("code/gameState/" .. nextGamestate .. "/loading.lua")()
                 processIndex = 1
 
             else
@@ -214,6 +190,8 @@ local updateFunctions = {
         end
 
     end,
+
+
     loadData = function()
         if type(processList[processIndex]) == "table" then
             local path = {}
@@ -233,6 +211,8 @@ local updateFunctions = {
             state = "unloadScreen"
         end
     end,
+
+
     unloadScreen = function(dt)
         unloading = false
         fade = math.max(fade - dt, 0)

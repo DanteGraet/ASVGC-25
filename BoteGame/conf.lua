@@ -1,4 +1,4 @@
-VERSION = "V1.1 (post VGC)"
+VERSION = "V1.2 (Template Update)"
 DEV = true
 compRelease = false
 
